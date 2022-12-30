@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="基于词典、统计、理解的中文分词技术，以及N-Gram模型和变体词的学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息内容安全——中文分词技术">
+<meta property="og:url" content="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/index.html">
+<meta property="og:site_name" content="阿卡丽的神秘商店">
+<meta property="og:description" content="基于词典、统计、理解的中文分词技术，以及N-Gram模型和变体词的学习">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611181558637.png">
+<meta property="og:image" content="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611181758848.png">
+<meta property="og:image" content="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182222965.png">
+<meta property="og:image" content="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182315117.png">
+<meta property="og:image" content="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182346849.png">
+<meta property="og:image" content="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182419447.png">
+<meta property="og:image" content="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182528334.png">
+<meta property="og:image" content="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182602442.png">
+<meta property="og:image" content="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182907750.png">
+<meta property="og:image" content="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182919951-16604459634692.png">
+<meta property="og:image" content="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611183043714-16604459715633.png">
+<meta property="article:published_time" content="2022-08-05T02:55:47.000Z">
+<meta property="article:modified_time" content="2022-08-14T08:33:40.000Z">
+<meta property="article:author" content="akali">
+<meta property="article:tag" content="信息内容安全">
+<meta property="article:tag" content="中文分词技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611181558637.png">
+
+<link rel="canonical" href="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>信息内容安全——中文分词技术 | 阿卡丽的神秘商店</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿卡丽的神秘商店</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">上古时代的宝贝开卖了</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/gjy20001003" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="akali">
+      <meta itemprop="description" content="远赴人间惊鸿宴，一睹人间盛世颜">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿卡丽的神秘商店">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          信息内容安全——中文分词技术
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-05 10:55:47" itemprop="dateCreated datePublished" datetime="2022-08-05T10:55:47+08:00">2022-08-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-14 16:33:40" itemprop="dateModified" datetime="2022-08-14T16:33:40+08:00">2022-08-14</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>3.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>基于词典、统计、理解的中文分词技术，以及N-Gram模型和变体词的学习</p>
+<span id="more"></span>
+<h1 id="中文分词技术特点"><a href="#中文分词技术特点" class="headerlink" title="中文分词技术特点"></a>中文分词技术特点</h1><p>中文是以字为基本书写单位，单个字往往不足以表达一个意思，通常认为词是表达语义的最小元素。因此须对中文字符串进行合理的切分。<br>特征粒度为词粒度远远好于字粒度，其大部分分类算法不考虑词序信息，基于字粒度的损失了过多的n-gram信息。</p>
+<h2 id="基于词典方法"><a href="#基于词典方法" class="headerlink" title="基于词典方法"></a>基于词典方法</h2><p>优点是：分词过程是跟词典作比较，不需要大量的语料库、规则库，其算法简单、复杂性小、对算法作一定的预处理后分词速度较快；<br>缺点是：不能消除歧义、识别未登录词，对词典的依赖性比较大，若词典足够大，其效果会更加明显。</p>
+<h2 id="基于统计方法"><a href="#基于统计方法" class="headerlink" title="基于统计方法"></a>基于统计方法</h2><p>优点是：由于是基于统计规律的，对未登录词的识别表现出了一定的优越性，不需要预设词典；<br>缺点是：需要一个足够大的语料库来统计训练，其正确性很大程度上依赖训练语料库的质量好坏，算法较为复杂，计算量大，周期长，但是都较为常见，处理速度一般。</p>
+<h2 id="基于理解方法"><a href="#基于理解方法" class="headerlink" title="基于理解方法"></a>基于理解方法</h2><p>优点是：由于能理解字符串含义，对未登录词具有很强的识别能力，能很好的解决歧义问题，不需要词典及大量语料库训练；<br>缺点是：需要一个准确、完备的规则库，依赖性较强，效果好坏往往取决于规则库的完整性。算法比较复杂、实现技术难度较大，处理速度比较慢。</p>
+<h2 id="语义特征提取"><a href="#语义特征提取" class="headerlink" title="语义特征提取"></a>语义特征提取</h2><h3 id="语义特征需具备如下特征"><a href="#语义特征需具备如下特征" class="headerlink" title="语义特征需具备如下特征"></a>语义特征需具备如下特征</h3><p>特征项要能确实标识文本内容</p>
+<p>能够将目标文本与其他文本相区分</p>
+<p>特征项的个数不能太多</p>
+<p>特征项分离要比较容易实现</p>
+<p><strong>根据语义级别由低到高来分，文本语义特征可分为：亚词级别、词级别、多词级别、语义级别和语用级别。其中，应用最为广泛的是词级别。</strong></p>
+<p><img src="/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611181558637.png" alt></p>
+<h2 id="词级别语义特征"><a href="#词级别语义特征" class="headerlink" title="词级别语义特征"></a>词级别语义特征</h2><p>词特征可进行计算的因素有很多，最常用的有：词频词性。还有文档，词语长度，词语直径，首次出现位置</p>
+<p><strong>词级别(WordLevel)以词作为基本语义特征。以单词作为基本语义特征在文本分类、信息检索系统中工作良好，是最常见的基本语义特征。</strong></p>
+<p><img src="/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611181758848.png" alt></p>
+<h2 id="亚词级别语义特征"><a href="#亚词级别语义特征" class="headerlink" title="亚词级别语义特征"></a>亚词级别语义特征</h2><p>亚词级别(Sub-Word Level)也称为字素级别(Graphemic Level)。在英文中比词级别更低的文字组成单位是字母，在汉语中则是单字。</p>
+<h2 id="多词级别语义特征"><a href="#多词级别语义特征" class="headerlink" title="多词级别语义特征"></a>多词级别语义特征</h2><p>多词级别 (Multi-Word Leve1) 指用多个词作为文本的特征项，多词可以比词级别表示更多的语义信息；<br>经常从统计角度根据词之间较高的同现频率(Co-OccurFrequency) 来选取特征项</p>
+<h2 id="n元模型"><a href="#n元模型" class="headerlink" title="n元模型"></a>n元模型</h2><p>n元模型将文本表示为重叠的n个连续字母(对应汉语情况为单字)的序列作为特征项；<br>采用 n元模型时，需要考虑数值n的选择问题。</p>
+<h2 id="语言模型：词袋模型"><a href="#语言模型：词袋模型" class="headerlink" title="语言模型：词袋模型"></a>语言模型：词袋模型</h2><p>将单词和句子表示为数字向量的形式，其中向量元素为句子中此单词在词袋表出现的次数。然后将数字向量输入分类器(例如Naive Bayes)，进而对输出进行预测。这种表示方式不考虑文法以及词的顺序。</p>
+<p>例如以下两个句子：<br>John likes to watch movies. Mary likes movies too.<br>John also likes to watch football games.<br>基于以上两个句子，可以建构词袋表：[ “John”, “likes”, “to”, “watch”, “movies”, “also”, “football”, “games”, “Mary”, “too” ]<br>由于词袋表的长度为10，所以每个句子的数字向量表示长度也为10。下面是每个句子的向量表示形式：<br>[1, 2, 1, 1, 2, 0, 0, 0, 1, 1]<br>[1, 1, 1, 1, 0, 1, 1, 1, 0, 0]<br>优缺点都很明显<br>优点是基于频率统计方法，易于理解。缺点是它的假设(单词之间完全独立)过于强大，无法建立准确的模型。</p>
+<h2 id="词的描述：one-hot表示"><a href="#词的描述：one-hot表示" class="headerlink" title="词的描述：one-hot表示"></a>词的描述：one-hot表示</h2><p>基于词袋模型，可以用向量描述一个词，其向量维度大小为整个词汇表的大小，对于每个具体的词汇表中的词，将对应的位置置为1。</p>
+<p>例如，以下5词组成的词汇表，Queen的序号为2， 其词向量为(0,1,0,0,0)，而Woman的词向量为(0,0,0,1,0)。<br>上述编码，称为1-of-N 表示或者one hot representation(单热表示).<br>当然，单热编码的词的维度元素非0即1，且词之间彼此相互独立。<br>可能导致词向量维度巨大，表达效率不高<br>无法反映文本的有序性</p>
+<p><img src="/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182222965.png" alt></p>
+<h2 id="语言模型：N-Gram模型"><a href="#语言模型：N-Gram模型" class="headerlink" title="语言模型：N-Gram模型"></a>语言模型：N-Gram模型</h2><p>马尔可夫链规定：系统下一时刻的状态仅由当前状态决定，不依赖于以往的任何状态。即第t + 1个单词的发生概率表示为：<br>                                    <img src="/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182315117.png" alt><br>因此，一个句子的概率可以表示为：<br>                                    <img src="/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182346849.png" alt><br>同样地，马尔可夫假设可以推广到：系统下一时刻的状态仅由当前0个、1个、2个…n个状态决定。这就是N-gram model的N的意思：对下一时刻的状态设置当前状态的个数。下面分别给出了unigram（一元模型）和bigram（二元模型)的第t + 1个单词的发生概率：<br>                                    <img src="/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182419447.png" alt><br>可以发现，N-Gram 模型在词袋的基础上，通过采用马尔科夫链的思想，减少了概率计算的复杂度，同时考虑了单词间的相关性。</p>
+<h3 id="例：二元语言模型判断句子是否合理"><a href="#例：二元语言模型判断句子是否合理" class="headerlink" title="例：二元语言模型判断句子是否合理"></a>例：二元语言模型判断句子是否合理</h3><p>假设现在有一个语料库，我们统计了下面的一些词出现的数量</p>
+<p><img src="/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182528334.png" alt></p>
+<p>面的这些概率值作为已知条件：</p>
+<p><img src="/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182602442.png" alt></p>
+<p>下面这个表给出的是基于Bigram模型进行计数之结果</p>
+<p><img src="/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182907750.png" alt></p>
+<p>例如，其中第一行，第二列 表示给定前一个词是 “i” 时，当前词为“want”的情况一共出现了827次。据此，我们便可以算得相应的频率分布表如下</p>
+<p><img src="/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611182919951-16604459634692.png" alt></p>
+<p>以表中的p(eat|i)=0.0036这个概率值讲解，从上页的表中得出“i”一共出现了2533次，而其后出现eat的次数一共有9次，<br>p(eat|i)=p(i, eat)/p(i) = count(i,eat)/count(i) = 9/2533 = 0.0036</p>
+<p>通过基于这个语料库来判断s1=“<s> i want english food</s>” 与s2 = “<s> want i english food</s>“哪个句子更合理.</p>
+<p>首先来判断p(s1)<br>P(s1)=P(i|<s>)P(want|i)P(english|want)P(food|english)P(</s>|food)<br>        =0.25×0.33×0.0011×0.5×0.68=0.000031</p>
+<p>再来求p(s2)<br>P(s2)=P(want|<s>)P(i|want)P(english|want)P(food|english)P(</s>|food)<br>        =0.25<em>0.0022</em>0.0011<em>0.5</em>0.68 = 0.00000002057</p>
+<p>显然 0.00000002057&lt;0.000031,即 s1= “i want english food&lt;/s&gt;”更像人话。</p>
+<h3 id="N-gram模型的一个常见应用：联想词"><a href="#N-gram模型的一个常见应用：联想词" class="headerlink" title="N-gram模型的一个常见应用：联想词"></a>N-gram模型的一个常见应用：联想词</h3><p><img src="/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/image-20220611183043714-16604459715633.png" alt="image-20220611183043714" style="zoom: 50%;"></p>
+<p>实际上是根据语言模型得出。假如使用的是二元语言模型预测下一个单词：<br>排序的过程就是依据概率：<br>    p(”不一样“|”我们”)&gt;p(”的爱“|”我们”)&gt;p(”相爱吧“|”我们”)&gt;…….&gt;p(“这一家”|”我们“)</p>
+<p>这些概率值的求法和上面提到的完全一样，数据的来源可以是用户搜索的log</p>
+<h2 id="网络信息内容过滤"><a href="#网络信息内容过滤" class="headerlink" title="网络信息内容过滤"></a>网络信息内容过滤</h2><p>根据用户的信息需求，运用一定的标准和工具，从大量的动态网络信息流中选取相关的信息或剔除不相关信息的过程。<br>相比于信息检索技术，网络信息过滤技术是一种更系统化的方法，用来从动态的信息流中抽取出符合个性化需求的信息<br>相比于传统的信息检索模式，信息过滤技术具有较高的可扩展性，能适应大规模用户群和海量信息<br>可以为用户提供及时、个性化的信息服务，具有了一定的智能和较高的自动化程度</p>
+<h2 id="网络信息内容过滤的意义"><a href="#网络信息内容过滤的意义" class="headerlink" title="网络信息内容过滤的意义"></a>网络信息内容过滤的意义</h2><p>改善Internet信息查询技术的需要<br>个性化服务的基础<br>维护我国信息安全的迫切需要<br>信息中介（信息服务供应商）开展网络增值服务的手段</p>
+<h2 id="变体词的出现及识别意义"><a href="#变体词的出现及识别意义" class="headerlink" title="变体词的出现及识别意义"></a>变体词的出现及识别意义</h2><p>变体词是网络语言作为一种不规范语言的显著特色, 人们往往出于避免审查、表达情感、讽刺、娱乐等需求将相对严肃、规范、敏感的词用相对不规范、不敏感的词来代替, 用来代替原来词的新词，从而形成变体词(Morph) 。<br>变体词和其对应的目标实体词分别在非规范文本和规范文本中共存, 甚至变体词会渗透到规范文本中。<br>——变体词使行文生动活泼, 相关事件、消息也传播得更加广泛。<br>——变体词通常是某种隐喻, 已不再是其表面字词的意义了, 从而使网络上文体与正式文本    (如新闻等)具有巨大的差异。<br>如何识别出这些变体词及其所对应的目标实体词，对于下游的自然语言处理技术具有重要的意义。</p>
+<h2 id="变体词的生成规律"><a href="#变体词的生成规律" class="headerlink" title="变体词的生成规律"></a>变体词的生成规律</h2><p>变体词多采用同音异形异义词<br>——同音异形异义词在中文中十分普遍<br>——中文字数虽然很多, 但是语音是有限的。<br>       · 据统计中文中 80%的单语音字是有歧义的, 而且其中有一半对应 5 个以上的字。<br>利用中文的特点生成变体词。<br>——利用中文文字的拆分组合、翻译、昵称等手段来创建变体词。<br>利用深层语义信息、背景知识、特定事件等综合生成变体词</p>
+<h2 id="变体词识别与规范化方法"><a href="#变体词识别与规范化方法" class="headerlink" title="变体词识别与规范化方法"></a>变体词识别与规范化方法</h2><p>基于规则的识别和规范化方法<br>——相关研究包括网络不良文本的过滤技术。<br>       · 传统的精确匹配、分类器等方法会由于变体词的出现，严重影响到过滤准确度。<br>——对变体词的处理,<br>       · 分析变体词的变体规则, 提取变体词的 bigram、词干等特征，实现对变体词的识别<br>       · 根据汉语的语音特点，建立语音映射模型, 基于语音的相似性度量实现对变体词的识别。</p>
+<p>基于统计和规则的识别和规范化<br>——提取统计特征和基于规则的特征, 建立变体词与目标实体词之间的映射关系<br>——通过分类方法，基于上下文相似性和字面相似性实现对变体词的规范化</p>
+<p>基于语义表示的识别和规范化方法<br>——给定一个变体词, 如果另一个词与之上下文相似, 则可以初步推断这个词很可能 就是变体词的目标实体词。<br>        · 根据一定时间窗口内变体词和目标实体词是相关;<br>        · 根据社交媒体的动态特性提取变体词和目标实体词的时空分布;<br>        · 对多个数据源数据进行对比分析;对用户的行为建模,用社交行为的相关性来辅助语义相似性测量。 </p>
+<p>与其他应用的结合<br>——变体词的识别与规范化与下游的自然语言 处理任务实际上是相互影响相互作用的, 例如分词。可以将变体词任务与下游的任务结合起来, 形成一个闭环相互反馈相互提高。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8/" rel="tag"># 信息内容安全</a>
+              <a href="/tags/%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF/" rel="tag"># 中文分词技术</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/05/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94%E7%BD%91%E7%BB%9C%E5%AA%92%E4%BD%93%E4%BF%A1%E6%81%AF%E8%8E%B7%E5%8F%96%E4%B8%80%E8%88%AC%E6%B5%81%E7%A8%8B/" rel="prev" title="信息内容安全——网络媒体信息获取一般流程">
+      <i class="fa fa-chevron-left"></i> 信息内容安全——网络媒体信息获取一般流程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/08/06/%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94TDT/" rel="next" title="信息内容安全——TDT">
+      信息内容安全——TDT <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8A%80%E6%9C%AF%E7%89%B9%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">中文分词技术特点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%AF%8D%E5%85%B8%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">基于词典方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%BB%9F%E8%AE%A1%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">基于统计方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%90%86%E8%A7%A3%E6%96%B9%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">基于理解方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E4%B9%89%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96"><span class="nav-number">1.4.</span> <span class="nav-text">语义特征提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E4%B9%89%E7%89%B9%E5%BE%81%E9%9C%80%E5%85%B7%E5%A4%87%E5%A6%82%E4%B8%8B%E7%89%B9%E5%BE%81"><span class="nav-number">1.4.1.</span> <span class="nav-text">语义特征需具备如下特征</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%8D%E7%BA%A7%E5%88%AB%E8%AF%AD%E4%B9%89%E7%89%B9%E5%BE%81"><span class="nav-number">1.5.</span> <span class="nav-text">词级别语义特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%9A%E8%AF%8D%E7%BA%A7%E5%88%AB%E8%AF%AD%E4%B9%89%E7%89%B9%E5%BE%81"><span class="nav-number">1.6.</span> <span class="nav-text">亚词级别语义特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E8%AF%8D%E7%BA%A7%E5%88%AB%E8%AF%AD%E4%B9%89%E7%89%B9%E5%BE%81"><span class="nav-number">1.7.</span> <span class="nav-text">多词级别语义特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#n%E5%85%83%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.8.</span> <span class="nav-text">n元模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%EF%BC%9A%E8%AF%8D%E8%A2%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.9.</span> <span class="nav-text">语言模型：词袋模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%8D%E7%9A%84%E6%8F%8F%E8%BF%B0%EF%BC%9Aone-hot%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.10.</span> <span class="nav-text">词的描述：one-hot表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%EF%BC%9AN-Gram%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.11.</span> <span class="nav-text">语言模型：N-Gram模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%EF%BC%9A%E4%BA%8C%E5%85%83%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%88%A4%E6%96%AD%E5%8F%A5%E5%AD%90%E6%98%AF%E5%90%A6%E5%90%88%E7%90%86"><span class="nav-number">1.11.1.</span> <span class="nav-text">例：二元语言模型判断句子是否合理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#N-gram%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8%EF%BC%9A%E8%81%94%E6%83%B3%E8%AF%8D"><span class="nav-number">1.11.2.</span> <span class="nav-text">N-gram模型的一个常见应用：联想词</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E8%BF%87%E6%BB%A4"><span class="nav-number">1.12.</span> <span class="nav-text">网络信息内容过滤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E4%BF%A1%E6%81%AF%E5%86%85%E5%AE%B9%E8%BF%87%E6%BB%A4%E7%9A%84%E6%84%8F%E4%B9%89"><span class="nav-number">1.13.</span> <span class="nav-text">网络信息内容过滤的意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E4%BD%93%E8%AF%8D%E7%9A%84%E5%87%BA%E7%8E%B0%E5%8F%8A%E8%AF%86%E5%88%AB%E6%84%8F%E4%B9%89"><span class="nav-number">1.14.</span> <span class="nav-text">变体词的出现及识别意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E4%BD%93%E8%AF%8D%E7%9A%84%E7%94%9F%E6%88%90%E8%A7%84%E5%BE%8B"><span class="nav-number">1.15.</span> <span class="nav-text">变体词的生成规律</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E4%BD%93%E8%AF%8D%E8%AF%86%E5%88%AB%E4%B8%8E%E8%A7%84%E8%8C%83%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">1.16.</span> <span class="nav-text">变体词识别与规范化方法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="akali"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">akali</p>
+  <div class="site-description" itemprop="description">远赴人间惊鸿宴，一睹人间盛世颜</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      <div id="music163player">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1859652717&auto=1&height=66"></iframe>
+        </iframe>
+      </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021-08 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">akali</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">84k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:16</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+
+<!-- 页面点击出现爱心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+<!-- 页面点击出现烟花 -->
+
+ <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+ <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+ <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+</body>
+</html>
