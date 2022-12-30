@@ -1,21 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2022/12/27/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    <title>Dijkstra算法</title>
+    <url>/2022/08/22/Dijkstra%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>最短路径问题中带权图的单源最短路径问题的Dijkstra核心代码以实例<br><span id="more"></span></p>
+<h2 id="最短路径算法——Dijkstra算法"><a href="#最短路径算法——Dijkstra算法" class="headerlink" title="最短路径算法——Dijkstra算法"></a>最短路径算法——Dijkstra算法</h2><p>BFS算法求单源最短路径只适用于无权图，或所有边的权值都相同的图</p>
+<p><img src="/2022/08/22/Dijkstra%E7%AE%97%E6%B3%95/image-20220822155010006.png" alt></p>
+<p>循环遍历所有节点，找到还没确定最短路径且dist最小的顶点Vi，另final[i]=true,检查所有邻接自Vi的顶点，若其final值为false，则更新dist和path</p>
+<p><img src="/2022/08/22/Dijkstra%E7%AE%97%E6%B3%95/image-20220822155437661.png" style="zoom:80%;"><img src="/2022/08/22/Dijkstra%E7%AE%97%E6%B3%95/image-20220822155614936.png" style="zoom:80%;"><br><img src="/2022/08/22/Dijkstra%E7%AE%97%E6%B3%95/image-20220822160001351.png" style="zoom:80%;"><img src="/2022/08/22/Dijkstra%E7%AE%97%E6%B3%95/image-20220822160016525.png" style="zoom:80%;"></p>
+<p><img src="/2022/08/22/Dijkstra%E7%AE%97%E6%B3%95/image-20220822155802078.png" alt></p>
+<script type="math/tex; mode=display">
+伪代码实现：\\
+初始：若从V_0开始，令final[0]=true;dist[0]=0;path[0]=-1。\\
+其余顶点final[k]=false;dist[k]=arcs[0][k];path[k]=(arcs[0][k]==∞)?-1:0\\
+n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且dist最小的顶点V_i，令final[i]=true。\\
+并检查所有邻接自V_i的顶点，对于邻接自V_i的顶点V_j,若final[j]==false且dist[i]+arcs[i][j]<dist[j]\\
+则令dist[j]=dist[i]+arcs[i][j];path[j]=i.(注：arcs[i][j]表示V_i到V_j的弧的权值)\\
+时间复杂度：O(n^2)即O(|V|^2)</script><p>注意：Dijkstra算法不适用于有负权值的带权图</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><img src="/2022/08/22/Dijkstra%E7%AE%97%E6%B3%95/image-20220822170311837-16611674133291.png" alt></p>
 ]]></content>
+      <tags>
+        <tag>数据结构</tag>
+        <tag>图</tag>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BFS算法——最短路径问题</title>
+    <url>/2022/08/22/BFS%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>最短路径问题中,BFS算法解决无权图的单源最短路径问题的代码实现<br><span id="more"></span></p>
+<h2 id="最短路径问题——BFS算法"><a href="#最短路径问题——BFS算法" class="headerlink" title="最短路径问题——BFS算法"></a>最短路径问题——BFS算法</h2><h3 id="BFS求无权图的单源最短路径"><a href="#BFS求无权图的单源最短路径" class="headerlink" title="BFS求无权图的单源最短路径"></a>BFS求无权图的单源最短路径</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">BFS_Distance</span><span class="params">(Graph G,<span class="type">int</span> u)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;G.vexnum;++i) &#123;</span><br><span class="line">        d[i]=∞;  <span class="comment">//d[i]表示从u到i的最短路径，初始化路径长度</span></span><br><span class="line">        path[i]=<span class="number">-1</span>;  <span class="comment">//最短路径从哪个顶点过来</span></span><br><span class="line">    &#125;</span><br><span class="line">    d[u]=<span class="number">0</span>;</span><br><span class="line">    visited[u]=<span class="literal">true</span>;</span><br><span class="line">    EnQueue(Q,u);</span><br><span class="line">    <span class="keyword">while</span>(!isEmpty(Q)) &#123;		<span class="comment">//BFS算法主过程</span></span><br><span class="line">        DeQueue(Q,u);            <span class="comment">//队头元素出队</span></span><br><span class="line">        <span class="keyword">for</span>(w=FristNeighbor(G,u);w&gt;=<span class="number">0</span>;w=NextNeighbor(G,u,w))</span><br><span class="line">            <span class="keyword">if</span>(!visited[w]) &#123;         <span class="comment">//w为u尚未访问的邻接结点</span></span><br><span class="line">                d[w]=d[u]+<span class="number">1</span>;       <span class="comment">//路径长度+1</span></span><br><span class="line">                path[w]=u;         <span class="comment">//最短路径从u到w</span></span><br><span class="line">                visited[w]=<span class="literal">true</span>;   <span class="comment">//设置已访问标记</span></span><br><span class="line">                EnQueue(Q,w);      <span class="comment">//顶点w入队</span></span><br><span class="line">            &#125; <span class="comment">//if</span></span><br><span class="line">    &#125; <span class="comment">//while</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/08/22/BFS%E7%AE%97%E6%B3%95/image-20220822152400138.png" alt></p>
+<p>算法过程：</p>
+<p><img src="/2022/08/22/BFS%E7%AE%97%E6%B3%95/image-20220822153144597.png" alt></p>
+<p><img src="/2022/08/22/BFS%E7%AE%97%E6%B3%95/image-20220822153238514.png" alt></p>
+<p><img src="/2022/08/22/BFS%E7%AE%97%E6%B3%95/image-20220822153332062.png" alt></p>
+<p><img src="/2022/08/22/BFS%E7%AE%97%E6%B3%95/image-20220822153402310.png" alt></p>
+<p><img src="/2022/08/22/BFS%E7%AE%97%E6%B3%95/image-20220822153436902.png" alt></p>
+<p><img src="/2022/08/22/BFS%E7%AE%97%E6%B3%95/image-20220822153514478.png" alt></p>
+<p><img src="/2022/08/22/BFS%E7%AE%97%E6%B3%95/image-20220822153522102.png" alt></p>
+<p>三种算法对比<br><img src="/2022/08/22/BFS%E7%AE%97%E6%B3%95/image-20220822170311837.png" alt></p>
+]]></content>
+      <tags>
+        <tag>数据结构</tag>
+        <tag>图</tag>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Floyd算法</title>
+    <url>/2022/08/22/Floyd%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>最短路径问题中求解带权图中各顶点间的最短路径<br><span id="more"></span></p>
+<h2 id="最短路径问题——Floyd算法"><a href="#最短路径问题——Floyd算法" class="headerlink" title="最短路径问题——Floyd算法"></a>最短路径问题——Floyd算法</h2><p>使用动态规划思想，将问题的求解分为多个阶段</p>
+<p><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822162139905.png" alt></p>
+<script type="math/tex; mode=display">
+若允许在V_k进行中转\\\\
+若A^{(k-1)}[i][j]>A^{k-1}[i][k]+A^{(k-1)}[k][j]\\\\
+则A^{(k)}[i][j]=A^{(k-1)}[i][k]+A^{(k-1)}[k][j]\\\\
+path^{(k)}[i][j]=k\\\\
+否则A^{(k)}和path^{(k)}保持原值</script><p><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822163032743.png" alt></p>
+<p><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822163208295.png" alt></p>
+<p><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822163313451.png" alt></p>
+<p><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822163320676.png" alt></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//准备工作，初始化矩阵A(即邻接矩阵)和矩阵path</span></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> k=<span class="number">0</span>;k&lt;n;k++) &#123;    <span class="comment">//考虑以Vk作为中转点</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++) &#123;    <span class="comment">//遍历整个矩阵</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;n;j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(A[i][j]&gt;A[i][k]+A[k][j])&#123;     <span class="comment">//以Vk作为中转点的路径更短</span></span><br><span class="line">                A[i][j]=A[i][k]+A[k][j];     <span class="comment">//更新最短路径长度</span></span><br><span class="line">                path[i][j]=k;                <span class="comment">//中转点</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<script type="math/tex; mode=display">
+时间复杂度：O(|V|^3)\\
+空间复杂度：O(|V|^2)</script><h4 id="Floyd算法实例"><a href="#Floyd算法实例" class="headerlink" title="Floyd算法实例"></a>Floyd算法实例</h4><p><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822164622091.png" alt><br>初始状态<br><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822164556099.png" alt><br>允许V0中转<br><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822164535721.png" alt><br>允许V1中转<br><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822164803197.png" alt><br>允许V2中转<br><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822165126097.png" alt></p>
+<script type="math/tex; mode=display">
+注意其中A[0][3]通过A[2]中转时:\\
+A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>允许V3中转<br><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822165455969.png" alt><br>允许V4中转<br><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822165812367.png" alt></p>
+<h4 id="如何通过path矩阵寻找最短路径"><a href="#如何通过path矩阵寻找最短路径" class="headerlink" title="如何通过path矩阵寻找最短路径"></a>如何通过path矩阵寻找最短路径</h4><h4 id><a href="#" class="headerlink" title></a><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822165717520.png" alt></h4><p>弗洛伊德算法可以用于负权值带权图，但无法解决带有负权回路的图，这种图可能没有最短路径，如：<img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822170209802.png" alt></p>
+<p>总结<br><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822170311837.png" alt></p>
+]]></content>
+      <tags>
+        <tag>数据结构</tag>
+        <tag>图</tag>
+        <tag>算法</tag>
+      </tags>
   </entry>
 </search>
