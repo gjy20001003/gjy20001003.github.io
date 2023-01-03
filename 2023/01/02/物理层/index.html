@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="计算机网络中物理层相关知识点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="物理层">
+<meta property="og:url" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/index.html">
+<meta property="og:site_name" content="阿卡丽的神秘商店">
+<meta property="og:description" content="计算机网络中物理层相关知识点">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103164153429.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103164340775.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103164620835.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103165209419.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103165149667.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103165348925.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103165536756.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103172027101.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103173331778.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103174800334.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103182302698.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103182430898.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103183154787.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103183623766.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103184846447.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103185303037.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103190048155.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103190116678.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103190143154.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103190230580.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103190246207.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103191801785.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103192125822.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103192208870.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103192521027.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103192445031.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103192754829.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103193529027.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103193649691.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103193712185.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103193746901.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103193851839.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103194601850.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103195427418.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103195617523.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103195959354.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103200303274.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103200520863.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103200620703.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103200647901.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103200957655.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103201033840.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103201320054.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103201237096.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103201820163.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103203057644.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103203209520.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103204131257.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103201454934.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103201550842.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103204641991.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103204758526.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103205007478.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103205047225.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103205458461.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103205636018.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103210133968.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103210940343.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103211523981.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103211756115.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103212138463.png">
+<meta property="og:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103212118380.png">
+<meta property="article:published_time" content="2023-01-02T08:19:48.000Z">
+<meta property="article:modified_time" content="2023-01-03T13:33:26.077Z">
+<meta property="article:author" content="akali">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog/source/_posts/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103164153429.png">
+
+<link rel="canonical" href="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>物理层 | 阿卡丽的神秘商店</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿卡丽的神秘商店</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">上古时代的宝贝开卖了</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/gjy20001003" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="akali">
+      <meta itemprop="description" content="远赴人间惊鸿宴，一睹人间盛世颜">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿卡丽的神秘商店">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          物理层
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-01-02 16:19:48" itemprop="dateCreated datePublished" datetime="2023-01-02T16:19:48+08:00">2023-01-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-03 21:33:26" itemprop="dateModified" datetime="2023-01-03T21:33:26+08:00">2023-01-03</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>2.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>计算机网络中物理层相关知识点</p>
+<span id="more"></span>
+<p>物理层解决如何在连接各种计算机的传输媒体上传输数据比特流，而不是指具体的传输媒体。</p>
+<p>物理层主要任务：确定与传输媒体接口有关的一些特性——》定义标准</p>
+<h2 id="物理层接口特性"><a href="#物理层接口特性" class="headerlink" title="物理层接口特性"></a>物理层接口特性</h2><ul>
+<li>机械特性：定义物理连接的特性，规定物理连接时所采用的规格、接口形状、引线数目、引脚数量和排列情况</li>
+<li>电气特性：规定传输二进制位时，线路上信号的电压范围、阻抗匹配、传输速率和距离限制等。</li>
+<li>功能特性：指明某条线上出现的某一电平表示何种意义，接口部件的信号线的用途</li>
+<li>规程特性：定义各条物理路线的工作规程和时序关系</li>
+</ul>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103164153429.png" alt="image-20230103164153429"></p>
+<p>通信的目的是传送消息（消息：语音、文字、图像、视频）<br>数据data：传送信息的实体，通常是有意义的符号序列<br>信号：数据的电气/电磁的表现，是数据在传输过程中的存在形式</p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103164340775.png" alt="image-20230103164340775"></p>
+<p>信源：产生和发送数据的源头<br>信宿：接受数据的终点<br>信道：信号的传输媒介。一般用来表示向某一个方向发送信息的截止，因此一条通信线路往往包括一条发送信道和一条接收信道<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103164620835.png" alt="image-20230103164620835"></p>
+<h2 id="三种通信方式"><a href="#三种通信方式" class="headerlink" title="三种通信方式"></a>三种通信方式</h2><ol>
+<li>单工通信：只有一个方向的通信而没有反方向的交互，仅需要一条信道。</li>
+<li>半双工通信/双向交替通信：通信的双方都可以发送或接受信息，但任何一方都不能同时发送和接受，需要两条信道</li>
+<li>全双工通信/双向同时通信：通信双方可以同时发送和接受信息，也需要两条信道</li>
+</ol>
+<h2 id="串行传输-amp-并行传输"><a href="#串行传输-amp-并行传输" class="headerlink" title="串行传输&amp;并行传输"></a>串行传输&amp;并行传输</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103165209419.png" alt="image-20230103165209419"><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103165149667.png" alt="image-20230103165149667">常用于计算机内部数据传输</p>
+<h2 id="同步传输-amp-异步传输"><a href="#同步传输-amp-异步传输" class="headerlink" title="同步传输&amp;异步传输"></a>同步传输&amp;异步传输</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103165348925.png" alt="image-20230103165348925"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103165536756.png" alt="image-20230103165536756"></p>
+<h2 id="码元"><a href="#码元" class="headerlink" title="码元"></a>码元</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103172027101.png" alt="image-20230103172027101"></p>
+<p>1）码元传输速率：别名码元速率、波形速率、调制速率、符号速率等，单位是波特（Baud），单位时间内数字通信系统所传输的码元个数。码元速率与进制数无关，只与码元长度T有关$R_B=\frac{1}{T}(B)$<br>2）信息传输速率：别名信息速率、比特率等，单位时间内数字通信系统传输的二进制码元个数（即比特数），单位是比特/秒（b/s）</p>
+<p>关系：若一个码元携带n bit的信息量，则M Baud的码元传输速率所对应的信息传输速率为M×n bit/s</p>
+<p>例题：<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103173331778.png" alt="image-20230103173331778"></p>
+<h2 id="带宽"><a href="#带宽" class="headerlink" title="带宽"></a>带宽</h2><p>1.模拟信号系统中：当输入的信号频率高或低到一定程度，使得系统的输出功率成为输入功率的一半时，最高频率和最低频率间的差值就代表了系统的通频带宽，其单位为赫兹(Hz)</p>
+<p>2.数字设备中：表示在单位时间内从网络中某一点到另一点所能通过的<strong>最高数据率</strong>/单位时间内通过链路的数量，常用来表示网络的通信线路所能传输数据的能力。单位是比特每秒(b/s)</p>
+<h2 id="奈氏准则（奈奎斯特定理）"><a href="#奈氏准则（奈奎斯特定理）" class="headerlink" title="奈氏准则（奈奎斯特定理）"></a>奈氏准则（奈奎斯特定理）</h2><p>影响失真程度的因素：1.码元传输速率 2.信号传输距离 3.噪声干扰 4.传输媒体质量</p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103174800334.png" alt="image-20230103174800334"></p>
+<p>奈氏准则：在理想低通（无噪声，带宽受限）条件下，为了避免码间串扰，极限码元传输速率为2W Baud，W是信道带宽，单位是Hz。</p>
+<p>理想低通信道下的极限数据传输率=$2Wlog_2V(b/s)$，W：带宽(Hz)  V：几种码元/码元的离散电平数目</p>
+<ol>
+<li>在任何信道中，<strong>码元传输的速率是有上限的</strong>。若传输速率超过此上限，就会出现严重的码间串扰问题，使接收端对码元的完全正确识别成为不可能。</li>
+<li>信道的频带越宽（即能通过的信号高频分量越多），就可以用更高的速率进行码元的有效传输。</li>
+<li>奈氏准则给出了码元传输速率的限制，但并没有对信息传输速率给出限制</li>
+<li>由于码元的传输速率受奈氏准则的制约，所以要提高数据的传输速率，就必须设法使每个码元能携带更多个比特的信息量，这就需要采用多元制的调制方法.</li>
+</ol>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103182302698.png" alt="image-20230103182302698"></p>
+<h2 id="香农定理"><a href="#香农定理" class="headerlink" title="香农定理"></a>香农定理</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103182430898.png" alt="image-20230103182430898"></p>
+<p>信噪比=信号的平均功率/噪声的平均功率，常记为S/N，并用分贝(dB)作为度量单位，即：</p>
+<p>$信噪比(dB)=10log_{10}(S/N)$</p>
+<p>在带宽受限且有噪声的信道中，为了不产生误差，信息的数据传输速率有上限值。</p>
+<script type="math/tex; mode=display">
+信道的极限数据传输速率=Wlog_2(1+S/N) (b/s)</script><p>推论<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103183154787.png" alt="image-20230103183154787"></p>
+<h3 id="奈氏准则和香农定理"><a href="#奈氏准则和香农定理" class="headerlink" title="奈氏准则和香农定理"></a>奈氏准则和香农定理</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103183623766.png" alt="image-20230103183623766"></p>
+<h2 id="编码与调制"><a href="#编码与调制" class="headerlink" title="编码与调制"></a>编码与调制</h2><h3 id="基带信号与宽带信号"><a href="#基带信号与宽带信号" class="headerlink" title="基带信号与宽带信号"></a>基带信号与宽带信号</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103184846447.png" alt="image-20230103184846447"></p>
+<p> <img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103185303037.png" alt="image-20230103185303037"></p>
+<h3 id="数字数据编码为数字信号"><a href="#数字数据编码为数字信号" class="headerlink" title="数字数据编码为数字信号"></a>数字数据编码为数字信号</h3><p>1.非归零编码【NRZ】    2.曼切斯特编码    3.差分曼切斯特编码    4.归零编码【RZ】    5.反向不归零编码【NRZI】    6.4B/5B编码 </p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103190048155.png" alt="image-20230103190048155"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103190116678.png" alt="image-20230103190116678">编码：10011010<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103190143154.png" alt="image-20230103190143154"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103190230580.png" alt="image-20230103190230580">编码：10011010<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103190246207.png" alt="image-20230103190246207"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103191801785.png" alt="image-20230103191801785"><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103192125822.png" alt="image-20230103192125822"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103192208870.png" alt="image-20230103192208870"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103192521027.png" alt="image-20230103192521027"><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103192445031.png" alt="image-20230103192445031"></p>
+<h3 id="数字数据调制为模拟信号"><a href="#数字数据调制为模拟信号" class="headerlink" title="数字数据调制为模拟信号"></a>数字数据调制为模拟信号</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103192754829.png" alt="image-20230103192754829"></p>
+<h3 id="模拟数据编码为数字信号"><a href="#模拟数据编码为数字信号" class="headerlink" title="模拟数据编码为数字信号"></a>模拟数据编码为数字信号</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103193529027.png" alt="image-20230103193529027"></p>
+<ol>
+<li><p>抽样</p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103193649691.png" alt="image-20230103193649691"></p>
+</li>
+<li><p>量化</p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103193712185.png" alt="image-20230103193712185"></p>
+</li>
+<li><p>编码</p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103193746901.png" alt="image-20230103193746901"></p>
+</li>
+</ol>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103193851839.png" alt="image-20230103193851839"></p>
+<h3 id="模拟数据调制为模拟信号"><a href="#模拟数据调制为模拟信号" class="headerlink" title="模拟数据调制为模拟信号"></a>模拟数据调制为模拟信号</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103194601850.png" alt="image-20230103194601850"></p>
+<h2 id="数据交换方式"><a href="#数据交换方式" class="headerlink" title="数据交换方式"></a>数据交换方式</h2><h3 id="电路交换"><a href="#电路交换" class="headerlink" title="电路交换"></a>电路交换</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103195427418.png" alt="image-20230103195427418"><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103195617523.png" alt="image-20230103195617523"></p>
+<p>特点：独占资源，用户始终占用端对端的固定传输带宽，适用于远程批处理信息传输或系统间实时性要求高的大量数据传输的情况</p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103195959354.png" alt="image-20230103195959354"></p>
+<h3 id="报文交换"><a href="#报文交换" class="headerlink" title="报文交换"></a>报文交换</h3><p>报文：网络中交换与传输的数据单元，即站点一次性要发送的数据块。报文包含了将要发送的完整的数据信息，其长短很不一致，长度不限且可变。</p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103200303274.png" alt="image-20230103200303274"><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103200520863.png" alt="image-20230103200520863"></p>
+<p>优点：<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103200620703.png" alt="image-20230103200620703" style="zoom: 80%;"></p>
+<p>缺点：<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103200647901.png" alt="image-20230103200647901" style="zoom:80%;"></p>
+<h3 id="分组交换"><a href="#分组交换" class="headerlink" title="分组交换"></a>分组交换</h3><p>分组：大多数计算机网络都不能连续的传送任意长数据，所以实际上网络系统把数据分割成小块，然后逐块的发送，这种小块就称作分组<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103200957655.png" alt="image-20230103200957655"><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103201033840.png" alt="image-20230103201033840"></p>
+<p>优点：<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103201320054.png" alt="image-20230103201320054" style="zoom:80%;"></p>
+<p>缺点：<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103201237096.png" alt="image-20230103201237096" style="zoom:80%;"></p>
+<h4 id="数据报方式"><a href="#数据报方式" class="headerlink" title="数据报方式"></a>数据报方式</h4><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103201820163.png" alt="image-20230103201820163"></p>
+<p>无连接服务：不事先为分组的传输确定传输路径，每个分组独立确定传输路径，不同分组传输路径可能不同。</p>
+<p>特点</p>
+<ol>
+<li>数据报方式为网络层提供无连接服务。发送方可随时发送分组，网络中的结点可随时接受分组。</li>
+<li>同一报文的不同分组达到目的结点时可能发生乱序、重复与丢失。</li>
+<li>每个分组在传输过程中都必须携带源地址和目的地址，以及分组号。</li>
+<li>分组在交换结点存储转发时，需要排队等候处理，这会带来一定时延，当通过交换结点的通信量较大或网络发生拥塞时，这种时延会大大增加，交换结点还可根据情况丢弃部分分组。</li>
+<li>网络具有冗余路径，当某一交换结点或一段链路出现故障时，可相应地更新转发表，寻找另一条路径转发分组，对故障适应能力强，适用于突发性通信，不适用于长报文、会话式通信。</li>
+</ol>
+<h4 id="虚电路方式"><a href="#虚电路方式" class="headerlink" title="虚电路方式"></a>虚电路方式</h4><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103203057644.png" alt="image-20230103203057644"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103203209520.png" alt="image-20230103203209520"></p>
+<p>连接服务：首先为分组的传输确定传输路径（建立连接），然后沿该路径（连接）传输系列分组，系列分组传输路径相同，传输结束后拆除连接‘</p>
+<p>特点</p>
+<ol>
+<li>虚电路方式为网络层提供连接服务。源结点与目的结点之间建立一条逻辑连接，而非实际物理连接。</li>
+<li>一次通信的所有分组都通过虚电路顺序传送，分组不需携带源地址、目的地址等信息，包含虚电路号，相对数据报方式开销小，同一报文的不同分组到达目的结点时不会乱序、重复或丢失</li>
+<li>分组通过虚电路上的每个结点时，结点只进行差错检测，不需进行路由选择。</li>
+<li>每个结点可能与多个结点之间建立多条虚电路，每条虚电路支持特定的两个端系统之间的数据传输，可以对两个数据端点的流量进行控制，两个端系统之间也可以有多条虚电路为不同的进程服务</li>
+<li>致命弱点：当网络中某个结点或某个链路出故障而彻底失效时，所有经过该结点或该链路的虚电路将遭到破坏。</li>
+</ol>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103204131257.png" alt="image-20230103204131257"></p>
+<h2 id="数据交换方式的选择"><a href="#数据交换方式的选择" class="headerlink" title="数据交换方式的选择"></a>数据交换方式的选择</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103201454934.png" alt="image-20230103201454934"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103201550842.png" alt="image-20230103201550842" style="zoom:80%;"></p>
+<h2 id="物理层传输介质"><a href="#物理层传输介质" class="headerlink" title="物理层传输介质"></a>物理层传输介质</h2><p>数据传输系统中在发送设备和接受设备之间的物理通路，传输介质也称传输媒体/传输媒介<br>传输媒体并不是物理层</p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103204641991.png" alt="image-20230103204641991"></p>
+<h3 id="导向传输介质"><a href="#导向传输介质" class="headerlink" title="导向传输介质"></a>导向传输介质</h3><h4 id="双绞线"><a href="#双绞线" class="headerlink" title="双绞线"></a>双绞线</h4><p>两根采用一定规则并排绞合的、相互绝缘的铜导线组成<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103204758526.png" alt="image-20230103204758526"><br>绞合可以减少对相邻导线的电磁干扰。<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103205007478.png" alt="image-20230103205007478"></p>
+<h4 id="同轴电缆"><a href="#同轴电缆" class="headerlink" title="同轴电缆"></a>同轴电缆</h4><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103205047225.png" alt="image-20230103205047225"></p>
+<h4 id="光纤"><a href="#光纤" class="headerlink" title="光纤"></a>光纤</h4><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103205458461.png" alt="image-20230103205458461"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103205636018.png" alt="image-20230103205636018"></p>
+<h3 id="非导向性传输介质"><a href="#非导向性传输介质" class="headerlink" title="非导向性传输介质"></a>非导向性传输介质</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103210133968.png" alt="image-20230103210133968"><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103210940343.png" alt="image-20230103210940343"><br>红外线、激光：把要传输的信号分别转换为各自的信号格式，即红外光信号和激光信号，再在空间中传播。信号固定方向传播。</p>
+<h2 id="物理层设备"><a href="#物理层设备" class="headerlink" title="物理层设备"></a>物理层设备</h2><h3 id="中继器"><a href="#中继器" class="headerlink" title="中继器"></a>中继器</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103211523981.png" alt="image-20230103211523981"></p>
+<p>中继器的功能：对信号进行再生和还原，对衰减的信号进行放大，保持与源数据相同，以增加信号传输的距离，延长网络长度。’</p>
+<p>中继器的两端：两端的网络部分是网段，而不是子网，适用于完全相同的两类网络的互连，且两个网段速率要相同。<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103211756115.png" alt="image-20230103211756115"><br>中继器两端的网段一定要是同一个协议。</p>
+<p>5-4-3规则：网络标准中都对信号的延迟范围做了具体的规定，因而中继器只能在规定的范围内进行，否则会网络故障</p>
+<h3 id="集线器（多口中继器）"><a href="#集线器（多口中继器）" class="headerlink" title="集线器（多口中继器）"></a>集线器（多口中继器）</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103212138463.png" alt="image-20230103212138463" style="zoom:80%;"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103212118380.png" alt="image-20230103212118380"></p>
+<p>集线器不能分割冲突域——》连在集线器上的工作主机平分带宽</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 计算机网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/" rel="prev" title="体系结构&参考模型">
+      <i class="fa fa-chevron-left"></i> 体系结构&参考模型
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E6%8E%A5%E5%8F%A3%E7%89%B9%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">物理层接口特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%A7%8D%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">三种通信方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E8%A1%8C%E4%BC%A0%E8%BE%93-amp-%E5%B9%B6%E8%A1%8C%E4%BC%A0%E8%BE%93"><span class="nav-number">3.</span> <span class="nav-text">串行传输&amp;并行传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E4%BC%A0%E8%BE%93-amp-%E5%BC%82%E6%AD%A5%E4%BC%A0%E8%BE%93"><span class="nav-number">4.</span> <span class="nav-text">同步传输&amp;异步传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A0%81%E5%85%83"><span class="nav-number">5.</span> <span class="nav-text">码元</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%A6%E5%AE%BD"><span class="nav-number">6.</span> <span class="nav-text">带宽</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%88%E6%B0%8F%E5%87%86%E5%88%99%EF%BC%88%E5%A5%88%E5%A5%8E%E6%96%AF%E7%89%B9%E5%AE%9A%E7%90%86%EF%BC%89"><span class="nav-number">7.</span> <span class="nav-text">奈氏准则（奈奎斯特定理）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A6%99%E5%86%9C%E5%AE%9A%E7%90%86"><span class="nav-number">8.</span> <span class="nav-text">香农定理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A5%88%E6%B0%8F%E5%87%86%E5%88%99%E5%92%8C%E9%A6%99%E5%86%9C%E5%AE%9A%E7%90%86"><span class="nav-number">8.1.</span> <span class="nav-text">奈氏准则和香农定理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A0%81%E4%B8%8E%E8%B0%83%E5%88%B6"><span class="nav-number">9.</span> <span class="nav-text">编码与调制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E5%B8%A6%E4%BF%A1%E5%8F%B7%E4%B8%8E%E5%AE%BD%E5%B8%A6%E4%BF%A1%E5%8F%B7"><span class="nav-number">9.1.</span> <span class="nav-text">基带信号与宽带信号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%BA%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7"><span class="nav-number">9.2.</span> <span class="nav-text">数字数据编码为数字信号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E6%95%B0%E6%8D%AE%E8%B0%83%E5%88%B6%E4%B8%BA%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7"><span class="nav-number">9.3.</span> <span class="nav-text">数字数据调制为模拟信号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%BA%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7"><span class="nav-number">9.4.</span> <span class="nav-text">模拟数据编码为数字信号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E8%B0%83%E5%88%B6%E4%B8%BA%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7"><span class="nav-number">9.5.</span> <span class="nav-text">模拟数据调制为模拟信号</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2%E6%96%B9%E5%BC%8F"><span class="nav-number">10.</span> <span class="nav-text">数据交换方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E8%B7%AF%E4%BA%A4%E6%8D%A2"><span class="nav-number">10.1.</span> <span class="nav-text">电路交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%A5%E6%96%87%E4%BA%A4%E6%8D%A2"><span class="nav-number">10.2.</span> <span class="nav-text">报文交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E4%BA%A4%E6%8D%A2"><span class="nav-number">10.3.</span> <span class="nav-text">分组交换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%96%B9%E5%BC%8F"><span class="nav-number">10.3.1.</span> <span class="nav-text">数据报方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E6%96%B9%E5%BC%8F"><span class="nav-number">10.3.2.</span> <span class="nav-text">虚电路方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2%E6%96%B9%E5%BC%8F%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number">11.</span> <span class="nav-text">数据交换方式的选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E4%BC%A0%E8%BE%93%E4%BB%8B%E8%B4%A8"><span class="nav-number">12.</span> <span class="nav-text">物理层传输介质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%90%91%E4%BC%A0%E8%BE%93%E4%BB%8B%E8%B4%A8"><span class="nav-number">12.1.</span> <span class="nav-text">导向传输介质</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8C%E7%BB%9E%E7%BA%BF"><span class="nav-number">12.1.1.</span> <span class="nav-text">双绞线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E8%BD%B4%E7%94%B5%E7%BC%86"><span class="nav-number">12.1.2.</span> <span class="nav-text">同轴电缆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%89%E7%BA%A4"><span class="nav-number">12.1.3.</span> <span class="nav-text">光纤</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E5%AF%BC%E5%90%91%E6%80%A7%E4%BC%A0%E8%BE%93%E4%BB%8B%E8%B4%A8"><span class="nav-number">12.2.</span> <span class="nav-text">非导向性传输介质</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E8%AE%BE%E5%A4%87"><span class="nav-number">13.</span> <span class="nav-text">物理层设备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E7%BB%A7%E5%99%A8"><span class="nav-number">13.1.</span> <span class="nav-text">中继器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BA%BF%E5%99%A8%EF%BC%88%E5%A4%9A%E5%8F%A3%E4%B8%AD%E7%BB%A7%E5%99%A8%EF%BC%89"><span class="nav-number">13.2.</span> <span class="nav-text">集线器（多口中继器）</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="akali"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">akali</p>
+  <div class="site-description" itemprop="description">远赴人间惊鸿宴，一睹人间盛世颜</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      <div id="music163player">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1859652717&auto=1&height=66"></iframe>
+        </iframe>
+      </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021-08 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">akali</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">89k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:21</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };	
+    window.MathJax = {
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@2.7.8/unpacked/MathJax.js?config=TeX-MML-AM_CHTML';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+
+<!-- 页面点击出现爱心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+<!-- 页面点击出现烟花 -->
+
+ <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+ <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+ <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+</body>
+</html>
