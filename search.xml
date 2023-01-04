@@ -638,26 +638,26 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <li>功能特性：指明某条线上出现的某一电平表示何种意义，接口部件的信号线的用途</li>
 <li>规程特性：定义各条物理路线的工作规程和时序关系</li>
 </ul>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103164153429.png" alt="image-20230103164153429"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103164153429-16727915428151.png" alt></p>
 <p>通信的目的是传送消息（消息：语音、文字、图像、视频）<br>数据data：传送信息的实体，通常是有意义的符号序列<br>信号：数据的电气/电磁的表现，是数据在传输过程中的存在形式</p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103164340775.png" alt="image-20230103164340775"></p>
-<p>信源：产生和发送数据的源头<br>信宿：接受数据的终点<br>信道：信号的传输媒介。一般用来表示向某一个方向发送信息的截止，因此一条通信线路往往包括一条发送信道和一条接收信道<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103164620835.png" alt="image-20230103164620835"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103164340775-16727925592692.png" alt></p>
+<p>信源：产生和发送数据的源头<br>信宿：接受数据的终点<br>信道：信号的传输媒介。一般用来表示向某一个方向发送信息的截止，因此一条通信线路往往包括一条发送信道和一条接收信道<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103164620835-16727925621933.png" alt></p>
 <h2 id="三种通信方式"><a href="#三种通信方式" class="headerlink" title="三种通信方式"></a>三种通信方式</h2><ol>
 <li>单工通信：只有一个方向的通信而没有反方向的交互，仅需要一条信道。</li>
 <li>半双工通信/双向交替通信：通信的双方都可以发送或接受信息，但任何一方都不能同时发送和接受，需要两条信道</li>
 <li>全双工通信/双向同时通信：通信双方可以同时发送和接受信息，也需要两条信道</li>
 </ol>
-<h2 id="串行传输-amp-并行传输"><a href="#串行传输-amp-并行传输" class="headerlink" title="串行传输&amp;并行传输"></a>串行传输&amp;并行传输</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103165209419.png" alt="image-20230103165209419"><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103165149667.png" alt="image-20230103165149667">常用于计算机内部数据传输</p>
-<h2 id="同步传输-amp-异步传输"><a href="#同步传输-amp-异步传输" class="headerlink" title="同步传输&amp;异步传输"></a>同步传输&amp;异步传输</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103165348925.png" alt="image-20230103165348925"></p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103165536756.png" alt="image-20230103165536756"></p>
-<h2 id="码元"><a href="#码元" class="headerlink" title="码元"></a>码元</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103172027101.png" alt="image-20230103172027101"></p>
+<h2 id="串行传输-amp-并行传输"><a href="#串行传输-amp-并行传输" class="headerlink" title="串行传输&amp;并行传输"></a>串行传输&amp;并行传输</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103165209419-16727925643844.png" alt><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103165149667-16727925664925.png" alt>常用于计算机内部数据传输</p>
+<h2 id="同步传输-amp-异步传输"><a href="#同步传输-amp-异步传输" class="headerlink" title="同步传输&amp;异步传输"></a>同步传输&amp;异步传输</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103165348925-16727925682396.png" alt></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103165536756-16727925698577.png" alt></p>
+<h2 id="码元"><a href="#码元" class="headerlink" title="码元"></a>码元</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103172027101-16727925714588.png" alt></p>
 <p>1）码元传输速率：别名码元速率、波形速率、调制速率、符号速率等，单位是波特（Baud），单位时间内数字通信系统所传输的码元个数。码元速率与进制数无关，只与码元长度T有关$R_B=\frac{1}{T}(B)$<br>2）信息传输速率：别名信息速率、比特率等，单位时间内数字通信系统传输的二进制码元个数（即比特数），单位是比特/秒（b/s）</p>
 <p>关系：若一个码元携带n bit的信息量，则M Baud的码元传输速率所对应的信息传输速率为M×n bit/s</p>
-<p>例题：<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103173331778.png" alt="image-20230103173331778"></p>
+<p>例题：<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103173331778-16727925738079.png" alt></p>
 <h2 id="带宽"><a href="#带宽" class="headerlink" title="带宽"></a>带宽</h2><p>1.模拟信号系统中：当输入的信号频率高或低到一定程度，使得系统的输出功率成为输入功率的一半时，最高频率和最低频率间的差值就代表了系统的通频带宽，其单位为赫兹(Hz)</p>
 <p>2.数字设备中：表示在单位时间内从网络中某一点到另一点所能通过的<strong>最高数据率</strong>/单位时间内通过链路的数量，常用来表示网络的通信线路所能传输数据的能力。单位是比特每秒(b/s)</p>
 <h2 id="奈氏准则（奈奎斯特定理）"><a href="#奈氏准则（奈奎斯特定理）" class="headerlink" title="奈氏准则（奈奎斯特定理）"></a>奈氏准则（奈奎斯特定理）</h2><p>影响失真程度的因素：1.码元传输速率 2.信号传输距离 3.噪声干扰 4.传输媒体质量</p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103174800334.png" alt="image-20230103174800334"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103174800334-167279257601610.png" alt></p>
 <p>奈氏准则：在理想低通（无噪声，带宽受限）条件下，为了避免码间串扰，极限码元传输速率为2W Baud，W是信道带宽，单位是Hz。</p>
 <p>理想低通信道下的极限数据传输率=$2Wlog_2V(b/s)$，W：带宽(Hz)  V：几种码元/码元的离散电平数目</p>
 <ol>
@@ -666,49 +666,49 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <li>奈氏准则给出了码元传输速率的限制，但并没有对信息传输速率给出限制</li>
 <li>由于码元的传输速率受奈氏准则的制约，所以要提高数据的传输速率，就必须设法使每个码元能携带更多个比特的信息量，这就需要采用多元制的调制方法.</li>
 </ol>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103182302698.png" alt="image-20230103182302698"></p>
-<h2 id="香农定理"><a href="#香农定理" class="headerlink" title="香农定理"></a>香农定理</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103182430898.png" alt="image-20230103182430898"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103182302698-167279257777511.png" alt></p>
+<h2 id="香农定理"><a href="#香农定理" class="headerlink" title="香农定理"></a>香农定理</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103182430898-167279257958412.png" alt></p>
 <p>信噪比=信号的平均功率/噪声的平均功率，常记为S/N，并用分贝(dB)作为度量单位，即：</p>
 <p>$信噪比(dB)=10log_{10}(S/N)$</p>
 <p>在带宽受限且有噪声的信道中，为了不产生误差，信息的数据传输速率有上限值。</p>
 <script type="math/tex; mode=display">
-信道的极限数据传输速率=Wlog_2(1+S/N) (b/s)</script><p>推论<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103183154787.png" alt="image-20230103183154787"></p>
-<h3 id="奈氏准则和香农定理"><a href="#奈氏准则和香农定理" class="headerlink" title="奈氏准则和香农定理"></a>奈氏准则和香农定理</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103183623766.png" alt="image-20230103183623766"></p>
-<h2 id="编码与调制"><a href="#编码与调制" class="headerlink" title="编码与调制"></a>编码与调制</h2><h3 id="基带信号与宽带信号"><a href="#基带信号与宽带信号" class="headerlink" title="基带信号与宽带信号"></a>基带信号与宽带信号</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103184846447.png" alt="image-20230103184846447"></p>
-<p> <img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103185303037.png" alt="image-20230103185303037"></p>
+信道的极限数据传输速率=Wlog_2(1+S/N) (b/s)</script><p>推论<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103183154787-167279258112513.png" alt></p>
+<h3 id="奈氏准则和香农定理"><a href="#奈氏准则和香农定理" class="headerlink" title="奈氏准则和香农定理"></a>奈氏准则和香农定理</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103183623766-167279258272014.png" alt></p>
+<h2 id="编码与调制"><a href="#编码与调制" class="headerlink" title="编码与调制"></a>编码与调制</h2><h3 id="基带信号与宽带信号"><a href="#基带信号与宽带信号" class="headerlink" title="基带信号与宽带信号"></a>基带信号与宽带信号</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103184846447-167279258414615.png" alt></p>
+<p> <img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103185303037-167279258568616.png" alt></p>
 <h3 id="数字数据编码为数字信号"><a href="#数字数据编码为数字信号" class="headerlink" title="数字数据编码为数字信号"></a>数字数据编码为数字信号</h3><p>1.非归零编码【NRZ】    2.曼切斯特编码    3.差分曼切斯特编码    4.归零编码【RZ】    5.反向不归零编码【NRZI】    6.4B/5B编码 </p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103190048155.png" alt="image-20230103190048155"></p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103190116678.png" alt="image-20230103190116678">编码：10011010<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103190143154.png" alt="image-20230103190143154"></p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103190230580.png" alt="image-20230103190230580">编码：10011010<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103190246207.png" alt="image-20230103190246207"></p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103191801785.png" alt="image-20230103191801785"><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103192125822.png" alt="image-20230103192125822"></p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103192208870.png" alt="image-20230103192208870"></p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103192521027.png" alt="image-20230103192521027"><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103192445031.png" alt="image-20230103192445031"></p>
-<h3 id="数字数据调制为模拟信号"><a href="#数字数据调制为模拟信号" class="headerlink" title="数字数据调制为模拟信号"></a>数字数据调制为模拟信号</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103192754829.png" alt="image-20230103192754829"></p>
-<h3 id="模拟数据编码为数字信号"><a href="#模拟数据编码为数字信号" class="headerlink" title="模拟数据编码为数字信号"></a>模拟数据编码为数字信号</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103193529027.png" alt="image-20230103193529027"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103190048155-167279258749817.png" alt></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103190116678-167279258884018.png" alt>编码：10011010<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103190143154-167279259042619.png" alt></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103190230580-167279259223120.png" alt>编码：10011010<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103190246207-167279259347221.png" alt></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103191801785-167279259538422.png" alt><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103192125822-167279259694523.png" alt></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103192208870-167279259863824.png" alt></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103192521027-167279260275625.png" alt><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103192445031-167279260467126.png" alt></p>
+<h3 id="数字数据调制为模拟信号"><a href="#数字数据调制为模拟信号" class="headerlink" title="数字数据调制为模拟信号"></a>数字数据调制为模拟信号</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103192754829-167279260696627.png" alt></p>
+<h3 id="模拟数据编码为数字信号"><a href="#模拟数据编码为数字信号" class="headerlink" title="模拟数据编码为数字信号"></a>模拟数据编码为数字信号</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103193529027-167279261051728.png" alt></p>
 <ol>
 <li><p>抽样</p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103193649691.png" alt="image-20230103193649691"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103193649691-167279261262129.png" alt></p>
 </li>
 <li><p>量化</p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103193712185.png" alt="image-20230103193712185"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103193712185-167279261420230.png" alt></p>
 </li>
 <li><p>编码</p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103193746901.png" alt="image-20230103193746901"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103193746901-167279261633531.png" alt></p>
 </li>
 </ol>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103193851839.png" alt="image-20230103193851839"></p>
-<h3 id="模拟数据调制为模拟信号"><a href="#模拟数据调制为模拟信号" class="headerlink" title="模拟数据调制为模拟信号"></a>模拟数据调制为模拟信号</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103194601850.png" alt="image-20230103194601850"></p>
-<h2 id="数据交换方式"><a href="#数据交换方式" class="headerlink" title="数据交换方式"></a>数据交换方式</h2><h3 id="电路交换"><a href="#电路交换" class="headerlink" title="电路交换"></a>电路交换</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103195427418.png" alt="image-20230103195427418"><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103195617523.png" alt="image-20230103195617523"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103193851839-167279261751432.png" alt></p>
+<h3 id="模拟数据调制为模拟信号"><a href="#模拟数据调制为模拟信号" class="headerlink" title="模拟数据调制为模拟信号"></a>模拟数据调制为模拟信号</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103194601850-167279261920833.png" alt></p>
+<h2 id="数据交换方式"><a href="#数据交换方式" class="headerlink" title="数据交换方式"></a>数据交换方式</h2><h3 id="电路交换"><a href="#电路交换" class="headerlink" title="电路交换"></a>电路交换</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103195427418-167279262085434.png" alt><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103195617523-167279262199435.png" alt></p>
 <p>特点：独占资源，用户始终占用端对端的固定传输带宽，适用于远程批处理信息传输或系统间实时性要求高的大量数据传输的情况</p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103195959354.png" alt="image-20230103195959354"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103195959354-167279262392236.png" alt></p>
 <h3 id="报文交换"><a href="#报文交换" class="headerlink" title="报文交换"></a>报文交换</h3><p>报文：网络中交换与传输的数据单元，即站点一次性要发送的数据块。报文包含了将要发送的完整的数据信息，其长短很不一致，长度不限且可变。</p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103200303274.png" alt="image-20230103200303274"><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103200520863.png" alt="image-20230103200520863"></p>
-<p>优点：<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103200620703.png" alt="image-20230103200620703" style="zoom: 80%;"></p>
-<p>缺点：<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103200647901.png" alt="image-20230103200647901" style="zoom:80%;"></p>
-<h3 id="分组交换"><a href="#分组交换" class="headerlink" title="分组交换"></a>分组交换</h3><p>分组：大多数计算机网络都不能连续的传送任意长数据，所以实际上网络系统把数据分割成小块，然后逐块的发送，这种小块就称作分组<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103200957655.png" alt="image-20230103200957655"><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103201033840.png" alt="image-20230103201033840"></p>
-<p>优点：<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103201320054.png" alt="image-20230103201320054" style="zoom:80%;"></p>
-<p>缺点：<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103201237096.png" alt="image-20230103201237096" style="zoom:80%;"></p>
-<h4 id="数据报方式"><a href="#数据报方式" class="headerlink" title="数据报方式"></a>数据报方式</h4><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103201820163.png" alt="image-20230103201820163"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103200303274-167279262636437.png" alt><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103200520863-167279262796638.png" alt></p>
+<p>优点：<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103200620703-167279262981139.png" style="zoom: 80%;"></p>
+<p>缺点：<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103200647901-167279263147840.png" style="zoom:80%;"></p>
+<h3 id="分组交换"><a href="#分组交换" class="headerlink" title="分组交换"></a>分组交换</h3><p>分组：大多数计算机网络都不能连续的传送任意长数据，所以实际上网络系统把数据分割成小块，然后逐块的发送，这种小块就称作分组<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103200957655-167279263306641.png" alt><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103201033840-167279263439242.png" alt></p>
+<p>优点：<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103201320054-167279263603943.png" style="zoom:80%;"></p>
+<p>缺点：<img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103201237096-167279263757844.png" style="zoom:80%;"></p>
+<h4 id="数据报方式"><a href="#数据报方式" class="headerlink" title="数据报方式"></a>数据报方式</h4><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103201820163-167279263917245.png" alt></p>
 <p>无连接服务：不事先为分组的传输确定传输路径，每个分组独立确定传输路径，不同分组传输路径可能不同。</p>
 <p>特点</p>
 <ol>
@@ -718,8 +718,8 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <li>分组在交换结点存储转发时，需要排队等候处理，这会带来一定时延，当通过交换结点的通信量较大或网络发生拥塞时，这种时延会大大增加，交换结点还可根据情况丢弃部分分组。</li>
 <li>网络具有冗余路径，当某一交换结点或一段链路出现故障时，可相应地更新转发表，寻找另一条路径转发分组，对故障适应能力强，适用于突发性通信，不适用于长报文、会话式通信。</li>
 </ol>
-<h4 id="虚电路方式"><a href="#虚电路方式" class="headerlink" title="虚电路方式"></a>虚电路方式</h4><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103203057644.png" alt="image-20230103203057644"></p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103203209520.png" alt="image-20230103203209520"></p>
+<h4 id="虚电路方式"><a href="#虚电路方式" class="headerlink" title="虚电路方式"></a>虚电路方式</h4><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103203057644-167279264105646.png" alt></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103203209520-167279264267547.png" alt></p>
 <p>连接服务：首先为分组的传输确定传输路径（建立连接），然后沿该路径（连接）传输系列分组，系列分组传输路径相同，传输结束后拆除连接‘</p>
 <p>特点</p>
 <ol>
@@ -729,22 +729,22 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <li>每个结点可能与多个结点之间建立多条虚电路，每条虚电路支持特定的两个端系统之间的数据传输，可以对两个数据端点的流量进行控制，两个端系统之间也可以有多条虚电路为不同的进程服务</li>
 <li>致命弱点：当网络中某个结点或某个链路出故障而彻底失效时，所有经过该结点或该链路的虚电路将遭到破坏。</li>
 </ol>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103204131257.png" alt="image-20230103204131257"></p>
-<h2 id="数据交换方式的选择"><a href="#数据交换方式的选择" class="headerlink" title="数据交换方式的选择"></a>数据交换方式的选择</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103201454934.png" alt="image-20230103201454934"></p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103201550842.png" alt="image-20230103201550842" style="zoom:80%;"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103204131257-167279264450448.png" alt></p>
+<h2 id="数据交换方式的选择"><a href="#数据交换方式的选择" class="headerlink" title="数据交换方式的选择"></a>数据交换方式的选择</h2><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103201454934-167279264604849.png" alt></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103201550842-167279264788350.png" style="zoom:80%;"></p>
 <h2 id="物理层传输介质"><a href="#物理层传输介质" class="headerlink" title="物理层传输介质"></a>物理层传输介质</h2><p>数据传输系统中在发送设备和接受设备之间的物理通路，传输介质也称传输媒体/传输媒介<br>传输媒体并不是物理层</p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103204641991.png" alt="image-20230103204641991"></p>
-<h3 id="导向传输介质"><a href="#导向传输介质" class="headerlink" title="导向传输介质"></a>导向传输介质</h3><h4 id="双绞线"><a href="#双绞线" class="headerlink" title="双绞线"></a>双绞线</h4><p>两根采用一定规则并排绞合的、相互绝缘的铜导线组成<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103204758526.png" alt="image-20230103204758526"><br>绞合可以减少对相邻导线的电磁干扰。<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103205007478.png" alt="image-20230103205007478"></p>
-<h4 id="同轴电缆"><a href="#同轴电缆" class="headerlink" title="同轴电缆"></a>同轴电缆</h4><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103205047225.png" alt="image-20230103205047225"></p>
-<h4 id="光纤"><a href="#光纤" class="headerlink" title="光纤"></a>光纤</h4><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103205458461.png" alt="image-20230103205458461"></p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103205636018.png" alt="image-20230103205636018"></p>
-<h3 id="非导向性传输介质"><a href="#非导向性传输介质" class="headerlink" title="非导向性传输介质"></a>非导向性传输介质</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103210133968.png" alt="image-20230103210133968"><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103210940343.png" alt="image-20230103210940343"><br>红外线、激光：把要传输的信号分别转换为各自的信号格式，即红外光信号和激光信号，再在空间中传播。信号固定方向传播。</p>
-<h2 id="物理层设备"><a href="#物理层设备" class="headerlink" title="物理层设备"></a>物理层设备</h2><h3 id="中继器"><a href="#中继器" class="headerlink" title="中继器"></a>中继器</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103211523981.png" alt="image-20230103211523981"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103204641991-167279264968351.png" alt></p>
+<h3 id="导向传输介质"><a href="#导向传输介质" class="headerlink" title="导向传输介质"></a>导向传输介质</h3><h4 id="双绞线"><a href="#双绞线" class="headerlink" title="双绞线"></a>双绞线</h4><p>两根采用一定规则并排绞合的、相互绝缘的铜导线组成<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103204758526-167279265123552.png" alt><br>绞合可以减少对相邻导线的电磁干扰。<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103205007478-167279265309853.png" alt></p>
+<h4 id="同轴电缆"><a href="#同轴电缆" class="headerlink" title="同轴电缆"></a>同轴电缆</h4><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103205047225-167279265478454.png" alt></p>
+<h4 id="光纤"><a href="#光纤" class="headerlink" title="光纤"></a>光纤</h4><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103205458461-167279265652955.png" alt></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103205636018-167279265813256.png" alt></p>
+<h3 id="非导向性传输介质"><a href="#非导向性传输介质" class="headerlink" title="非导向性传输介质"></a>非导向性传输介质</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103210133968-167279265980857.png" alt><br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103210940343-167279266092058.png" alt><br>红外线、激光：把要传输的信号分别转换为各自的信号格式，即红外光信号和激光信号，再在空间中传播。信号固定方向传播。</p>
+<h2 id="物理层设备"><a href="#物理层设备" class="headerlink" title="物理层设备"></a>物理层设备</h2><h3 id="中继器"><a href="#中继器" class="headerlink" title="中继器"></a>中继器</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103211523981-167279266307859.png" alt></p>
 <p>中继器的功能：对信号进行再生和还原，对衰减的信号进行放大，保持与源数据相同，以增加信号传输的距离，延长网络长度。’</p>
-<p>中继器的两端：两端的网络部分是网段，而不是子网，适用于完全相同的两类网络的互连，且两个网段速率要相同。<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103211756115.png" alt="image-20230103211756115"><br>中继器两端的网段一定要是同一个协议。</p>
+<p>中继器的两端：两端的网络部分是网段，而不是子网，适用于完全相同的两类网络的互连，且两个网段速率要相同。<br><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103211756115-167279266471260.png" alt><br>中继器两端的网段一定要是同一个协议。</p>
 <p>5-4-3规则：网络标准中都对信号的延迟范围做了具体的规定，因而中继器只能在规定的范围内进行，否则会网络故障</p>
-<h3 id="集线器（多口中继器）"><a href="#集线器（多口中继器）" class="headerlink" title="集线器（多口中继器）"></a>集线器（多口中继器）</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103212138463.png" alt="image-20230103212138463" style="zoom:80%;"></p>
-<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/blog\source\_posts\物理层\image-20230103212118380.png" alt="image-20230103212118380"></p>
+<h3 id="集线器（多口中继器）"><a href="#集线器（多口中继器）" class="headerlink" title="集线器（多口中继器）"></a>集线器（多口中继器）</h3><p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103212138463-167279266705861.png" style="zoom:80%;"></p>
+<p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103212118380-167279267072462.png" alt></p>
 <p>集线器不能分割冲突域——》连在集线器上的工作主机平分带宽</p>
 ]]></content>
       <tags>
@@ -756,7 +756,7 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
     <url>/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&amp;%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>OSI参考模型和TCP/IP参考模型</p>
 <span id="more"></span>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/blog\source\_posts\体系结构\image-20221231141405853.png" alt="image-20221231141405853"></p>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231141405853-16727927031211.png" alt></p>
 <p>对等实体之间才有协议，下层为上层提供服务</p>
 <h3 id="分层的基本原则"><a href="#分层的基本原则" class="headerlink" title="分层的基本原则"></a>分层的基本原则</h3><ol>
 <li>各层之间相互独立，每层只实现一种相对独立的功能</li>
@@ -765,8 +765,8 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <li>保持下层对上层的对立性，上层单向使用下层提供的服务</li>
 <li>整个分层结构应该能促进标准化工作</li>
 </ol>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/blog\source\_posts\体系结构\image-20221231142532860.png" alt="image-20221231142532860"></p>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/blog\source\_posts\体系结构\image-20221231142748644.png" alt="image-20221231142748644" style="zoom: 67%;"><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/blog\source\_posts\体系结构\image-20221231142709447.png" alt="image-20221231142709447" style="zoom:80%;"></p>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231142532860-16727928089353.png" alt></p>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231142748644-16727927211942.png" style="zoom: 67%;"><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231142709447.png" style="zoom:80%;"></p>
 <h2 id="概念总结"><a href="#概念总结" class="headerlink" title="概念总结"></a>概念总结</h2><ul>
 <li>网络体系结构是从<strong>功能</strong>上描述计算机网络结构</li>
 <li>计算机网络体系结构简称网络体系结构是<strong>分层结构</strong></li>
@@ -777,8 +777,8 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <li>体系结构是<strong>抽象</strong>的，而实现是指能运行的一些软件和硬件</li>
 </ul>
 <h1 id="参考模型"><a href="#参考模型" class="headerlink" title="参考模型"></a>参考模型</h1><h3 id="7层OSI参考模型"><a href="#7层OSI参考模型" class="headerlink" title="7层OSI参考模型"></a>7层OSI参考模型</h3><p>目标：支持异构网络系统的互联互通</p>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/blog\source\_posts\体系结构\image-20221231165655402.png" alt="image-20221231165655402" style="zoom:80%;"></p>
-<h3 id="ISO-OSI参考模型解释通信过程"><a href="#ISO-OSI参考模型解释通信过程" class="headerlink" title="ISO/OSI参考模型解释通信过程"></a>ISO/OSI参考模型解释通信过程</h3><p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/blog\source\_posts\体系结构\image-20230102091707835.png" alt="image-20230102091707835"></p>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231165655402-16727928342534.png" alt="image-20221231165655402" style="zoom:80%;"></p>
+<h3 id="ISO-OSI参考模型解释通信过程"><a href="#ISO-OSI参考模型解释通信过程" class="headerlink" title="ISO/OSI参考模型解释通信过程"></a>ISO/OSI参考模型解释通信过程</h3><p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20230102091707835-16727928362615.png" alt="image-20230102091707835"></p>
 <h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><p>所有能和用户交互产生网络流量的程序（eg：qq，163邮箱）</p>
 <h4 id="典型应用层服务："><a href="#典型应用层服务：" class="headerlink" title="典型应用层服务："></a>典型应用层服务：</h4><p>文件传输(FTP)，电子邮件(SMTP)，万维网(HTTP)</p>
 <h3 id="表示层"><a href="#表示层" class="headerlink" title="表示层"></a>表示层</h3><p>用于处理在两个通信系统中交换信息的表示方式（语法和语义）</p>
@@ -798,10 +798,10 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <p>透明传输：指不管所传数据是什么样的比特组合，都应当能够在链路上传送</p>
 <p>功能一：定义接口特性<br>功能二：定义传输模式（单工、半双工、双工）<br>功能三：定义传输速率<br>功能四：比特同步<br>功能五：比特编码</p>
 <p>主要协议：Rj45、802.3</p>
-<h2 id="TCP-IP参考模型"><a href="#TCP-IP参考模型" class="headerlink" title="TCP/IP参考模型"></a>TCP/IP参考模型</h2><p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/blog\source\_posts\体系结构\image-20230102153143474.png" alt="image-20230102153143474"></p>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/blog\source\_posts\体系结构\image-20230102153652377.png" alt="image-20230102153652377"></p>
+<h2 id="TCP-IP参考模型"><a href="#TCP-IP参考模型" class="headerlink" title="TCP/IP参考模型"></a>TCP/IP参考模型</h2><p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20230102153143474-16727928405746.png" alt="image-20230102153143474"></p>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20230102153652377-16727928423557.png" alt="image-20230102153652377"></p>
 <h2 id="5层参考模型"><a href="#5层参考模型" class="headerlink" title="5层参考模型"></a>5层参考模型</h2><p>应用层：支持各种网络应用————FTP、SMTP、HTTP<br>传输层：进程-进程的数据传输————TCP、UDP<br>网络层：源主机到目的主机的数据分组路由与转发————IP、ICMP、OSPF<br>数据链路层：把网络层传下来的数据报组装成帧————Ethernet、PPP<br>物理层：比特传输</p>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/blog\source\_posts\体系结构\image-20230102154506552.png" alt="image-20230102154506552"></p>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20230102154506552-16727928450328.png" alt="image-20230102154506552"></p>
 ]]></content>
       <tags>
         <tag>计算机网络</tag>
@@ -812,11 +812,11 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
     <url>/2022/12/31/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>速率、带宽、吞吐量、时延、时延带宽积、往返时延RTT、利用率</p>
 <span id="more"></span>
-<h3 id="速率"><a href="#速率" class="headerlink" title="速率"></a>速率</h3><p>速率即<strong>数据率</strong>或称<strong>数据传输率</strong>或<strong>比特率</strong><br><img src="/2022/12/31/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/blog\source\_posts\性能指标\image-20221231100931394.png" alt="image-20221231100931394"></p>
-<p><img src="/2022/12/31/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/blog\source\_posts\性能指标\image-20221231101133151.png" alt="image-20221231101133151"></p>
+<h3 id="速率"><a href="#速率" class="headerlink" title="速率"></a>速率</h3><p>速率即<strong>数据率</strong>或称<strong>数据传输率</strong>或<strong>比特率</strong><br><img src="/2022/12/31/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/image-20221231100931394-16727929048181.png" alt="image-20221231100931394"></p>
+<p><img src="/2022/12/31/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/image-20221231101133151-16727929066852.png" alt="image-20221231101133151"></p>
 <h3 id="带宽"><a href="#带宽" class="headerlink" title="带宽"></a>带宽</h3><p>表示网络的通信线路传送数据的能力，通常是指单位时间内从网络中的某一点到另一点所能通过的<strong>“最高数据率”</strong>。单位是“比特每秒”，b/s，kb/s，Mb/s，Gb/s</p>
 <h3 id="吞吐量"><a href="#吞吐量" class="headerlink" title="吞吐量"></a>吞吐量</h3><p>表示单位时间内通过某个网络（或信道、接口）的数据率，单位b/s，kb/s，Mb/s等<br>吞吐量受网络的带宽或网络的额定速率的限制S</p>
-<p><img src="/2022/12/31/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/blog\source\_posts\性能指标\image-20221231103536362.png" alt="image-20221231103536362"></p>
+<p><img src="/2022/12/31/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/image-20221231103536362-16727929083683.png" alt="image-20221231103536362"></p>
 <h3 id="时延"><a href="#时延" class="headerlink" title="时延"></a>时延</h3><p>指数据（报文/分组/比特流）从网络（或链路）的一段传送到另一端所需的时间。也叫延迟或者迟延，单位是s。</p>
 <h4 id="发送时延"><a href="#发送时延" class="headerlink" title="发送时延"></a>发送时延</h4><script type="math/tex; mode=display">
 发送时延=\frac{数据长度}{信道带宽(发送速率)}</script><p>高速链路指提高发送速率</p>
@@ -826,12 +826,12 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <h4 id="处理时延"><a href="#处理时延" class="headerlink" title="处理时延"></a>处理时延</h4><p>检错，找出口</p>
 <h3 id="时延带宽积"><a href="#时延带宽积" class="headerlink" title="时延带宽积"></a>时延带宽积</h3><p>时延带宽积=传播时延×带宽，单位是bit</p>
 <h3 id="往返时延RTT"><a href="#往返时延RTT" class="headerlink" title="往返时延RTT"></a>往返时延RTT</h3><p>从发送方发送数据开始，到发送方收到接收方的确认，总共经历的时延</p>
-<p><img src="/2022/12/31/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/blog\source\_posts\性能指标\image-20221231134859185.png" alt="image-20221231134859185"></p>
+<p><img src="/2022/12/31/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/image-20221231134859185-16727929121454.png" alt="image-20221231134859185"></p>
 <p>RTT越大，在收到确认之前，可以发送的数据越多</p>
 <script type="math/tex; mode=display">
 RTT包括\begin{cases}往返传播时延=传播时延*2\\末端处理时间\end{cases}</script><h3 id="利用率"><a href="#利用率" class="headerlink" title="利用率"></a>利用率</h3><h4 id="信道利用率"><a href="#信道利用率" class="headerlink" title="信道利用率"></a>信道利用率</h4><p>$信道利用率=\frac{有数据通过时间}{(有+无)数据通过时间}$</p>
 <h4 id="网络利用率"><a href="#网络利用率" class="headerlink" title="网络利用率"></a>网络利用率</h4><p>信道利用率加权平均值</p>
-<p><img src="/2022/12/31/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/blog\source\_posts\性能指标\image-20221231140430417.png" alt="image-20221231140430417"></p>
+<p><img src="/2022/12/31/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/image-20221231140430417-16727929147615.png" alt="image-20221231140430417"></p>
 ]]></content>
       <tags>
         <tag>计算机网络</tag>
@@ -843,7 +843,7 @@ RTT包括\begin{cases}往返传播时延=传播时延*2\\末端处理时间\end{
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>计算机网络的概念，功能，组成，分类</p>
 <span id="more"></span>
 <p>RTT:往返传播时延      </p>
-<p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/blog\source\_posts\认识计算机网络\image-20221230185354019.png" alt="image-20221230185354019"></p>
+<p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/image-20221230185354019-16727929437801.png" alt="image-20221230185354019"></p>
 <p>计算机网络：是一个将分散的、具有独立功能的计算机系统，通过通信设备与线路连接起来，由功能完善的软件实现资源共享和信息传递的系统</p>
 <p>计算机网络是互连的、自洽的计算机集合<br>互连-通过通信链路互联互通<br>自洽-无主从关系 </p>
 <h2 id="计算机网络的功能"><a href="#计算机网络的功能" class="headerlink" title="计算机网络的功能"></a>计算机网络的功能</h2><p>1.数据通信</p>
@@ -851,27 +851,27 @@ RTT包括\begin{cases}往返传播时延=传播时延*2\\末端处理时间\end{
 <p>3.分布式处理</p>
 <p>4.提高可靠性</p>
 <p>5.负载均衡</p>
-<h3 id="计算机网络的发展"><a href="#计算机网络的发展" class="headerlink" title="计算机网络的发展"></a>计算机网络的发展</h3><h4 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h4><p>ARPAnet 阿帕网<br><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/blog\source\_posts\认识计算机网络\image-20221230194927197.png" alt="image-20221230194927197"></p>
+<h3 id="计算机网络的发展"><a href="#计算机网络的发展" class="headerlink" title="计算机网络的发展"></a>计算机网络的发展</h3><h4 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h4><p>ARPAnet 阿帕网<br><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/image-20221230194927197-16727929461652.png" alt="image-20221230194927197"></p>
 <p> 1983年阿帕网接受TCP/IP选定Internet为主要的计算机通信网络，成立了Internet因特网</p>
-<h4 id="第二阶段——三级结构"><a href="#第二阶段——三级结构" class="headerlink" title="第二阶段——三级结构"></a>第二阶段——三级结构</h4><p>1985年，NSF围绕6个大型计算机中心建设计算机网络，即国家科学基金网NSFNET<img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/blog\source\_posts\认识计算机网络\image-20221230195323201-16724012038611.png" alt="image-20221230195323201"></p>
-<h4 id="第三阶段——多层次ISP结构"><a href="#第三阶段——多层次ISP结构" class="headerlink" title="第三阶段——多层次ISP结构"></a>第三阶段——多层次ISP结构</h4><p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/blog\source\_posts\认识计算机网络\image-20221230195548440.png" alt="image-20221230195548440"></p>
+<h4 id="第二阶段——三级结构"><a href="#第二阶段——三级结构" class="headerlink" title="第二阶段——三级结构"></a>第二阶段——三级结构</h4><p>1985年，NSF围绕6个大型计算机中心建设计算机网络，即国家科学基金网NSFNET<img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/image-20221230195323201-16724012038611-16727929473853.png" alt="image-20221230195323201"></p>
+<h4 id="第三阶段——多层次ISP结构"><a href="#第三阶段——多层次ISP结构" class="headerlink" title="第三阶段——多层次ISP结构"></a>第三阶段——多层次ISP结构</h4><p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/image-20221230195548440-16727929491234.png" alt="image-20221230195548440"></p>
 <p>IXP：因特网交换点——大大提高了信息传递和信息共享的速度</p>
-<h2 id="计算机网络的组成"><a href="#计算机网络的组成" class="headerlink" title="计算机网络的组成"></a>计算机网络的组成</h2><p>1.组成部分：硬件、软件、协议<br><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/blog\source\_posts\认识计算机网络\image-20221231090329144.png" alt="image-20221231090329144"></p>
+<h2 id="计算机网络的组成"><a href="#计算机网络的组成" class="headerlink" title="计算机网络的组成"></a>计算机网络的组成</h2><p>1.组成部分：硬件、软件、协议<br><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/image-20221231090329144-16727929510445.png" alt="image-20221231090329144"></p>
 <p>2.工作方式</p>
 <p>端和端之间的通信是进程之间的交流</p>
 <p>边缘部分：用户直接使用<br>————C/S方式(Client/Server)，eg：微信<br>————B/S方式(Brower/Server)<br>————P2P方式(peer-to-peer)， eg：种子下载</p>
 <p>核心部分：为边缘部分服务</p>
 <p>3.功能组成<br>——通信子网：实现数据通信<br>——资源子网：实现资源共享/数据处理</p>
-<p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/blog\source\_posts\认识计算机网络\image-20221231091641824.png" alt="image-20221231091641824"></p>
-<h2 id="计算机网络的分类"><a href="#计算机网络的分类" class="headerlink" title="计算机网络的分类"></a>计算机网络的分类</h2><p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/blog\source\_posts\认识计算机网络\image-20221231091904682.png" alt="image-20221231091904682"></p>
+<p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/image-20221231091641824-16727929530996.png" alt="image-20221231091641824"></p>
+<h2 id="计算机网络的分类"><a href="#计算机网络的分类" class="headerlink" title="计算机网络的分类"></a>计算机网络的分类</h2><p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/image-20221231091904682-16727929549897.png" alt="image-20221231091904682"></p>
 <p>广域网使用交换技术，局域网使用广播技术</p>
-<p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/blog\source\_posts\认识计算机网络\image-20221231092226561.png" alt="image-20221231092226561"></p>
-<p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/blog\source\_posts\认识计算机网络\image-20221231092249995.png" alt="image-20221231092249995"><br>电路交换：电话<br>报文交换、分组交换：使用存储转发</p>
-<p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/blog\source\_posts\认识计算机网络\image-20221231092654347.png" alt="image-20221231092654347"></p>
+<p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/image-20221231092226561-16727929560428.png" alt="image-20221231092226561"></p>
+<p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/image-20221231092249995-16727929573559.png" alt="image-20221231092249995"><br>电路交换：电话<br>报文交换、分组交换：使用存储转发</p>
+<p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/image-20221231092654347-167279295892210.png" alt="image-20221231092654347"></p>
 <p>网状型常用于广域网</p>
-<p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/blog\source\_posts\认识计算机网络\image-20221231092847098.png" alt="image-20221231092847098"></p>
+<p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/image-20221231092847098-167279296069711.png" alt="image-20221231092847098"></p>
 <h2 id="标准化工作及相关组织"><a href="#标准化工作及相关组织" class="headerlink" title="标准化工作及相关组织"></a>标准化工作及相关组织</h2><p>标准化对计算机网络至关重要</p>
-<p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/blog\source\_posts\认识计算机网络\image-20221231093324559.png" alt="image-20221231093324559"></p>
+<p><img src="/2022/12/30/%E8%AE%A4%E8%AF%86%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/image-20221231093324559-167279296217912.png" alt="image-20221231093324559"></p>
 <p>标准分类：<br>——法定标准：由权威机构制定的正式的合法的标————OSI<br>——事实标准：某些公司的产品在竞争中占据了主流，逐渐这些产品的协议和技术成为了标准————TCP/IP</p>
 <h3 id="RFC-Request-For-Comments-————因特网标准的形式"><a href="#RFC-Request-For-Comments-————因特网标准的形式" class="headerlink" title="RFC(Request For Comments)————因特网标准的形式"></a>RFC(Request For Comments)————因特网标准的形式</h3><p>RFC要上升为因特网正式标准的四个阶段：<br>        1）因特网草案：这个阶段还不是RFC文档<br>        2）建议标准：从这个阶段开始成为RFC文档<br>        3）草案标准：递交IETF\IAB审核（已取消）<br>        4）因特网标准</p>
 <h3 id="标准化工作的相关组织"><a href="#标准化工作的相关组织" class="headerlink" title="标准化工作的相关组织"></a>标准化工作的相关组织</h3><p>国际标准化组织ISO：OSI模型、HDLC协议<br>国际电信联盟ITU：制定通信规则<br>电气和电子工程师协会IEEE：学术机构、IEEE802系列标准、5G<br>Internet工程任务组IETF：负责因特网相关标准的制定</p>
