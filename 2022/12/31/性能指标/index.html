@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://example.com/2022/12/31/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/image-20221231134859185-16727929121454.png">
 <meta property="og:image" content="http://example.com/2022/12/31/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/image-20221231140430417-16727929147615.png">
 <meta property="article:published_time" content="2022-12-31T01:49:13.000Z">
-<meta property="article:modified_time" content="2023-01-04T00:41:55.856Z">
+<meta property="article:modified_time" content="2023-01-19T12:42:56.670Z">
 <meta property="article:author" content="akali">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
@@ -233,7 +233,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-01-04 08:41:55" itemprop="dateModified" datetime="2023-01-04T08:41:55+08:00">2023-01-04</time>
+                <time title="修改时间：2023-01-19 20:42:56" itemprop="dateModified" datetime="2023-01-19T20:42:56+08:00">2023-01-19</time>
               </span>
 
           
@@ -241,7 +241,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>560</span>
+              <span>959</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -281,6 +281,8 @@
 RTT包括\begin{cases}往返传播时延=传播时延*2\\末端处理时间\end{cases}</script><h3 id="利用率"><a href="#利用率" class="headerlink" title="利用率"></a>利用率</h3><h4 id="信道利用率"><a href="#信道利用率" class="headerlink" title="信道利用率"></a>信道利用率</h4><p>$信道利用率=\frac{有数据通过时间}{(有+无)数据通过时间}$</p>
 <h4 id="网络利用率"><a href="#网络利用率" class="headerlink" title="网络利用率"></a>网络利用率</h4><p>信道利用率加权平均值</p>
 <p><img src="/2022/12/31/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/image-20221231140430417-16727929147615.png" alt="image-20221231140430417"></p>
+<p>eg：假定网络利用率达到了80%，则估算现在的网络时延是最小值的___？<br>利用率有信道利用率和网络利用率两种。信道利用率指出某信道有百分之几百的时间是被利用的（有数据通过）。完全空闲的信道的利用率是零。网络利用率则是全网络的信道利用率的加权平均值。信道利用率并非越高越好。这是因为，根据排队的理论，当某信道的利用率增大时，该信道引起的时延也就迅速增加。当网络的通信量很少时，网络产生的时延并不大。但在网络通信量不断增大的情况下，由于分组在网络结点（路由器或结点交换机）进行处理时需要排队等候，因此网络引起的时延就会增大。如果令D0表示网络空闲时的时延，D表示网络当前的时延，那么适当的假定条件下，可以用下面的简单公式来表示D，D0和利用率U之间的关系:<br>D=D0/(1-U)那么,<br>网络时延最小值就是空闲时为D0;<br>当网络利用率达80%,则D=D0/(1-80%)=D0/0.2=5D0;</p>
+<p>所以是最小值的5倍</p>
 
     </div>
 
@@ -380,7 +382,7 @@ RTT包括\begin{cases}往返传播时延=传播时延*2\\末端处理时间\end{
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -393,7 +395,7 @@ RTT包括\begin{cases}往返传播时延=传播时延*2\\末端处理时间\end{
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -434,12 +436,12 @@ RTT包括\begin{cases}往返传播时延=传播时延*2\\末端处理时间\end{
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">96k</span>
+    <span title="站点总字数">108k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:27</span>
+    <span title="站点阅读时长">1:38</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
