@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>洛阳</title>
-    <url>/2022/08/13/%E9%95%BF%E5%AE%89/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>《你要写月，就不能只写月》仿写——历历山河</p>
-<span id="more"></span>
-<p>你要写洛阳，就不能只写洛阳</p>
-<p>要写盛唐，写浮光<br>写这天下之众的攘攘与如霜</p>
-<p>要写玉楼金阙拂衣裳，诗酒华章<br>写纸贵绝唱，写家书两行，<br>写一位陌上看花的冰心少年郎</p>
-<p>写此夜玉笛声回荡，写满是京城牡丹香<br>再写白驹过隙梦黄粱，人世间茫茫</p>
-<p>罢笔之时，欲晚天光<br>惊觉此身感秋凉，锦绣意气仍朗朗<br>当时只道是寻常</p>
-]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>web攻防</title>
     <url>/2022/08/15/web%E6%94%BB%E9%98%B2/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>每天几道题</p>
@@ -626,6 +611,184 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
       </tags>
   </entry>
   <entry>
+    <title>cryptography</title>
+    <url>/2023/02/06/cryptography/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>构建区块链的第五步——非对称加密的实现</p>
+<span id="more"></span>
+<h2 id="很简单的例子"><a href="#很简单的例子" class="headerlink" title="很简单的例子"></a>很简单的例子</h2><p>发送方</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> sha256</span><br><span class="line"></span><br><span class="line">message = <span class="string">&quot;i love akali forever&quot;</span></span><br><span class="line">hash_message = sha256((<span class="string">&quot;p@ssw0rd&quot;</span>+message).encode()).hexdigest()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(hash_message)</span><br><span class="line"></span><br><span class="line">运行结果为：17eee37e87b84e383670221f4d5e075aa493f8f89854f52ff1832f49a07b1bf3</span><br></pre></td></tr></table></figure>
+<p>接收方</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> sha256</span><br><span class="line"></span><br><span class="line">sender_message = <span class="string">&quot;i love akali forever&quot;</span></span><br><span class="line">sender_hash = <span class="string">&quot;17eee37e87b84e383670221f4d5e075aa493f8f89854f52ff1832f49a07b1bf3&quot;</span></span><br><span class="line">hash_message = sha256((<span class="string">&quot;p@ssw0rd&quot;</span>+sender_message).encode()).hexdigest()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> hash_message == sender_hash:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Message has not been tampered with&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h2><p>存在的问题：对交易对手的信任，以及不知道特定密钥何时被泄露。</p>
+<p>凯撒密码</p>
+<p><img src="/2023/02/06/cryptography/image-20230206172347224.png" alt="image-20230206172347224"><br>凯撒会给收件人3的密码（密钥)。D将在加密消息中变成A。收件人将应用相反的方法，A 将变为 D。</p>
+<p>这里的问题是发送密码的行为是不安全的 - 任何形式的通信都可以被监视并确定密钥。我们需要一种加密形式，无需创建和发送共享密钥的行为。这就是公钥密码学被发明并解决共享信任问题的原因。</p>
+<h2 id="公钥加密"><a href="#公钥加密" class="headerlink" title="公钥加密"></a>公钥加密</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> nacl.public <span class="keyword">import</span> PrivateKey, Box</span><br><span class="line"></span><br><span class="line">alices_private_key = PrivateKey.generate()</span><br><span class="line">bobs_private_key = PrivateKey.generate()</span><br><span class="line"></span><br><span class="line">alices_public_key = alices_private_key.public_key</span><br><span class="line">bobs_public_key = bobs_private_key.public_key</span><br><span class="line"></span><br><span class="line">bobs_box = Box(bobs_private_key,alices_public_key)</span><br><span class="line"></span><br><span class="line">encrypted = bobs_box.encrypt(<span class="string">b&quot;i am akali&quot;</span>)</span><br><span class="line"></span><br><span class="line">alices_box = Box(alices_private_key,bobs_public_key)</span><br><span class="line"></span><br><span class="line">plaintext = alices_box.decrypt(encrypted)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(plaintext.decode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br></pre></td></tr></table></figure>
+<h2 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h2><p>数字签名使收件人没有怀疑文档真实性的余地。它们满足三个有用的声明：</p>
+<ol>
+<li>真实性：这可能只有发件人签名</li>
+<li>完整性：这些数据不是伪造或篡改的。</li>
+<li>不可否认性：发件人不能否认发送了数据</li>
+</ol>
+<p><img src="/2023/02/06/cryptography/image-20230206180052510.png" alt="image-20230206180052510"></p>
+<ol>
+<li>未加密的明文数据使散列的（防止篡改）</li>
+<li>使用私钥对哈希进行加密。</li>
+<li>将加密的哈希附加到（连接到）数据</li>
+</ol>
+<h3 id="进行签名的代码尝试"><a href="#进行签名的代码尝试" class="headerlink" title="进行签名的代码尝试"></a>进行签名的代码尝试</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> nacl.encoding</span><br><span class="line"><span class="keyword">import</span> nacl.signing</span><br><span class="line"></span><br><span class="line">b_privete_key = nacl.signing.SigningKey.generate()</span><br><span class="line">b_public_key = b_privete_key.verify_key</span><br><span class="line"></span><br><span class="line">b_public_key_hex = b_public_key.encode(encoder = nacl.encoding.HexEncoder)</span><br><span class="line"><span class="built_in">print</span>(b_public_key_hex)</span><br><span class="line"></span><br><span class="line">signed = b_privete_key.sign(<span class="string">b&quot;i love akali forever!&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(signed)</span><br><span class="line"></span><br><span class="line">运行结果</span><br><span class="line"><span class="string">b&#x27;01ac468e1b924e780331d8f81537c3db3af7362423fc930f8cec1bf0c094c145&#x27;</span>       <span class="string">b&#x27;T\xee\xaaj\x1e\xb0\xb0\xcao\xff\x00\xf8\xce\xa3X\xff\xcaDp4\xd6\xef\x91\xc1&#125;\xce\xbb\xb2\xa6~\xec\xe3\xd3\tM\xfbo\x08/\x89Q\xf7\x88\xb35R\x89_U4\xa6m\xb5\xfe\n2\xa0\x8cH\xf2\xa9[\x1b\x05i love akali forever!&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>我们发送了一条信息“i love akali forever”,构造一个数字签名，经过加密后可以看到发的信息是没有进行加密的，但是它填充了包含签名的字节</p>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> nacl.encoding</span><br><span class="line"><span class="keyword">import</span> nacl.signing</span><br><span class="line"></span><br><span class="line">b_public_key = <span class="string">b&#x27;01ac468e1b924e780331d8f81537c3db3af7362423fc930f8cec1bf0c094c145&#x27;</span></span><br><span class="line"></span><br><span class="line">verify_key = nacl.signing.VerifyKey(b_public_key,encoder=nacl.encoding.HexEncoder)</span><br><span class="line">signed_message = <span class="string">b&#x27;T\xee\xaaj\x1e\xb0\xb0\xcao\xff\x00\xf8\xce\xa3X\xff\xcaDp4\xd6\xef\x91\xc1&#125;\xce\xbb\xb2\xa6~\xec\xe3\xd3\tM\xfbo\x08/\x89Q\xf7\x88\xb35R\x89_U4\xa6m\xb5\xfe\n2\xa0\x8cH\xf2\xa9[\x1b\x05i love akali forever!&#x27;</span></span><br><span class="line"></span><br><span class="line">verify_key.verify(signed_message)</span><br><span class="line"></span><br><span class="line">运行结果</span><br><span class="line">无报错</span><br></pre></td></tr></table></figure>
+<p>那如果对信息进行篡改，如去掉感叹号，可以看到报错是签名是伪造或损坏的</p>
+<p><img src="/2023/02/06/cryptography/image-20230206210057771.png" alt="image-20230206210057771"></p>
+<p><img src="/2023/02/06/cryptography/image-20230206210206173.png" alt="image-20230206210206173"></p>
+<h2 id="区块链上的钱包"><a href="#区块链上的钱包" class="headerlink" title="区块链上的钱包"></a>区块链上的钱包</h2><p>上面的代码在某种程度上展现了以太坊的逻辑结构。<br>与比特币不同，以太坊是一个基于账户的模型——这意味着区块链上的每个“用户”都有一个账户。比特币没有<em>账户</em>的概念;相反，它是一个与现金流入和流出实体钱包的方式非常相似的系统。比特币系统被称为UTXO（未花费的交易输出），它是一种用于建模交易的优雅数据结构。但使用以太坊基于账户的模型。最初与以太坊交互时，通常做的第一件事就是生成一个密钥对。您的以太坊<em>地址</em>只是您的公钥。您的私钥存储在安全的地方，无论是在某种软件中还是在硬件钱包中。对于通过以太坊区块链向您发送资金的人，他们只需要知道您的公钥。但只有你可以访问这笔钱，因为只有你持有私钥。</p>
+]]></content>
+      <tags>
+        <tag>区块链</tag>
+        <tag>密码学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>摘抄</title>
+    <url>/2023/02/05/%E6%91%98%E6%8A%84/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>读书使人明智</p>
+<span id="more"></span>
+<h2 id="典籍"><a href="#典籍" class="headerlink" title="典籍"></a>典籍</h2><p>君子生非异也，善假与物也。    ——荀子</p>
+<h2 id="散文"><a href="#散文" class="headerlink" title="散文"></a>散文</h2><p>远赴人间惊鸿宴席，一睹人间盛世颜。        ——《我在人间凑数的日子》</p>
+<hr>
+<p>愿中国青年都摆脱冷气，只是向上走，不必听自暴自弃者流的话。都做事的做事，能发声的发声。有一份热，发一分光，就令萤火一般，也可以在黑暗里发一点光，不必等候炬火。此后如竟没有炬火：我便是唯一的光。倘若有了炬火，出了太阳，我们自然心悦诚服的消失。不但毫无不平，而且还要随喜赞美这炬火或太阳；因为他照了人类，连我都在内。        ——鲁迅    《热风》</p>
+<h2 id="诗词"><a href="#诗词" class="headerlink" title="诗词"></a>诗词</h2><p>云想衣裳花想容，春风拂槛露华浓。<br>若非群玉山头见，会向瑶台月下逢。        ——[唐]李白    《清平调》</p>
+<hr>
+<p><strong>人生若只如初见，何事秋风悲画扇。</strong><br>等闲变却故人心，却道故人心易变。<br>骊山语罢清宵半，泪雨霖铃终不怨。<br>何如薄幸锦衣郎，比翼连枝当日愿。        ——清  纳兰性德    《木兰词》</p>
+<hr>
+<p>醉后不知天在水，满船清梦压星河。        ——[元]唐珙  《题龙阳县青草湖》</p>
+<h2 id="诗歌"><a href="#诗歌" class="headerlink" title="诗歌"></a>诗歌</h2><p>酒入豪肠，七分酿成了月光，<br>余下的三分啸成剑气，袖口一吐，就半个盛唐。        ——余光中    《寻李白》</p>
+<hr>
+<p>你要写洛阳，就不能只写洛阳</p>
+<p>要写盛唐，写浮光<br>写这天下之众的攘攘与如霜</p>
+<p>要写玉楼金阙拂衣裳，诗酒华章<br>写纸贵绝唱，写家书两行，<br>写一位陌上看花的冰心少年郎</p>
+<p>写此夜玉笛声回荡，写满是京城牡丹香<br>再写白驹过隙梦黄粱，人世间茫茫</p>
+<p>罢笔之时，欲晚天光<br>惊觉此身感秋凉，锦绣意气仍朗朗<br>当时只道是寻常</p>
+<hr>
+<h2 id="长篇小说"><a href="#长篇小说" class="headerlink" title="长篇小说"></a>长篇小说</h2><h3 id="三体"><a href="#三体" class="headerlink" title="三体"></a>三体</h3><p>比起已经在风雨中成熟了许多的第一代红卫兵，新生的造反派们像火炭上的狼群，除了疯狂还是疯狂。</p>
+<p>在中国，任何超脱飞扬的思想都会砰然坠地的，现实的引力太沉重了。</p>
+<p>光锥之内就是命运</p>
+<p>给岁月以文明，而不是给文明以岁月</p>
+<p>死亡是唯一一座永远亮着的等他，不管你向哪里航行，最终都得转向它指引的方向。一切都会逝去，只有死神永生。</p>
+<p>失去人性，失去很多；失去兽性，失去一切。</p>
+<p>如果大山不会走向穆罕穆德，穆罕穆德可以走向大山。</p>
+<p>弱小和无知不是生存的障碍，傲慢才是。</p>
+<p>我们都是阴沟里的虫子，但总还是得有人仰望星空。</p>
+<p>碑是那么小，与其说是为了纪念，更像是为了忘却。</p>
+<p>毁灭你，与你有何相干？</p>
+<hr>
+<h3 id="龙族"><a href="#龙族" class="headerlink" title="龙族"></a>龙族</h3><p>总有一天，当孤独 的重量超过了极限，他就会崩塌，雪崩的狂潮会把整个世界的吞噬。</p>
+<p>鼹鼠是见不得光的动物，在太阳下晒几个小时就会死掉。鼹鼠不能从黑暗里出来，只能偷偷的看着你。</p>
+<p>眼前仿佛世界尽头，美得让人觉得那么孤单。</p>
+<p>有些爱稍纵即逝，却铭心刻骨。他在命运里烧成灰烬，却在记忆里拔节生根。</p>
+<p>我们都是小怪兽，终有一天将被正义的奥特曼打死。</p>
+<p>我为我的正义活着，也为我的正义去死。</p>
+<p>一切伟大时代皆会结束，正如所有的王都将死去。</p>
+<hr>
+<h3 id="夜的命名术"><a href="#夜的命名术" class="headerlink" title="夜的命名术"></a>夜的命名术</h3><p>人生当如蜡烛一样，从头燃到尾，始终光明。</p>
+<p>攀那座山最终靠的不是技巧，而是落子无悔的勇气。</p>
+<p>唯信仰与日月古不灭。</p>
+<p>永远少年。</p>
+<p>朋友会为你高兴，为你拼命，在那个肆无忌惮的年代，一起追风，一起做梦。</p>
+<p>当命运给你选择的那一刻，你只需要选择倒下还是站起来，然后剩下的痛苦都不重要了。</p>
+<p>若再许我少年时，一两黄金一两风。</p>
+<p>我怕看见诚实的人被迫说谎，我怕正直的人被迫弯腰，我怕理想主义者看见理想破碎，我怕听见黄花连篇者的最后一句真话，我怕明哲保身者突然仗义执言，我怕曾理想背叛者，最终为理想而死。我怕看见懦夫最后的勇气，还有叛徒的冲锋。</p>
+<p>生死关说起来玄妙，但其实很简单，不过就是赌上一次，把你的命交给这个世界罢了。攀一座山，看一场雪，在距离天空最近的地方，放声呐喊。</p>
+<p>所以你要明白啊，我们不能用温柔去应对黑暗，要用火。</p>
+<h2 id="短篇小说"><a href="#短篇小说" class="headerlink" title="短篇小说"></a>短篇小说</h2><p>宇宙的最不可理解之处在于它是可以理解的。<br>宇宙的最可理解之处在于它是不可理解的。        ——《乡村教师》</p>
+]]></content>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>asyncio——异步I/O</title>
+    <url>/2023/02/03/asyncio%E2%80%94%E2%80%94%E5%BC%82%E6%AD%A5I-O/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>asyncio库的学习</p>
+<span id="more"></span>
+<p>asyncio 是用来编写 <strong>并发</strong> 代码的库，使用 <strong>asysnc/await</strong> 语法。</p>
+<p>asyncio 被用作多个提供高性能 Python 异步框架的基础，包括网络和网站服务，数据库连接库，分布式任务队列等等。</p>
+<p>asyncio 往往是构建 IO 密集型和高层级 <strong>结构化</strong> 网络代码的最佳选择。</p>
+<p>asyncio 提供一组 <strong>高层级</strong> API 用于:</p>
+<ul>
+<li>并发地 <a href="https://docs.python.org/zh-cn/3/library/asyncio-task.html#coroutine">运行 Python 协程</a> 并对其执行过程实现完全控制;</li>
+<li>执行 <a href="https://docs.python.org/zh-cn/3/library/asyncio-stream.html#asyncio-streams">网络 IO 和 IPC</a>;</li>
+<li>控制 <a href="https://docs.python.org/zh-cn/3/library/asyncio-subprocess.html#asyncio-subprocess">子进程</a>;</li>
+<li>通过 <a href="https://docs.python.org/zh-cn/3/library/asyncio-queue.html#asyncio-queues">队列</a> 实现分布式任务;</li>
+<li><a href="https://docs.python.org/zh-cn/3/library/asyncio-sync.html#asyncio-sync">同步</a> 并发代码;</li>
+</ul>
+<p>此外，还有一些 <strong>低层级</strong> API 以支持 <em>库和框架的开发者</em> 实现:</p>
+<ul>
+<li>创建和管理 <a href="https://docs.python.org/zh-cn/3/library/asyncio-eventloop.html#asyncio-event-loop">事件循环</a>，以提供异步 API 用于 <a href="https://docs.python.org/zh-cn/3/library/asyncio-eventloop.html#asyncio.loop.create_server"><code>网络化</code></a>, 运行 <a href="https://docs.python.org/zh-cn/3/library/asyncio-eventloop.html#asyncio.loop.subprocess_exec"><code>子进程</code></a>，处理 <a href="https://docs.python.org/zh-cn/3/library/asyncio-eventloop.html#asyncio.loop.add_signal_handler"><code>OS 信号</code></a> 等等;</li>
+<li>使用 <a href="https://docs.python.org/zh-cn/3/library/asyncio-protocol.html#asyncio-transports-protocols">transports</a> 实现高效率协议;</li>
+<li>通过 async/await 语法 <a href="https://docs.python.org/zh-cn/3/library/asyncio-future.html#asyncio-futures">桥接</a> 基于回调的库和代码。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">a</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Suspending a&#x27;</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">0</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Resuming a&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">b</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;In b&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="comment">## asyncio.gather用来并发运行任务，这里表示协同的执行a和b两个协程</span></span><br><span class="line">    <span class="keyword">await</span> asyncio.gather(a(), b())</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    asyncio.run(main())</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/03/asyncio%E2%80%94%E2%80%94%E5%BC%82%E6%AD%A5I-O/image-20230203195817350.png" alt="image-20230203195817350"></p>
+<p>可以看到在并发执行过程中，协程a被挂起又恢复</p>
+<p>注意：协程要用async def 声明，await asyncio.sleep(0)，await表示调用协程，sleep 0 不会真的sleep（因为时间为0），但是却可以把控制权交出去了</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Hello ...&#x27;</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;... World!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/03/asyncio%E2%80%94%E2%80%94%E5%BC%82%E6%AD%A5I-O/image-20230203195100934.png" alt="image-20230203195100934"></p>
+<h2 id="交互式会话举例"><a href="#交互式会话举例" class="headerlink" title="交互式会话举例"></a>交互式会话举例</h2><p><img src="/2023/02/03/asyncio%E2%80%94%E2%80%94%E5%BC%82%E6%AD%A5I-O/image-20230203194943931.png" alt="image-20230203194943931"></p>
+]]></content>
+      <tags>
+        <tag>库</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>networking</title>
+    <url>/2023/02/03/networking/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>构建区块链的第四步——建立网络的连接</p>
+<span id="more"></span>
+<p>在python中，利用并发性，完成区块链通常需要一次执行许多操作的需求。<br>处理并发的方法有很多，最流行的两种是<strong>线程</strong>或<strong>完全并行的进程</strong>。在这里使用<strong>协作式多任务处理</strong>（简称为“异步”）。</p>
+<p>在python中异步编程由asyncio库提供便利。</p>
+<p>异步编程 通过足够快地暂停和恢复来实现，以便程序<em>看起来像</em>是并行运行。但实际上，它只是简单地在不同的命令之间快速切换，并在切换到另一个命令之前计算每个命令的一小块。这有点像切蔬菜丁，除了不是完全切洋葱然后转到土豆，而是切一点洋葱，然后切一些土豆，反之亦然，直到两者都切成薄片。</p>
+<h2 id="异步函数"><a href="#异步函数" class="headerlink" title="异步函数"></a>异步函数</h2><p>异步函数是指通过实践循环异步执行的函数，他会通过一个隐式的promise返回其结果。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Hello ...&#x27;</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;... World!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">Hello ...</span><br><span class="line"><span class="meta">... </span>World!</span><br><span class="line">可以明显感觉到程序运行停滞了一秒</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">a</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Suspending a&#x27;</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">0</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Resuming a&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">b</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;In b&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="keyword">await</span> asyncio.gather(a(), b())</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    asyncio.run(main())</span><br><span class="line">    </span><br><span class="line">运行结果：</span><br><span class="line">Suspending a</span><br><span class="line">In b</span><br><span class="line">Resuming a</span><br><span class="line">可以很明显看出来a中间停了，运行完b才继续运行a</span><br></pre></td></tr></table></figure>
+<h3 id="promise"><a href="#promise" class="headerlink" title="promise"></a>promise</h3><p>promise对象用于表示一个异步操作的最终完成（或失败）及其结果值。一个 <code>Promise</code> 对象代表一个在这个 <code>promise</code> 被创建出来时不一定已知的值。它让您能够把异步操作最终的成功返回值或者失败原因和相应的处理程序关联起来。 这样使得异步方法可以像同步方法那样返回值：异步方法并不会立即返回最终的值，而是会返回一个 <code>promise</code>，以便在未来某个时候把值交给使用者。</p>
+<p>一个 <code>Promise</code> 必然处于以下几种状态之一：</p>
+<ul>
+<li><em>待定（pending）</em>: 初始状态，既没有被兑现，也没有被拒绝。</li>
+<li><em>已兑现（fulfilled）</em>: 意味着操作成功完成。</li>
+<li><em>已拒绝（rejected）</em>: 意味着操作失败。</li>
+</ul>
+<h2 id="asyncio的工作原理"><a href="#asyncio的工作原理" class="headerlink" title="asyncio的工作原理"></a>asyncio的工作原理</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">greet</span> (name,delay):</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(delay)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;name&#125;</span>:I wait <span class="subst">&#123;delay&#125;</span> seconds before saying &quot;hello&quot;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    task_1 = asyncio.create_task(greet(<span class="string">&quot;t1&quot;</span>,<span class="number">3</span>))</span><br><span class="line">    task_2 = asyncio.create_task(greet(<span class="string">&quot;t2&quot;</span>,<span class="number">2</span>))    </span><br><span class="line">    task_3 = asyncio.create_task(greet(<span class="string">&quot;t3&quot;</span>,<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">    start_time = time.time()</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;0.00s: Program Start&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> task_1</span><br><span class="line">    <span class="keyword">await</span> task_2</span><br><span class="line">    <span class="keyword">await</span> task_3</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;time.time() - start_time:<span class="number">.2</span>f&#125;</span>s:Program End&quot;</span>)</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br><span class="line"></span><br><span class="line">运行结果</span><br><span class="line"><span class="number">0.00</span>s: Program Start</span><br><span class="line">t2:I wait <span class="number">2</span> seconds before saying <span class="string">&quot;hello&quot;</span></span><br><span class="line">t3:I wait <span class="number">2</span> seconds before saying <span class="string">&quot;hello&quot;</span></span><br><span class="line">t1:I wait <span class="number">3</span> seconds before saying <span class="string">&quot;hello&quot;</span></span><br><span class="line"><span class="number">3.00</span>s:Program End</span><br><span class="line">可以看到，异步运行只用了三秒，而同步运行需要七秒。</span><br></pre></td></tr></table></figure>
+<h2 id="构建聊天服务器"><a href="#构建聊天服务器" class="headerlink" title="构建聊天服务器"></a>构建聊天服务器</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">from</span> textwrap <span class="keyword">import</span> dedent</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConnectionPool</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span> (self):</span><br><span class="line">        self.connection_pool = <span class="built_in">set</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">send_welcome_message</span>(<span class="params">self, writer</span>):</span><br><span class="line">        message = dedent(<span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        ===</span></span><br><span class="line"><span class="string">        ( Welcome <span class="subst">&#123;writer.nickname&#125;</span>!</span></span><br><span class="line"><span class="string">        There are <span class="subst">&#123;<span class="built_in">len</span>(self.connection_pool) - <span class="number">1</span>&#125;</span> user(s) here beside you</span></span><br><span class="line"><span class="string">        Help:</span></span><br><span class="line"><span class="string">         - Type anything to chat</span></span><br><span class="line"><span class="string">         - /list will list all the connected users</span></span><br><span class="line"><span class="string">         - /quit will disconnect you</span></span><br><span class="line"><span class="string">        ===</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line">        writer.write(<span class="string">f&quot;<span class="subst">&#123;message&#125;</span>\n&quot;</span>.encode())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">broadcast</span>(<span class="params">self, writer, message</span>):</span><br><span class="line">        <span class="keyword">for</span> user <span class="keyword">in</span> self.connection_pool:</span><br><span class="line">            <span class="keyword">if</span> user != writer:</span><br><span class="line">                <span class="comment"># We don&#x27;t need to also broadcast to the user sending the message</span></span><br><span class="line">                user.write(<span class="string">f&quot;<span class="subst">&#123;message&#125;</span>\n&quot;</span>.encode())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">broadcast_user_join</span>(<span class="params">self, writer</span>):</span><br><span class="line">        self.broadcast(writer, <span class="string">f&quot;<span class="subst">&#123;writer.nickname&#125;</span> just joined&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">broadcast_user_quit</span>(<span class="params">self, writer</span>):</span><br><span class="line">        self.broadcast(writer, <span class="string">f&quot;<span class="subst">&#123;writer.nickname&#125;</span> just quit&quot;</span>)</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">broadcast_new_message</span>(<span class="params">self, writer, message</span>):</span><br><span class="line">        self.broadcast(writer, <span class="string">f&quot;[<span class="subst">&#123;writer.nickname&#125;</span>] <span class="subst">&#123;message&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">list_users</span>(<span class="params">self,writer</span>):</span><br><span class="line">        message = <span class="string">&quot;===\n&quot;</span></span><br><span class="line">        message += <span class="string">&quot;Currently connected users:&quot;</span></span><br><span class="line">        <span class="keyword">for</span> user <span class="keyword">in</span> self.connection_pool:</span><br><span class="line">            <span class="keyword">if</span> user == writer:</span><br><span class="line">                message += <span class="string">f&quot;\n - <span class="subst">&#123;user.nickname&#125;</span> (you)&quot;</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                message += <span class="string">f&quot;\n - <span class="subst">&#123;user.nickname&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">        message += <span class="string">&quot;\n===&quot;</span></span><br><span class="line">        writer.write(<span class="string">f&quot;<span class="subst">&#123;message&#125;</span>\n&quot;</span>.encode())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add_new_user_to_pool</span>(<span class="params">self, writer</span>):</span><br><span class="line">        self.connection_pool.add(writer)</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">remove_user_from_pool</span>(<span class="params">self, writer</span>):</span><br><span class="line">        self.connection_pool.remove(writer)</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">handle_connection</span>(<span class="params">reader, writer</span>):</span><br><span class="line">    <span class="comment"># Get a nickname for the new client</span></span><br><span class="line">    writer.write(<span class="string">&quot;&gt; Choose your nickname: &quot;</span>.encode())</span><br><span class="line">    response = <span class="keyword">await</span> reader.readuntil(<span class="string">b&quot;\n&quot;</span>)</span><br><span class="line">    writer.nickname = response.decode().strip()</span><br><span class="line"> </span><br><span class="line">    connection_pool.add_new_user_to_pool(writer)</span><br><span class="line">    connection_pool.send_welcome_message(writer)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Announce the arrival of this new user</span></span><br><span class="line">    connection_pool.broadcast_user_join(writer)</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            data = <span class="keyword">await</span> reader.readuntil(<span class="string">b&quot;\n&quot;</span>)</span><br><span class="line">        <span class="keyword">except</span> asyncio.exceptions.IncompleteReadError:</span><br><span class="line">            connection_pool.broadcast_user_quit(writer)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        message = data.decode().strip()</span><br><span class="line">        <span class="keyword">if</span> message == <span class="string">&quot;/quit&quot;</span>:</span><br><span class="line">            connection_pool.broadcast_user_quit(writer)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">elif</span> message == <span class="string">&quot;/list&quot;</span>:</span><br><span class="line">            connection_pool.list_users(writer)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            connection_pool.broadcast_new_message(writer, message)</span><br><span class="line">        <span class="keyword">await</span> writer.drain()</span><br><span class="line">        <span class="keyword">if</span> writer.is_closing():</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    writer.close()</span><br><span class="line">    <span class="keyword">await</span> writer.wait_closed()</span><br><span class="line">    connection_pool.remove_user_from_pool(writer)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    server = <span class="keyword">await</span> asyncio.start_server(handle_connection, <span class="string">&quot;0.0.0.0&quot;</span>, <span class="number">8888</span>)</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> server:</span><br><span class="line">        <span class="keyword">await</span> server.serve_forever()</span><br><span class="line"></span><br><span class="line">connection_pool = ConnectionPool()</span><br><span class="line">asyncio.run(main())</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><img src="/2023/02/03/networking/image-20230206215812345.png" alt="image-20230206215812345"></p>
+<h2 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h2><p>协议在p2p网络的设计中非常重要。协议是“游戏规则”，它们很难设计，因为它们需要长期的远见和规划。缺乏健全的架构会产生架构裂痕——这些问题需要所谓的“硬分叉”;或网络底层协议的更改。良好的规划为未来的影响留下了充足的空间，无论是技术进步还是网络的社会变革。</p>
+<p>比特币成功的部分原因在于其协议的简单性以及其核心开发人员在进行新更改时的仔细考虑。协议层面的裂痕经常导致社区驱动的“硬分叉”，如比特币现金和比特币区块链的无数衍生分支，而因为它们几乎总是协议级别分歧的结果。</p>
+<p>考虑到这一点，让我们看一下我们构建的聊天服务器，并通过查看可能的“消息”来剖析其协议。将这些分解为”user stories”有帮助：</p>
+<ul>
+<li>作为连接用户，我可以通过发送消息 /quit 退出。</li>
+<li>作为连接用户，我可以通过发送消息 /list 列出所有连接的用户。</li>
+<li>作为连接的用户，我发送的任何文本（不包括提到的消息）都会广播到所有连接的客户端。</li>
+</ul>
+<p>我们的玩具聊天服务器非常简单。但是通过定义前面的协议，<em>我们能够使其通用</em>;这是至关重要的，因为这意味着互联网上<em>的任何</em>客户端，使用他们自己的软件，只需要遵守协议就可以成功地与我们的服务器互动。</p>
+<p>比特币维基：<a href="https://en.bitcoin.it/wiki/Protocol_documentation">https://en.bitcoin.it/wiki/Protocol_documentation</a></p>
+<h2 id="构建区块链的基础"><a href="#构建区块链的基础" class="headerlink" title="构建区块链的基础"></a>构建区块链的基础</h2><p>点对点网络是由网络上的每个客户端共同实现确定的协议来实现的。</p>
+<p>遵循建议，首先将网络分解为用户故事以帮助阐明需要哪些消息是有帮助的。定义<em>连接</em>节点的概念，以表示与足够多的其他对等体充分连接以形成网络的节点。以下是一些可能的故事：</p>
+<ul>
+<li>作为一个<em>节点</em>，我能够通过发现它们来连接到对等方*。</li>
+<li>作为一个连接的节点，我可以向任何请求它们的<em>节点</em>发布我的对等方列表。</li>
+<li>作为<em>连接的节点</em>，我能够接受和广播来自对等方的新事务。</li>
+<li>作为一个<em>连接的节点</em>，我能够将块的内容服务器化给任何请求它的对等方。</li>
+<li>作为一个<em>连接的节点</em>，如果它符合某些条件，我可以接受一个新块并将其添加到我的区块链中。</li>
+</ul>
+<h2 id="八卦协议"><a href="#八卦协议" class="headerlink" title="八卦协议"></a>八卦协议</h2><p><img src="/2023/02/03/networking/image-20230206221218058.png" alt="image-20230206221218058"></p>
+<p>在上图中，节点 U 必须从 A 获取其他节点（对等节点）的列表，而 A 又从他的邻居 X、Y 和 Z 获取节点列表，并且必须不断“检测”它们，以确保它们在网络上仍然“活着”。还必须向网络宣布 U 的存在等等。这种通用方案称为八卦协议，成功的八卦协议是构成弹性、去中心化网络的原因。</p>
+]]></content>
+      <tags>
+        <tag>区块链</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>工作证明</title>
     <url>/2023/02/02/%E5%B7%A5%E4%BD%9C%E8%AF%81%E6%98%8E/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>构建区块链的第三步——加入proof of work</p>
@@ -752,6 +915,14 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
     <url>/2023/01/30/julia/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>学习julia语言</p>
 <span id="more"></span>
+<p>juila交互式会话</p>
+<p><img src="/2023/01/30/julia/image-20230202224954022.png" alt="image-20230202224954022"></p>
+<p>以分号结尾则不会显示出来结果<br>变量<strong>ans</strong>总会存储上一次执行代码的结果（ans只在交互式会话中才有）</p>
+<p>在交互式会话中，要运行写在源文件 <code>file.jl</code> 中的代码，只需输入 <code>include(&quot;file.jl&quot;)</code>。</p>
+<p>如果想以非交互的方式执行文件中的代码，可以把文件名作为 <code>julia</code> 命令的第一个参数：</p>
+<figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">$ julia script.jl arg1 arg2...</span><br></pre></td></tr></table></figure>
+<p>如这个例子所示，<code>julia</code> 后跟着的命令行参数会被作为程序 <code>script.jl</code> 的命令行参数。这些参数使用全局常量 <code>ARGS</code> 来传递，脚本自身的名字会以全局变量 <code>PROGRAM_FILE</code> 传入。注意当脚本以命令行里的 <code>-e</code> 选项输入时，<code>ARGS</code> 也会被设定（详见此页末尾列表）但是 <code>PROGRAM_FILE</code> 会是空的。例如，要把一个脚本的输入参数显示出来，你可以：</p>
+<figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">$ julia -e &#x27;println(<span class="literal">PROGRAM_FILE</span>); <span class="keyword">for</span> x <span class="keyword">in</span> <span class="literal">ARGS</span>; println(x); <span class="keyword">end</span>&#x27; foo bar</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h1 id="julia数组"><a href="#julia数组" class="headerlink" title="julia数组"></a>julia数组</h1><p>数组，就是相同数据类型的元素按一定顺序排列的集合，可以是一维数组和多维数组。<br>Julia 支持数组数据结构，它可以存储一个大小不是固定的，类型可以相同也可以不同的顺序集合。<br>Julia 数组是可变类型集合，用于列表、向量、表格和矩阵。<br>Julia 数组的索引键值可以使用整数表示，数组的大小不是固定的。<br>Julia 提供了很多函数帮助我们来操作数组，比如数组添加元素，合并数组等。<br>Julia 数组用方括号 […] 指定，多个元素使用逗号 , 分隔。<br>创建一个一维数组(即一个向量)语法为:</p>
 <figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">[A,B,C,...]</span><br></pre></td></tr></table></figure>
 <h2 id="创建一维数组"><a href="#创建一维数组" class="headerlink" title="创建一维数组"></a>创建一维数组</h2><figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
