@@ -3,7 +3,7 @@
   <entry>
     <title>web攻防</title>
     <url>/2022/08/15/web%E6%94%BB%E9%98%B2/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>每天几道题</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>实例</p>
 <span id="more"></span>
 <h2 id="第一题——baby-web"><a href="#第一题——baby-web" class="headerlink" title="第一题——baby_web"></a>第一题——baby_web</h2><p>掌握web相应包头部常见参数</p>
 <p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815101339517.png" alt="题目"></p>
@@ -28,10 +28,9 @@
 <p>方法二：sqlmap一把梭<br>先查数据库名<img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115419759.png" alt="image-20220815115419759"><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115447014.png" alt><br>查表名<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115506861.png" alt><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115521175.png" alt><br>输出表中所有字段<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115600014.png" alt><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115612711.png" alt><br>输出pw字段内容<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115639962.png" alt><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115652969.png" alt><br>得到flag</p>
 <p>直接一把梭<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115726708.png" alt><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115746924.png" alt></p>
 ]]></content>
-      <tags>
-        <tag>网络攻防</tag>
-        <tag>实例</tag>
-      </tags>
+      <categories>
+        <category>web攻防</category>
+      </categories>
   </entry>
   <entry>
     <title>函数库</title>
@@ -43,8 +42,11 @@
 <h3 id="strrpos"><a href="#strrpos" class="headerlink" title="strrpos"></a>strrpos</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">strrpos</span>(<span class="keyword">string</span>,find,start)</span><br><span class="line"><span class="number">1</span>.<span class="keyword">string</span>：必需。规定被搜索的字符串。</span><br><span class="line"><span class="number">2</span>.find：必需。规定要查找的字符。</span><br><span class="line"><span class="number">3</span>.start：可选。规定在何处开始搜索。</span><br><span class="line">    </span><br><span class="line">相关函数：</span><br><span class="line">    <span class="title function_ invoke__">stripos</span>()-查找字符串在另一字符串中第一次出现的位置（不区分大小写）</span><br><span class="line">    <span class="title function_ invoke__">strpos</span>()-查找字符串在另一字符串中第一次出现的位置（区分大小写）</span><br><span class="line">    <span class="title function_ invoke__">strripos</span>()-查找字符串在另一字符串中最后一次出现的位置（不区分大小写）</span><br></pre></td></tr></table></figure>
 <h3 id="substr"><a href="#substr" class="headerlink" title="substr"></a>substr</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">格式<span class="number">1</span>：<span class="title function_ invoke__">substr</span>(<span class="keyword">string</span>,<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span><br><span class="line">    <span class="number">1</span>、<span class="keyword">string</span> 需要截取的字符串 </span><br><span class="line">    <span class="number">2</span>、a 截取字符串的开始位置（注：当a等于<span class="number">0</span>或<span class="number">1</span>时，都是从第一位开始截取）</span><br><span class="line">    <span class="number">3</span>、b 要截取的字符串的长度</span><br><span class="line"></span><br><span class="line">格式<span class="number">2</span>：<span class="title function_ invoke__">substr</span>(<span class="keyword">string</span>,<span class="keyword">int</span> a)</span><br><span class="line">    <span class="number">1</span>、<span class="keyword">string</span> 需要截取的字符串</span><br><span class="line">    <span class="number">2</span>、a 可以理解为从第a个字符开始截取后面所有的字符串。</span><br><span class="line"></span><br><span class="line">实例：</span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali&#x27;</span>,<span class="number">1</span>,<span class="number">3</span>); <span class="comment">//返回结果：aka</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali&#x27;</span>,<span class="number">2</span>,<span class="number">3</span>); <span class="comment">//返回结果：kal，截取从“e”开始3个字符</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali&#x27;</span>,<span class="number">0</span>,<span class="number">100</span>); <span class="comment">//返回结果：akali，100虽然超出预处理的字符串最长度，但不会影响返回结果，系统按预处理字符串最大数量返回。</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali !&#x27;</span>,<span class="number">5</span>,<span class="number">3</span>); <span class="comment">//返回结果：i ! (中间的空格也算一个字符串)</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali&#x27;</span>,-<span class="number">1</span>,<span class="number">3</span>); <span class="comment">//返回结果：i （从后面倒数第一位开始往后取1个字符，而不是3个。）</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali&#x27;</span>,-<span class="number">2</span>,<span class="number">3</span>); <span class="comment">//返回结果：li （从后面倒数第二位开始往后取2个字符，而不是3个。原因：下面红色 第三个注解）</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali&#x27;</span>,-<span class="number">3</span>,<span class="number">3</span>); <span class="comment">//返回结果：ali （从后面倒数第三位开始往后取3个字符）</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali&#x27;</span>,-<span class="number">4</span>,<span class="number">3</span>); <span class="comment">//返回结果：ali （从后面倒数第四位开始往后取3个字符）</span></span><br><span class="line"></span><br><span class="line">注：最后几个奇奇怪怪的原因是要满足下面规则：</span><br><span class="line">|a| ≤ b,取a的个数；当 |a| ≥ b时，才取b的个数，由a决定截取位置）</span><br><span class="line"></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27; akali&#x27;</span>,<span class="number">1</span>);  <span class="comment">//返回结果： akali，截取所有字符</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27; akali&#x27;</span>,<span class="number">2</span>);  <span class="comment">//返回结果：kali，截取从“k”开始之后所有字符</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27; akali&#x27;</span>,<span class="number">3</span>);  <span class="comment">//返回结果：ali，截取从“a”开始之后所有字符</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27; akali&#x27;</span>,-<span class="number">1</span>);  <span class="comment">//返回结果：i，从最后一个“i”开始，反向截取1个字符</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27; akali&#x27;</span>,-<span class="number">2</span>);  <span class="comment">//返回结果：li，从最后一个“i”开始，反向截取2个字符</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27; akali&#x27;</span>,-<span class="number">3</span>);  <span class="comment">//返回结果：ali，从最后一个“i”开始，反向截取3个字符 </span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 ]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
       <tags>
-        <tag>字典</tag>
+        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -606,8 +608,320 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <h4 id="如何通过path矩阵寻找最短路径"><a href="#如何通过path矩阵寻找最短路径" class="headerlink" title="如何通过path矩阵寻找最短路径"></a>如何通过path矩阵寻找最短路径</h4><h4 id><a href="#" class="headerlink" title></a><img src="/2022/08/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%80%BB%E7%BA%B2/image-20220822165717520-166116762115213.png" alt></h4><p>弗洛伊德算法可以用于负权值带权图，但无法解决带有负权回路的图，这种图可能没有最短路径，如：<img src="/2022/08/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%80%BB%E7%BA%B2/image-20220822170209802-166116762115215.png" alt></p>
 <p>总结</p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>科学杂谈</title>
+    <url>/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>我们都是阴沟里的虫子，但总得有人仰望星空。</p>
+<span id="more"></span>
+<h2 id="引力弹弓"><a href="#引力弹弓" class="headerlink" title="引力弹弓"></a>引力弹弓</h2><p><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/image-20230221093354438.png" alt="image-20230221093354438" style="zoom:50%;"></p>
+<p><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/image-20230221100839912.png" alt="image-20230221100839912" style="zoom:50%;"><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/image-20230221100926302.png" alt="image-20230221100926302" style="zoom:50%;"><br>上图是引力弹弓加速，如果v’向左，即引力弹弓减速。<br><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/image-20230221103153122.png" alt="image-20230221103153122" style="zoom: 67%;"><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/image-20230221104306816.png" alt="image-20230221104306816"><br><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/image-20230221104750769.png" alt="image-20230221104750769"></p>
+<p><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/image-20230221110540911.png" alt="image-20230221110540911"><br>飞行器速度：V∞-= V∞+，飞行器改变角度：δ，行星速度：Vp，飞入行星之前的速度：V-，飞出行星之后的速度：V+</p>
+<p>引力弹弓常使用于超过宇宙速度，故飞行器从飞入到飞出的速度大小是没有变化的，只不过因为行星引力的影响，飞行器相对于行星的飞行速度方向发生了变化，但是对于太阳来说速度发生了很大的变化。</p>
+<p>飞行器获得的线性动量在数值上等同于行星失去的线性动量，不过由于行星的巨大质量，使得这种损失对其速度的影响可以忽略不计，所以引力弹弓并不违背能量守恒和动量守恒定律。</p>
+<p>规律1：近距离掠过行星时，轨迹改变更显著<br>规律2：沿行星运动的方向脱离的飞行器速度最大，与行星运行速度相反脱离的速度最小</p>
+<p>第一艘借助引力助推到达另一颗行星(水星)的探测器是水手10号。</p>
+<p>上世纪70年代出现每176年出现的木星、土星、天王星、海王星向太阳系同一侧靠拢的情况，NASA提出“壮丽旅程”(Grand Tour)计划，旅行者一号、二号依次拜访太阳系四颗巨态气行星。<br>旅行者一号拍下了“暗淡蓝点”<br><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/3-1581740691.jpeg" alt="“暗淡蓝点”拍摄30周年"></p>
+<h2 id="洛希极限"><a href="#洛希极限" class="headerlink" title="洛希极限"></a>洛希极限</h2><p>美丽的土星环    图：NASA</p>
+<p><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/image-20230221112959112.png" alt="image-20230221112959112"></p>
+<p>洛希极限是一个天体自身的重力与第二个天体造成的==潮汐力==相等时二者的距离。如果二者之间的距离小于这个洛希极限值，那么较小的这个天体就会被倾向于碎散或者被撕裂，继而成为母天体的环。</p>
+<h3 id="潮汐力"><a href="#潮汐力" class="headerlink" title="潮汐力"></a>潮汐力</h3><p>根据广义相对论，行星之间互相的引力作用会随着距离的缩短而增大，也就是二者离得越近引力强度越大。那么自然，天体之间的相对面要比背对面受到的引力作用大一些（想象一下，天体a之于天体b的最近端和最远端两个点距离的差，就是过这两点的天体的“直径”）。这时远近两端受到的引力差就被称作“潮汐力”，也叫“差动力”。地球上的潮汐现象就是受到地月系统之间的潮汐力造成的。</p>
+<p>另外还要考虑天体是流体还是刚体，还有他们的密度体积也与之相关。刚体的洛希极限要近点，流体远些。</p>
+<p><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/image-20230221113616158.png" alt="image-20230221113616158"></p>
+<p>注：洛希极限值以内的天体不一定会被撕裂，需要考虑其他引力因素以及体积、成分、内部构造、物质和密度的分布等等，如 木卫十六和土卫十八，均在洛希极限内，但未被撕裂。</p>
+<h3 id="希尔球"><a href="#希尔球" class="headerlink" title="希尔球"></a>希尔球</h3><p>希尔球，简单的说就是一颗天体的引力控制范围，也是能够捕获外来天体的一个范围。</p>
+<p>希尔球是美国天文学家乔治·威廉·希尔以法国天文学家爱德华·洛希的工作为基础所定义的，所以它有时也被称为洛希球。</p>
+<p>太阳系已知所有天体的卫星包括行星在内都位于母体星的希尔球内，如地球在太阳的希尔球内，月亮在地球的希尔球内。流浪计划中的逃离太阳系，也就是要冲出太阳的希尔球才行。</p>
+<p>所以利用引力弹弓需要距离介于洛希极限与希尔球范围之间的距离。</p>
+<h3 id="刚体洛希极限"><a href="#刚体洛希极限" class="headerlink" title="刚体洛希极限"></a>刚体洛希极限</h3><p><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/image-20230221093956002.png" alt="image-20230221093956002" style="zoom: 33%;"></p>
+<p><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/image-20230221114723779.png" alt="image-20230221114723779"></p>
+<p>u会受到两种力：卫星对u的引力和主星对u的潮汐力。卫星对u的引力可通过万有引力定律表示。<script type="math/tex">F_G=\frac{Gmu}{r^2}</script></p>
+<p>潮汐力是靠近主要卫星边缘的引力的差异导致的：<script type="math/tex">F_T=\frac{GMu}{(d-r)^2}-\frac{GMu}{d^2}</script></p>
+<p>由于一般情况下：r&lt;&lt;R，R&lt;d，分母可以近似调整一下，得到下面的式子。</p>
+<script type="math/tex; mode=display">F_T=\frac{2GMur}{d^3}</script><p>当引力和潮汐力相互平衡时，达到了洛希极限。<script type="math/tex">F_G=F_T</script></p>
+<p>因此：<script type="math/tex">\frac{Gmu}{r^2}=\frac{2GMur}{d^3}</script></p>
+<script type="math/tex; mode=display">d = r(2\frac{M}{m})^{\frac{1}{3}}</script><p>由于质量可以改成密度与体积的乘积。上面的式子还可以进行调整。</p>
+<script type="math/tex; mode=display">
+M=\frac{4\pi\rho _MR^3}{3}\quad m=\frac{4\pi\rho _mr^3}{3}\\
+d=r(\frac{2\rho _MR^3}{\rho _mr^3})^{\frac{1}{3}}</script><p>消去共同因数后可以得到简易的刚体洛希极限表达式。</p>
+<script type="math/tex; mode=display">
+d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/image-20230221120416112.png" alt="image-20230221120416112"></p>
+<h3 id="流体洛希极限"><a href="#流体洛希极限" class="headerlink" title="流体洛希极限"></a>流体洛希极限</h3><p><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/image-20230221114235337.png" alt="image-20230221114235337"></p>
+<h2 id="太阳系"><a href="#太阳系" class="headerlink" title="太阳系"></a>太阳系</h2><p>以太阳为中心和所有受到太阳约束天体的集合体</p>
+<p>地球到太阳的平均距离为149,597,900km，这个距离就叫做一个天文单位，符号AU<br><img src="/2023/02/21/%E7%A7%91%E5%AD%A6%E6%9D%82%E8%B0%88/image-20230221145311639.png" alt="image-20230221145311639"></p>
+<p>海王星和太阳的平均距离大约是三十个天文单位。<br>柯伊博带：在海王星轨道外黄道面附近天体密集的中空圆盘状区域。<br>距离太阳30-500天文单位区域被认为是短周期彗星比如哈雷彗星的来源。<br>奥尔特云：目前认为的太阳系边界，一个假设包围着太阳系的球体云团，距离太阳五万到十万个天文单位，约为一个光年。</p>
+<h2 id="赫罗图"><a href="#赫罗图" class="headerlink" title="赫罗图"></a>赫罗图</h2><p><img src="http://img.mp.itc.cn/upload/20161206/5ad733c05b9d4aa68464e797051ccc2d_th.jpg" alt="img"></p>
+<p><img src="http://img.mp.itc.cn/upload/20161206/c13e32ec78d34864bd788ddc840d3309_th.jpg" alt="img"></p>
+<p>主星序：左上到右下的90%的恒星都在此类</p>
+<h3 id="引力坍缩"><a href="#引力坍缩" class="headerlink" title="引力坍缩"></a>引力坍缩</h3><p>恒星诞生于星际尘埃和气体构成的巨型星云。星云中的粒子通常状态下以高速随机运动，彼此间的引力不足以将他们压缩到一起，但当条件允许时，比如附近的超新星爆发或发生激变事件，这些星云被足够强的压力压缩，以致引力能克服粒子的运动向一处靠拢，于是星云开始引力坍缩的过程。</p>
+<h3 id="巨分子云"><a href="#巨分子云" class="headerlink" title="巨分子云"></a>巨分子云</h3><p>由于角动量守恒的制约，从原先庞大的星云中分离出来更小的更致密的星云，这个过程称为==引力凝聚==。</p>
+<h3 id="原恒星"><a href="#原恒星" class="headerlink" title="原恒星"></a>原恒星</h3><p>同时坍缩的能量转换为内能，在内部产生向外的辐射压来平衡向内的引力来逐步减缓并终止引力坍缩。</p>
+<p>当辐射压与引力平衡时，就会坍缩成具有一定密度的球体。</p>
+<p>原恒星形成之后会落在赫罗图的主星序的特定点上，也就是步入幼年，演化过程只和质量和元素丰度有关。</p>
+<p>当氢燃烧完后，恒星会停止核反应留下一个氦核，恒星的外壳开始引力坍缩，核心的压力和温度就会升高。</p>
+<p>如果恒星质量小于0.5个太阳质量，就不能产生氦聚变所需温度，会逐渐冷却变成一颗氦白矮星。0.5-2.3倍太阳质量的恒星，核心温度会达到一亿开以上，核心会开始进行氦聚变，外层不断膨胀，变成一颗红巨星。</p>
+<h3 id="氦闪"><a href="#氦闪" class="headerlink" title="氦闪"></a>氦闪</h3><p>太阳在红巨星状态下，氦核受到外部的压强大到一定程度，电磁力不足以抵抗引力，核心的电子被压成==简并态==，以简并压力与引力抗衡，而不是以热压力阻挡引力坍缩。处于简并态的氦的体积不会随着温度的升高而膨胀，因此氦核的温度就会持续升高，这会进一步提升氦聚变的速率和反应区域，但不会增压力，所以核心就不会稳定的扩张和冷却，由此引发热失控的反应会使恒星释放出大量能量，直到增加的温度可以忽略掉简并压力，使热压力再度掌握优势，这个过程就是氦闪。</p>
+<p>理想气体的物态方程中，压强p与温度T和体积v都有关系，而在简并气体方程中，p只与v有关，与t无关。在氦闪发生前一段时间，由于核心放出的能量越来越少，在引力作用下，v越来越小至简并态同时温度继续上升。但是此时温度还不够发生氦聚变，于是在引力作用下v继续减小 p逐渐增加。如果在达到氦聚变温度前内外压力平衡，就会形成白矮星。如果在到达氦仍然没有达到平衡，就会发生氦聚变。此时由于核心处于简并态，氦发生的聚变能量不会使核心体积增加只会使温度上升，但是氦聚变的反应速率又和温度成正比，而且处于简并态的核心的热容量几乎为零，热传导和热容量成反比。于是就会发生以下循环:氦原子聚变产生热量→生成的热量无法产生体积功全部转化为内能，使温度升高→极高的导热率使核心温度迅速上升加速氦原子聚变→聚变产生热量。这个正反馈循环能在短时间产生巨大能量直至核心回到非简并态，最后将产生的能量抛出去，这就是氦闪。</p>
+<h3 id="简并态"><a href="#简并态" class="headerlink" title="简并态"></a>简并态</h3><p>电子简并态就是原子中电子全部被压缩到低能级轨道，可以理解成电子都在原子核附近了，原子的体积会大幅度缩小，但是物质结构还是正常的，当核心都压缩到电子简并时，会将外壳物质全部抛出，看起来就像爆炸，也就是所谓的闪。如果质量再大一点，电子简并压力已经不够对抗万有引力，电子会被压缩到质子中成为中子，物质结构已经完全破坏，只剩下单纯的一堆中子，体积会超大幅度压缩，最后就是成为中子星，如果中子简并压都无法克服万有引力，大概率就是成为黑洞了</p>
+<h3 id="太阳的演化"><a href="#太阳的演化" class="headerlink" title="太阳的演化"></a>太阳的演化</h3><p>红巨星外壳向外膨胀，核心向内压缩，产生将氦聚变成碳的核反应，聚变会重新产生能量来延缓死亡过程，过程大概持续十亿年。</p>
+<p>因为氦的燃烧对温度极其敏感很不稳定，巨大的波动会使得外壳获得足够的动能脱离恒星成为行星状星云，行星状星云中心留下的核心会逐渐冷却，成为小而致密的碳氧白矮星。</p>
+<h3 id="钱德拉塞卡极限"><a href="#钱德拉塞卡极限" class="headerlink" title="钱德拉塞卡极限"></a>钱德拉塞卡极限</h3><p>2.3-8倍太阳质量恒星演化过程与太阳类似，不同的是如果最后的白矮星通过引力吸取周围的物质到达太阳质量的1.4倍，会发生超新星爆发，这个临界值被称作钱德拉塞卡极限。</p>
+<p>这种类型的超新星爆发通常出现在双星系统中。</p>
+<h3 id="大质量恒星"><a href="#大质量恒星" class="headerlink" title="大质量恒星"></a>大质量恒星</h3><p>大于等于8倍太阳质量的恒星在膨胀成超巨星之后，核心继续被压力压缩，温度和密度上升就会继续聚变反应，会生成越来越重的元素，生产的能量会延缓坍缩过程，当聚变逐步到达元素周期表的下层，就是硅聚变成铁，但是铁不能据徐释放能量，相反铁会发生==光致分解==这个过程会吸收大量能量，这会造成没有能量来对抗引力，核心几乎瞬间坍缩，会在几分之一秒内造成一次剧烈的超新星爆发，和轻与铁的元素同时被抛出的中微子形成一个冲击波，在被抛出的物质吸收后形成一些比铁重的放射性元素，重元素中一部分通过这种方式形成，其他可能通过宇宙大爆炸形成。</p>
+<p>8-30个太阳质量的恒星在超新星爆发后会形成一颗中子星</p>
+<p>超过30个太阳质量的恒星在超新星爆发后就会形成黑洞</p>
+]]></content>
+      <categories>
+        <category>科学</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
+        <tag>爱好</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>julia、python配套工具——jupyter</title>
+    <url>/2023/02/17/jupyter/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>使用于python、julia的一个实用桌面工具</p>
+<span id="more"></span>
+<h2 id="安装Anaconda3"><a href="#安装Anaconda3" class="headerlink" title="安装Anaconda3"></a>安装Anaconda3</h2><p>从清华tuna镜像网站<a href="https://mirror.tuna.tsinghua.edu.cn/help/anaconda/下载Anaconda3最新版安装程序">https://mirror.tuna.tsinghua.edu.cn/help/anaconda/下载Anaconda3最新版安装程序</a></p>
+<p>在Anaconda命令行中设置从tuna镜像更新anaconda组成部分：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda<span class="built_in"> config </span>--<span class="built_in">set</span> show_channel_urls <span class="literal">yes</span></span><br></pre></td></tr></table></figure>
+<p>这会在<code>C:\Users\user</code>(其中user要替换成自己的用户名)生成.condarc文件，然后修改其内容为：</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">channels:</span><br><span class="line">  - defaults</span><br><span class="line">show_channel_urls: true</span><br><span class="line">default_channels:</span><br><span class="line">  - https:<span class="regexp">//mi</span>rrors.tuna.tsinghua.edu.cn<span class="regexp">/anaconda/</span>pkgs/main</span><br><span class="line">  - https:<span class="regexp">//mi</span>rrors.tuna.tsinghua.edu.cn<span class="regexp">/anaconda/</span>pkgs/r</span><br><span class="line">  - https:<span class="regexp">//mi</span>rrors.tuna.tsinghua.edu.cn<span class="regexp">/anaconda/</span>pkgs/msys2</span><br><span class="line">custom_channels:</span><br><span class="line">  conda-forge: https:<span class="regexp">//mi</span>rrors.tuna.tsinghua.edu.cn<span class="regexp">/anaconda/</span>cloud</span><br><span class="line">  msys2: https:<span class="regexp">//mi</span>rrors.tuna.tsinghua.edu.cn<span class="regexp">/anaconda/</span>cloud</span><br><span class="line">  bioconda: https:<span class="regexp">//mi</span>rrors.tuna.tsinghua.edu.cn<span class="regexp">/anaconda/</span>cloud</span><br><span class="line">  menpo: https:<span class="regexp">//mi</span>rrors.tuna.tsinghua.edu.cn<span class="regexp">/anaconda/</span>cloud</span><br><span class="line">  pytorch: https:<span class="regexp">//mi</span>rrors.tuna.tsinghua.edu.cn<span class="regexp">/anaconda/</span>cloud</span><br><span class="line">  simpleitk: https:<span class="regexp">//mi</span>rrors.tuna.tsinghua.edu.cn<span class="regexp">/anaconda/</span>cloud</span><br></pre></td></tr></table></figure>
+<h2 id="Jupter安装和使用"><a href="#Jupter安装和使用" class="headerlink" title="Jupter安装和使用"></a>Jupter安装和使用</h2><p>从Anaconda3程序组中启动jupyter就可以运行python语言笔记本</p>
+<h2 id="安装julia命令行程序"><a href="#安装julia命令行程序" class="headerlink" title="安装julia命令行程序"></a>安装julia命令行程序</h2><p>在anaconda命令行中使用where命令找到python和jupyter软件的安装位置<br><img src="/2023/02/17/jupyter/image-20230217184232746.png" alt="image-20230217184232746"></p>
+<p>在Julia中，先设置Python和Jupyter的位置，然后安装和构建IJulia：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="type">ENV</span>[<span class="string">&quot;PYTHON&quot;</span>] <span class="operator">=</span> <span class="string">&quot;C:<span class="subst">\\</span>Anaconda3<span class="subst">\\</span>python.exe&quot;</span></span><br><span class="line"><span class="type">ENV</span>[<span class="string">&quot;JUPYTER&quot;</span>] <span class="operator">=</span> <span class="string">&quot;C:<span class="subst">\\</span>Anaconda3<span class="subst">\\</span>Scripts<span class="subst">\\</span>jupyter.exe&quot;</span></span><br><span class="line"><span class="keyword">import</span> Pkg</span><br><span class="line"><span class="type">Pkg</span>.add(<span class="string">&quot;IJulia&quot;</span>)</span><br><span class="line"></span><br><span class="line">如果出错，可以运行</span><br><span class="line"><span class="type">Pkg</span>.build(<span class="string">&quot;IJulia&quot;</span>)</span><br><span class="line"></span><br><span class="line">启动jupyter命令</span><br><span class="line">jupyter lab</span><br></pre></td></tr></table></figure>
+<p>lab界面与tree界面</p>
+<p><img src="/2023/02/17/jupyter/image-20230217184543462.png" alt="image-20230217184543462"></p>
+<p><img src="/2023/02/17/jupyter/image-20230217185054567.png" alt="image-20230217185054567"></p>
+<h2 id="Jupyter用法"><a href="#Jupyter用法" class="headerlink" title="Jupyter用法"></a>Jupyter用法</h2><h3 id="命令行模式下用法"><a href="#命令行模式下用法" class="headerlink" title="命令行模式下用法"></a>命令行模式下用法</h3><p>(1) 查看jupyter notebook的相关帮助</p>
+<ul>
+<li>jupyter notebook —help</li>
+<li>jupyter notebook —help-all (更详细的信息)</li>
+<li>jupyter notebook -h</li>
+</ul>
+<p>(2) 常用子命令——subcommand</p>
+<ul>
+<li>list:列出当前的所打开的jupyter notebook的一些信息<br><img src="/2023/02/17/jupyter/image-20230217190110355.png" alt="image-20230217190110355"></li>
+<li>stop:关闭所给定的端口号的那个jupyter<br><img src="/2023/02/17/jupyter/image-20230217190224836.png" alt="image-20230217190224836"><br><img src="/2023/02/17/jupyter/image-20230217190257935.png" alt="image-20230217190257935"><br>可以看到页面已经报错了</li>
+<li>password:给某一个打开的jupyter notebook服务设置密码</li>
+</ul>
+<p>(3) jupyter notebook命令的常用选项</p>
+<ul>
+<li><p>jupyter notebook —help-all 查看jupyter命令的详细信息： </p>
+</li>
+<li><p>—generate-config  产生默认的配置文件()这个是重点，后面会讲到）<br><img src="/2023/02/17/jupyter/image-20230217190922411.png" alt="image-20230217190922411"></p>
+<p><img src="/2023/02/17/jupyter/image-20230217190936316.png" alt="image-20230217190936316"></p>
+</li>
+<li><p>—no-browser 启动jupyter notebook之后不打开浏览器（默认情况下是会打开一个浏览器界面的）<br><img src="/2023/02/17/jupyter/image-20230217191206740.png" alt="image-20230217191206740"></p>
+</li>
+<li><p>—pylab 在jupyter notebook里面集成，也可以在jupyter notebook里面使用</p>
+<pre><code>      %pylab 或者是%matplotlib魔术命令（这是最常用的，后面也会讲到）
+</code></pre></li>
+<li><p>—config=<Unicode>  制定一个完全路径的配置文件名称，关于配置文件后面会详解，默认是default，即系统指定的默认配置文件</Unicode></p>
+</li>
+<li><p>—ip=<Unicode>  默认是: ‘localhost’，从前面的现实中也可以看出来，表示的是notebook服务器会监听的IP地址，我们也可以手动指定<br>—port=<Int>  指定jupyter notebook打开浏览器的端口号，默认是: 8888，也可以手动输入</Int></Unicode></p>
+</li>
+<li><p>—notebook-dir=<Unicode> 默认使用默认的目录，表示的是notebook和kernels的目录</Unicode></p>
+</li>
+<li><p>—browser=<Unicode> 还可以指定某一个特定的浏览器打开，默认使用系统默认的浏览器打开，是可以自己选定浏览器的。</Unicode></p>
+</li>
+</ul>
+<h3 id="更改配置文件"><a href="#更改配置文件" class="headerlink" title="更改配置文件"></a>更改配置文件</h3><p>在配置文件中此位置更改笔记本目录<img src="/2023/02/17/jupyter/image-20230217191710192.png" alt="image-20230217191710192"><br>可以看到：Serving notebooks from local directory: C:\julia_work<br><img src="/2023/02/17/jupyter/image-20230217191908628.png" alt="image-20230217191908628"></p>
+<h3 id="可视化界面的使用"><a href="#可视化界面的使用" class="headerlink" title="可视化界面的使用"></a>可视化界面的使用</h3><p><img src="/2023/02/17/jupyter/image-20230217192103988.png" alt="image-20230217192103988"></p>
+<p>julia，表示julia kernel<br>python3，表示python3 kernel<br>text file，表示新建一个文本文件<br>folder，表示新建一个文件夹<br>terminal，表示在浏览器中新建一个用户终端</p>
+<h3 id="文件类型的转换"><a href="#文件类型的转换" class="headerlink" title="文件类型的转换"></a>文件类型的转换</h3><p>test.ipynb<br><img src="/2023/02/17/jupyter/image-20230217220148922.png" alt="image-20230217220148922"><br>转换为docx<br><img src="/2023/02/17/jupyter/image-20230217215956130.png" alt="image-20230217215956130"><br><img src="/2023/02/17/jupyter/image-20230217220023831.png" alt="image-20230217220023831"><br>转换为html<br><img src="/2023/02/17/jupyter/image-20230217220048227.png" alt="image-20230217220048227"><br><img src="/2023/02/17/jupyter/image-20230217215844605.png" alt="image-20230217215844605" style="zoom:50%;"></p>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>transactional_node</title>
+    <url>/2023/02/07/transactional-node/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p><img src="/2023/02/07/transactional-node/image-20230224194527625.png" alt="image-20230224194527625"></p>
+<span id="more"></span>
+<p>要获得成熟的加密货币，我们区块链中的数据必须是<em>交易</em>。每笔交易都将硬币的所有权从一个私钥转移到另一个私钥。交易被收集在每个区块中并<em>开采</em>，从而发展区块链;事实上，一个区块越老，它的确定性就越高——它更有可能成为事实上的区块链的一部分。在任何时候，矿工都在忙于挖掘包含不同交易的略有不同的区块——这是一场寻找区块的竞赛——当矿工找到一个区块时，他们广播它，其余的矿工放弃他们当前的区块（他们已经输掉了比赛）并继续下一个区块。这些“丢弃”的块通常称为孤立块。</p>
+<h3 id="The-role-of-a-miner"><a href="#The-role-of-a-miner" class="headerlink" title="The role of a miner"></a>The role of a miner</h3><p>矿工的作用是通过为区块找到合适的哈希来生成新的硬币。在挖矿时，矿工在一个池中收集传入的交易——在比特币中称为内存池——等待包含在后续区块中。如果交易太多而无法填充一个区块，那么矿工会选择费用最高的交易来增加利润。在2017年加密货币繁荣期间，由于备份了多少笔交易，比特币交易的价格超过了40美元。扩展比特币的主题通常包括内存池和交易费用，最值得注意的是区块大小的问题：我们应该在一个区块中存储多少笔交易？在比特币中，限额为1兆字节，平均约为1700笔交易。</p>
+<h3 id="如何实施交易"><a href="#如何实施交易" class="headerlink" title="如何实施交易"></a>如何实施交易</h3><p>对funcoin节点进行一些更改;具体来说，必须弄清楚交易如何在网络中传播。p2p网络的结构方式对于加密货币的可靠性至关重要。比特币被认为是一个“推送”网络：节点不是向对等方查询新交易，而是在收到新交易时将新交易<em>推送</em>给所有对等方。粗略地说，当一个新节点加入网络时，它应该会产生<em>一种八卦</em>效应，让对等节点的对等节点了解它的存在，并可以可靠地向其发送未来的交易。</p>
+<p>事务的数据结构</p>
+<ol>
+<li>发件人的公钥</li>
+<li>收件人的公钥</li>
+<li>转账金额</li>
+<li>广告费用</li>
+</ol>
+<p><img src="/2023/02/07/transactional-node/image-20230207174409374.png" alt="image-20230207174409374"></p>
+<p>为了发送或接收funcoins，我们需要生成一个钱包——一个公钥-私钥对。要向Beatrix发送funcoins，Aldo必须创建一个包含他和Beatrix的<strong>公钥</strong>以及要发送的金额的交易。然后使用 Aldo 的<strong>私钥</strong>对交易进行签名。</p>
+<p>网络中的任何对等方都可以通过检查 Aldo 的公钥来验证交易的真实性。如果交易通过验证，那么当矿工包含它时，它将被添加到区块链中。</p>
+<p>构建节点所需的所有原子单元：</p>
+<ul>
+<li>用于维护不可变数据链的区块链</li>
+<li>允许客户端来回连接和发送数据的服务器</li>
+<li>一种用于创建新funcoin的挖掘算法</li>
+<li>密码学基础知识，使我们能够验证和构建交易</li>
+</ul>
+<p>相关依赖作用</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>库</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Structlog</td>
+<td>日志记录库（优于print()语句）</td>
+</tr>
+<tr>
+<td>Colorama</td>
+<td>允许彩色输出（在日志记录中）</td>
+</tr>
+<tr>
+<td>Marshmallow</td>
+<td>验证数据结构，例如节点将发送和接收的JSON消息</td>
+</tr>
+<tr>
+<td>marshmallow-oneofschema</td>
+<td>允许marshmallow验证更复杂的数据结构</td>
+</tr>
+<tr>
+<td>Aiohttp</td>
+<td>异步HTTP客户端</td>
+</tr>
+<tr>
+<td>Pynacl</td>
+<td>签署和验证交易</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>创建文件结构</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">PS C:\Users\榎鸢\Desktop\funcoin&gt; touch node<span class="selector-class">.py</span></span><br><span class="line">Touching node<span class="selector-class">.py</span></span><br><span class="line">PS C:\Users\榎鸢\Desktop\funcoin&gt; mkdir funcoin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\Users\榎鸢\Desktop\funcoin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line">----                 -------------         ------ ----</span><br><span class="line">d-----          <span class="number">2023</span>/<span class="number">2</span>/<span class="number">7</span>     <span class="number">18</span>:<span class="number">11</span>                funcoin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PS C:\Users\榎鸢\Desktop\funcoin&gt; cd funcoin</span><br><span class="line">PS C:\Users\榎鸢\Desktop\funcoin\funcoin&gt; touch __init__<span class="selector-class">.py</span></span><br><span class="line">Touching __init__<span class="selector-class">.py</span></span><br><span class="line">PS C:\Users\榎鸢\Desktop\funcoin\funcoin&gt; touch blockchain<span class="selector-class">.py</span></span><br><span class="line">Touching blockchain<span class="selector-class">.py</span></span><br><span class="line">PS C:\Users\榎鸢\Desktop\funcoin\funcoin&gt; touch connections<span class="selector-class">.py</span></span><br><span class="line">Touching connections<span class="selector-class">.py</span></span><br><span class="line">PS C:\Users\榎鸢\Desktop\funcoin\funcoin&gt; touch transactions<span class="selector-class">.py</span></span><br><span class="line">Touching transactions<span class="selector-class">.py</span></span><br><span class="line">PS C:\Users\榎鸢\Desktop\funcoin\funcoin&gt; touch server<span class="selector-class">.py</span></span><br><span class="line">Touching server<span class="selector-class">.py</span></span><br><span class="line">PS C:\Users\榎鸢\Desktop\funcoin\funcoin&gt; touch types<span class="selector-class">.py</span></span><br><span class="line">Touching types<span class="selector-class">.py</span></span><br><span class="line">PS C:\Users\榎鸢\Desktop\funcoin\funcoin&gt; touch messages<span class="selector-class">.py</span></span><br><span class="line">Touching messages<span class="selector-class">.py</span></span><br><span class="line">PS C:\Users\榎鸢\Desktop\funcoin\funcoin&gt; touch utils<span class="selector-class">.py</span></span><br><span class="line">Touching utils.py</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/07/transactional-node/image-20230207181758540.png" alt="image-20230207181758540"></p>
+<p>构建节点</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Blockchain</td>
+<td>容纳区块链类</td>
+</tr>
+<tr>
+<td>ConnectioPool</td>
+<td>处理对等方可能发送给我们的消息传播的逻辑。称之为P2PProtocol</td>
+</tr>
+<tr>
+<td>P2PProtocol</td>
+<td>处理与节点通信的活动连接”池“的逻辑</td>
+</tr>
+<tr>
+<td>Server</td>
+<td>基本TCP服务器所在的位置</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>node.py</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> funcoin.blockchain <span class="keyword">import</span> Blockchain</span><br><span class="line"><span class="keyword">from</span> funcoin.connections <span class="keyword">import</span> ConnectionPool</span><br><span class="line"><span class="keyword">from</span> funcoin.peers <span class="keyword">import</span> P2PProtocol</span><br><span class="line"><span class="keyword">from</span> funcoin.server <span class="keyword">import</span> Server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 实例化区块链和对等节点池</span></span><br><span class="line">blockchain = Blockchain()</span><br><span class="line">connection_pool = ConnectionPool()</span><br><span class="line"><span class="comment"># 实例化服务器并”附加“模块</span></span><br><span class="line">server = Server(blockchain,connection_pool,P2PProtocol)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="comment"># 启动服务器</span></span><br><span class="line">    <span class="keyword">await</span> server.listen()</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br></pre></td></tr></table></figure>
+<p>因为使用asyncio采用异步的方式而非线程，所以大大简化了并发问题：当使用线程时，程序员需要担心竞争条件（两个或多个线程竞争更新或接收某些内容）。这种方法的缺点时代码可能变得难以阅读和理解。</p>
+<p>代码中的入口点有一个函数mian()。典型的异步程序，它用于启动我们的服务器。</p>
+<h2 id="服务器模块"><a href="#服务器模块" class="headerlink" title="服务器模块"></a>服务器模块</h2><p>server.py</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">from</span> asyncio <span class="keyword">import</span> StreamReader,StreamWriter</span><br><span class="line"><span class="keyword">import</span> structlog</span><br><span class="line"><span class="keyword">from</span> marshmallow.exceptions <span class="keyword">import</span> MarshmallowError</span><br><span class="line"><span class="keyword">from</span> funcoin.messages <span class="keyword">import</span> BaseSchema</span><br><span class="line"><span class="keyword">from</span> funcoin.utils <span class="keyword">import</span> get_external_ip</span><br><span class="line"></span><br><span class="line">logger = structlog.getLogger() <span class="comment"># 1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Server</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,blockchain,connection_pool,p2p_protocol</span>):</span><br><span class="line">        self.blockchian = blockchain <span class="comment"># 2</span></span><br><span class="line">        self.connection_pool = connection_pool</span><br><span class="line">        self.p2p_protocol = p2p_protocol</span><br><span class="line">        self.external_ip = <span class="literal">None</span></span><br><span class="line">        self.external_port = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> (blockchain <span class="keyword">and</span> connection_pool <span class="keyword">and</span> p2p_protocol):</span><br><span class="line">            logger.error(<span class="string">&quot;&#x27;blockchain&#x27;,&#x27;connection_pool&#x27;,and&#x27;gossip_protocol&#x27; must all be instantiated&quot;</span>)</span><br><span class="line">            <span class="keyword">raise</span> Exception(<span class="string">&quot;Could not start&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">get_external_ip</span>(<span class="params">self</span>):</span><br><span class="line">        self.external_ip = <span class="keyword">await</span> get_external_ip() <span class="comment"># 3</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">handle_connection</span>(<span class="params">self,reader:StreamReader,writer:StreamWriter</span>):</span><br><span class="line">        <span class="comment"># 当收到新连接时调用此函数</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="comment"># 一直等待新数据到达</span></span><br><span class="line">                data = <span class="keyword">await</span> reader.readuntil(<span class="string">b&quot;\n&quot;</span>) <span class="comment"># 4</span></span><br><span class="line">                decoded_data = data.decode(<span class="string">&quot;utf8&quot;</span>).strip() <span class="comment"># 5</span></span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    message = BaseSchema().loads(decoded_data) <span class="comment"># 6</span></span><br><span class="line">                <span class="keyword">except</span> MarshmallowError:</span><br><span class="line">                    logger.info(<span class="string">&quot;Received unreadable message&quot;</span>,peer=writer)</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                </span><br><span class="line">                writer.address = message[<span class="string">&quot;meta&quot;</span>][<span class="string">&quot;address&quot;</span>]</span><br><span class="line"></span><br><span class="line">                self.connection_pool.add_peer(writer)</span><br><span class="line">                <span class="keyword">await</span> self.p2p_protocol.handle_message(message,writer) <span class="comment"># 7</span></span><br><span class="line">                <span class="keyword">await</span> writer.drain()</span><br><span class="line">                <span class="keyword">if</span> writer.is_closing():</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">except</span> (asyncio.exceptions.IncompleteReadError,ConnectionError):</span><br><span class="line">                <span class="comment"># 发生错误，脱离等待循环</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        writer.close()</span><br><span class="line">        <span class="keyword">await</span> writer.wait_closed()</span><br><span class="line">        self.connection_pool.remove_peer(writer) <span class="comment"># 8</span></span><br><span class="line">            </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">listen</span>(<span class="params">self,hostname=<span class="string">&quot;0.0.0.0&quot;</span>,port=<span class="number">8888</span></span>):</span><br><span class="line">        <span class="comment"># 这是生成服务器的监听方法</span></span><br><span class="line">        server = <span class="keyword">await</span> asyncio.start_server(self.handle_connection,hostname,port)</span><br><span class="line">        logger.info(<span class="string">f&quot;Server listening on <span class="subst">&#123;hostname&#125;</span>:<span class="subst">&#123;port&#125;</span>&quot;</span>)</span><br><span class="line">        self.external_ip = <span class="keyword">await</span> self.get_external_ip()</span><br><span class="line">        self.external_port = <span class="number">8888</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">with</span> server:</span><br><span class="line">            <span class="keyword">await</span> server.serve_forever()    </span><br></pre></td></tr></table></figure>
+<p>(1) 注意结构日志的导入和使用——使用它来替换print()语句。当运行整个节点时，他会为控制台提供高度可读的输出。eg：他会告诉您日志来自哪个文件</p>
+<p>(2) 将模块“引导”到服务器：服务器类（以及附加到它的任何内容）将始终可以通过self.blockchain访问我们的区块链。</p>
+<p>(3) 虽然我们还没有实现get_external_ip（），但它负责查找我们的外部IP地址。</p>
+<p>(4) 在这里，被设置为<em>永远</em>等待，直到一条消息发送给服务器，并以换行符（\n）结尾。这是一些潜在漏洞中的第一个，因为任何人都可以向我们的服务器发送永无止境的消息。</p>
+<p>(5) 我们尝试通过假设消息作为 UTF-8 格式的字符串发送给我们来解码消息。</p>
+<p>(6) 使用marshmallow来解析和验证来自对等方的传入消息</p>
+<p>(7) 一旦消息被成功解析，进一步的代码可以假设所有相关字段都存在，接下来通过p2p协议来确定怎么做</p>
+<h2 id="blockchain模块"><a href="#blockchain模块" class="headerlink" title="blockchain模块"></a>blockchain模块</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> sha256</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> structlog</span><br><span class="line"></span><br><span class="line">logger = structlog.getLogger(<span class="string">&quot;blockchain&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Blockchain</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span> (self):</span><br><span class="line">        self.chain = []</span><br><span class="line">        self.pending_transactions = []</span><br><span class="line">        self.target = <span class="string">&quot;0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff&quot;</span></span><br><span class="line"></span><br><span class="line">        logger.info(<span class="string">&quot;Creating genesis block&quot;</span>)</span><br><span class="line">        self.chain.append(self.new_block())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">new_block</span>(<span class="params">self</span>):</span><br><span class="line">        block = self.create_block(</span><br><span class="line">            height=<span class="built_in">len</span>(self.chain),</span><br><span class="line">            transactions=self.pending_transactions,</span><br><span class="line">            previous_hash=self.last_block[<span class="string">&quot;hash&quot;</span>] <span class="keyword">if</span> self.last_block <span class="keyword">else</span> <span class="literal">None</span>,</span><br><span class="line">            nonce=<span class="built_in">format</span>(random.getrandbits(<span class="number">64</span>), <span class="string">&quot;x&quot;</span>),</span><br><span class="line">            target=self.target,</span><br><span class="line">            timestamp=time(),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        self.pending_transactions = []</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> block</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">create_block</span>(<span class="params">height,transactions,previous_hash,nonce,target,timestamp=<span class="literal">None</span></span>):</span><br><span class="line">        block = &#123;</span><br><span class="line">            <span class="string">&quot;height&quot;</span>:height,</span><br><span class="line">            <span class="string">&quot;transactions&quot;</span>:transactions,</span><br><span class="line">            <span class="string">&quot;previous_hash&quot;</span>:previous_hash,</span><br><span class="line">            <span class="string">&quot;nonce&quot;</span>:nonce,</span><br><span class="line">            <span class="string">&quot;target&quot;</span>:target,</span><br><span class="line">            <span class="string">&quot;timestamp&quot;</span>:timestamp <span class="keyword">or</span> time()</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        block_string = json.dumps(block,sort_keys=<span class="literal">True</span>).encode()</span><br><span class="line">        block[<span class="string">&quot;hash&quot;</span>] = sha256(block_string).hexdigest()</span><br><span class="line">        <span class="keyword">return</span> block</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod    </span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">hash</span>(<span class="params">block</span>):</span><br><span class="line">        block_string = json.dumps(block,sort_keys=<span class="literal">True</span>).encode()</span><br><span class="line">        <span class="keyword">return</span> sha256(block_string).hexdigest()</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">last_block</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> self.chain[-<span class="number">1</span>] <span class="keyword">if</span> self.chain <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">valid_block</span>(<span class="params">self,block</span>):</span><br><span class="line">        <span class="keyword">return</span> block[<span class="string">&quot;hash&quot;</span>] &lt;self.target</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add_block</span>(<span class="params">self,block</span>):</span><br><span class="line">        self.chain.append(block)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">recalculate_target</span>(<span class="params">self,block_index</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Returns the number wu need to get below to mine a block</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> block_index % <span class="number">10</span> == <span class="number">0</span>:</span><br><span class="line">            expected_timespan = <span class="number">10</span>*<span class="number">10</span></span><br><span class="line"></span><br><span class="line">            actual_timespan = self.chain[-<span class="number">1</span>][<span class="string">&quot;timestamp&quot;</span>] - self.chain[-<span class="number">10</span>][<span class="string">&quot;timestamp&quot;</span>]</span><br><span class="line"></span><br><span class="line">            ratio = actual_timespan/expected_timespan</span><br><span class="line"></span><br><span class="line">            ratio = <span class="built_in">max</span>(<span class="number">0.25</span>,ratio)</span><br><span class="line">            ratio = <span class="built_in">min</span>(<span class="number">4.00</span>,ratio)</span><br><span class="line"></span><br><span class="line">            new_target = <span class="built_in">int</span>(self.target,<span class="number">16</span>) * ratio</span><br><span class="line">            </span><br><span class="line">            self.target = <span class="built_in">format</span>(math.floor(new_target),<span class="string">&quot;x&quot;</span>).zfill(<span class="number">64</span>)</span><br><span class="line">            logger.info(<span class="string">f&quot;Calculated new mining target:<span class="subst">&#123;self.target&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> self.target</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">get_blocks_after_timestamp</span>(<span class="params">self,timestamp</span>):</span><br><span class="line">        <span class="keyword">for</span> index,block <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.chain):</span><br><span class="line">            <span class="keyword">if</span> timestamp &lt; block[<span class="string">&#x27;timestamp&#x27;</span>]:</span><br><span class="line">                <span class="keyword">return</span> self.chain[index:]</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">mine_new_block</span>(<span class="params">self</span>):</span><br><span class="line">        self.recalculate_target(self.last_block[<span class="string">&quot;index&quot;</span>]+<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            new_block = self.new_block()</span><br><span class="line">            <span class="keyword">if</span> self.valid_block(new_block):</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">await</span> asyncio.sleep(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">            self.chain.append(new_block)</span><br><span class="line">            logger.info(<span class="string">&quot;Found a new block:&quot;</span>,new_block)</span><br></pre></td></tr></table></figure>
+<p>相比于blockchains文章（实现区块链的第二步），这里唯一的变化是添加了结构日志，将每个print()语句替换为一个有用的记录器。</p>
+<h2 id="connections模块"><a href="#connections模块" class="headerlink" title="connections模块"></a>connections模块</h2><p>实现八卦协议的所需要用到的模块，相比于第四步，主要变化是附加方法：<br>get_alive_peers()和get_address_string()</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ConnectionPool</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>) :</span><br><span class="line">        ...</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">broadcast</span>(<span class="params">self,message</span>):</span><br><span class="line">        <span class="comment"># 向所有连接的对等方广播消息的方法</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_address_string</span>(<span class="params">writer</span>):</span><br><span class="line">        <span class="comment"># 获取对等方的ip：端口（地址）</span></span><br><span class="line">        ...</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add_peer</span>(<span class="params">self,writer</span>):</span><br><span class="line">        <span class="comment"># 将对等节点添加到我们的连接池</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">remove_peer</span> (self,writer):</span><br><span class="line">        ...</span><br><span class="line">        <span class="comment"># 从连接池中删除对方</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_alive_peers</span>(<span class="params">self,count</span>):</span><br><span class="line">        ...</span><br><span class="line">        <span class="comment"># 返回一些连接的对等节点</span></span><br></pre></td></tr></table></figure>
+<p>其中大多数都已经在实现在networking（第四步）中，所以这里主要变化时附加方法。</p>
+<p>完整实现</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> structlog</span><br><span class="line"><span class="keyword">from</span> more_itertools <span class="keyword">import</span> take</span><br><span class="line"></span><br><span class="line">logger = structlog.getLogger(__name__)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConnectionPool</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>) :</span><br><span class="line">        self.connection_pool = <span class="built_in">dict</span>()		<span class="comment"># 1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">broadcast</span>(<span class="params">self,message</span>):</span><br><span class="line">        <span class="comment"># 向所有连接的对等方广播消息的方法</span></span><br><span class="line">        <span class="keyword">for</span> user <span class="keyword">in</span> self.connection_pool:</span><br><span class="line">            user.writer(<span class="string">f&quot;<span class="subst">&#123;message&#125;</span>&quot;</span>.encode())</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_address_string</span>(<span class="params">writer</span>):</span><br><span class="line">        <span class="comment"># 获取对等方的ip：端口（地址）</span></span><br><span class="line">        ip = writer.address[<span class="string">&quot;ip&quot;</span>]</span><br><span class="line">        port = writer.address[<span class="string">&quot;port&quot;</span>]</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;<span class="subst">&#123;ip&#125;</span>:<span class="subst">&#123;port&#125;</span>&quot;</span>		<span class="comment"># 2</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add_peer</span>(<span class="params">self,writer</span>):</span><br><span class="line">        <span class="comment"># 将对等节点添加到我们的连接池</span></span><br><span class="line">        address = self.get_address_string(writer)</span><br><span class="line">        self.connection_pool[address] = writer</span><br><span class="line">        logger.info(<span class="string">&quot;Added new peer to pool&quot;</span>,address = address)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">remove_peer</span> (self,writer):</span><br><span class="line">        address = self.get_address_string(writer)</span><br><span class="line">        self.connection_pool.pop(address)</span><br><span class="line">        logger.info(<span class="string">&quot;Removed peer from pool&quot;</span>,address = address)</span><br><span class="line">        <span class="comment"># 从连接池中删除对方</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_alive_peers</span>(<span class="params">self,count</span>):</span><br><span class="line">        <span class="keyword">return</span> take(count,self.connection_pool.items())<span class="comment"># 3</span></span><br><span class="line">        <span class="comment"># 返回一些连接的对等节点</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>使用字典dict，将地址映射到编写器（对应对等连接）</li>
+<li>映射中的地址字符串是对等方的ip：port组合，这是唯一标识连接的方式</li>
+<li>使用take函数从池中返回对等节点的计数</li>
+</ol>
+<h2 id="对等模块"><a href="#对等模块" class="headerlink" title="对等模块"></a>对等模块</h2><p>对等模块的构造</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">P2PError</span>(<span class="title class_ inherited__">Exception</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">P2Protocol</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,server</span>):</span><br><span class="line">        ...</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">send_message</span>(<span class="params">writer,message</span>):</span><br><span class="line">        <span class="comment"># 向特定对等方（编写器对象）发送信息</span></span><br><span class="line">        ...</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">handle_message</span>(<span class="params">self,message,writer</span>):</span><br><span class="line">        <span class="comment"># 处理服务器传递的传入信息</span></span><br><span class="line">        ...</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">handle_ping</span>(<span class="params">self,message,writer</span>):</span><br><span class="line">        <span class="comment"># 处理传入“ping”信息</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">handle_block</span>(<span class="params">self,message,writer</span>):</span><br><span class="line">        <span class="comment"># 处理传入的块信息</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">handle_transaction</span>(<span class="params">self,message,writer</span>):</span><br><span class="line">        <span class="comment"># 处理传入的交易信息</span></span><br><span class="line">        ...</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">handle_peers</span>(<span class="params">self,message,writer</span>):</span><br><span class="line">        <span class="comment"># 处理传入的对等方信息</span></span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
+<p>P2PError：需要一个错误类，可以用来“捕获”导入代码中的问题。</p>
+<p>定义消息的基本形式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">“meta<span class="string">&quot;:&#123;</span></span><br><span class="line"><span class="string">	&quot;</span>address<span class="string">&quot;:&#123;</span></span><br><span class="line"><span class="string">      		&quot;</span>ip<span class="string">&quot;:&lt;external ip:str&gt;,</span></span><br><span class="line"><span class="string">       	&quot;</span>port<span class="string">&quot;:&lt;external port:int&gt;</span></span><br><span class="line"><span class="string">   	&#125;,</span></span><br><span class="line"><span class="string">   	&quot;</span>client<span class="string">&quot;:&quot;</span>funcoin <span class="number">0.1</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">&#125;,</span></span><br><span class="line"><span class="string">&quot;</span>message<span class="string">&quot;:&#123;</span></span><br><span class="line"><span class="string">       &quot;</span>mame<span class="string">&quot;:&lt;message name:str&gt;,</span></span><br><span class="line"><span class="string">       &quot;</span>payload<span class="string">&quot;:&lt;message payload:object&gt;</span></span><br><span class="line"><span class="string">   &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>也就是说，在P2P网络中发送的所有信息都共享此结构。元键包含有关发送信息的对等方的信息（即使该对等方是用户本身），而消息键包含正在发送的消息的名称和有效负载。对于funcoin，需要实现四个消息</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>消息名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ping</td>
+<td>节点在启动连接时发送给对等方的初始信息</td>
+</tr>
+<tr>
+<td>Transaction</td>
+<td>在点对点之间传播的单个事务</td>
+</tr>
+<tr>
+<td>Peers</td>
+<td>对等方可能知道也可能不知道的一堆地址（用于构建他们的网络）</td>
+</tr>
+<tr>
+<td>Block</td>
+<td>一个区块，供对等节点添加到区块链中</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> structlog</span><br><span class="line"><span class="keyword">from</span> funcoin.messages <span class="keyword">import</span> (</span><br><span class="line">    create_peers_message,</span><br><span class="line">    create_block_message,</span><br><span class="line">    create_transaction_message,</span><br><span class="line">    create_ping_message</span><br><span class="line">)</span><br><span class="line"><span class="keyword">from</span> funcoin.transactions <span class="keyword">import</span> validate_transaction</span><br><span class="line"></span><br><span class="line">logger = structlog.getLogger(__name__)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">P2PError</span>(<span class="title class_ inherited__">Exception</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">P2Protocol</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,server</span>):</span><br><span class="line">        self.server = server</span><br><span class="line">        self.blockchain = server.blockchain</span><br><span class="line">        self.connection_pool = server.connection_pool</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">send_message</span>(<span class="params">writer,message</span>):</span><br><span class="line">        <span class="comment"># 向特定对等方（编写器对象）发送信息</span></span><br><span class="line">        writer.write(message.encode() + <span class="string">b&quot;\n&quot;</span>)</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">handle_message</span>(<span class="params">self,message,writer</span>):</span><br><span class="line">        <span class="comment"># 处理服务器传递的传入信息</span></span><br><span class="line">        message_handlers = &#123;</span><br><span class="line">            <span class="string">&quot;block&quot;</span>:self.handle_block,</span><br><span class="line">            <span class="string">&quot;ping&quot;</span>:self.handle_ping,</span><br><span class="line">            <span class="string">&quot;peers&quot;</span>:self.handle_peers,</span><br><span class="line">            <span class="string">&quot;transaction&quot;</span>:self.handle_transaction,</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        handler = message_handlers.get(message[<span class="string">&quot;name&quot;</span>])</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> handler:</span><br><span class="line">            <span class="keyword">raise</span> P2PError(<span class="string">&quot;Missing handler for message&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">await</span> handler(message,writer)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">handle_ping</span>(<span class="params">self,message,writer</span>):</span><br><span class="line">        <span class="comment"># 处理传入“ping”信息</span></span><br><span class="line">        block_height = message[<span class="string">&quot;payload&quot;</span>][<span class="string">&quot;block_height&quot;</span>]</span><br><span class="line">        writer.is_miner = message[<span class="string">&quot;payload&quot;</span>][<span class="string">&quot;is_miner&quot;</span>]</span><br><span class="line">        peers = self.connection_pool.get_alive_peers(<span class="number">20</span>)</span><br><span class="line">        peers_message = create_peers_message(self.server.external_ip,self.server.external_port,peers)</span><br><span class="line">        <span class="keyword">await</span> self.send_message(writer,peers_message)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> block_height &lt; self.blockchain.last_block[<span class="string">&quot;height&quot;</span>]:</span><br><span class="line">            <span class="keyword">for</span> block <span class="keyword">in</span> self.blockchain.chain[block_height + <span class="number">1</span>:]:</span><br><span class="line">                <span class="keyword">await</span> self.send_message(</span><br><span class="line">                    writer,</span><br><span class="line">                    create_block_message(</span><br><span class="line">                        self.server.external_ip,self.server.external_port,block</span><br><span class="line">                    ),</span><br><span class="line">                )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">handle_block</span>(<span class="params">self,message,writer</span>):</span><br><span class="line">        <span class="comment"># 处理传入的块信息</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Executed when we receive a block that was broadcast by a peer</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        logger.info(<span class="string">&quot;Received new block&quot;</span>)</span><br><span class="line"></span><br><span class="line">        block = message[<span class="string">&quot;payload&quot;</span>]</span><br><span class="line"></span><br><span class="line">        self.blockchain.add_block(block)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> peer <span class="keyword">in</span> self.connection_pool.get_alive_peers(<span class="number">20</span>):</span><br><span class="line">            <span class="keyword">await</span> self.send_message(</span><br><span class="line">                peer,</span><br><span class="line">                create_block_message(</span><br><span class="line">                    self.server.external_ip,self.server.external_port,block</span><br><span class="line">                ),</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">handle_transaction</span>(<span class="params">self,message,writer</span>):</span><br><span class="line">        <span class="comment"># 处理传入的交易信息</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Executed when we receive a transaction that was broadcast by a peer</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        logger.info(<span class="string">&quot;Received transaction&quot;</span>)</span><br><span class="line"></span><br><span class="line">        tx = message[<span class="string">&quot;payload&quot;</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> validate_transaction(tx) <span class="keyword">is</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> tx <span class="keyword">not</span> <span class="keyword">in</span> self.blockchain.pending_transactions:</span><br><span class="line">                self.blockchain.pending_transactions.append(tx)</span><br><span class="line">                <span class="keyword">for</span> peer <span class="keyword">in</span> self.connection_pool.get_alive_peers(<span class="number">20</span>):</span><br><span class="line">                    <span class="keyword">await</span> self.send_message(</span><br><span class="line">                        peer,</span><br><span class="line">                        create_transaction_message(</span><br><span class="line">                            self.server.external_ip,self.server.external_port,tx</span><br><span class="line">                        ),</span><br><span class="line">                    )</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            logger.warning(<span class="string">&quot;Received invalid transaction&quot;</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">handle_peers</span>(<span class="params">self,message,writer</span>):</span><br><span class="line">        <span class="comment"># 处理传入的对等方信息</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Executed when we receive a block that was broadcast by a peer</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        logger.info(<span class="string">&quot;Received new peers&quot;</span>)</span><br><span class="line"></span><br><span class="line">        peers = message[<span class="string">&quot;payload&quot;</span>]</span><br><span class="line"></span><br><span class="line">        ping_message = create_ping_message(</span><br><span class="line">            self.server.external_ip,</span><br><span class="line">            self.server.external_port,</span><br><span class="line">            <span class="built_in">len</span>(self.block.chain),</span><br><span class="line">            <span class="built_in">len</span>(self.connection_pool.get_alive_peers(<span class="number">50</span>)),</span><br><span class="line">            <span class="literal">False</span>,</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> peer <span class="keyword">in</span> peers:</span><br><span class="line">            reader,writer = <span class="keyword">await</span> asyncio.open_connection(peer[<span class="string">&quot;ip&quot;</span>],peer[<span class="string">&quot;port&quot;</span>])</span><br><span class="line"></span><br><span class="line">            self.connection_pool.add_peer(writer)</span><br><span class="line">            <span class="keyword">await</span> self.send_message(writer,ping_message)</span><br></pre></td></tr></table></figure>
+<h2 id="消息"><a href="#消息" class="headerlink" title="消息"></a>消息</h2><h4 id="通用信息表单"><a href="#通用信息表单" class="headerlink" title="通用信息表单"></a>通用信息表单</h4><p><img src="/2023/02/07/transactional-node/image-20230209204346882.png" alt="image-20230209204346882"></p>
+<h4 id="元对象"><a href="#元对象" class="headerlink" title="元对象"></a>元对象</h4><p>元对象包含在每条消息中，并包含与发送方有关的消息。</p>
+<p><img src="/2023/02/07/transactional-node/image-20230209205627561.png" alt="image-20230209205627561"></p>
+<h4 id="对等类型"><a href="#对等类型" class="headerlink" title="对等类型"></a>对等类型</h4><p>对等类型也相当通用。它出现在正在发送的对等方列表中，例如，加入网络的新节点，或出现在发送的每条信息的元块中。</p>
+<p><img src="/2023/02/07/transactional-node/image-20230209205613643.png" alt="image-20230209205613643"></p>
+<h4 id="消息对象"><a href="#消息对象" class="headerlink" title="消息对象"></a>消息对象</h4><p><img src="/2023/02/07/transactional-node/image-20230209205603176.png" alt="image-20230209205603176"></p>
+<h4 id="ping有效负载"><a href="#ping有效负载" class="headerlink" title="ping有效负载"></a>ping有效负载</h4><p><img src="/2023/02/07/transactional-node/image-20230209205452724.png" alt="image-20230209205452724"></p>
+<h4 id="事务有效负载"><a href="#事务有效负载" class="headerlink" title="事务有效负载"></a>事务有效负载</h4><p><img src="/2023/02/07/transactional-node/image-20230209205420078.png" alt="image-20230209205420078"></p>
+<h4 id="对等有效负载"><a href="#对等有效负载" class="headerlink" title="对等有效负载"></a>对等有效负载</h4><p><img src="/2023/02/07/transactional-node/image-20230209205347085.png" alt="image-20230209205347085"></p>
+<h4 id="块有效负载"><a href="#块有效负载" class="headerlink" title="块有效负载"></a>块有效负载</h4><p><img src="/2023/02/07/transactional-node/image-20230209205400827.png" alt="image-20230209205400827"></p>
+<p>服务器执行操作：读取消息和发送消息。当服务器收到消息时，该消息将以JSON字符串的形式到达。然后必须将其转换为Python字典并进行验证，这个过程称为反序列化，因为我们从序列化形式(JSON)到本机python字典。序列化的工作方式正好相反：从字典转到JSON字符串。</p>
+<ol>
+<li>服务器读取由对等方发送的消息（反序列化：JSON-&gt;字典</li>
+<li>服务器将消息发送到对等方（序列化：dict-&gt;json）</li>
+</ol>
+<p>验证对等对象的架构</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">from marshmallow import Schema<span class="punctuation">,</span>fields</span><br><span class="line">import time</span><br><span class="line">class Peer(Schema)<span class="punctuation">:</span></span><br><span class="line">    ip = fields.Str(required=True)</span><br><span class="line">    port = fields.Int(required=True)</span><br><span class="line">    last_seen = fields.Int(missing=lambda<span class="punctuation">:</span> int(time()))</span><br><span class="line"></span><br><span class="line"># 实例</span><br><span class="line">payload = &#x27;<span class="punctuation">&#123;</span><span class="attr">&quot;ip&quot;</span><span class="punctuation">:</span><span class="string">&quot;192.168.0.1&quot;</span><span class="punctuation">,</span><span class="attr">&quot;port&quot;</span><span class="punctuation">:</span><span class="string">&quot;8888&quot;</span><span class="punctuation">,</span><span class="attr">&quot;last_seen&quot;</span><span class="punctuation">:</span><span class="string">&quot;1589780748&quot;</span><span class="punctuation">&#125;</span>&#x27;</span><br><span class="line"># 反序列化</span><br><span class="line">result = Peer().loads(payload)</span><br><span class="line"># 序列化</span><br><span class="line">serialized = Peer().dumps(result)</span><br><span class="line">print(result)</span><br><span class="line">print(serialized)</span><br><span class="line"></span><br><span class="line">运行结果</span><br><span class="line"><span class="punctuation">&#123;</span>&#x27;ip&#x27;<span class="punctuation">:</span> &#x27;<span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span>&#x27;<span class="punctuation">,</span> &#x27;port&#x27;<span class="punctuation">:</span> <span class="number">8888</span><span class="punctuation">,</span> &#x27;last_seen&#x27;<span class="punctuation">:</span> <span class="number">1589780748</span><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;ip&quot;</span><span class="punctuation">:</span> <span class="string">&quot;192.168.0.1&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;port&quot;</span><span class="punctuation">:</span> <span class="number">8888</span><span class="punctuation">,</span> <span class="attr">&quot;last_seen&quot;</span><span class="punctuation">:</span> <span class="number">1589780748</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Schema模块"><a href="#Schema模块" class="headerlink" title="Schema模块"></a>Schema模块</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> marshmallow <span class="keyword">import</span> Schema,fields,validates_schema,ValidationError</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Transaction</span>(<span class="title class_ inherited__">Schema</span>):</span><br><span class="line">    timestamp = fields.Int()</span><br><span class="line">    sender = fields.Str()</span><br><span class="line">    receiver = fields.Str()</span><br><span class="line">    amount = fields.Int()</span><br><span class="line">    signature = fields.Str()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        ordered = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Block</span>(<span class="title class_ inherited__">Schema</span>):</span><br><span class="line">    mined_by = fields.Str(required=<span class="literal">False</span>)</span><br><span class="line">    Transactions = fields.Nested(Transaction(),many=<span class="literal">True</span>)</span><br><span class="line">    height = fields.Int(required = <span class="literal">True</span>)</span><br><span class="line">    target = fields.Str(required=<span class="literal">True</span>)</span><br><span class="line">    <span class="built_in">hash</span> = fields.Str(required=<span class="literal">True</span>)</span><br><span class="line">    previous_hash = fields.Str(required=<span class="literal">True</span>)</span><br><span class="line">    nonce = fields.Int(required=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        ordered = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @validates_schema</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate_hash</span>(<span class="params">self,data,**kwargs</span>):</span><br><span class="line">        block = data.copy()</span><br><span class="line">        block.pop(<span class="string">&quot;hash&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> data[<span class="string">&quot;hash&quot;</span>]!=json.dumps(block,sort_keys=<span class="literal">True</span>):</span><br><span class="line">            <span class="keyword">raise</span> ValidationError(<span class="string">&quot;Fraudulent block:hash is wrong&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Peer</span>(<span class="title class_ inherited__">Schema</span>):</span><br><span class="line">    ip = fields.Str(required=<span class="literal">True</span>)</span><br><span class="line">    port = fields.Int(required=<span class="literal">True</span>)</span><br><span class="line">    last_seen = fields.Int(missing = <span class="keyword">lambda</span>:<span class="built_in">int</span>(time()))</span><br></pre></td></tr></table></figure>
+<p>在代码中，我们实现了Peer、Block和Transaction。</p>
+<h2 id="message模块"><a href="#message模块" class="headerlink" title="message模块"></a>message模块</h2>]]></content>
+      <categories>
+        <category>区块链</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
       </tags>
   </entry>
   <entry>
@@ -644,6 +958,10 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <p><img src="/2023/02/06/cryptography/image-20230206210206173.png" alt="image-20230206210206173"></p>
 <h2 id="区块链上的钱包"><a href="#区块链上的钱包" class="headerlink" title="区块链上的钱包"></a>区块链上的钱包</h2><p>上面的代码在某种程度上展现了以太坊的逻辑结构。<br>与比特币不同，以太坊是一个基于账户的模型——这意味着区块链上的每个“用户”都有一个账户。比特币没有<em>账户</em>的概念;相反，它是一个与现金流入和流出实体钱包的方式非常相似的系统。比特币系统被称为UTXO（未花费的交易输出），它是一种用于建模交易的优雅数据结构。但使用以太坊基于账户的模型。最初与以太坊交互时，通常做的第一件事就是生成一个密钥对。您的以太坊<em>地址</em>只是您的公钥。您的私钥存储在安全的地方，无论是在某种软件中还是在硬件钱包中。对于通过以太坊区块链向您发送资金的人，他们只需要知道您的公钥。但只有你可以访问这笔钱，因为只有你持有私钥。</p>
 ]]></content>
+      <categories>
+        <category>区块链</category>
+        <category>密码学</category>
+      </categories>
       <tags>
         <tag>区块链</tag>
         <tag>密码学</tag>
@@ -652,9 +970,19 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
   <entry>
     <title>摘抄</title>
     <url>/2023/02/05/%E6%91%98%E6%8A%84/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>读书使人明智</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>愿中国青年都摆脱冷气，只是向上走，不必听自暴自弃者流的话。都做事的做事，能发声的发声。有一份热，发一分光，就令萤火一般，也可以在黑暗里发一点光，不必等候炬火。此后如竟没有炬火：我便是唯一的光。</p>
 <span id="more"></span>
+<h2 id="名句"><a href="#名句" class="headerlink" title="名句"></a>名句</h2><p>“我们成功地拍到这张照片，仔细看，你会看见一个毫不起眼的小点，看那个光点，它就在这里，那是我们的家园，我们的一切。你所爱的每一个人，你认识的每一个人，你听说过的每一个人，曾经有过的每一个人，都在它上面度过他们的一生。我们的欢乐与痛苦聚集在一起，数以千计的自以为是的宗教、意识形态和经济学说，所有的猎人与强盗、英雄与懦夫、文明的缔造者与毁灭者、国王与农夫、年轻的情侣、母亲与父亲、满怀希望的孩子、发明家和探险家、德高望重的教师、腐败的政客、超级明星、最高领袖、人类历史上的每一个圣人与罪犯，都住在这里——一粒悬浮在阳光中的微尘。在浩瀚的宇宙剧场里，地球只是一个极小的舞台，想想所有那些帝王将相杀戮得血流成河，他们的辉煌与胜利，曾让他们成为光点上一个部分的转眼即逝的主宰，想想栖身于这个点上的某个角落的居民，对别的角落几乎没有区别的居民所犯的无穷无尽的残暴罪行，他们的误解何其多也！他们多么急于相互残杀，他们的仇恨何其强烈。我们的心情，我们的妄自尊大，我们在宇宙中拥有某种特权地位的错觉，都受到这个苍白光点的挑战。在庞大的包容一切的暗黑宇宙中，我们的行星是一个孤独的斑点。由于我们的低微地位和广阔无垠的空间，没有任何暗示从别的什么地方会有救星来拯救我们脱离自己的处境。有人说：‘天文学令人感到自卑并能培养个性。’除了这张从远处拍摄的我们这个微小世界的照片，大概没有别的更好办法可以揭示人类妄自尊大是何等的愚蠢。对我来说，这强调说明我们有责任更友好地相处，并且要保护和珍惜这个淡蓝色的光点——这是我们迄今所知的唯一家园。”    ——卡尔·萨根</p>
+<hr>
+<p>有两种东西,我对它们的思考越是深沉和持久,他们在我心灵中唤起的惊奇和敬畏就会越来越历久弥新,一是我们头上浩瀚的星空,另一就是我们心中的道德律.”                ——康德</p>
+<hr>
 <h2 id="典籍"><a href="#典籍" class="headerlink" title="典籍"></a>典籍</h2><p>君子生非异也，善假与物也。    ——荀子</p>
+<hr>
+<p>智者不惑，仁者不忧，勇者不惧。    ——孔子《论语》</p>
+<hr>
+<p>好学近乎知，力行近乎仁，知耻近乎勇。    ——《礼记.中庸》</p>
+<hr>
+<p>战略上蔑视敌人，战术上重视敌人。    ——毛泽东 《关于目前党的政策中的几个重要问题》</p>
 <h2 id="散文"><a href="#散文" class="headerlink" title="散文"></a>散文</h2><p>远赴人间惊鸿宴席，一睹人间盛世颜。        ——《我在人间凑数的日子》</p>
 <hr>
 <p>愿中国青年都摆脱冷气，只是向上走，不必听自暴自弃者流的话。都做事的做事，能发声的发声。有一份热，发一分光，就令萤火一般，也可以在黑暗里发一点光，不必等候炬火。此后如竟没有炬火：我便是唯一的光。倘若有了炬火，出了太阳，我们自然心悦诚服的消失。不但毫无不平，而且还要随喜赞美这炬火或太阳；因为他照了人类，连我都在内。        ——鲁迅    《热风》</p>
@@ -670,6 +998,15 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <p>要写玉楼金阙拂衣裳，诗酒华章<br>写纸贵绝唱，写家书两行，<br>写一位陌上看花的冰心少年郎</p>
 <p>写此夜玉笛声回荡，写满是京城牡丹香<br>再写白驹过隙梦黄粱，人世间茫茫</p>
 <p>罢笔之时，欲晚天光<br>惊觉此身感秋凉，锦绣意气仍朗朗<br>当时只道是寻常</p>
+<hr>
+<h2 id="短篇小说"><a href="#短篇小说" class="headerlink" title="短篇小说"></a>短篇小说</h2><p>宇宙的最不可理解之处在于它是可以理解的。<br>宇宙的最可理解之处在于它是不可理解的。        ——《乡村教师》</p>
+<hr>
+<p>啊，地球，我的流浪地球！        —— 《流浪地球》</p>
+<p>（说实在的，电影和小说都不错，但是我从电影中看到的是人类的赞歌就是勇气的赞歌，而在小说中，感受到的是深深的绝望）</p>
+<hr>
+<p>如果我爱你，而你也正巧爱我。你头发乱了时候，我会笑笑地替你拨一拨，然后，手还留恋地在你发上多待几秒。但是，如果我爱你，而你不巧地不爱我。你头发乱了，我只会轻轻地告诉你，你头发乱了喔。        ——村上春树    《如果我爱你》</p>
+<hr>
+<p>我告诉你我喜欢你，并不是一定要和你在一起，只是希望今后的你，在遭遇人生低谷的时候，不要灰心，至少曾经有人被你的魅力所吸引，曾经是，以后也是。        ——村上春树</p>
 <hr>
 <h2 id="长篇小说"><a href="#长篇小说" class="headerlink" title="长篇小说"></a>长篇小说</h2><h3 id="三体"><a href="#三体" class="headerlink" title="三体"></a>三体</h3><p>比起已经在风雨中成熟了许多的第一代红卫兵，新生的造反派们像火炭上的狼群，除了疯狂还是疯狂。</p>
 <p>在中国，任何超脱飞扬的思想都会砰然坠地的，现实的引力太沉重了。</p>
@@ -691,7 +1028,8 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <p>我为我的正义活着，也为我的正义去死。</p>
 <p>一切伟大时代皆会结束，正如所有的王都将死去。</p>
 <hr>
-<h3 id="夜的命名术"><a href="#夜的命名术" class="headerlink" title="夜的命名术"></a>夜的命名术</h3><p>人生当如蜡烛一样，从头燃到尾，始终光明。</p>
+<h3 id="夜的命名术"><a href="#夜的命名术" class="headerlink" title="夜的命名术"></a>夜的命名术</h3><p>永远少年        ——书评</p>
+<p>人生当如蜡烛一样，从头燃到尾，始终光明。</p>
 <p>攀那座山最终靠的不是技巧，而是落子无悔的勇气。</p>
 <p>唯信仰与日月古不灭。</p>
 <p>永远少年。</p>
@@ -701,10 +1039,40 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <p>我怕看见诚实的人被迫说谎，我怕正直的人被迫弯腰，我怕理想主义者看见理想破碎，我怕听见黄花连篇者的最后一句真话，我怕明哲保身者突然仗义执言，我怕曾理想背叛者，最终为理想而死。我怕看见懦夫最后的勇气，还有叛徒的冲锋。</p>
 <p>生死关说起来玄妙，但其实很简单，不过就是赌上一次，把你的命交给这个世界罢了。攀一座山，看一场雪，在距离天空最近的地方，放声呐喊。</p>
 <p>所以你要明白啊，我们不能用温柔去应对黑暗，要用火。</p>
-<h2 id="短篇小说"><a href="#短篇小说" class="headerlink" title="短篇小说"></a>短篇小说</h2><p>宇宙的最不可理解之处在于它是可以理解的。<br>宇宙的最可理解之处在于它是不可理解的。        ——《乡村教师》</p>
+<hr>
+<h3 id="穷鬼的上下两千年"><a href="#穷鬼的上下两千年" class="headerlink" title="穷鬼的上下两千年"></a>穷鬼的上下两千年</h3><p>长生，呵，长生    ——书评</p>
+<hr>
+<p>固守己道，狭以成一。</p>
+<hr>
+<p>秦有灭赵之心，赵有亡秦之志。</p>
+<hr>
+<p>何为战？死千万人而全世人，为战。何为将？死一人，而全千万人为将。</p>
+<hr>
+<p>汉土不当分崩！汉人不当蒙难！诸侯不行，他曹操来。</p>
+<hr>
+<p>她不会成为那个走到终点，受万人瞩目，世代传颂的人，她能做的也只是那个站在路口，给每一个来人指出去路的人。<br>她希望这书院会是那路口，而路过的每一个人终将能，走到他们的终点，成就他们自己的所学所求。</p>
+<hr>
+<p>莫回头看了，我们是要迈着死路去的人，没后路可看的。</p>
+<hr>
+<p>夫胸抱负，非是五岳倒悬，如何得以立鼎？<br>夫胸抱负，非是黄河长逝，如何得以倾流？<br>夫胸抱负，非是天下宏图，如何得以明证？</p>
+<hr>
+<p>大风曾歌，威加海内。大汉之志，有谁记得？他曹操记得。<br>董卓挟汉，迁都长安。汉室衰微，有谁去追？他曹操去追。<br>天子东归，百官失所。兵败将离，有谁去迎？他曹操去迎。<br>半生汉臣，可此时拔剑四顾，他却成了汉贼······</p>
+<hr>
+<p>这善哉是佛门告罪之语，也不知道这时他是在为何而告罪。</p>
+<hr>
+<p>此去，他要去问明佛心，问明佛意，问明七情六欲，问明因果报应，问明他心中的一个佛字。</p>
+<hr>
+<p>亦意为，了然世事，悟得皆空，不执于喜怒，不执于哀乐，不执于生老，不执于病死，得以超脱，是为悟空。</p>
+<hr>
+<p>一两声鸟鸣回响，是林中空空，山中空空，可顾楠最悟不出的，便是这空空。</p>
+<hr>
+<p>为何会苦呢？这明明已经是一个盛世了。或许大多数的人生本来就是苦的，而这世上，也从没有万全的世道。</p>
 ]]></content>
+      <categories>
+        <category>文学</category>
+      </categories>
       <tags>
-        <tag>随笔</tag>
+        <tag>爱好</tag>
       </tags>
   </entry>
   <entry>
@@ -737,8 +1105,11 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <p><img src="/2023/02/03/asyncio%E2%80%94%E2%80%94%E5%BC%82%E6%AD%A5I-O/image-20230203195100934.png" alt="image-20230203195100934"></p>
 <h2 id="交互式会话举例"><a href="#交互式会话举例" class="headerlink" title="交互式会话举例"></a>交互式会话举例</h2><p><img src="/2023/02/03/asyncio%E2%80%94%E2%80%94%E5%BC%82%E6%AD%A5I-O/image-20230203194943931.png" alt="image-20230203194943931"></p>
 ]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
       <tags>
-        <tag>库</tag>
+        <tag>python库</tag>
       </tags>
   </entry>
   <entry>
@@ -784,8 +1155,12 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <h2 id="八卦协议"><a href="#八卦协议" class="headerlink" title="八卦协议"></a>八卦协议</h2><p><img src="/2023/02/03/networking/image-20230206221218058.png" alt="image-20230206221218058"></p>
 <p>在上图中，节点 U 必须从 A 获取其他节点（对等节点）的列表，而 A 又从他的邻居 X、Y 和 Z 获取节点列表，并且必须不断“检测”它们，以确保它们在网络上仍然“活着”。还必须向网络宣布 U 的存在等等。这种通用方案称为八卦协议，成功的八卦协议是构成弹性、去中心化网络的原因。</p>
 ]]></content>
+      <categories>
+        <category>区块链</category>
+      </categories>
       <tags>
         <tag>区块链</tag>
+        <tag>协议</tag>
       </tags>
   </entry>
   <entry>
@@ -801,8 +1176,12 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <p>运行结果<br><img src="/2023/02/02/%E5%B7%A5%E4%BD%9C%E8%AF%81%E6%98%8E/image-20230202221017437.png" alt="image-20230202221017437"></p>
 <p>代码中，有关于信息输入的代码，运行也不报错，但是总是调用失败，以后整明白了再回来改。大概是个这么个情况：<br><img src="/2023/02/02/%E5%B7%A5%E4%BD%9C%E8%AF%81%E6%98%8E/image-20230202221129627.png" alt="image-20230202221129627"></p>
 ]]></content>
+      <categories>
+        <category>区块链</category>
+      </categories>
       <tags>
         <tag>区块链</tag>
+        <tag>协议</tag>
       </tags>
   </entry>
   <entry>
@@ -812,6 +1191,9 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <span id="more"></span>
 <h2 id="镜像源"><a href="#镜像源" class="headerlink" title="镜像源"></a>镜像源</h2><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">pip install <span class="selector-attr">[需要安装的库]</span> -<span class="selector-tag">i</span> https:<span class="comment">//pypi.tuna.tsinghua.edu.cn/simple</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 ]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
       <tags>
         <tag>工具</tag>
       </tags>
@@ -832,6 +1214,9 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <p>运行结果<br>初始化（创建创世区块）<br><img src="/2023/02/02/blockchains/image-20230202113544695.png" alt="image-20230202113544695"><br>手动添加交易<br>调用new_transaction函数<br><img src="/2023/02/02/blockchains/image-20230202113730398.png" alt="image-20230202113730398"><br>创建新区块，调用new_block函数，将上一个区块的hash填入新建区块的previous_hash中<br><img src="/2023/02/02/blockchains/image-20230202114848874.png" alt="image-20230202114848874"><br>输出现在的区块链<br><img src="/2023/02/02/blockchains/image-20230202114920312.png" alt="image-20230202114920312"></p>
 <p>下一个目标实现自动化区块链</p>
 ]]></content>
+      <categories>
+        <category>区块链</category>
+      </categories>
       <tags>
         <tag>区块链</tag>
       </tags>
@@ -856,6 +1241,9 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <li>hash 当前区块的hash</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>区块链</category>
+      </categories>
       <tags>
         <tag>区块链</tag>
       </tags>
@@ -905,6 +1293,10 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <p>该代码在创建完创世区块之后，又计算了4个新区块，其中minerBlock为工作量证明相关代码</p>
 <p>输出结果<img src="/2023/02/01/hash/image-20230201171726099.png" alt="image-20230201171726099"></p>
 ]]></content>
+      <categories>
+        <category>密码学</category>
+        <category>区块链</category>
+      </categories>
       <tags>
         <tag>区块链</tag>
         <tag>密码学</tag>
@@ -915,15 +1307,69 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
     <url>/2023/01/30/julia/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>学习julia语言</p>
 <span id="more"></span>
-<p>juila交互式会话</p>
-<p><img src="/2023/01/30/julia/image-20230202224954022.png" alt="image-20230202224954022"></p>
+<h1 id="1-基本使用"><a href="#1-基本使用" class="headerlink" title="1 基本使用"></a>1 基本使用</h1><h2 id="1-1-juila交互式会话"><a href="#1-1-juila交互式会话" class="headerlink" title="1.1 juila交互式会话"></a>1.1 juila交互式会话</h2><p><img src="/2023/01/30/julia/image-20230202224954022.png" alt="image-20230202224954022"></p>
 <p>以分号结尾则不会显示出来结果<br>变量<strong>ans</strong>总会存储上一次执行代码的结果（ans只在交互式会话中才有）</p>
-<p>在交互式会话中，要运行写在源文件 <code>file.jl</code> 中的代码，只需输入 <code>include(&quot;file.jl&quot;)</code>。</p>
+<p>在交互式会话中，要运行写在源文件 <code>test.jl</code> 中的代码，只需输入 <code>include(&quot;test.jl&quot;)</code>。<br><img src="/2023/01/30/julia/image-20230218225647958.png" alt="image-20230218225647958"></p>
 <p>如果想以非交互的方式执行文件中的代码，可以把文件名作为 <code>julia</code> 命令的第一个参数：</p>
 <figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">$ julia script.jl arg1 arg2...</span><br></pre></td></tr></table></figure>
-<p>如这个例子所示，<code>julia</code> 后跟着的命令行参数会被作为程序 <code>script.jl</code> 的命令行参数。这些参数使用全局常量 <code>ARGS</code> 来传递，脚本自身的名字会以全局变量 <code>PROGRAM_FILE</code> 传入。注意当脚本以命令行里的 <code>-e</code> 选项输入时，<code>ARGS</code> 也会被设定（详见此页末尾列表）但是 <code>PROGRAM_FILE</code> 会是空的。例如，要把一个脚本的输入参数显示出来，你可以：</p>
-<figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">$ julia -e &#x27;println(<span class="literal">PROGRAM_FILE</span>); <span class="keyword">for</span> x <span class="keyword">in</span> <span class="literal">ARGS</span>; println(x); <span class="keyword">end</span>&#x27; foo bar</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="julia数组"><a href="#julia数组" class="headerlink" title="julia数组"></a>julia数组</h1><p>数组，就是相同数据类型的元素按一定顺序排列的集合，可以是一维数组和多维数组。<br>Julia 支持数组数据结构，它可以存储一个大小不是固定的，类型可以相同也可以不同的顺序集合。<br>Julia 数组是可变类型集合，用于列表、向量、表格和矩阵。<br>Julia 数组的索引键值可以使用整数表示，数组的大小不是固定的。<br>Julia 提供了很多函数帮助我们来操作数组，比如数组添加元素，合并数组等。<br>Julia 数组用方括号 […] 指定，多个元素使用逗号 , 分隔。<br>创建一个一维数组(即一个向量)语法为:</p>
+<p><img src="/2023/01/30/julia/image-20230218230659158.png" alt="image-20230218230659158"></p>
+<p>如这个例子所示，<code>julia</code> 后跟着的命令行参数会被作为程序 <code>test.jl</code> 的命令行参数。这些参数使用全局常量 <code>ARGS</code> 来传递，脚本自身的名字会以全局变量 <code>PROGRAM_FILE</code> 传入。注意当脚本以命令行里的 <code>-e</code> 选项输入时，<code>ARGS</code> 也会被设定但是 <code>PROGRAM_FILE</code> 会是空的。例如，要把一个脚本的输入参数显示出来，你可以：</p>
+<figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">$ julia -e &#x27;println(<span class="literal">PROGRAM_FILE</span>); <span class="keyword">for</span> x <span class="keyword">in</span> <span class="literal">ARGS</span>; println(x); <span class="keyword">end</span>&#x27; foo bar</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/01/30/julia/image-20230218231204508.png" alt="image-20230218231204508"></p>
+<p>或者把代码写到一个脚本文件中再执行：<br><img src="/2023/01/30/julia/image-20230218231906611.png" alt="image-20230218231906611"><br><img src="/2023/01/30/julia/image-20230218232657552.png" alt="image-20230218232657552"></p>
+<p>个性化<br><img src="/2023/01/30/julia/image-20230218235039033.png" alt="image-20230218235039033"><br><img src="/2023/01/30/julia/image-20230218235053508.png" alt="image-20230218235053508"></p>
+<p>详细的命令： <a href="https://cn.julialang.org/JuliaZH.jl/latest/manual/command-line-options/#command-line-options">Command-line Options</a></p>
+<h2 id="1-2-扩展包"><a href="#1-2-扩展包" class="headerlink" title="1.2 扩展包"></a>1.2 扩展包</h2><p>一些基本语言功能在Base扩展包中，Base扩展包中的函数都是可以直接使用的，不需要单独安装和声明。其他的一些功能则需要从网上安装，并且使用时需要声明。</p>
+<figure class="highlight julia"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> &lt;packages&gt;</span><br></pre></td></tr></table></figure>
+<p>在Julia命令行中安装扩展包，命令如下<br>如果安装的扩展包依赖于其他扩展包，这些扩展包也会自动被安装</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> Pkg</span><br><span class="line">Pkg.<span class="keyword">add</span>(<span class="string">&quot;&lt;packages&gt;&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>安装的扩展包如果不能正常工作，可以尝试从新构建</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> Pkg</span><br><span class="line">Pkg.build(<span class="string">&quot;&lt;packages&gt;&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>更新已安装的所有包到最新版本</p>
+<figure class="highlight gcode"><table><tr><td class="code"><pre><span class="line">Pkg.update<span class="comment">()</span></span><br></pre></td></tr></table></figure>
+<p>在REPL命令行按”]”可以进入包管理环境</p>
+<ul>
+<li>查看扩展包管理命令——help</li>
+<li>查看安装的扩展包列表<br><img src="/2023/01/30/julia/image-20230218182149235.png" alt="image-20230218182149235"></li>
+<li>安装某个包——add xxx</li>
+<li>使得包能够运行——build xxx</li>
+<li>更新包到最新版本——update xxx</li>
+<li>删除包——remove xxx</li>
+</ul>
+<h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h2 id="2-1-整数与浮点数"><a href="#2-1-整数与浮点数" class="headerlink" title="2.1 整数与浮点数"></a>2.1 整数与浮点数</h2><p><img src="/2023/01/30/julia/image-20230222110137368.png" alt="image-20230222110137368" style="zoom:50%;"><img src="/2023/01/30/julia/image-20230222112215446.png" alt="image-20230222112215446"></p>
+<p>此外，对<a href="https://cn.julialang.org/JuliaZH.jl/latest/manual/complex-and-rational-numbers/#复数和有理数">复数和有理数</a>的完整支持是在这些原始数据类型之上建立起来的。多亏了 Julia 有一个很灵活的、用户可扩展的<a href="https://cn.julialang.org/JuliaZH.jl/latest/manual/conversion-and-promotion/#conversion-and-promotion">类型提升系统</a>，所有的数值类型都无需显式转换就可以很自然地相互进行运算。</p>
+<h3 id="整数"><a href="#整数" class="headerlink" title="整数"></a>整数</h3><p>julia允许使用特别长的整数，这是类型为BigInt。较长的整数常数可以写成如123_456_789这种格式。</p>
+<p>julia的浮点数可以写成带点的形式如<code>123.0</code>, <code>1.23</code>，也可以写成带有10的幂次如1.23e^3^。这些写法都属于Float64类型的浮点数。julia还有些他类型浮点数，但是科学计算中主要使用Float64类型，在别的语言中称为双精度浮点数。</p>
+<p>julia的布尔类型Bool只有两个值：true和false</p>
+<p>用typeof()求某个值的类型<br><img src="/2023/01/30/julia/image-20230218183505343.png" alt="image-20230218183505343"><img src="/2023/01/30/julia/image-20230218183525289.png" alt="image-20230218183525289"><img src="/2023/01/30/julia/image-20230218183609875.png" alt="image-20230218183609875"><br><img src="/2023/01/30/julia/image-20230218183901536.png" alt="image-20230218183901536"><img src="/2023/01/30/julia/image-20230218183913507.png" alt="image-20230218183913507"><br><img src="/2023/01/30/julia/image-20230218183938732.png" alt="image-20230218183938732"><img src="/2023/01/30/julia/image-20230218183948269.png" alt="image-20230218183948269"></p>
+<p>julia的内置变量Sys.WORD_SIZE表明了目标系统是32位还是64位架构</p>
+<h2 id="2-2-四则运算"><a href="#2-2-四则运算" class="headerlink" title="2.2 四则运算"></a>2.2 四则运算</h2><p>浮点数的四则运算遵循传统的算数运算规则和优先级规定。<br><img src="/2023/01/30/julia/image-20230218184753696.png" alt="image-20230218184753696"></p>
+<p>在交互运行时，特殊变量ans表示最后一个计算过的表达式的值。<br><img src="/2023/01/30/julia/image-20230218184833387.png" alt="image-20230218184833387"></p>
+<h2 id="2-3-整数的四则运算"><a href="#2-3-整数的四则运算" class="headerlink" title="2.3 整数的四则运算"></a>2.3 整数的四则运算</h2><p>整数加法、减法、乘法结果仍为整数，整数的表示范围有限，有可能发生溢出，而且溢出时julia并不出错而且也不提示。</p>
+<p>整数用”/“作的出发总是返回浮点数，即使结果是整数也是一样<br><img src="/2023/01/30/julia/image-20230218185300964.png" alt="image-20230218185300964"></p>
+<p>求整数除法的商，用 $\div$ 运算符，如<br><img src="/2023/01/30/julia/image-20230218220735381.png" alt="image-20230218220735381"></p>
+<p>模运算用%运算符，结果符号总是取a的符号。也可以写成rem(a,b)<br><img src="/2023/01/30/julia/image-20230218220913217.png" alt="image-20230218220913217"><img src="/2023/01/30/julia/image-20230218220918568.png" alt="image-20230218220918568"><img src="/2023/01/30/julia/image-20230218220943477.png" alt="image-20230218220943477"><br><code>divrem(x,y)</code>同时返回x除以y的商和余数<br><img src="/2023/01/30/julia/image-20230218221056392.png" alt="image-20230218221056392"></p>
+<p>整数与浮点数的混合运算会将整数转换成浮点数再计算</p>
+<h2 id="2-4-数学函数"><a href="#2-4-数学函数" class="headerlink" title="2.4 数学函数"></a>2.4 数学函数</h2><script type="math/tex; mode=display">
+log(x,y):求log_xy\\
+exp(x):求e^x\\
+sqrt(x):求\sqrt{x}\\
+sin(x):</script><h2 id="2-5-变量"><a href="#2-5-变量" class="headerlink" title="2.5 变量"></a>2.5 变量</h2><h3 id="2-5-1-命名规则"><a href="#2-5-1-命名规则" class="headerlink" title="2.5.1 命名规则"></a>2.5.1 命名规则</h3><p>Julia 提供了非常灵活的变量命名策略。变量名是大小写敏感的，且不包含语义，意思是说，Julia 不会根据变量的名字来区别对待它们。 （译者注：Julia <strong>不会</strong>自动将全大写的变量识别为常量，也<strong>不会</strong>将有特定前后缀的变量自动识别为某种特定类型的变量，即不会根据变量名字，自动判断变量的任何属性。）<br><img src="/2023/01/30/julia/image-20230222103257140.png" alt="image-20230222103257140"></p>
+<p>也可以使用UTF-8编码的Unicode字符作为变量名<br><img src="/2023/01/30/julia/image-20230222103444529.png" alt="image-20230222103444529"></p>
+<p>julia允许重定义内置常量和函数（但有可能引发潜在的混淆），但是不允许重定义一个正在使用的内置常量或函数。<br><img src="/2023/01/30/julia/image-20230222103639576.png" alt="image-20230222103639576"><img src="/2023/01/30/julia/image-20230222103757279.png" alt="image-20230222103757279" style="zoom:67%;"></p>
+<h3 id="2-5-2合法的变量名"><a href="#2-5-2合法的变量名" class="headerlink" title="2.5.2合法的变量名"></a>2.5.2合法的变量名</h3><p>变量名字必须以英文字母（A-Z 或 a-z）、下划线或编码大于 00A0 的 Unicode 字符的一个子集开头。 具体来说指的是，<a href="http://www.fileformat.info/info/unicode/category/index.htm">Unicode字符分类</a>中的 Lu/Ll/Lt/Lm/Lo/Nl（字母）、Sc/So（货币和其他符号）以及一些其它像字母的符号（例如 Sm 类别数学符号中的一部分）。 变量名的非首字符还允许使用惊叹号 <code>!</code>、数字（包括 0-9 和其他 Nd/No 类别中的 Unicode 字符）以及其它 Unicode 字符：变音符号和其他修改标记（Mn/Mc/Me/Sk 类别）、标点和连接符（Pc 类别）、引号和少许其他字符。</p>
+<p>像 <code>+</code> 这样的运算符也是合法的标识符，但是它们会被特别地解析。 在一些上下文中，运算符可以像变量一样使用，比如 <code>(+)</code> 表示加函数，语句 <code>(+) = f</code>会把它重新赋值。大部分 Unicode 中缀运算符（Sm 类别），像 <code>⊕</code>，会被解析成真正的中缀运算符，并且支持用户自定义方法（举个例子，你可以使用语句 <code>const ⊗ = kron</code>将 <code>⊗</code> 定义为中缀的 Kronecker 积）。 运算符也可以使用修改标记、引号和上标/下标进行加缀，例如 <code>+̂ₐ″</code> 被解析成一个与 <code>+</code> 具有相同优先级的中缀运算符。以下标/上标字母结尾的运算符与后续变量名之间需要一个空格。举个例子，如果 <code>+ᵃ</code> 是一个运算符，那么 <code>+ᵃx</code> 应该被写为<code>+ᵃ x</code>，以区分表达式 <code>+ ᵃx</code> ，其中 <code>ᵃx</code> 是变量名。</p>
+<p>一类特定的变量名是只包含下划线的变量名。这些标识符只能赋值，不能用于给其他变量赋值。严格来说，它们只能用作<a href="https://en.wikipedia.org/wiki/Value_(computer_science">左值</a>#lrvalue) 而不能作<a href="https://en.wikipedia.org/wiki/R-value">右值</a>:<br><img src="/2023/01/30/julia/image-20230222104416058.png" alt="image-20230222104416058"></p>
+<p>唯一明确禁止的变量名称是内置<a href="https://cn.julialang.org/JuliaZH.jl/latest/base/base/#Keywords">关键字</a>的名称：<br><img src="/2023/01/30/julia/image-20230222104554049.png" alt="image-20230222104554049"></p>
+<p>某些 Unicode 字符被认为是等效的标识符。不同的输入 Unicode 组合字符的方法（例如：重音）被视为等价的（Julia 标识符采用 <a href="http://www.macchiato.com/unicode/nfc-faq">NFC</a> 标准）。Julia 还加入了一些非标准的等价字符，用于在视觉上相似且易于通过某些输入法输入的字符。Unicode 字符 <code>ɛ</code> (U+025B: Latin small letter open e) 和 <code>µ</code> (U+00B5: micro sign) 被视为等同于相应的希腊字母。点 <code>·</code> (U+00B7) 和希腊字符<a href="https://en.wikipedia.org/wiki/Interpunct">间断</a> <code>·</code> (U+0387) 都被当作数学上的点积运算符 <code>⋅</code> (U+22C5)。减号 <code>−</code> (U+2212) 与连接号 <code>-</code> (U+002D) 也被视作相同的符号。</p>
+<h3 id="2-5-3-命名规范"><a href="#2-5-3-命名规范" class="headerlink" title="2.5.3 命名规范"></a>2.5.3 命名规范</h3><ul>
+<li>变量的名字采用小写。</li>
+<li>使用下划线（<code>&#39;_&#39;</code>）来分隔名字中的单词，但是不鼓励使用下划线 除非在不使用下划线时名字会非常难读。</li>
+<li>类型 (<code>Type</code>) 和模块（<code>Module</code>）的名字使用大写字母开头，并且用大写字母 而不是用下划线分隔单词。</li>
+<li>函数（<code>function</code>）和宏（<code>macro</code>）的名字使用小写，不使用下划线。</li>
+<li>会对输入参数进行更改的函数要使用 <code>!</code> 结尾。这些函数有时叫做 “mutating” 或 “in-place” 函数，因为它们在被调用后会修改他们的输入参数的内容 而不仅仅只是返回一个值。</li>
+</ul>
+<h2 id="julia数组"><a href="#julia数组" class="headerlink" title="julia数组"></a>julia数组</h2><p>数组，就是相同数据类型的元素按一定顺序排列的集合，可以是一维数组和多维数组。<br>Julia 支持数组数据结构，它可以存储一个大小不是固定的，类型可以相同也可以不同的顺序集合。<br>Julia 数组是可变类型集合，用于列表、向量、表格和矩阵。<br>Julia 数组的索引键值可以使用整数表示，数组的大小不是固定的。<br>Julia 提供了很多函数帮助我们来操作数组，比如数组添加元素，合并数组等。<br>Julia 数组用方括号 […] 指定，多个元素使用逗号 , 分隔。<br>创建一个一维数组(即一个向量)语法为:</p>
 <figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">[A,B,C,...]</span><br></pre></td></tr></table></figure>
 <h2 id="创建一维数组"><a href="#创建一维数组" class="headerlink" title="创建一维数组"></a>创建一维数组</h2><figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
 <p>实例：</p>
@@ -997,9 +1443,56 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <p>fill(x,dims…)：一个被值x填充的Array<br><img src="/2023/01/30/julia/image-20230130171920200.png" alt="image-20230130171920200"></p>
 <p>Julia元组</p>
 ]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
       <tags>
-        <tag>编程语言</tag>
+        <tag>julia</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>等价关系、同余、算数基本定理</title>
+    <url>/2023/01/18/%E7%AD%89%E4%BB%B7%E5%85%B3%E7%B3%BB/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>算术基本证明、等价关系、同余的概念</p>
+<span id="more"></span>
+<h2 id="等价关系"><a href="#等价关系" class="headerlink" title="等价关系"></a>等价关系</h2><p><img src="/2023/01/18/%E7%AD%89%E4%BB%B7%E5%85%B3%E7%B3%BB/image-20230224223050878.png" alt="image-20230224223050878"><br><img src="/2023/01/18/%E7%AD%89%E4%BB%B7%E5%85%B3%E7%B3%BB/image-20230224223142072.png" alt="image-20230224223142072"></p>
+<h2 id="同余"><a href="#同余" class="headerlink" title="同余"></a>同余</h2><p><img src="/2023/01/18/%E7%AD%89%E4%BB%B7%E5%85%B3%E7%B3%BB/image-20230224223222576.png" alt="image-20230224223222576"></p>
+<h2 id="基本算数定理"><a href="#基本算数定理" class="headerlink" title="基本算数定理"></a>基本算数定理</h2><p><img src="/2023/01/18/%E7%AD%89%E4%BB%B7%E5%85%B3%E7%B3%BB/image-20230224223251565.png" alt="image-20230224223251565"></p>
+]]></content>
+      <categories>
+        <category>数论</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>最大公约数、最小公倍数及扩展的欧几里得定理</title>
+    <url>/2023/01/16/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>最大公约数、最小公倍数、扩展欧几里得概念及例题</p>
+<span id="more"></span>
+<h2 id="最大公约数"><a href="#最大公约数" class="headerlink" title="最大公约数"></a>最大公约数</h2><p><img src="/2023/01/16/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0/image-20230224222214313.png" alt="image-20230224222214313"><br><img src="/2023/01/16/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0/image-20230224222315322.png" alt="image-20230224222315322"></p>
+<h2 id="欧几里得算法"><a href="#欧几里得算法" class="headerlink" title="欧几里得算法"></a>欧几里得算法</h2><p><img src="/2023/01/16/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0/image-20230224222255480.png" alt="image-20230224222255480"></p>
+<h2 id="最小公倍数"><a href="#最小公倍数" class="headerlink" title="最小公倍数"></a>最小公倍数</h2><p><img src="/2023/01/16/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0/image-20230224222421455.png" alt="image-20230224222421455"></p>
+<h2 id="扩展欧几里得算法"><a href="#扩展欧几里得算法" class="headerlink" title="扩展欧几里得算法"></a>扩展欧几里得算法</h2><p><img src="/2023/01/16/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0/image-20230224222457768.png" alt="image-20230224222457768"><br><img src="/2023/01/16/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0/image-20230224222514728.png" alt="image-20230224222514728"></p>
+]]></content>
+      <categories>
+        <category>数论</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>整除、素数以及模运算</title>
+    <url>/2023/01/15/%E6%95%B4%E9%99%A4/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>整除性的证明和定理</p>
+<span id="more"></span>
+<h2 id="整除性"><a href="#整除性" class="headerlink" title="整除性"></a>整除性</h2><p><img src="/2023/01/15/%E6%95%B4%E9%99%A4/image-20230224212555205.png" alt="image-20230224212555205"></p>
+<h2 id="定理"><a href="#定理" class="headerlink" title="定理"></a>定理</h2><p><img src="/2023/01/15/%E6%95%B4%E9%99%A4/image-20230224212744015.png" alt="image-20230224212744015"></p>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p><img src="/2023/01/15/%E6%95%B4%E9%99%A4/image-20230224212803687.png" alt="image-20230224212803687"><br><img src="/2023/01/15/%E6%95%B4%E9%99%A4/image-20230224215937234.png" alt="image-20230224215937234"></p>
+<h2 id="素数"><a href="#素数" class="headerlink" title="素数"></a>素数</h2><p><img src="/2023/01/15/%E6%95%B4%E9%99%A4/image-20230224220858842.png" alt="image-20230224220858842"></p>
+<p><img src="/2023/01/15/%E6%95%B4%E9%99%A4/image-20230224220948559.png" alt="image-20230224220948559"></p>
+<h2 id="欧几里得定理"><a href="#欧几里得定理" class="headerlink" title="欧几里得定理"></a>欧几里得定理</h2><p><img src="/2023/01/15/%E6%95%B4%E9%99%A4/image-20230224221011817.png" alt="image-20230224221011817"></p>
+<h2 id="模运算"><a href="#模运算" class="headerlink" title="模运算"></a>模运算</h2><p><img src="/2023/01/15/%E6%95%B4%E9%99%A4/image-20230224221823945.png" alt="image-20230224221823945"></p>
+]]></content>
+      <categories>
+        <category>数论</category>
+      </categories>
   </entry>
   <entry>
     <title>DNS劫持</title>
@@ -1017,8 +1510,11 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <p>清楚缓存ipconfig /flushdns<br><img src="/2023/01/04/DNS%E5%8A%AB%E6%8C%81/image-20230104205955172.png" alt="image-20230104205955172"></p>
 <p>攻略<br>1.ip地址   扫描<br>2.缓存    DNS劫持    木马    系统命令</p>
 ]]></content>
+      <categories>
+        <category>web攻防</category>
+      </categories>
       <tags>
-        <tag>网络攻防</tag>
+        <tag>DNS劫持</tag>
       </tags>
   </entry>
   <entry>
@@ -1277,8 +1773,11 @@ S:00011011\ 芯片序列：-1 -1 -1 +1 +1 -1 +1 +1\\T:00101110\ 芯片序列：-
 <p><img src="/2023/01/04/%E9%93%BE%E8%B7%AF%E5%B1%82/image-20230112214111749.png" alt="image-20230112214111749"></p>
 <p>链路层设备一个端口就是一个冲突域。l</p>
 ]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
       <tags>
-        <tag>计算机网络</tag>
+        <tag>计网概念</tag>
       </tags>
   </entry>
   <entry>
@@ -1403,64 +1902,11 @@ S:00011011\ 芯片序列：-1 -1 -1 +1 +1 -1 +1 +1\\T:00101110\ 芯片序列：-
 <p><img src="/2023/01/02/%E7%89%A9%E7%90%86%E5%B1%82/image-20230103212118380-167279267072462.png" alt></p>
 <p>集线器不能分割冲突域——》连在集线器上的工作主机平分带宽</p>
 ]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
       <tags>
-        <tag>计算机网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>体系结构&amp;参考模型</title>
-    <url>/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&amp;%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>OSI参考模型和TCP/IP参考模型</p>
-<span id="more"></span>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231141405853-16727927031211.png" alt></p>
-<p>对等实体之间才有协议，下层为上层提供服务</p>
-<h3 id="分层的基本原则"><a href="#分层的基本原则" class="headerlink" title="分层的基本原则"></a>分层的基本原则</h3><ol>
-<li>各层之间相互独立，每层只实现一种相对独立的功能</li>
-<li>每层之间界面自然清晰，易于理解，互相交流尽可能少</li>
-<li>结构上可分割开。每层都采用最合适的技术来实现</li>
-<li>保持下层对上层的对立性，上层单向使用下层提供的服务</li>
-<li>整个分层结构应该能促进标准化工作</li>
-</ol>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231142532860-16727928089353.png" alt></p>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231142748644-16727927211942.png" style="zoom: 67%;"><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231142709447.png" style="zoom:80%;"></p>
-<h2 id="概念总结"><a href="#概念总结" class="headerlink" title="概念总结"></a>概念总结</h2><ul>
-<li>网络体系结构是从<strong>功能</strong>上描述计算机网络结构</li>
-<li>计算机网络体系结构简称网络体系结构是<strong>分层结构</strong></li>
-<li>每层遵守某个/些<strong>网络协议</strong>以完成本层功能</li>
-<li>计算机网络体系结构是计算机网络的各层及其协议的集合</li>
-<li>第n层在向n+1层提供服务时，此服务不仅包含第n层本身的功能，还包含由下层服务提供的功能</li>
-<li>仅仅在相邻层间有接口，且所提供的服务的具体实现细节对上一层完全屏蔽（透明）</li>
-<li>体系结构是<strong>抽象</strong>的，而实现是指能运行的一些软件和硬件</li>
-</ul>
-<h1 id="参考模型"><a href="#参考模型" class="headerlink" title="参考模型"></a>参考模型</h1><h3 id="7层OSI参考模型"><a href="#7层OSI参考模型" class="headerlink" title="7层OSI参考模型"></a>7层OSI参考模型</h3><p>目标：支持异构网络系统的互联互通</p>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231165655402-16727928342534.png" alt="image-20221231165655402" style="zoom:80%;"></p>
-<h3 id="ISO-OSI参考模型解释通信过程"><a href="#ISO-OSI参考模型解释通信过程" class="headerlink" title="ISO/OSI参考模型解释通信过程"></a>ISO/OSI参考模型解释通信过程</h3><p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20230102091707835-16727928362615.png" alt="image-20230102091707835"></p>
-<h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><p>所有能和用户交互产生网络流量的程序（eg：qq，163邮箱）</p>
-<h4 id="典型应用层服务："><a href="#典型应用层服务：" class="headerlink" title="典型应用层服务："></a>典型应用层服务：</h4><p>文件传输(FTP)，电子邮件(SMTP)，万维网(HTTP)</p>
-<h3 id="表示层"><a href="#表示层" class="headerlink" title="表示层"></a>表示层</h3><p>用于处理在两个通信系统中交换信息的表示方式（语法和语义）</p>
-<p>功能一：数据格式变换<br>功能二：数据加密解密<br>功能三：数据压缩和恢复</p>
-<h3 id="会话层"><a href="#会话层" class="headerlink" title="会话层"></a>会话层</h3><p>向表示层实体/用户进程提供建立连接并在连接上有序的传输数据。<br>这是绘画，也是<strong>建立同步</strong>（SYN）</p>
-<p>功能一：建立、管理、终止会话<br>功能二：使用校验点可使会话在通信失效时从校验点/同步点继续回复通信，实现数据同步。<br>——适用于传输大文件</p>
-<h3 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h3><p>负责主机中两个进程的通信，即端到端的通信。传输单位是报文段或用户数据报。</p>
-<p>功能一：可靠传输、不可靠传输<br>功能二：差错控制<br>功能三：流量控制<br>功能四：复用分用</p>
-<p>主要协议：TCP，UDP</p>
-<h3 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h3><p>主要任务是把分组从源端传到目的端，为分组交换网上的不同主机提供通信服务。网络层成本传输单位是数据报</p>
-<p>功能一：路由选择<br>功能二：流量控制<br>功能三：差错控制<br>功能四：拥塞控制</p>
-<p>主要协议：IP、IPX、ICMP</p>
-<h3 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h3><p>主要任务是把网络层传下来的数据报组装成帧。<br>数据链路层的传输单位是帧</p>
-<p>功能一：成帧（定义帧的开始和结束）<br>功能二：差错控制<br>功能三：流量控制<br>功能四：访问（接入）控制：控制对信道的访问</p>
-<p>主要协议：PPP</p>
-<h3 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h3><p>主要任务是在物理媒体上实现比特流的透明传输<br>物理层传输单位是比特</p>
-<p>透明传输：指不管所传数据是什么样的比特组合，都应当能够在链路上传送</p>
-<p>功能一：定义接口特性<br>功能二：定义传输模式（单工、半双工、双工）<br>功能三：定义传输速率<br>功能四：比特同步<br>功能五：比特编码</p>
-<p>主要协议：Rj45、802.3</p>
-<h2 id="TCP-IP参考模型"><a href="#TCP-IP参考模型" class="headerlink" title="TCP/IP参考模型"></a>TCP/IP参考模型</h2><p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20230102153143474-16727928405746.png" alt="image-20230102153143474"></p>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20230102153652377-16727928423557.png" alt="image-20230102153652377"></p>
-<h2 id="5层参考模型"><a href="#5层参考模型" class="headerlink" title="5层参考模型"></a>5层参考模型</h2><p>应用层：支持各种网络应用————FTP、SMTP、HTTP<br>传输层：进程-进程的数据传输————TCP、UDP<br>网络层：源主机到目的主机的数据分组路由与转发————IP、ICMP、OSPF<br>数据链路层：把网络层传下来的数据报组装成帧————Ethernet、PPP<br>物理层：比特传输</p>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20230102154506552-16727928450328.png" alt="image-20230102154506552"></p>
-]]></content>
-      <tags>
-        <tag>计算机网络</tag>
+        <tag>计网概念</tag>
       </tags>
   </entry>
   <entry>
@@ -1515,8 +1961,70 @@ S:00011011\ 芯片序列：-1 -1 -1 +1 +1 -1 +1 +1\\T:00101110\ 芯片序列：-
 <h2 id="5层参考模型"><a href="#5层参考模型" class="headerlink" title="5层参考模型"></a>5层参考模型</h2><p>应用层：支持各种网络应用————FTP、SMTP、HTTP<br>传输层：进程-进程的数据传输————TCP、UDP<br>网络层：源主机到目的主机的数据分组路由与转发————IP、ICMP、OSPF<br>数据链路层：把网络层传下来的数据报组装成帧————Ethernet、PPP<br>物理层：比特传输</p>
 <p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20230102154506552-16727928450328.png" alt="image-20230102154506552"></p>
 ]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
       <tags>
-        <tag>计算机网络</tag>
+        <tag>计网概念</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>体系结构&amp;参考模型</title>
+    <url>/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&amp;%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>OSI参考模型和TCP/IP参考模型</p>
+<span id="more"></span>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231141405853-16727927031211.png" alt></p>
+<p>对等实体之间才有协议，下层为上层提供服务</p>
+<h3 id="分层的基本原则"><a href="#分层的基本原则" class="headerlink" title="分层的基本原则"></a>分层的基本原则</h3><ol>
+<li>各层之间相互独立，每层只实现一种相对独立的功能</li>
+<li>每层之间界面自然清晰，易于理解，互相交流尽可能少</li>
+<li>结构上可分割开。每层都采用最合适的技术来实现</li>
+<li>保持下层对上层的对立性，上层单向使用下层提供的服务</li>
+<li>整个分层结构应该能促进标准化工作</li>
+</ol>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231142532860-16727928089353.png" alt></p>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231142748644-16727927211942.png" style="zoom: 67%;"><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231142709447.png" style="zoom:80%;"></p>
+<h2 id="概念总结"><a href="#概念总结" class="headerlink" title="概念总结"></a>概念总结</h2><ul>
+<li>网络体系结构是从<strong>功能</strong>上描述计算机网络结构</li>
+<li>计算机网络体系结构简称网络体系结构是<strong>分层结构</strong></li>
+<li>每层遵守某个/些<strong>网络协议</strong>以完成本层功能</li>
+<li>计算机网络体系结构是计算机网络的各层及其协议的集合</li>
+<li>第n层在向n+1层提供服务时，此服务不仅包含第n层本身的功能，还包含由下层服务提供的功能</li>
+<li>仅仅在相邻层间有接口，且所提供的服务的具体实现细节对上一层完全屏蔽（透明）</li>
+<li>体系结构是<strong>抽象</strong>的，而实现是指能运行的一些软件和硬件</li>
+</ul>
+<h1 id="参考模型"><a href="#参考模型" class="headerlink" title="参考模型"></a>参考模型</h1><h3 id="7层OSI参考模型"><a href="#7层OSI参考模型" class="headerlink" title="7层OSI参考模型"></a>7层OSI参考模型</h3><p>目标：支持异构网络系统的互联互通</p>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20221231165655402-16727928342534.png" alt="image-20221231165655402" style="zoom:80%;"></p>
+<h3 id="ISO-OSI参考模型解释通信过程"><a href="#ISO-OSI参考模型解释通信过程" class="headerlink" title="ISO/OSI参考模型解释通信过程"></a>ISO/OSI参考模型解释通信过程</h3><p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20230102091707835-16727928362615.png" alt="image-20230102091707835"></p>
+<h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><p>所有能和用户交互产生网络流量的程序（eg：qq，163邮箱）</p>
+<h4 id="典型应用层服务："><a href="#典型应用层服务：" class="headerlink" title="典型应用层服务："></a>典型应用层服务：</h4><p>文件传输(FTP)，电子邮件(SMTP)，万维网(HTTP)</p>
+<h3 id="表示层"><a href="#表示层" class="headerlink" title="表示层"></a>表示层</h3><p>用于处理在两个通信系统中交换信息的表示方式（语法和语义）</p>
+<p>功能一：数据格式变换<br>功能二：数据加密解密<br>功能三：数据压缩和恢复</p>
+<h3 id="会话层"><a href="#会话层" class="headerlink" title="会话层"></a>会话层</h3><p>向表示层实体/用户进程提供建立连接并在连接上有序的传输数据。<br>这是绘画，也是<strong>建立同步</strong>（SYN）</p>
+<p>功能一：建立、管理、终止会话<br>功能二：使用校验点可使会话在通信失效时从校验点/同步点继续回复通信，实现数据同步。<br>——适用于传输大文件</p>
+<h3 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h3><p>负责主机中两个进程的通信，即端到端的通信。传输单位是报文段或用户数据报。</p>
+<p>功能一：可靠传输、不可靠传输<br>功能二：差错控制<br>功能三：流量控制<br>功能四：复用分用</p>
+<p>主要协议：TCP，UDP</p>
+<h3 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h3><p>主要任务是把分组从源端传到目的端，为分组交换网上的不同主机提供通信服务。网络层成本传输单位是数据报</p>
+<p>功能一：路由选择<br>功能二：流量控制<br>功能三：差错控制<br>功能四：拥塞控制</p>
+<p>主要协议：IP、IPX、ICMP</p>
+<h3 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h3><p>主要任务是把网络层传下来的数据报组装成帧。<br>数据链路层的传输单位是帧</p>
+<p>功能一：成帧（定义帧的开始和结束）<br>功能二：差错控制<br>功能三：流量控制<br>功能四：访问（接入）控制：控制对信道的访问</p>
+<p>主要协议：PPP</p>
+<h3 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h3><p>主要任务是在物理媒体上实现比特流的透明传输<br>物理层传输单位是比特</p>
+<p>透明传输：指不管所传数据是什么样的比特组合，都应当能够在链路上传送</p>
+<p>功能一：定义接口特性<br>功能二：定义传输模式（单工、半双工、双工）<br>功能三：定义传输速率<br>功能四：比特同步<br>功能五：比特编码</p>
+<p>主要协议：Rj45、802.3</p>
+<h2 id="TCP-IP参考模型"><a href="#TCP-IP参考模型" class="headerlink" title="TCP/IP参考模型"></a>TCP/IP参考模型</h2><p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20230102153143474-16727928405746.png" alt="image-20230102153143474"></p>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20230102153652377-16727928423557.png" alt="image-20230102153652377"></p>
+<h2 id="5层参考模型"><a href="#5层参考模型" class="headerlink" title="5层参考模型"></a>5层参考模型</h2><p>应用层：支持各种网络应用————FTP、SMTP、HTTP<br>传输层：进程-进程的数据传输————TCP、UDP<br>网络层：源主机到目的主机的数据分组路由与转发————IP、ICMP、OSPF<br>数据链路层：把网络层传下来的数据报组装成帧————Ethernet、PPP<br>物理层：比特传输</p>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20230102154506552-16727928450328.png" alt="image-20230102154506552"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>计网概念</tag>
       </tags>
   </entry>
   <entry>
@@ -1547,8 +2055,11 @@ RTT包括\begin{cases}往返传播时延=传播时延*2\\末端处理时间\end{
 <p>eg：假定网络利用率达到了80%，则估算现在的网络时延是最小值的___？<br>利用率有信道利用率和网络利用率两种。信道利用率指出某信道有百分之几百的时间是被利用的（有数据通过）。完全空闲的信道的利用率是零。网络利用率则是全网络的信道利用率的加权平均值。信道利用率并非越高越好。这是因为，根据排队的理论，当某信道的利用率增大时，该信道引起的时延也就迅速增加。当网络的通信量很少时，网络产生的时延并不大。但在网络通信量不断增大的情况下，由于分组在网络结点（路由器或结点交换机）进行处理时需要排队等候，因此网络引起的时延就会增大。如果令D0表示网络空闲时的时延，D表示网络当前的时延，那么适当的假定条件下，可以用下面的简单公式来表示D，D0和利用率U之间的关系:<br>D=D0/(1-U)那么,<br>网络时延最小值就是空闲时为D0;<br>当网络利用率达80%,则D=D0/(1-80%)=D0/0.2=5D0;</p>
 <p>所以是最小值的5倍</p>
 ]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
       <tags>
-        <tag>计算机网络</tag>
+        <tag>计网概念</tag>
       </tags>
   </entry>
   <entry>
@@ -1591,16 +2102,16 @@ RTT包括\begin{cases}往返传播时延=传播时延*2\\末端处理时间\end{
 <h3 id="标准化工作的相关组织"><a href="#标准化工作的相关组织" class="headerlink" title="标准化工作的相关组织"></a>标准化工作的相关组织</h3><p>国际标准化组织ISO：OSI模型、HDLC协议<br>国际电信联盟ITU：制定通信规则<br>电气和电子工程师协会IEEE：学术机构、IEEE802系列标准、5G<br>Internet工程任务组IETF：负责因特网相关标准的制定</p>
 ]]></content>
       <categories>
-        <category>计网</category>
+        <category>计算计网络</category>
       </categories>
       <tags>
-        <tag>计算机网络</tag>
+        <tag>计网概念</tag>
       </tags>
   </entry>
   <entry>
     <title>thinkphp5漏洞复刻</title>
     <url>/2022/12/30/thinkphp5%E6%BC%8F%E6%B4%9E%E5%A4%8D%E5%88%BB/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>s对于thinkphp5经典漏洞的复现</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>对于thinkphp5经典漏洞的复现</p>
 <span id="more"></span>
 <p><img src="/2022/12/30/thinkphp5%E6%BC%8F%E6%B4%9E%E5%A4%8D%E5%88%BB/blog\source\_posts\thinkphp5\1.png" alt></p>
 <p><img src="/2022/12/30/thinkphp5%E6%BC%8F%E6%B4%9E%E5%A4%8D%E5%88%BB/blog\source\_posts\thinkphp5\2.png" alt></p>
@@ -1614,15 +2125,12 @@ RTT包括\begin{cases}往返传播时延=传播时延*2\\末端处理时间\end{
 <p><img src="/2022/12/30/thinkphp5%E6%BC%8F%E6%B4%9E%E5%A4%8D%E5%88%BB/blog\source\_posts\thinkphp5\10.png" alt></p>
 <p><img src="/2022/12/30/thinkphp5%E6%BC%8F%E6%B4%9E%E5%A4%8D%E5%88%BB/blog\source\_posts\thinkphp5\11.png" alt></p>
 ]]></content>
+      <categories>
+        <category>web攻防</category>
+      </categories>
       <tags>
-        <tag>网络攻防</tag>
+        <tag>文件上传漏洞</tag>
       </tags>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2022/12/26/%E6%95%B0%E8%AE%BA/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h1 id="导论"><a href="#导论" class="headerlink" title="导论"></a>导论</h1><h2 id="数论"><a href="#数论" class="headerlink" title="数论"></a>数论</h2><p>自然数：正整数（0没有统一标准）</p>
-]]></content>
   </entry>
   <entry>
     <title>计算机系统的多级层次结构及性能指标</title>
@@ -1641,8 +2149,11 @@ RTT包括\begin{cases}往返传播时延=传播时延*2\\末端处理时间\end{
 <p>基准程序：跑分软件</p>
 <h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><p><img src="/2022/08/24/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%A4%9A%E7%BA%A7%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%8F%8A%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/image-20220905154407701.png" alt><br><img src="/2022/08/24/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%A4%9A%E7%BA%A7%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%8F%8A%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/1.png" alt><img src="/2022/08/24/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%A4%9A%E7%BA%A7%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%8F%8A%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/image-20220905154620242.png" alt></p>
 ]]></content>
+      <categories>
+        <category>计算机组成</category>
+      </categories>
       <tags>
-        <tag>计算机组成</tag>
+        <tag>计组概念</tag>
       </tags>
   </entry>
   <entry>
@@ -1664,8 +2175,10 @@ RTT包括\begin{cases}往返传播时延=传播时延*2\\末端处理时间\end{
 <h3 id="十字链表"><a href="#十字链表" class="headerlink" title="十字链表"></a>十字链表<img src="/2022/08/23/%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/image-20220806140152515.png" alt="image-20220806140152515"></h3><h3 id="邻接多重表"><a href="#邻接多重表" class="headerlink" title="邻接多重表"></a>邻接多重表</h3><p>邻接表存储无向图：每条边对于两份冗余数据，删除，删除顶点、边不方便<br><img src="/2022/08/23/%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/image-20220806140736457.png" alt="image-20220806140736457"><br><img src="/2022/08/23/%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/image-20220806140750826.png" alt="image-20220806140750826"><br>空间复杂度：O(|V|+|E|)</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><img src="/2022/08/23/%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/image-20220806141213425.png" alt="image-20220806141213425"></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>图</tag>
       </tags>
   </entry>
@@ -1681,8 +2194,11 @@ RTT包括\begin{cases}往返传播时延=传播时延*2\\末端处理时间\end{
 <h3 id="计算机的工作过程"><a href="#计算机的工作过程" class="headerlink" title="计算机的工作过程"></a>计算机的工作过程</h3><p><img src="/2022/08/23/%E7%A1%AC%E4%BB%B6%E5%8F%8A%E5%B7%A5%E4%BD%9C%E5%B7%A5%E7%A8%8B/image-20220905093247087.png" style="zoom:80%;"><img src="/2022/08/23/%E7%A1%AC%E4%BB%B6%E5%8F%8A%E5%B7%A5%E4%BD%9C%E5%B7%A5%E7%A8%8B/image-20220905093330885-16633217362011.png" alt><img src="/2022/08/23/%E7%A1%AC%E4%BB%B6%E5%8F%8A%E5%B7%A5%E4%BD%9C%E5%B7%A5%E7%A8%8B/image-20220905094001033.png" alt><br>000001：取数指令<br>000010：存数指令<br>000011：加法指令<br>000100：乘法指令<br>000110：停机</p>
 <p><img src="/2022/08/23/%E7%A1%AC%E4%BB%B6%E5%8F%8A%E5%B7%A5%E4%BD%9C%E5%B7%A5%E7%A8%8B/image-20220905095420225.png" alt></p>
 ]]></content>
+      <categories>
+        <category>计算机组成</category>
+      </categories>
       <tags>
-        <tag>计算机组成</tag>
+        <tag>计组概念</tag>
       </tags>
   </entry>
   <entry>
@@ -1697,8 +2213,10 @@ RTT包括\begin{cases}往返传播时延=传播时延*2\\末端处理时间\end{
 <h3 id="AddEdge-G-x-y"><a href="#AddEdge-G-x-y" class="headerlink" title="AddEdge(G,x,y)"></a>AddEdge(G,x,y)</h3><p>若无向边（x,y)或者有向边<x,y>不存在，则向图G中添加该边<br>邻接表可以使用头插法，时间复杂度为O(1)</x,y></p>
 <h3 id="FirstNeighbor-G-x"><a href="#FirstNeighbor-G-x" class="headerlink" title="FirstNeighbor(G,x)"></a>FirstNeighbor(G,x)</h3><p>求图G中顶点x的第一个邻接点，若有则返回顶点号，没有返回-1</p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>图</tag>
       </tags>
   </entry>
@@ -1722,8 +2240,10 @@ n个顶点，e条边\\无向图：\sum_{i=1}^{n}TD(v_i)=2e\\有向图：\sum_{i=
 <h3 id="边的权、带权图-网"><a href="#边的权、带权图-网" class="headerlink" title="边的权、带权图/网"></a>边的权、带权图/网</h3><p>边的权：每条边都可以标上具用某种含义的数值，该数值称为该边的<strong>权值</strong>。<br>带权图/网：边上带有权值的图称为<strong>带权图</strong>，也称<strong>网</strong><br>带权路径长度：当图是带权图时，一条<strong>路径上所有边的权值之和</strong></p>
 <h3 id="特殊形态的图"><a href="#特殊形态的图" class="headerlink" title="特殊形态的图"></a>特殊形态的图</h3><p><img src="/2022/08/22/%E5%9B%BE/image-20220803225437195.png" alt><br><img src="/2022/08/22/%E5%9B%BE/image-20220803225522718.png" alt><br><img src="/2022/08/22/%E5%9B%BE/image-20220803225858050.png" alt><br>树是连通图，有向树并不是强连通图</p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>图</tag>
       </tags>
   </entry>
@@ -1752,8 +2272,10 @@ A[0][3]=A[0][2]+A[2][3]已经考虑到了V_0->V_2->V_1->V_3的路程</script><p>
 <h4 id="如何通过path矩阵寻找最短路径"><a href="#如何通过path矩阵寻找最短路径" class="headerlink" title="如何通过path矩阵寻找最短路径"></a>如何通过path矩阵寻找最短路径</h4><h4 id><a href="#" class="headerlink" title></a><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822165717520.png" alt></h4><p>弗洛伊德算法可以用于负权值带权图，但无法解决带有负权回路的图，这种图可能没有最短路径，如：<img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822170209802.png" alt></p>
 <p>总结<br><img src="/2022/08/22/Floyd%E7%AE%97%E6%B3%95/image-20220822170311837.png" alt></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>图</tag>
         <tag>算法</tag>
       </tags>
@@ -1777,8 +2299,10 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 时间复杂度：O(n^2)即O(|V|^2)</script><p>注意：Dijkstra算法不适用于有负权值的带权图</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><img src="/2022/08/22/Dijkstra%E7%AE%97%E6%B3%95/image-20220822170311837-16611674133291.png" alt></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>图</tag>
         <tag>算法</tag>
       </tags>
@@ -1799,8 +2323,10 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <p><img src="/2022/08/22/BFS%E7%AE%97%E6%B3%95/image-20220822153522102.png" alt></p>
 <p>三种算法对比<br><img src="/2022/08/22/BFS%E7%AE%97%E6%B3%95/image-20220822170311837.png" alt></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>图</tag>
         <tag>算法</tag>
       </tags>
@@ -1819,8 +2345,10 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <script type="math/tex; mode=display">
 共执行e轮，每轮判断两个顶点是否属于同一集合，需要O(log_2e)，所以总时间复杂度为O(elog_2e)</script><p>——————《算法导论》</p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>图</tag>
         <tag>算法</tag>
       </tags>
@@ -1846,8 +2374,10 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <p><img src="/2022/08/22/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/image-20220822113501088.png" alt><br><img src="/2022/08/22/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/image-20220822113548936.png" alt="image-20220822113548936"></p>
 <p><img src="/2022/08/22/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/image-20220822113606400.png" alt><img src="/2022/08/22/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/image-20220822113614038.png" alt></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>图</tag>
         <tag>算法</tag>
       </tags>
@@ -1872,9 +2402,11 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <h3 id="哈夫曼编码"><a href="#哈夫曼编码" class="headerlink" title="哈夫曼编码"></a>哈夫曼编码</h3><p>固定长度编码——每个字都用相等长度的二进制位表示（ASCII编码）</p>
 <p>可变长度编码<img src="/2022/08/21/%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/image-20220710003458543.png" alt><br>前缀编码：没有一个编码是另一个编码的前缀</p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+        <category>密码学</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
-        <tag>密码学</tag>
         <tag>树与二叉树</tag>
       </tags>
   </entry>
@@ -1892,8 +2424,10 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <script type="math/tex; mode=display">
 尽可能达到O(log_2n)</script><p>查找失败的平均查找长度<br><img src="/2022/08/21/%E4%BA%8C%E5%8F%89%E6%8E%92%E5%BA%8F%E6%A0%91/image-20220709234322040.png" alt></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>树与二叉树</tag>
       </tags>
   </entry>
@@ -1912,8 +2446,10 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <h3 id="森林的中序遍历"><a href="#森林的中序遍历" class="headerlink" title="森林的中序遍历"></a>森林的中序遍历</h3><p><img src="/2022/08/19/%E6%A0%91%E5%92%8C%E6%A3%AE%E6%9E%97%E7%9A%84%E9%81%8D%E5%8E%86/image-20220709231520092.png" alt></p>
 <p>可以先转换成二叉树，在对二叉树进行中序遍历<br><img src="/2022/08/19/%E6%A0%91%E5%92%8C%E6%A3%AE%E6%9E%97%E7%9A%84%E9%81%8D%E5%8E%86/image-20220709231626512.png" alt></p>
 <h2 id><a href="#" class="headerlink" title=" "></a> </h2>]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>树与二叉树</tag>
       </tags>
   </entry>
@@ -1936,8 +2472,10 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <h3 id="字段值"><a href="#字段值" class="headerlink" title="字段值"></a>字段值</h3><figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">查询<span class="keyword">user</span>字段的数据</span><br><span class="line"><span class="number">1</span>’<span class="keyword">and</span> <span class="keyword">if</span>((<span class="keyword">select</span> count(*) <span class="keyword">from</span> users)=X,<span class="number">1</span>,sleep(<span class="number">10</span>))#</span><br><span class="line">查询第一个数据的长度</span><br><span class="line"><span class="number">1</span>’<span class="keyword">and</span> <span class="keyword">if</span>(length(substr((<span class="keyword">select</span> <span class="keyword">user</span> <span class="keyword">from</span> users <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>))=X,<span class="number">1</span>,sleep(<span class="number">10</span>))#</span><br><span class="line">爆出第一个数据值</span><br><span class="line"><span class="number">1</span>’<span class="keyword">and</span> <span class="keyword">if</span>(ascii(substr((<span class="keyword">select</span> <span class="keyword">user</span> <span class="keyword">from</span> users <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>,<span class="number">1</span>))=X,<span class="number">1</span>,sleep(<span class="number">10</span>))#</span><br></pre></td></tr></table></figure>
 <p>可以看到时间盲注相比于布尔盲注只是多了一个if函数来执行sleep函数代替回显。</p>
 ]]></content>
+      <categories>
+        <category>web攻防</category>
+      </categories>
       <tags>
-        <tag>网络攻防</tag>
         <tag>sql注入</tag>
       </tags>
   </entry>
@@ -1970,10 +2508,11 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Check Anti-CSRF token</span></span><br><span class="line">    <span class="title function_ invoke__">checkToken</span>( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;user_token&#x27;</span> ], <span class="variable">$_SESSION</span>[ <span class="string">&#x27;session_token&#x27;</span> ], <span class="string">&#x27;index.php&#x27;</span> );</span><br></pre></td></tr></table></figure>
 <p>加入Anti-CSRF token防护CSRF攻击</p>
 ]]></content>
+      <categories>
+        <category>web攻防</category>
+      </categories>
       <tags>
-        <tag>网络攻防</tag>
-        <tag>工具</tag>
-        <tag>文件上传</tag>
+        <tag>文件上传漏洞,工具]</tag>
       </tags>
   </entry>
   <entry>
@@ -1988,8 +2527,10 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <h3 id="孩子兄弟表示法"><a href="#孩子兄弟表示法" class="headerlink" title="孩子兄弟表示法"></a>孩子兄弟表示法</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">CSNode</span>&#123;</span></span><br><span class="line">    ElemType data;   <span class="comment">//数据域</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">CSNode</span> *<span class="title">firstchild</span>,*<span class="title">nextsibling</span>;</span>  <span class="comment">//第一个孩子和右兄弟指针</span></span><br><span class="line">&#125;CSNode,*CSTree</span><br></pre></td></tr></table></figure>
 <h3 id="森林和二叉树的转换"><a href="#森林和二叉树的转换" class="headerlink" title="森林和二叉树的转换"></a>森林和二叉树的转换</h3><p><img src="/2022/08/18/%E6%A0%91%E7%9A%84%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84/image-20220709213548106.png" alt><br><img src="/2022/08/18/%E6%A0%91%E7%9A%84%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84/image-20220709213700619.png" alt="image-20220709213700619"></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>树与二叉树</tag>
       </tags>
   </entry>
@@ -2012,8 +2553,10 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <p>p为根节点则没有后序后继</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><img src="/2022/08/18/%E7%BA%BF%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91/image-20220709211007944.png" alt></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>树与二叉树</tag>
       </tags>
   </entry>
@@ -2047,7 +2590,6 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
         <category>web攻防</category>
       </categories>
       <tags>
-        <tag>网络攻防</tag>
         <tag>SQL注入</tag>
       </tags>
   </entry>
@@ -2073,8 +2615,10 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//二叉树的结点（链式存储）</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">BiTNode</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">BiTNode</span> *<span class="title">lchild</span>,*<span class="title">rchild</span>;</span></span><br><span class="line">&#125;BiTNode,*BiTree;</span><br><span class="line"></span><br><span class="line"><span class="comment">//链式队列结点</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">LinkNode</span>&#123;</span></span><br><span class="line">    BiTNode * data;           <span class="comment">//存指针而不是结点来节省空间</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">LinkNode</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;LinkNode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    LinkNode *front,*rear;<span class="comment">//队头队尾指针</span></span><br><span class="line">&#125;LinkQueue;</span><br><span class="line"></span><br><span class="line"><span class="comment">//层序遍历</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">LevelOrder</span><span class="params">(BiTree T)</span>&#123;</span><br><span class="line">    LinkQueue Q;</span><br><span class="line">    InitQueue(Q);  <span class="comment">//初始化</span></span><br><span class="line">    BiTree p;</span><br><span class="line">    EnQueue(Q,T);    <span class="comment">//将根节点入队</span></span><br><span class="line">    <span class="keyword">while</span>(!IsEmpty(Q))&#123;</span><br><span class="line">        DeQueue(Q,p);   <span class="comment">//队头结点出队</span></span><br><span class="line">        visit(p);       <span class="comment">//访问出队结点</span></span><br><span class="line">        <span class="keyword">if</span>(p-&gt;lchild!=null)</span><br><span class="line">            EnQueue(Q,p-&gt;lchild);</span><br><span class="line">        <span class="keyword">if</span>(p-&gt;rchild!=null)</span><br><span class="line">            EnQueue(Q.p-&gt;rchild);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="由遍历序列构造二叉树"><a href="#由遍历序列构造二叉树" class="headerlink" title="由遍历序列构造二叉树"></a>由遍历序列构造二叉树</h2><p>给定一个前中后序遍历序列可能对应多种二叉树<br>给定中序加一种其他序（前序后序层序）对应唯一二叉树</p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>树与二叉树</tag>
       </tags>
   </entry>
@@ -2105,8 +2649,10 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <h2 id="impossible级别"><a href="#impossible级别" class="headerlink" title="impossible级别"></a>impossible级别</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_GET</span>[ <span class="string">&#x27;Submit&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Check Anti-CSRF token</span></span><br><span class="line">    <span class="title function_ invoke__">checkToken</span>( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;user_token&#x27;</span> ], <span class="variable">$_SESSION</span>[ <span class="string">&#x27;session_token&#x27;</span> ], <span class="string">&#x27;index.php&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$id</span> = <span class="variable">$_GET</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Was a number entered?</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">is_numeric</span>( <span class="variable">$id</span> )) &#123;</span><br><span class="line">        <span class="comment">// Check the database</span></span><br><span class="line">        <span class="variable">$data</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">prepare</span>( <span class="string">&#x27;SELECT first_name, last_name FROM users WHERE user_id = (:id) LIMIT 1;&#x27;</span> );</span><br><span class="line">        <span class="variable">$data</span>-&gt;<span class="title function_ invoke__">bindParam</span>( <span class="string">&#x27;:id&#x27;</span>, <span class="variable">$id</span>, PDO::<span class="variable constant_">PARAM_INT</span> );</span><br><span class="line">        <span class="variable">$data</span>-&gt;<span class="title function_ invoke__">execute</span>();</span><br><span class="line">        <span class="variable">$row</span> = <span class="variable">$data</span>-&gt;<span class="title function_ invoke__">fetch</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Make sure only 1 result is returned</span></span><br><span class="line">        <span class="keyword">if</span>( <span class="variable">$data</span>-&gt;<span class="title function_ invoke__">rowCount</span>() == <span class="number">1</span> ) &#123;</span><br><span class="line">            <span class="comment">// Get values</span></span><br><span class="line">            <span class="variable">$first</span> = <span class="variable">$row</span>[ <span class="string">&#x27;first_name&#x27;</span> ];</span><br><span class="line">            <span class="variable">$last</span>  = <span class="variable">$row</span>[ <span class="string">&#x27;last_name&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Feedback for end user</span></span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Generate Anti-CSRF token</span></span><br><span class="line"><span class="title function_ invoke__">generateSessionToken</span>();</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>和暴力破解的impossible一样都使用了PDO技术，划清了代码与数据的界限，有效防御sql注入，同时只有返回查询的结果数量为1时才会成功输出，而Anti-CSRFtoken的加入进一步提高了安全性</p>
 ]]></content>
+      <categories>
+        <category>web攻防</category>
+      </categories>
       <tags>
-        <tag>网络攻防</tag>
         <tag>sql注入</tag>
       </tags>
   </entry>
@@ -2128,8 +2674,10 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <h2 id="森林"><a href="#森林" class="headerlink" title="森林"></a>森林</h2><p>森林是m棵互不相交的树的集合（m可为0，表示空森林）</p>
 <h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><p>结点数=总度数+1<br><img src="/2022/08/16/%E6%A0%91%E5%92%8C%E6%A3%AE%E6%9E%97/image-20220701140810203.png" alt><br><img src="/2022/08/16/%E6%A0%91%E5%92%8C%E6%A3%AE%E6%9E%97/image-20220701140849174.png" alt><br><img src="/2022/08/16/%E6%A0%91%E5%92%8C%E6%A3%AE%E6%9E%97/image-20220701140928499.png" alt><br><img src="/2022/08/16/%E6%A0%91%E5%92%8C%E6%A3%AE%E6%9E%97/image-20220701141014648.png" alt><br><img src="/2022/08/16/%E6%A0%91%E5%92%8C%E6%A3%AE%E6%9E%97/image-20220701141202675.png" alt></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>树与二叉树</tag>
       </tags>
   </entry>
@@ -2158,10 +2706,11 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <p>第二个字符不匹配时，next[2]=1</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">get_next</span><span class="params">(SString S,SString T,<span class="type">int</span> *next)</span>&#123;</span><br><span class="line">    next[<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">    next[<span class="number">2</span>]=<span class="number">1</span>;</span><br><span class="line">    length=<span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">3</span>;i&lt;=T.length;i++)&#123;</span><br><span class="line">        <span class="type">int</span> j=i;</span><br><span class="line">        <span class="keyword">while</span>(j&gt;<span class="number">2</span> &amp;&amp; T.ch[i<span class="number">-1</span>]!=T.ch[j<span class="number">-2</span>])&#123;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(T.ch[i<span class="number">-1</span>]=T.ch[j<span class="number">-1</span>])&#123;</span><br><span class="line">            length++;</span><br><span class="line">            i--,j--;</span><br><span class="line">        &#125;</span><br><span class="line">        next[i]=length+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
-        <tag>算法</tag>
-        <tag>串</tag>
+        <tag>串，算法</tag>
       </tags>
   </entry>
   <entry>
@@ -2188,8 +2737,10 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <p>我们可以看到他同时提交了四个参数usename,password,login,user_token<br><img src="/2022/08/16/force/image-20220816163704341.png" alt><br>爆破走起，参数调整准备轰炸（为了节约时间没有导入大数据字典)<br><img src="/2022/08/16/force/image-20220817100950217.png" alt><br><img src="/2022/08/16/force/image-20220817101005531.png" alt><br>此处一串符号为options中gerp-extract选入的token值<br><img src="/2022/08/16/force/image-20220817101118814.png" alt><br>上下文不照是因为又开了一个三位爆破的进程在运行笛卡尔积情况下的爆破，所以是一个新的请求位置就是这个位置。<br>找最与众不同的那个<br><img src="/2022/08/16/force/image-20220817101411420.png" alt><br><img src="/2022/08/16/force/image-20220817101438555.png" alt><br>成功登录</p>
 <h2 id="impossible级别"><a href="#impossible级别" class="headerlink" title="impossible级别"></a>impossible级别</h2><p>相比于high级别主要多了以下代码<br><img src="/2022/08/16/force/image-20220817102357929.png" alt><br>每登陆失败三次就要等15s钟<br><img src="/2022/08/16/force/image-20220817102441140.png" alt><br><img src="/2022/08/16/force/image-20220817102505788.png" alt><br><img src="/2022/08/16/force/image-20220817102543236.png" alt><br><img src="/2022/08/16/force/image-20220817102602350.png" alt><br>采用了更为安全的PDO机制防御sql注入</p>
 ]]></content>
+      <categories>
+        <category>web攻防</category>
+      </categories>
       <tags>
-        <tag>web攻防</tag>
         <tag>暴力破解</tag>
       </tags>
   </entry>
@@ -2215,8 +2766,10 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <p><img src="/2022/08/15/%E4%B8%B2%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/image-20220604172735794.png" style="zoom:67%;"></p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">Index</span><span class="params">(SString S,SString T)</span>&#123;</span><br><span class="line">    <span class="type">int</span> i=<span class="number">1</span>,n=S.length,m=T.length;</span><br><span class="line">    SString sub;</span><br><span class="line">    <span class="keyword">while</span>(i&lt;=n-m+<span class="number">1</span>)&#123;</span><br><span class="line">        SubString(sub,S,i,m);</span><br><span class="line">        <span class="keyword">if</span>(StrCompare(sub,T)!=<span class="number">0</span>)</span><br><span class="line">            i++;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>串</tag>
       </tags>
   </entry>
@@ -2250,8 +2803,10 @@ S ='a_1a_2....a_n'</script><p>S：串名       n：串的长度   n=0时成为�
 <p>考研中默认每个字符占1B</p>
 <h4 id="拓展——乱码问题"><a href="#拓展——乱码问题" class="headerlink" title="拓展——乱码问题"></a>拓展——乱码问题</h4><p><img src="/2022/08/15/%E4%B8%B2%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/image-20220604164822168.png" alt></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>串</tag>
       </tags>
   </entry>
@@ -2269,10 +2824,12 @@ S ='a_1a_2....a_n'</script><p>S：串名       n：串的长度   n=0时成为�
 <h2 id="指定位置的注入"><a href="#指定位置的注入" class="headerlink" title="指定位置的注入"></a>指定位置的注入</h2><p>在想注入的地方加<em><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815151258357.png" alt><br>运行sqlmap后就会探测到</em>号<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815151341838.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815151409577.png" alt="image-20220815151409577"></p>
 <h2 id="盲注使用不接收http-body"><a href="#盲注使用不接收http-body" class="headerlink" title="盲注使用不接收http body"></a>盲注使用不接收http body</h2><p><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815151536755.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815151554688.png" alt="image-20220815151554688"></p>
 ]]></content>
+      <categories>
+        <category>web攻防</category>
+      </categories>
       <tags>
-        <tag>网络攻防</tag>
-        <tag>数据库</tag>
         <tag>工具</tag>
+        <tag>sql注入</tag>
       </tags>
   </entry>
   <entry>
@@ -2291,8 +2848,7 @@ S ='a_1a_2....a_n'</script><p>S：串名       n：串的长度   n=0时成为�
 </div>
 <script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
       <tags>
-        <tag>随笔</tag>
-        <tag>吐槽</tag>
+        <tag>爱好</tag>
       </tags>
   </entry>
   <entry>
@@ -2317,9 +2873,11 @@ S ='a_1a_2....a_n'</script><p>S：串名       n：串的长度   n=0时成为�
 <p><img src="/2022/08/14/%E7%9F%A9%E9%98%B5/image-20220603201607063.png" style="zoom:50%;"></p>
 <p> <img src="/2022/08/14/%E7%9F%A9%E9%98%B5/image-20220603201638617.png" style="zoom: 80%;"><img src="/2022/08/14/%E7%9F%A9%E9%98%B5/image-20220603201828331-16604628178811.png" style="zoom: 67%;"></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
-        <tag>矩阵</tag>
+        <tag>栈和队列</tag>
       </tags>
   </entry>
   <entry>
@@ -2352,10 +2910,11 @@ S ='a_1a_2....a_n'</script><p>S：串名       n：串的长度   n=0时成为�
 <p><img src="/2022/08/14/%E9%98%9F%E5%88%97%E7%9A%84%E5%BA%94%E7%94%A8/image-20220603194439959.png" alt></p>
 <p>可缓解主机域打印机速度不匹配的问题</p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
-        <tag>栈</tag>
-        <tag>队列</tag>
+        <tag>栈与队列</tag>
       </tags>
   </entry>
   <entry>
@@ -2400,9 +2959,11 @@ S ='a_1a_2....a_n'</script><p>S：串名       n：串的长度   n=0时成为�
 <h2 id="双端队列"><a href="#双端队列" class="headerlink" title="双端队列"></a>双端队列</h2><p><img src="/2022/08/13/%E9%98%9F%E5%88%97/image-20220603174425521.png" style="zoom: 67%;"></p>
 <p><img src="/2022/08/13/%E9%98%9F%E5%88%97/image-20220603174505573.png" style="zoom:67%;"></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
-        <tag>队列</tag>
+        <tag>栈与队列</tag>
       </tags>
   </entry>
   <entry>
@@ -2431,9 +2992,11 @@ S ='a_1a_2....a_n'</script><p>S：串名       n：串的长度   n=0时成为�
 <h3 id="链栈的定义"><a href="#链栈的定义" class="headerlink" title="链栈的定义"></a>链栈的定义</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Linknode</span>&#123;</span></span><br><span class="line">    ElemType data;              <span class="comment">//数据域</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Linknode</span> *<span class="title">next</span>;</span>      <span class="comment">//指针域</span></span><br><span class="line">&#125; *LiStack;                     <span class="comment">//栈类型定义</span></span><br></pre></td></tr></table></figure>
 <p><img src="/2022/08/13/%E6%A0%88/image-20220603162308266.png" alt></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
-        <tag>栈</tag>
+        <tag>栈与队列</tag>
       </tags>
   </entry>
   <entry>
@@ -2467,8 +3030,10 @@ O(log_2n)</script><p>时间内找到</p>
 <p>表长可以预估，查询（搜索）操作较多  ——顺序表</p>
 <h3 id="开放式问题的答题思路"><a href="#开放式问题的答题思路" class="headerlink" title="开放式问题的答题思路"></a>开放式问题的答题思路</h3><p><img src="/2022/08/11/%E9%A1%BA%E5%BA%8F%E8%A1%A8%E5%92%8C%E9%93%BE%E8%A1%A8%E7%9A%84%E6%AF%94%E8%BE%83/image-20220519212403852.png" alt></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>线性表</tag>
       </tags>
   </entry>
@@ -2491,8 +3056,10 @@ O(log_2n)</script><p>时间内找到</p>
 <h3 id="Command-Injection-攻击-high"><a href="#Command-Injection-攻击-high" class="headerlink" title="Command Injection 攻击 high"></a>Command Injection 攻击 high</h3><p><img src="/2022/08/10/RCE/1101.png" style="zoom:67%;"></p>
 <h3 id="Command-Injection-防御-impossible"><a href="#Command-Injection-防御-impossible" class="headerlink" title="Command Injection 防御 impossible"></a>Command Injection 防御 impossible</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;Submit&#x27;</span> ]  ) ) &#123; </span><br><span class="line">    <span class="comment">// Check Anti-CSRF token </span></span><br><span class="line">    <span class="title function_ invoke__">checkToken</span>( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;user_token&#x27;</span> ], <span class="variable">$_SESSION</span>[ <span class="string">&#x27;session_token&#x27;</span> ], <span class="string">&#x27;index.php&#x27;</span> ); </span><br><span class="line">    <span class="comment">// Get input </span></span><br><span class="line">    <span class="variable">$target</span> = <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;ip&#x27;</span> ];        <span class="comment">//将输入内容赋值给变量$target</span></span><br><span class="line">    <span class="variable">$target</span> = <span class="title function_ invoke__">stripslashes</span>( <span class="variable">$target</span> );      <span class="comment">//去除用户输入的\</span></span><br><span class="line">    <span class="comment">// Split the IP into 4 octects </span></span><br><span class="line">    <span class="variable">$octet</span> = <span class="title function_ invoke__">explode</span>( <span class="string">&quot;.&quot;</span>, <span class="variable">$target</span> );       <span class="comment">//把用户输入的数据根据.分开</span></span><br><span class="line">    <span class="comment">// Check IF each octet is an integer </span></span><br><span class="line">    <span class="keyword">if</span>( ( <span class="title function_ invoke__">is_numeric</span>( <span class="variable">$octet</span>[<span class="number">0</span>] ) ) &amp;&amp; ( <span class="title function_ invoke__">is_numeric</span>( <span class="variable">$octet</span>[<span class="number">1</span>] ) ) &amp;&amp; ( <span class="title function_ invoke__">is_numeric</span>( <span class="variable">$octet</span>[<span class="number">2</span>] ) ) &amp;&amp; ( <span class="title function_ invoke__">is_numeric</span>( <span class="variable">$octet</span>[<span class="number">3</span>] ) ) &amp;&amp; ( <span class="title function_ invoke__">sizeof</span>( <span class="variable">$octet</span> ) == <span class="number">4</span> ) ) <span class="comment">//分别判断分成的四个部分是不是数字，并判断是不是四个数字</span></span><br><span class="line">    	&#123; </span><br><span class="line">        <span class="comment">// If all 4 octets are int&#x27;s put the IP back together. </span></span><br><span class="line">        <span class="variable">$target</span> = <span class="variable">$octet</span>[<span class="number">0</span>] . <span class="string">&#x27;.&#x27;</span> . <span class="variable">$octet</span>[<span class="number">1</span>] . <span class="string">&#x27;.&#x27;</span> . <span class="variable">$octet</span>[<span class="number">2</span>] . <span class="string">&#x27;.&#x27;</span> . <span class="variable">$octet</span>[<span class="number">3</span>]; <span class="comment">//后端格式验证，用.拼接起来</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Determine OS and execute the ping command. </span></span><br><span class="line">        <span class="keyword">if</span>( <span class="title function_ invoke__">stristr</span>( <span class="title function_ invoke__">php_uname</span>( <span class="string">&#x27;s&#x27;</span> ), <span class="string">&#x27;Windows NT&#x27;</span> ) ) &#123; </span><br><span class="line">            <span class="comment">// Windows </span></span><br><span class="line">            <span class="variable">$cmd</span> = <span class="title function_ invoke__">shell_exec</span>( <span class="string">&#x27;ping  &#x27;</span> . <span class="variable">$target</span> ); </span><br><span class="line">        &#125;                                                                   </span><br><span class="line">        <span class="keyword">else</span> &#123; </span><br><span class="line">            <span class="comment">// *nix </span></span><br><span class="line">            <span class="variable">$cmd</span> = <span class="title function_ invoke__">shell_exec</span>( <span class="string">&#x27;ping  -c 4 &#x27;</span> . <span class="variable">$target</span> ); </span><br><span class="line">        &#125; </span><br><span class="line"></span><br><span class="line">        <span class="comment">// Feedback for the end user </span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;<span class="subst">&#123;$cmd&#125;</span>&lt;/pre&gt;&quot;</span>; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span> &#123; </span><br><span class="line">        <span class="comment">// Ops. Let the user name theres a mistake </span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;&lt;pre&gt;ERROR: You have entered an invalid IP.&lt;/pre&gt;&#x27;</span>; </span><br><span class="line">    &#125; </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="comment">// Generate Anti-CSRF token </span></span><br><span class="line"><span class="title function_ invoke__">generateSessionToken</span>(); </span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 ]]></content>
+      <categories>
+        <category>web攻防</category>
+      </categories>
       <tags>
-        <tag>网络攻防</tag>
         <tag>RCE</tag>
       </tags>
   </entry>
@@ -2525,9 +3092,10 @@ addr+8B*2</script><figure class="highlight c"><table><tr><td class="code"><pre><
 <p>缺点：不能随机存取，固定容量不可变</p>
 <p>使用场景：不支持指针的低级语言。数据元素数量固定不变的场景（操作系统的文件分配表）</p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
-        <tag>链表</tag>
         <tag>线性表</tag>
       </tags>
   </entry>
@@ -2550,9 +3118,10 @@ addr+8B*2</script><figure class="highlight c"><table><tr><td class="code"><pre><
 <p>寻找表尾</p>
 <p><img src="/2022/08/10/%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8/image-20220519202653076.png" alt></p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
-        <tag>链表</tag>
         <tag>线性表</tag>
       </tags>
   </entry>
@@ -2573,9 +3142,10 @@ addr+8B*2</script><figure class="highlight c"><table><tr><td class="code"><pre><
 <h4 id="前向遍历"><a href="#前向遍历" class="headerlink" title="前向遍历"></a>前向遍历</h4><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(p-&gt;prior != null)&#123;</span><br><span class="line">	p=p-&gt;prior;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>时间复杂度:O(n)</p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
-        <tag>链表</tag>
         <tag>线性表</tag>
       </tags>
   </entry>
@@ -2612,10 +3182,11 @@ addr+8B*2</script><figure class="highlight c"><table><tr><td class="code"><pre><
 <h4 id="求表长"><a href="#求表长" class="headerlink" title="求表长"></a>求表长</h4><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">Length</span><span class="params">(LinkList L)</span>&#123;</span><br><span class="line">	<span class="type">int</span> len =<span class="number">0</span>;           <span class="comment">//统计表长</span></span><br><span class="line">	LNode *p = L;</span><br><span class="line">	<span class="keyword">while</span> (p-&gt;next != <span class="literal">NULL</span>)&#123;</span><br><span class="line">		p = p-&gt;next;</span><br><span class="line">		len++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> len;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>时间复杂度：O(n)</p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
-        <tag>顺序表</tag>
-        <tag>链表</tag>
+        <tag>线性表</tag>
       </tags>
   </entry>
   <entry>
@@ -2647,9 +3218,10 @@ addr+8B*2</script><figure class="highlight c"><table><tr><td class="code"><pre><
 <p>（ps：L-&gt;next = NULL是为了避免以前遗留的脏数据）</p>
 <p>应用：链表的逆置 </p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
-        <tag>链表</tag>
         <tag>线性表</tag>
       </tags>
   </entry>
@@ -2675,7 +3247,6 @@ addr+8B*2</script><figure class="highlight c"><table><tr><td class="code"><pre><
 ]]></content>
       <tags>
         <tag>信息内容安全</tag>
-        <tag>TDT</tag>
       </tags>
   </entry>
   <entry>
@@ -2730,9 +3301,11 @@ addr+8B*2</script><figure class="highlight c"><table><tr><td class="code"><pre><
 <p>基于语义表示的识别和规范化方法<br>——给定一个变体词, 如果另一个词与之上下文相似, 则可以初步推断这个词很可能 就是变体词的目标实体词。<br>        · 根据一定时间窗口内变体词和目标实体词是相关;<br>        · 根据社交媒体的动态特性提取变体词和目标实体词的时空分布;<br>        · 对多个数据源数据进行对比分析;对用户的行为建模,用社交行为的相关性来辅助语义相似性测量。 </p>
 <p>与其他应用的结合<br>——变体词的识别与规范化与下游的自然语言 处理任务实际上是相互影响相互作用的, 例如分词。可以将变体词任务与下游的任务结合起来, 形成一个闭环相互反馈相互提高。</p>
 ]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
       <tags>
         <tag>信息内容安全</tag>
-        <tag>中文分词技术</tag>
       </tags>
   </entry>
   <entry>
@@ -2787,10 +3360,11 @@ addr+8B*2</script><figure class="highlight c"><table><tr><td class="code"><pre><
 最好时间复杂度:O(1)
 最坏时间复杂度:O(n)
 平均时间复杂度:O(n)</script>]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>顺序表</tag>
-        <tag>线性表</tag>
       </tags>
   </entry>
   <entry>
@@ -2820,10 +3394,11 @@ a_1 \rightarrow a_2</script><p>a2是a1的直接后继</p>
 <p><img src="/2022/08/04/%E7%BA%BF%E6%80%A7%E8%A1%A8/image-20220416211821527.png" alt="image-20220416211821527"></p>
 <p>realloc函数也可以实现上述过程</p>
 ]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>顺序表</tag>
         <tag>线性表</tag>
-        <tag>单链表</tag>
       </tags>
   </entry>
   <entry>
@@ -2893,8 +3468,8 @@ D.数据结构仅由其逻辑结构和存储结构决定
 <p>7.<img src="/2022/08/02/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%BB%AA%E8%AE%BA/image-20220520182104382.png" alt></p>
 <p> <img src="/2022/08/02/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%BB%AA%E8%AE%BA/image-20220520182039190.png" alt></p>
 ]]></content>
-      <tags>
-        <tag>数据结构</tag>
-      </tags>
+      <categories>
+        <category>数据结构</category>
+      </categories>
   </entry>
 </search>
