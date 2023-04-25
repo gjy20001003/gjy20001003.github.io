@@ -28,7 +28,7 @@
 <meta property="og:description" content="学习过程中遇到的一些不认识的函数的学习积累">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-08-18T08:16:19.000Z">
-<meta property="article:modified_time" content="2023-02-24T12:15:17.646Z">
+<meta property="article:modified_time" content="2023-03-10T14:20:23.783Z">
 <meta property="article:author" content="akali">
 <meta property="article:tag" content="工具">
 <meta name="twitter:card" content="summary">
@@ -227,7 +227,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-02-24 20:15:17" itemprop="dateModified" datetime="2023-02-24T20:15:17+08:00">2023-02-24</time>
+                <time title="修改时间：2023-03-10 22:20:23" itemprop="dateModified" datetime="2023-03-10T22:20:23+08:00">2023-03-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -244,7 +244,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>2.2k</span>
+              <span>2.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -268,6 +268,13 @@
 <h2 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h2><h3 id="getimagesize"><a href="#getimagesize" class="headerlink" title="getimagesize"></a>getimagesize</h3><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">获取图像大小及相关信息，成功返回一个数组，失败返回false并产生一条E_WARNING级错误信息</span><br><span class="line">其输出的数组为：</span><br><span class="line">Array</span><br><span class="line">(</span><br><span class="line">    [<span class="number">0</span>] <span class="operator">=</span>&gt; <span class="number">290</span></span><br><span class="line">    [<span class="number">1</span>] <span class="operator">=</span>&gt; <span class="number">69</span></span><br><span class="line">    [<span class="number">2</span>] <span class="operator">=</span>&gt; <span class="number">3</span></span><br><span class="line">    [<span class="number">3</span>] <span class="operator">=</span>&gt; width<span class="operator">=</span><span class="string">&quot;290&quot;</span> height<span class="operator">=</span><span class="string">&quot;69&quot;</span></span><br><span class="line">    [bits] <span class="operator">=</span>&gt; <span class="number">8</span></span><br><span class="line">    [mime] <span class="operator">=</span>&gt; image/png</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">返回结果说明</span><br><span class="line"></span><br><span class="line">索引 <span class="number">0</span> 给出的是图像宽度的像素值</span><br><span class="line">索引 <span class="number">1</span> 给出的是图像高度的像素值</span><br><span class="line">索引 <span class="number">2</span> 给出的是图像的类型，返回的是数字，其中<span class="number">1</span> <span class="operator">=</span> GIF，<span class="number">2</span> <span class="operator">=</span> JPG，<span class="number">3</span> <span class="operator">=</span> PNG，<span class="number">4</span> <span class="operator">=</span> SWF，<span class="number">5</span> <span class="operator">=</span> PSD，<span class="number">6</span> <span class="operator">=</span> BMP，<span class="number">7</span> <span class="operator">=</span> TIFF(intel byte order)，<span class="number">8</span> <span class="operator">=</span> TIFF(motorola byte order)，<span class="number">9</span> <span class="operator">=</span> JPC，<span class="number">10</span> <span class="operator">=</span> JP2，<span class="number">11</span> <span class="operator">=</span> JPX，<span class="number">12</span> <span class="operator">=</span> JB2，<span class="number">13</span> <span class="operator">=</span> SWC，<span class="number">14</span> <span class="operator">=</span> IFF，<span class="number">15</span> <span class="operator">=</span> WBMP，<span class="number">16</span> <span class="operator">=</span> XBM</span><br><span class="line">索引 <span class="number">3</span> 给出的是一个宽度和高度的字符串，可以直接用于 HTML 的 &lt;image&gt; 标签</span><br><span class="line">索引 bits 给出的是图像的每种颜色的位数，二进制格式</span><br><span class="line">索引 channels 给出的是图像的通道值，RGB 图像默认是 <span class="number">3</span></span><br><span class="line">索引 mime 给出的是图像的 MIME 信息，此信息可以用来在 HTTP Content-type 头信息中发送正确的信息，如： header(<span class="string">&quot;Content-type: image/jpeg&quot;</span>)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
 <h3 id="strrpos"><a href="#strrpos" class="headerlink" title="strrpos"></a>strrpos</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">strrpos</span>(<span class="keyword">string</span>,find,start)</span><br><span class="line"><span class="number">1</span>.<span class="keyword">string</span>：必需。规定被搜索的字符串。</span><br><span class="line"><span class="number">2</span>.find：必需。规定要查找的字符。</span><br><span class="line"><span class="number">3</span>.start：可选。规定在何处开始搜索。</span><br><span class="line">    </span><br><span class="line">相关函数：</span><br><span class="line">    <span class="title function_ invoke__">stripos</span>()-查找字符串在另一字符串中第一次出现的位置（不区分大小写）</span><br><span class="line">    <span class="title function_ invoke__">strpos</span>()-查找字符串在另一字符串中第一次出现的位置（区分大小写）</span><br><span class="line">    <span class="title function_ invoke__">strripos</span>()-查找字符串在另一字符串中最后一次出现的位置（不区分大小写）</span><br></pre></td></tr></table></figure>
 <h3 id="substr"><a href="#substr" class="headerlink" title="substr"></a>substr</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">格式<span class="number">1</span>：<span class="title function_ invoke__">substr</span>(<span class="keyword">string</span>,<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span><br><span class="line">    <span class="number">1</span>、<span class="keyword">string</span> 需要截取的字符串 </span><br><span class="line">    <span class="number">2</span>、a 截取字符串的开始位置（注：当a等于<span class="number">0</span>或<span class="number">1</span>时，都是从第一位开始截取）</span><br><span class="line">    <span class="number">3</span>、b 要截取的字符串的长度</span><br><span class="line"></span><br><span class="line">格式<span class="number">2</span>：<span class="title function_ invoke__">substr</span>(<span class="keyword">string</span>,<span class="keyword">int</span> a)</span><br><span class="line">    <span class="number">1</span>、<span class="keyword">string</span> 需要截取的字符串</span><br><span class="line">    <span class="number">2</span>、a 可以理解为从第a个字符开始截取后面所有的字符串。</span><br><span class="line"></span><br><span class="line">实例：</span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali&#x27;</span>,<span class="number">1</span>,<span class="number">3</span>); <span class="comment">//返回结果：aka</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali&#x27;</span>,<span class="number">2</span>,<span class="number">3</span>); <span class="comment">//返回结果：kal，截取从“e”开始3个字符</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali&#x27;</span>,<span class="number">0</span>,<span class="number">100</span>); <span class="comment">//返回结果：akali，100虽然超出预处理的字符串最长度，但不会影响返回结果，系统按预处理字符串最大数量返回。</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali !&#x27;</span>,<span class="number">5</span>,<span class="number">3</span>); <span class="comment">//返回结果：i ! (中间的空格也算一个字符串)</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali&#x27;</span>,-<span class="number">1</span>,<span class="number">3</span>); <span class="comment">//返回结果：i （从后面倒数第一位开始往后取1个字符，而不是3个。）</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali&#x27;</span>,-<span class="number">2</span>,<span class="number">3</span>); <span class="comment">//返回结果：li （从后面倒数第二位开始往后取2个字符，而不是3个。原因：下面红色 第三个注解）</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali&#x27;</span>,-<span class="number">3</span>,<span class="number">3</span>); <span class="comment">//返回结果：ali （从后面倒数第三位开始往后取3个字符）</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27;akali&#x27;</span>,-<span class="number">4</span>,<span class="number">3</span>); <span class="comment">//返回结果：ali （从后面倒数第四位开始往后取3个字符）</span></span><br><span class="line"></span><br><span class="line">注：最后几个奇奇怪怪的原因是要满足下面规则：</span><br><span class="line">|a| ≤ b,取a的个数；当 |a| ≥ b时，才取b的个数，由a决定截取位置）</span><br><span class="line"></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27; akali&#x27;</span>,<span class="number">1</span>);  <span class="comment">//返回结果： akali，截取所有字符</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27; akali&#x27;</span>,<span class="number">2</span>);  <span class="comment">//返回结果：kali，截取从“k”开始之后所有字符</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27; akali&#x27;</span>,<span class="number">3</span>);  <span class="comment">//返回结果：ali，截取从“a”开始之后所有字符</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27; akali&#x27;</span>,-<span class="number">1</span>);  <span class="comment">//返回结果：i，从最后一个“i”开始，反向截取1个字符</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27; akali&#x27;</span>,-<span class="number">2</span>);  <span class="comment">//返回结果：li，从最后一个“i”开始，反向截取2个字符</span></span><br><span class="line">select <span class="title function_ invoke__">substr</span>(<span class="string">&#x27; akali&#x27;</span>,-<span class="number">3</span>);  <span class="comment">//返回结果：ali，从最后一个“i”开始，反向截取3个字符 </span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="python"><a href="#python" class="headerlink" title="python"></a>python</h2><h3 id="map"><a href="#map" class="headerlink" title="map"></a>map</h3><p>语法：map(function, iterable, …)<br>参数：function — 函数    iterable — 一个或多个序列</p>
+<h3 id="round"><a href="#round" class="headerlink" title="round"></a>round</h3><p>语法：round( x [, n]  )<br>参数：</p>
+<ul>
+<li>x — 数值表达式。</li>
+<li>n — 数值表达式，表示从小数点位数。</li>
+</ul>
+<p>返回值：返回浮点数x的四舍五入值。</p>
 
     </div>
 
@@ -351,7 +358,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL"><span class="nav-number">1.</span> <span class="nav-text">SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#limit"><span class="nav-number">1.1.</span> <span class="nav-text">limit</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP"><span class="nav-number">2.</span> <span class="nav-text">PHP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#getimagesize"><span class="nav-number">2.1.</span> <span class="nav-text">getimagesize</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#strrpos"><span class="nav-number">2.2.</span> <span class="nav-text">strrpos</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#substr"><span class="nav-number">2.3.</span> <span class="nav-text">substr</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL"><span class="nav-number">1.</span> <span class="nav-text">SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#limit"><span class="nav-number">1.1.</span> <span class="nav-text">limit</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP"><span class="nav-number">2.</span> <span class="nav-text">PHP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#getimagesize"><span class="nav-number">2.1.</span> <span class="nav-text">getimagesize</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#strrpos"><span class="nav-number">2.2.</span> <span class="nav-text">strrpos</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#substr"><span class="nav-number">2.3.</span> <span class="nav-text">substr</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python"><span class="nav-number">3.</span> <span class="nav-text">python</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#map"><span class="nav-number">3.1.</span> <span class="nav-text">map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#round"><span class="nav-number">3.2.</span> <span class="nav-text">round</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -367,20 +374,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">82</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -421,12 +428,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">148k</span>
+    <span title="站点总字数">182k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:15</span>
+    <span title="站点阅读时长">2:45</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
