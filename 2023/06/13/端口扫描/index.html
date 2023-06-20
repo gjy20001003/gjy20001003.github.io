@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="nmap、非nmap、伪设备等环境下进行端口扫描">
+<meta property="og:type" content="article">
+<meta property="og:title" content="端口扫描">
+<meta property="og:url" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/index.html">
+<meta property="og:site_name" content="阿卡丽的神秘商店">
+<meta property="og:description" content="nmap、非nmap、伪设备等环境下进行端口扫描">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613215713796.png">
+<meta property="og:image" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613220228139.png">
+<meta property="og:image" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613220431598.png">
+<meta property="og:image" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613221323853.png">
+<meta property="og:image" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613224128903.png">
+<meta property="og:image" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613225915379.png">
+<meta property="og:image" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613230058846.png">
+<meta property="og:image" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613233257385.png">
+<meta property="og:image" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613233114905.png">
+<meta property="og:image" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613234524226.png">
+<meta property="og:image" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613234901334.png">
+<meta property="og:image" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230614000712917.png">
+<meta property="og:image" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230614000633878.png">
+<meta property="article:published_time" content="2023-06-13T13:23:56.000Z">
+<meta property="article:modified_time" content="2023-06-20T10:00:27.567Z">
+<meta property="article:author" content="akali">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613215713796.png">
+
+<link rel="canonical" href="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>端口扫描 | 阿卡丽的神秘商店</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿卡丽的神秘商店</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">上古时代的宝贝开卖了</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/gjy20001003" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="akali">
+      <meta itemprop="description" content="远赴人间惊鸿宴，一睹人间盛世颜">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿卡丽的神秘商店">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          端口扫描
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-13 21:23:56" itemprop="dateCreated datePublished" datetime="2023-06-13T21:23:56+08:00">2023-06-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-20 18:00:27" itemprop="dateModified" datetime="2023-06-20T18:00:27+08:00">2023-06-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>nmap、非nmap、伪设备等环境下进行端口扫描</p>
+<span id="more"></span>
+<h1 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h1><h2 id="主机扫描"><a href="#主机扫描" class="headerlink" title="主机扫描"></a>主机扫描</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">nmap</span> -<span class="keyword">sn</span> &lt;目标网段&gt;</span><br></pre></td></tr></table></figure>
+<p>-sn：以ping的方式连接目标网段内所有主机</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613215713796.png" alt="image-20230613215713796"></p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>从上面我们看到该网段有五台主机开放，其中192.168.153.129是目标靶机，扫描靶机中开放端口</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nmap</span> --min-rate <span class="number">10000</span> -p- <span class="number">192.168.153.129</span></span><br></pre></td></tr></table></figure>
+<p>—min-rate：最低速率，如例子中给出10000是一个权衡结果，太快了会不够细致，过慢会导致效率低<br>-p：指定端口，-p-意思是扫描从1-65535所有端口</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613220228139.png" alt="image-20230613220228139"></p>
+<p>在实战中一般扫描两到三次，如果相同则认为结果可信</p>
+<h3 id="udp扫描"><a href="#udp扫描" class="headerlink" title="udp扫描"></a>udp扫描</h3><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap --<span class="built_in">min</span>-<span class="built_in">rate</span> <span class="number">10000</span> -sU &lt;目标ip&gt;</span><br></pre></td></tr></table></figure>
+<p>-sU：以UDP的通讯协议来扫描</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613220431598.png" alt="image-20230613220431598"></p>
+<h3 id="tcp扫描"><a href="#tcp扫描" class="headerlink" title="tcp扫描"></a>tcp扫描</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nmap</span> -sT -sV -O -p5040,<span class="number">5357</span>,<span class="number">137</span> <span class="number">192.168.153.129</span></span><br></pre></td></tr></table></figure>
+<p>-sV：查看版本号<br>-O：查看操作系统</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613221323853.png" alt="image-20230613221323853"></p>
+<p>可以看到端口以及对应服务以及版本，还有目标靶机的对应操作系统</p>
+<h2 id="漏洞扫描"><a href="#漏洞扫描" class="headerlink" title="漏洞扫描"></a>漏洞扫描</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nmap</span> --script=&lt;脚本&gt; -p5040,<span class="number">5357</span>,<span class="number">137</span> <span class="number">192.168.153.129</span></span><br></pre></td></tr></table></figure>
+<p>—script=vuln：使用nmap内置脚本对后面端口进行漏洞扫描<br>    vuln：常见漏洞    brute：爆破攻击    auth：鉴权扫描(弱口令)    dos：拒绝服务攻击<br>    exploit：利用安全漏洞    fuzzer：模糊测试    malware：恶意软件检测</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613224128903.png" alt="image-20230613224128903"></p>
+<p>会使用常规漏洞进行测试，如ms10-054，ms10-061等</p>
+<h1 id="非nmap环境"><a href="#非nmap环境" class="headerlink" title="非nmap环境"></a>非nmap环境</h1><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ping</span> -c <span class="number">1</span> -W <span class="number">1</span> &lt;目标ip&gt;</span><br></pre></td></tr></table></figure>
+<p>-c：发送包数量<br>-W：等待时间</p>
+<h2 id="网段扫描"><a href="#网段扫描" class="headerlink" title="网段扫描"></a>网段扫描</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">for</span> i in &#123;<span class="number">1</span>..<span class="number">254</span>&#125;;do ping -c <span class="number">1</span> -W <span class="number">1</span> xxx.xxx.xxx.$i|grep from ;done</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613225915379.png" alt="image-20230613225915379"></p>
+<p>使用一个for循环以及通过管道来加一个筛选条件(判断结果是否有from字符)，请注意，筛选结果需要从样本集中分析出结果。如下<br><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613230058846.png" alt="image-20230613230058846"></p>
+<p>可以看到可以ping通和ping不通的主机中返回结果存在不同所以可以分析出成功的地址有from字符串而失败的没有。</p>
+<h1 id="netcat"><a href="#netcat" class="headerlink" title="netcat"></a>netcat</h1><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nc</span>.traditional -vv -z <span class="number">192.168.153.130</span> <span class="number">1</span>-<span class="number">65535</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span>|grep refused</span><br></pre></td></tr></table></figure>
+<p>-v：详细信息 -vv更加详细<br>-z：零数据传输</p>
+<p>2&gt;&amp;1：将错误信息重定向为正常信息</p>
+<p>筛选结果同样需要从样本集中提取出来进行使用</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613233257385.png" alt="image-20230613233257385"></p>
+<p>请注意，虽然使用nmap可以查询到该ip地址，但是直接ping是ping不通的，在nmap扫描的时候已经知道了操作系统是windows，考虑关闭防火墙后成功ping通并获得开放端口</p>
+<h1 id="伪设备"><a href="#伪设备" class="headerlink" title="伪设备"></a>伪设备</h1><h2 id="查看环境"><a href="#查看环境" class="headerlink" title="查看环境"></a>查看环境</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$SHELL</span>&quot;</span></span><br></pre></td></tr></table></figure>
+<p>输入bash切换为bash环境，更加稳定</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613233114905.png" alt="image-20230613233114905"></p>
+<h2 id="伪设备-1"><a href="#伪设备-1" class="headerlink" title="伪设备"></a>伪设备</h2><p>pseudo device：在linux系统中所有设备都被映射成文件，在磁盘中是文件所以也可以用文件模拟设备</p>
+<h2 id="端口扫描-1"><a href="#端口扫描-1" class="headerlink" title="端口扫描"></a>端口扫描</h2><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i in &#123;<span class="number">1</span>..<span class="number">65535</span>&#125;;<span class="keyword">do</span> (echo&lt;<span class="regexp">/dev/</span>tcp<span class="regexp">/192.168.153.129/</span>$i) &amp;&gt;<span class="regexp">/dev/</span><span class="keyword">null</span> &amp;&amp; printf<span class="string">&quot;the open port is:%d\n&quot;</span><span class="string">&quot;$i&quot;</span> | <span class="keyword">grep</span> -v refuse;done</span><br></pre></td></tr></table></figure>
+<p>&amp;&gt;/dev/null：无论结果是正确还是错误，都丢弃</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613234524226.png" alt="image-20230613234524226"></p>
+<h2 id="完善（进度）"><a href="#完善（进度）" class="headerlink" title="完善（进度）"></a>完善（进度）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;1..65535&#125;;<span class="keyword">do</span> (<span class="built_in">echo</span>&lt;/dev/tcp/192.168.153.129/<span class="variable">$i</span>) &amp;&gt;/dev/null &amp;&amp; <span class="built_in">printf</span> <span class="string">&quot;\nthe open port is:%d\n&quot;</span> <span class="string">&quot;<span class="variable">$i</span>&quot;</span>|| <span class="built_in">printf</span> <span class="string">&quot;.&quot;</span> ;<span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613234901334.png" alt="image-20230613234901334"></p>
+<h1 id="IPV6扫描"><a href="#IPV6扫描" class="headerlink" title="IPV6扫描"></a>IPV6扫描</h1><h2 id="IOXIDResolver"><a href="#IOXIDResolver" class="headerlink" title="IOXIDResolver"></a>IOXIDResolver</h2><p><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/mubix/IOXIDResolver/master/IOXIDResolver.py">raw.githubusercontent.com/mubix/IOXIDResolver/master/IOXIDResolver.py</a></p>
+<h2 id="安装以及赋权"><a href="#安装以及赋权" class="headerlink" title="安装以及赋权"></a>安装以及赋权</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装</span></span><br><span class="line">sudo wget https:<span class="regexp">//</span>raw.githubusercontent.com<span class="regexp">/mubix/</span>IOXIDResolver<span class="regexp">/master/</span>IOXIDResolver.py</span><br><span class="line"><span class="comment"># 授权</span></span><br><span class="line">sudo chmod +x IOXIDResolver</span><br></pre></td></tr></table></figure>
+<h2 id="帮助文档"><a href="#帮助文档" class="headerlink" title="帮助文档"></a>帮助文档</h2><p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230614000712917.png" alt="image-20230614000712917"></p>
+<h2 id="扫描ipv6"><a href="#扫描ipv6" class="headerlink" title="扫描ipv6"></a>扫描ipv6</h2><p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230614000633878.png" alt="image-20230614000633878"></p>
+<h2 id="nmap扫描ipv6端口"><a href="#nmap扫描ipv6端口" class="headerlink" title="nmap扫描ipv6端口"></a>nmap扫描ipv6端口</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">sudo</span> nmap -<span class="number">6</span> --min-rate <span class="number">10000</span> -p- &lt;IPV6地址&gt;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="prev" title="信安基础知识">
+      <i class="fa fa-chevron-left"></i> 信安基础知识
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/14/XSS/" rel="next" title="XSS">
+      XSS <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#nmap"><span class="nav-number">1.</span> <span class="nav-text">nmap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E6%9C%BA%E6%89%AB%E6%8F%8F"><span class="nav-number">1.1.</span> <span class="nav-text">主机扫描</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">1.2.</span> <span class="nav-text">端口扫描</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#udp%E6%89%AB%E6%8F%8F"><span class="nav-number">1.2.1.</span> <span class="nav-text">udp扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tcp%E6%89%AB%E6%8F%8F"><span class="nav-number">1.2.2.</span> <span class="nav-text">tcp扫描</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F"><span class="nav-number">1.3.</span> <span class="nav-text">漏洞扫描</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%9Enmap%E7%8E%AF%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">非nmap环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E6%AE%B5%E6%89%AB%E6%8F%8F"><span class="nav-number">2.1.</span> <span class="nav-text">网段扫描</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#netcat"><span class="nav-number">3.</span> <span class="nav-text">netcat</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%AA%E8%AE%BE%E5%A4%87"><span class="nav-number">4.</span> <span class="nav-text">伪设备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%8E%AF%E5%A2%83"><span class="nav-number">4.1.</span> <span class="nav-text">查看环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%AA%E8%AE%BE%E5%A4%87-1"><span class="nav-number">4.2.</span> <span class="nav-text">伪设备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F-1"><span class="nav-number">4.3.</span> <span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E5%96%84%EF%BC%88%E8%BF%9B%E5%BA%A6%EF%BC%89"><span class="nav-number">4.4.</span> <span class="nav-text">完善（进度）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IPV6%E6%89%AB%E6%8F%8F"><span class="nav-number">5.</span> <span class="nav-text">IPV6扫描</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IOXIDResolver"><span class="nav-number">5.1.</span> <span class="nav-text">IOXIDResolver</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8A%E8%B5%8B%E6%9D%83"><span class="nav-number">5.2.</span> <span class="nav-text">安装以及赋权</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3"><span class="nav-number">5.3.</span> <span class="nav-text">帮助文档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%AB%E6%8F%8Fipv6"><span class="nav-number">5.4.</span> <span class="nav-text">扫描ipv6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nmap%E6%89%AB%E6%8F%8Fipv6%E7%AB%AF%E5%8F%A3"><span class="nav-number">5.5.</span> <span class="nav-text">nmap扫描ipv6端口</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="akali"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">akali</p>
+  <div class="site-description" itemprop="description">远赴人间惊鸿宴，一睹人间盛世颜</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      <div id="music163player">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1859652717&auto=1&height=66"></iframe>
+        </iframe>
+      </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021-08 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">akali</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+
+<!-- 页面点击出现爱心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+<!-- 页面点击出现烟花 -->
+
+ <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+ <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+ <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="信息安全基础知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信安基础知识">
+<meta property="og:url" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="阿卡丽的神秘商店">
+<meta property="og:description" content="信息安全基础知识">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085716723.png">
+<meta property="og:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085826664.png">
+<meta property="og:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085858374.png">
+<meta property="og:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085404755.png">
+<meta property="og:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620090028078.png">
+<meta property="og:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620090227320.png">
+<meta property="og:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620090450803.png">
+<meta property="og:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620090839992.png">
+<meta property="og:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620091508483.png">
+<meta property="og:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620091637372.png">
+<meta property="og:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620091922400.png">
+<meta property="og:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620092235668.png">
+<meta property="og:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620092326731.png">
+<meta property="og:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620092409811.png">
+<meta property="article:published_time" content="2023-06-10T10:34:35.000Z">
+<meta property="article:modified_time" content="2023-06-20T09:58:54.875Z">
+<meta property="article:author" content="akali">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085716723.png">
+
+<link rel="canonical" href="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>信安基础知识 | 阿卡丽的神秘商店</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿卡丽的神秘商店</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">上古时代的宝贝开卖了</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/gjy20001003" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="akali">
+      <meta itemprop="description" content="远赴人间惊鸿宴，一睹人间盛世颜">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿卡丽的神秘商店">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          信安基础知识
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-10 18:34:35" itemprop="dateCreated datePublished" datetime="2023-06-10T18:34:35+08:00">2023-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-20 17:58:54" itemprop="dateModified" datetime="2023-06-20T17:58:54+08:00">2023-06-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>信息安全基础知识</p>
+<span id="more"></span>
+<h2 id="常见协议、中间件默认端口及配置文件"><a href="#常见协议、中间件默认端口及配置文件" class="headerlink" title="常见协议、中间件默认端口及配置文件"></a>常见协议、中间件默认端口及配置文件</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>服务</th>
+<th>端口</th>
+<th>配置文件</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文件传输协议(FTP)</td>
+<td>21</td>
+<td>linux:/etc/vsftpd.conf<br>windows:</td>
+<td>允许匿名上传、下载、爆破和嗅探操作</td>
+</tr>
+<tr>
+<td>SSH</td>
+<td>22</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>telnet</td>
+<td>23</td>
+<td></td>
+<td>远程连接 爆破、嗅探、弱口令</td>
+</tr>
+<tr>
+<td>SMTP</td>
+<td>25</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>80</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>IIS</td>
+<td>80</td>
+<td></td>
+<td>PUT漏洞、短文件名拆解、RCE、解析漏洞</td>
+</tr>
+<tr>
+<td>apache</td>
+<td>80</td>
+<td></td>
+<td>解析漏洞、目录遍历</td>
+</tr>
+<tr>
+<td>nginx</td>
+<td>80</td>
+<td></td>
+<td>文件解析、目录遍历、CRLF注入、目录穿越</td>
+</tr>
+<tr>
+<td>POP3</td>
+<td>110</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>HTTPS</td>
+<td>443</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>445</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>MSSQL</td>
+<td>1433</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Oracle</td>
+<td>1521</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>MYSQL</td>
+<td>3306</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>windows远程桌面服务端口</td>
+<td>3389</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>redis</td>
+<td>6379</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>weblogic</td>
+<td>7701</td>
+<td></td>
+<td>反序列化漏洞、SSRF任意文件上传、war后门文件部署</td>
+</tr>
+<tr>
+<td>apache tomcat</td>
+<td>8080</td>
+<td></td>
+<td>远程代码执行、war后门文件部署</td>
+</tr>
+<tr>
+<td>JBOSS</td>
+<td>8080</td>
+<td></td>
+<td>反序列化漏洞、war后门文件部署</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="OWASP10"><a href="#OWASP10" class="headerlink" title="OWASP10"></a>OWASP10</h2><h2 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h2><h3 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h3><ul>
+<li><p>matsc：远程桌面管理工具<br>步骤：目标机：控制面板——系统和安全——系统——远程设置——允许远程连接到此计算机。</p>
+<pre><code>       本机：cmd：matsc，填入ip地址和账户凭据
+</code></pre><p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085716723.png" alt="image-20230620085716723" style="zoom:50%;"><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085826664.png" alt="image-20230620085826664" style="zoom:50%;"><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085858374.png" alt="image-20230620085858374" style="zoom:50%;"></p>
+<p>请注意选择用户中可能存在用户组everyone，这个用户组致使所有人都可以连接到你的主机，按需设置可连接用户或用户组</p>
+<p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085404755.png" alt="image-20230620085404755" style="zoom:50%;"></p>
+</li>
+<li><p>regdit：注册表</p>
+<p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620090028078.png" alt="image-20230620090028078" style="zoom:67%;"></p>
+</li>
+<li><p>gpedit.msc：组策略</p>
+<p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620090227320.png" alt="image-20230620090227320" style="zoom:67%;"></p>
+<p>其中本地策略、账户策略比较重要，路径为：计算机配置—-windows设置—-安全设置—-本地策略\账户策略<br>账户策略：<img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620090450803.png" alt="image-20230620090450803"><br>密码策略中是密码复杂度、长度等要求，账户锁定策略为登陆失败处置，kerberos策略为域内凭证时间等策略</p>
+<p>本地策略：<img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620090839992.png" alt="image-20230620090839992"><br>本地策略中审核策略是对各个操作行为的审核的开关，也是溯源和跟踪的重要依据，按需开启<br>本地策略中的用户权限分配需按照最小权限原则进行处理<br>安全选项则是对于域、服务器、账户、系统、网络等协议或者功能的安全性设置</p>
+</li>
+</ul>
+<p>gpmc.msc：域策略<br><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620091508483.png" alt="image-20230620091508483" style="zoom:67%;"></p>
+<p>wf.msc：防火墙设置<img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620091637372.png" alt="image-20230620091637372"></p>
+<h3 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h3><p>gpupdate /force：强制刷新策略</p>
+<h3 id="常见知识点"><a href="#常见知识点" class="headerlink" title="常见知识点"></a>常见知识点</h3><h4 id="日志备份"><a href="#日志备份" class="headerlink" title="日志备份"></a>日志备份</h4><p>创新一个空文件，可以看到属性是A，模拟备份ttt文件后，A标记被去除表示文件已备份，修改文件后重新出现A标记<br><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620091922400.png" alt="image-20230620091922400" style="zoom:50%;"><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620092235668.png" alt="image-20230620092235668" style="zoom:50%;"><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620092326731.png" alt="image-20230620092326731" style="zoom:50%;"></p>
+<p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620092409811.png" alt></p>
+<p>日志备份原理：遍历需要备份的文件，查看文件属性是否是A，是A则进行备份后完成将属性转化成N，即进行差异备份</p>
+<p>事件查看器</p>
+<p>更改远程连接端口</p>
+<p>NFTS权限</p>
+<p>访问控制与访问控制列表</p>
+<p>隐藏账户处置</p>
+<h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><h3 id="判断操作系统"><a href="#判断操作系统" class="headerlink" title="判断操作系统"></a>判断操作系统</h3><ul>
+<li>修改url参数，比如改成大写，正常的是windows，不正常的是linux</li>
+<li>使用ping命令，linux返回的TTL值一般比windows的值小一些，一般以100为划分线</li>
+</ul>
+<h3 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>服务</th>
+<th>操作系统</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>查看端口使用情况</td>
+<td>windows</td>
+<td>netstat -ano</td>
+</tr>
+<tr>
+<td></td>
+<td>linux</td>
+<td>netstat -tuln</td>
+</tr>
+<tr>
+<td>查看当前运行的服务</td>
+<td>windows</td>
+<td>net start</td>
+</tr>
+<tr>
+<td></td>
+<td>linux</td>
+<td>service —status-all \</td>
+<td>grep running</td>
+</tr>
+<tr>
+<td>下载</td>
+<td>windows</td>
+<td>powershell curl -o “输出文件名” “下载路径”</td>
+</tr>
+<tr>
+<td></td>
+<td>linux</td>
+<td>wget -o 文件名 URL</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="常用工具-1"><a href="#常用工具-1" class="headerlink" title="常用工具"></a>常用工具</h2><h3 id="wireshark"><a href="#wireshark" class="headerlink" title="wireshark"></a>wireshark</h3><h4 id="过滤规则"><a href="#过滤规则" class="headerlink" title="过滤规则"></a>过滤规则</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>代码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>过滤ip</td>
+<td>源ip：ip.src eq ip<br>目的ip：ip.dst eq ip</td>
+</tr>
+<tr>
+<td>过滤端口</td>
+<td>tcp.port eq 80//源和目标都显示<br>tcp.dstport == ip 或 tcp.srcport == ip<br>tcp.port &gt;= 1 and tcp.port &lt;= 80</td>
+</tr>
+<tr>
+<td>过滤协议</td>
+<td>输入协议名，如tcp、udp、arp、icmp等<br>排除协议：如排除arp包，如!arp 或 not arp</td>
+</tr>
+<tr>
+<td>过滤MAC</td>
+<td>eth.dst(src) == 目标(源)MAC</td>
+</tr>
+<tr>
+<td>http模式过滤</td>
+<td>http.request.method == “GET”(“POST”)<br>http.request.uri == “/img/1.jpg”<br>http contains “HTTP/1.”</td>
+</tr>
+<tr>
+<td>TCP参数过滤</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/24/julia%E6%9E%84%E5%BB%BA%E5%8C%BA%E5%9D%97%E9%93%BE/" rel="prev" title="julia构建区块链">
+      <i class="fa fa-chevron-left"></i> julia构建区块链
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/" rel="next" title="端口扫描">
+      端口扫描 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%8D%8F%E8%AE%AE%E3%80%81%E4%B8%AD%E9%97%B4%E4%BB%B6%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3%E5%8F%8A%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">常见协议、中间件默认端口及配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OWASP10"><span class="nav-number">2.</span> <span class="nav-text">OWASP10</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#windows"><span class="nav-number">3.</span> <span class="nav-text">windows</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="nav-number">3.1.</span> <span class="nav-text">常用工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">常见命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">3.3.</span> <span class="nav-text">常见知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E5%A4%87%E4%BB%BD"><span class="nav-number">3.3.1.</span> <span class="nav-text">日志备份</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.</span> <span class="nav-text">操作系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.1.</span> <span class="nav-text">判断操作系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1"><span class="nav-number">4.2.</span> <span class="nav-text">服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7-1"><span class="nav-number">5.</span> <span class="nav-text">常用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#wireshark"><span class="nav-number">5.1.</span> <span class="nav-text">wireshark</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E8%A7%84%E5%88%99"><span class="nav-number">5.1.1.</span> <span class="nav-text">过滤规则</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="akali"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">akali</p>
+  <div class="site-description" itemprop="description">远赴人间惊鸿宴，一睹人间盛世颜</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      <div id="music163player">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1859652717&auto=1&height=66"></iframe>
+        </iframe>
+      </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021-08 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">akali</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+
+<!-- 页面点击出现爱心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+<!-- 页面点击出现烟花 -->
+
+ <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+ <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+ <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+</body>
+</html>

