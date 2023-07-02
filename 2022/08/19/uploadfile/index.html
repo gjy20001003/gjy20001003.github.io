@@ -51,8 +51,10 @@
 <meta property="og:image" content="http://example.com/2022/08/19/uploadfile/image-20220819141342629.png">
 <meta property="og:image" content="http://example.com/2022/08/19/uploadfile/image-20220819143008852-16608940380672.png">
 <meta property="og:image" content="http://example.com/2022/08/19/uploadfile/image-20220819142200672-16608940336041.png">
+<meta property="og:image" content="http://example.com/2022/08/19/uploadfile/image-20230625004103485.png">
+<meta property="og:image" content="http://example.com/2022/08/19/uploadfile/image-20230625005254448.png">
 <meta property="article:published_time" content="2022-08-19T01:37:28.000Z">
-<meta property="article:modified_time" content="2023-06-15T14:57:55.157Z">
+<meta property="article:modified_time" content="2023-06-24T17:06:48.623Z">
 <meta property="article:author" content="akali">
 <meta property="article:tag" content="文件上传漏洞,工具]">
 <meta name="twitter:card" content="summary">
@@ -252,7 +254,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-15 22:57:55" itemprop="dateModified" datetime="2023-06-15T22:57:55+08:00">2023-06-15</time>
+                <time title="修改时间：2023-06-25 01:06:48" itemprop="dateModified" datetime="2023-06-25T01:06:48+08:00">2023-06-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -295,11 +297,16 @@
 <h3 id="high"><a href="#high" class="headerlink" title="high"></a>high</h3><p>源代码中</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$uploaded_ext</span>  = <span class="title function_ invoke__">substr</span>( <span class="variable">$uploaded_name</span>, <span class="title function_ invoke__">strrpos</span>( <span class="variable">$uploaded_name</span>, <span class="string">&#x27;.&#x27;</span> ) + <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 <p>将输出文件名.后所有信息然后送去if语句验证。同时使用getimagesize()函数限制了上传文件的文件头必须是图像类型。<br>那就先做一个图片马<br><img src="/2022/08/19/uploadfile/image-20220819141118474.png" alt><br>b表示二进制文件，a表示ascll码文件<br>图片马就制作好了，看起来平平无奇谁能想到里面藏着木马呢<br><img src="/2022/08/19/uploadfile/image-20220819141342629.png" style="zoom:50%;"></p>
-<p>抓个包看看，在图片的末尾也看到了，可惜菜刀和剑蚁连不上应该是无法解析图片的问题<br><img src="/2022/08/19/uploadfile/image-20220819143008852-16608940380672.png" alt><br>成功上传<br><img src="/2022/08/19/uploadfile/image-20220819142200672-16608940336041.png" alt></p>
+<p>抓个包看看，在图片的末尾也看到了，可惜菜刀和剑蚁连不上应该是无法解析图片的问题，需要借助命令执行漏洞<br><img src="/2022/08/19/uploadfile/image-20220819143008852-16608940380672.png" alt><br>成功上传<br><img src="/2022/08/19/uploadfile/image-20220819142200672-16608940336041.png" alt></p>
+<p>在命令执行界面将jpg文件转换为php文件：127.0.0.1|move D:phpstudy/WWW/dvwa/hackable/uploads/3.jpg D:/phpstudy/WWW/dvwa/hackable/uploads/shell.php    </p>
+<p><img src="/2022/08/19/uploadfile/image-20230625004103485.png" alt="image-20230625004103485"></p>
+<p><img src="/2022/08/19/uploadfile/image-20230625005254448.png" alt="image-20230625005254448"></p>
 <h3 id="impossible"><a href="#impossible" class="headerlink" title="impossible"></a>impossible</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$target_file</span>   =  <span class="title function_ invoke__">md5</span>( <span class="title function_ invoke__">uniqid</span>() . <span class="variable">$uploaded_name</span> ) . <span class="string">&#x27;.&#x27;</span> . <span class="variable">$uploaded_ext</span>;</span><br><span class="line"><span class="variable">$temp_file</span>    .= DIRECTORY_SEPARATOR . <span class="title function_ invoke__">md5</span>( <span class="title function_ invoke__">uniqid</span>() . <span class="variable">$uploaded_name</span> ) . <span class="string">&#x27;.&#x27;</span> . <span class="variable">$uploaded_ext</span>;</span><br></pre></td></tr></table></figure>
 <p>使用md5重命名防止截断跳过</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Check Anti-CSRF token</span></span><br><span class="line">    <span class="title function_ invoke__">checkToken</span>( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;user_token&#x27;</span> ], <span class="variable">$_SESSION</span>[ <span class="string">&#x27;session_token&#x27;</span> ], <span class="string">&#x27;index.php&#x27;</span> );</span><br></pre></td></tr></table></figure>
 <p>加入Anti-CSRF token防护CSRF攻击</p>
+<p>1’ union select 1,group_concat(column_name) from information_schema.columns where table_name = ‘users’#</p>
+<p>1’ union select 1,group_concat(column_name) from information_schema.columns where table_name = ‘users’#</p>
 
     </div>
 
@@ -399,20 +406,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-count">100</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

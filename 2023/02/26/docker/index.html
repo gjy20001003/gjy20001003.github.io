@@ -29,9 +29,24 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230226125114303.png">
 <meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230226125320615.png">
+<meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230629232111696.png">
+<meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230629232137908.png">
+<meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230629232200542.png">
+<meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230629232524397.png">
+<meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230629233107503.png">
+<meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230629233218749.png">
+<meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230629223026232.png">
+<meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230629223049377.png">
+<meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230629223419831.png">
+<meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230629223606003.png">
+<meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230629224545169.png">
+<meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230629224712227.png">
+<meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230629225851081.png">
+<meta property="og:image" content="http://example.com/2023/02/26/docker/image-20230630001732104.png">
 <meta property="article:published_time" content="2023-02-26T04:49:23.000Z">
-<meta property="article:modified_time" content="2023-06-20T10:07:04.472Z">
+<meta property="article:modified_time" content="2023-07-02T22:38:04.356Z">
 <meta property="article:author" content="akali">
+<meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2023/02/26/docker/image-20230226125114303.png">
 
@@ -229,8 +244,17 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-20 18:07:04" itemprop="dateModified" datetime="2023-06-20T18:07:04+08:00">2023-06-20</time>
+                <time title="修改时间：2023-07-03 06:38:04" itemprop="dateModified" datetime="2023-07-03T06:38:04+08:00">2023-07-03</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
 
           
 
@@ -262,10 +286,48 @@
 </ol>
 <p><img src="/2023/02/26/docker/image-20230226125320615.png" alt="image-20230226125320615"></p>
 <p>Docker的整个运行逻辑如这个图所示，通过Docker Client将需要执行的Docker命令发送给Docker运行的节点上的Docker daemon，Docker daemon将我们的请求进行分解执行，例如我们执行Docker build命令它会根据Dockerfile构建一个镜像存放于本地，执行Docker pull命令会从远端的容器镜像仓库拉取镜像到本地，执行Docker run命令会将容器镜像拉取并运行成为容器实例。</p>
-<p>型的linux启动到运行需要2个FS，一个是rootfs，一个是bootfs。bootfs是linux启动时进行加载的，会安装系统所使用的kernel内核，创建完成后bootfs会进行解绑。rootfs是我们真正去使用linux是操作的系统文件系统，包含/dev /bin等目录，对于我们构建容器镜像来说，我们利用rootfs作为我们的基础镜像来使用，一个精简的os来说，它的rootfs可以很小，只需要包括基本的命令和工具即可，例如alpine只有不到10MB。镜像构建基于一个基础镜像将我们需要进行安装的依赖和程序根据Dockerfile编写逐层叠加到镜像中，这里涉及到了一个容器镜像的概念就是，<strong>镜像分层</strong>，镜像的每一层都会有一个独立的id，Docker使用Union FS对Docker镜像进行分层和合层记录，当我们使用同一个基础镜像时，利用Docker镜像分层的功能可以帮助我们使用到已有的镜像层，拉取没有的镜像层，达到镜像的资源共享，减少重复镜像层拉取，达到资源使用最大化。容器运行时会在容器镜像最上层生成一个Container层，这个层是copy这个完整的镜像加载到内存中运行，在这个层级中对于容器来说是可以进行修改的，但是由于运行于内存中，我们对Container层的任何修改都不会对底层镜像生效，当容器消亡时我们修改的数据也一并消亡，这就是容器的<strong>copy on write</strong>特性。</p>
+<p>linux启动到运行需要2个FS，一个是rootfs，一个是bootfs。bootfs是linux启动时进行加载的，会安装系统所使用的kernel内核，创建完成后bootfs会进行解绑。rootfs是我们真正去使用linux是操作的系统文件系统，包含/dev /bin等目录，对于我们构建容器镜像来说，我们利用rootfs作为我们的基础镜像来使用，一个精简的os来说，它的rootfs可以很小，只需要包括基本的命令和工具即可，例如alpine只有不到10MB。镜像构建基于一个基础镜像将我们需要进行安装的依赖和程序根据Dockerfile编写逐层叠加到镜像中，这里涉及到了一个容器镜像的概念就是，<strong>镜像分层</strong>，镜像的每一层都会有一个独立的id，Docker使用Union FS对Docker镜像进行分层和合层记录，当我们使用同一个基础镜像时，利用Docker镜像分层的功能可以帮助我们使用到已有的镜像层，拉取没有的镜像层，达到镜像的资源共享，减少重复镜像层拉取，达到资源使用最大化。容器运行时会在容器镜像最上层生成一个Container层，这个层是copy这个完整的镜像加载到内存中运行，在这个层级中对于容器来说是可以进行修改的，但是由于运行于内存中，我们对Container层的任何修改都不会对底层镜像生效，当容器消亡时我们修改的数据也一并消亡，这就是容器的<strong>copy on write</strong>特性。</p>
+<h2 id="Docker前置知识"><a href="#Docker前置知识" class="headerlink" title="Docker前置知识"></a>Docker前置知识</h2><h3 id="hello-world"><a href="#hello-world" class="headerlink" title="hello world"></a>hello world</h3><p><img src="/2023/02/26/docker/image-20230629232111696.png" alt="image-20230629232111696"><br><img src="/2023/02/26/docker/image-20230629232137908.png" alt="image-20230629232137908"><br><img src="/2023/02/26/docker/image-20230629232200542.png" alt="image-20230629232200542"></p>
+<p>可以看到镜像名为ubuntu:20:04，镜像id为626a42…，容器id为5f604…，所属仓库名为ubuntu</p>
+<h3 id="交互式-it"><a href="#交互式-it" class="headerlink" title="交互式(-it)"></a>交互式(-it)</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">docker</span> run -it ubuntu:<span class="number">20</span>.<span class="number">04</span> /bin/bash</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/26/docker/image-20230629232524397.png" alt="image-20230629232524397"></p>
+<h3 id="后台模式-d"><a href="#后台模式-d" class="headerlink" title="后台模式(-d)"></a>后台模式(-d)</h3><p><img src="/2023/02/26/docker/image-20230629233107503.png" alt="image-20230629233107503"></p>
+<h3 id="停止容器"><a href="#停止容器" class="headerlink" title="停止容器"></a>停止容器</h3><p><img src="/2023/02/26/docker/image-20230629233218749.png" alt="image-20230629233218749"></p>
+<p>或</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop amazing_cori</span><br></pre></td></tr></table></figure>
 <h2 id="Dockerfile的编写"><a href="#Dockerfile的编写" class="headerlink" title="Dockerfile的编写"></a>Dockerfile的编写</h2><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"><span class="keyword">FROM</span> uhub.service.ucloud.cn/hello/maven:<span class="number">3</span>-jdk-<span class="number">8</span>-alpine</span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /usr/src/app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> target /usr/src/app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> lib/jmx_prometheus_javaagent-0.12.0.jar /usr/src/app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> yaml/javaagent.yaml /usr/src/app</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">ENV</span> PORT <span class="number">8080</span></span><br><span class="line"><span class="keyword">EXPOSE</span> $PORT</span><br><span class="line"><span class="keyword">ENV</span> JMXPORT <span class="number">9090</span></span><br><span class="line"><span class="keyword">EXPOSE</span> $JMXPORT</span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [ <span class="string">&quot;sh&quot;</span>, <span class="string">&quot;-c&quot;</span>, <span class="string">&quot;java -javaagent:jmx_prometheus_javaagent-0.12.0.jar=<span class="variable">$&#123;JMXPORT&#125;</span>:javaagent.yaml -jar /usr/src/app/demo-0.0.1-SNAPSHOT.jar -Dserver.port=<span class="variable">$&#123;PORT&#125;</span> --spring.config.location=/etc/appconfig/hello.properties&quot;</span> ]</span></span><br><span class="line">```</span><br></pre></td></tr></table></figure>
 <p><strong>· FROM</strong> 我们基于什么镜像构建<br><strong>· WORKDIR</strong> 容器的工作目录<br><strong>· RUN</strong> 执行容器构建过程中的命令<br><strong>· CMD &amp; ENTRYPOINT</strong> 执行容器启动后的命令<br><strong>· ADD &amp; COPY</strong> 添加指定的文件到容器镜像中<br><strong>· ENV</strong> 设置环境变量<br><strong>· EXPOSE</strong> 设置容器暴露的端口</p>
-
+<h2 id="Docker命令执行"><a href="#Docker命令执行" class="headerlink" title="Docker命令执行"></a>Docker命令执行</h2><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">搜索镜像：docker serach [<span class="keyword">target</span>]</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/26/docker/image-20230629223026232.png" alt="image-20230629223026232"></p>
+<p><img src="/2023/02/26/docker/image-20230629223049377.png" alt="image-20230629223049377"></p>
+<p>① NAME：镜像仓库名称。<br>② DESCRIPTION：镜像仓库描述。<br>③ STARS：镜像仓库收藏数，表示该镜像仓库的受欢迎程度，类似于GitHub的Stars。<br>④ OFFICAL：表示是否为官方仓库，该列标记为[OK]的镜像均由各软件的官方项目组创建和维护。由结果可知，java这个镜像仓库是官方仓库，而其他的仓库都不是镜像仓库。<br>⑤ AUTOMATED：表示是否是自动构建的镜像仓库。</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">下载镜像：docker pull [options] name[<span class="symbol">:tag|</span><span class="variable">@digest</span>]</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/26/docker/image-20230629223419831.png" alt="image-20230629223419831"></p>
+<p><img src="/2023/02/26/docker/image-20230629223606003.png" alt="image-20230629223606003"></p>
+<p>默认情况下从docker hub拉取镜像，但也可以指定，比如从</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull myregistry.loca<span class="variable">l:8000</span>/<span class="keyword">python</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">列出镜像：docker images</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/26/docker/image-20230629224545169.png" alt="image-20230629224545169"></p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images --<span class="built_in">filter</span> <span class="string">&quot;dangling=true&quot;</span></span><br></pre></td></tr></table></figure>
+<p>① REPOSITORY：镜像所属仓库名称。<br>② TAG：镜像标签。默认是latest，表示最新。<br>③ IMAGE ID：镜像ID，表示镜像唯一标识。<br>④ CREATED：镜像创建时间。<br>⑤ SIZE：镜像大小</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">删除镜像：docker rmi [options] image [image]</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/26/docker/image-20230629224712227.png" alt="image-20230629224712227"></p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">eg:</span><br><span class="line">docker rmi hello-world</span><br><span class="line">删除所有镜像：</span><br><span class="line">docker rmi -f <span class="constructor">$(<span class="params">docker</span> <span class="params">images</span>)</span>]</span><br><span class="line">删除所有处于终止状态的容器</span><br><span class="line">docker container prune</span><br></pre></td></tr></table></figure>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">保存镜像：docker <span class="keyword">save</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">eg:</span><br><span class="line">docker <span class="keyword">save</span> blog &gt;blog.tar</span><br><span class="line">docker <span class="keyword">save</span> --<span class="keyword">output</span> blog.tar blog</span><br></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">获取详细信息：docker inspect [image]</span><br></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">列出各个层的创建信息：docker history [image]</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">新建容器并启动：docker <span class="built_in">run</span> [options] image [command]</span><br><span class="line">eg:docker <span class="built_in">run</span> -it -p 3366:3306 mysql</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/26/docker/image-20230629225851081.png" alt="image-20230629225851081"></p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">获取日志：docker logs <span class="comment">[options]</span> <span class="keyword">container</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">查看运行中容器：docker ps </span><br><span class="line">查看所有容器：docker ps -a</span><br><span class="line">停止<span class="regexp">/重启/</span>启动容器：docker stop<span class="regexp">/restart/</span>start [container id]或[names]</span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">进入容器：当<span class="built_in">run</span>的时候使用-d的参数会导致容器启动后进入后台</span><br><span class="line">docker attach [container <span class="built_in">id</span>]		会导致容器停止</span><br><span class="line">docker exec [container <span class="built_in">id</span>]		不会导致容器停止</span><br></pre></td></tr></table></figure>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">导出</span><br><span class="line">docker export <span class="comment">[container id]</span> &gt; <span class="comment">[file.tar]</span></span><br><span class="line">导入</span><br><span class="line">cat docker/<span class="comment">[file.tar]</span> | docker import - <span class="comment">[image]</span>:<span class="comment">[image tag]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">查看网络端口</span><br><span class="line">docker port <span class="selector-attr">[container id]</span>或<span class="selector-attr">[names]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">更新镜像</span><br><span class="line">运行的容器内使用apt-<span class="built_in">get</span> update进行更新</span><br><span class="line">退出后提交容器副本</span><br><span class="line">docker commit <span class="attribute">-m</span>=<span class="string">&quot;提交的描述信息&quot;</span> <span class="attribute">-a</span>=<span class="string">&quot;指定镜像作者&quot;</span> [id] [镜像名]</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker网络</span><br><span class="line">docker network create -d <span class="selector-attr">[网络类型]</span> <span class="selector-attr">[name]</span></span><br><span class="line">网络类型：bridge、overlay</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/26/docker/image-20230630001732104.png" alt="image-20230630001732104"></p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h3 id="web应用"><a href="#web应用" class="headerlink" title="web应用"></a>web应用</h3>
     </div>
 
     
@@ -273,6 +335,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"># docker</a>
+          </div>
 
         
 
@@ -345,7 +410,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">Docker核心概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dockerfile%E7%9A%84%E7%BC%96%E5%86%99"><span class="nav-number">2.</span> <span class="nav-text">Dockerfile的编写</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">Docker核心概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-number">2.</span> <span class="nav-text">Docker前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hello-world"><span class="nav-number">2.1.</span> <span class="nav-text">hello world</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E4%BA%92%E5%BC%8F-it"><span class="nav-number">2.2.</span> <span class="nav-text">交互式(-it)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0%E6%A8%A1%E5%BC%8F-d"><span class="nav-number">2.3.</span> <span class="nav-text">后台模式(-d)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%9C%E6%AD%A2%E5%AE%B9%E5%99%A8"><span class="nav-number">2.4.</span> <span class="nav-text">停止容器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dockerfile%E7%9A%84%E7%BC%96%E5%86%99"><span class="nav-number">3.</span> <span class="nav-text">Dockerfile的编写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-number">4.</span> <span class="nav-text">Docker命令执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">5.</span> <span class="nav-text">实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#web%E5%BA%94%E7%94%A8"><span class="nav-number">5.1.</span> <span class="nav-text">web应用</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -361,20 +426,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-count">100</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

